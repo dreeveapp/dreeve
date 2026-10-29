@@ -57,7 +57,7 @@ final readonly class ActivitiesRequestHandler
             metadata: new PageMetadata(
                 route: 'activities',
                 title: new TranslatableMessage('Activities'),
-                description: new TranslatableMessage('A searchable list of all recorded activities'),
+                description: new TranslatableMessage('A searchable list of all recorded activities', domain: 'metadata'),
             ),
         );
     }

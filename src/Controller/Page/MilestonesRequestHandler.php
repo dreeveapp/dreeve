@@ -48,7 +48,7 @@ final readonly class MilestonesRequestHandler
             metadata: new PageMetadata(
                 route: 'milestones',
                 title: new TranslatableMessage('Milestones'),
-                description: new TranslatableMessage('Milestones reached over time'),
+                description: new TranslatableMessage('Milestones reached over time', domain: 'metadata'),
             ),
         );
     }

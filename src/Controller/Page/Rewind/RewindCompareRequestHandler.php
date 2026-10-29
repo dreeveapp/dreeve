@@ -65,7 +65,7 @@ final readonly class RewindCompareRequestHandler
                 route: 'rewind_compare',
                 routeParams: ['left' => $left, 'right' => $right],
                 title: new TranslatableMessage('{left} vs {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel]),
-                description: new TranslatableMessage('Compare {left} with {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel]),
+                description: new TranslatableMessage('Compare {left} with {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel], domain: 'metadata'),
             ),
         );
     }

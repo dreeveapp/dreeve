@@ -2,6 +2,7 @@
 
 namespace App\Tests\Infrastructure\Localisation;
 
+use App\Console\ExtractTranslationsConsoleCommand;
 use App\Infrastructure\Localisation\Locale;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\ContainerTestCase;
@@ -15,8 +16,6 @@ class TranslationsTest extends ContainerTestCase
     private KernelProjectDir $kernelProjectDir;
     private ExtractorInterface $extractor;
 
-    private const array DOMAINS = ['messages', 'admin'];
-
     #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testAllTranslationsHaveBeenExtracted(): void
     {
@@ -25,7 +24,7 @@ class TranslationsTest extends ContainerTestCase
         $this->extractor->extract($this->kernelProjectDir.'/src', $catalogue);
 
         $messages = [];
-        foreach (self::DOMAINS as $domain) {
+        foreach (ExtractTranslationsConsoleCommand::DOMAINS as $domain) {
             $translatableKeys = array_keys($catalogue->all()[$domain] ?? []);
 
             foreach (Locale::cases() as $locale) {
@@ -60,7 +59,7 @@ class TranslationsTest extends ContainerTestCase
 
     public function testTranslationsContainPlaceholders(): void
     {
-        foreach (self::DOMAINS as $domain) {
+        foreach (ExtractTranslationsConsoleCommand::DOMAINS as $domain) {
             foreach (Locale::cases() as $locale) {
                 $translationFilePath = sprintf('%s/translations/%s%s.%s.yaml', $this->kernelProjectDir, $domain, MessageCatalogueInterface::INTL_DOMAIN_SUFFIX, $locale->value);
                 if (!file_exists($translationFilePath)) {

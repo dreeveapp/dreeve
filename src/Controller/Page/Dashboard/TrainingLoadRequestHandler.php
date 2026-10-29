@@ -56,7 +56,7 @@ final readonly class TrainingLoadRequestHandler
             metadata: new PageMetadata(
                 route: 'dashboard_training_load',
                 title: new TranslatableMessage('Training Load Analysis'),
-                description: new TranslatableMessage('Fitness, fatigue and form based on training load'),
+                description: new TranslatableMessage('Fitness, fatigue and form based on training load', domain: 'metadata'),
             ),
         );
     }

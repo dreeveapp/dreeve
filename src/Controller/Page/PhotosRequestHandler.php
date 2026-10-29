@@ -49,7 +49,7 @@ final readonly class PhotosRequestHandler
             metadata: new PageMetadata(
                 route: 'photos',
                 title: new TranslatableMessage('Photos'),
-                description: new TranslatableMessage('Photos from all activities'),
+                description: new TranslatableMessage('Photos from all activities', domain: 'metadata'),
             ),
         );
     }

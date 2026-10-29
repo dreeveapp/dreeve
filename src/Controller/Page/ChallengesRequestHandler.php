@@ -40,7 +40,7 @@ final readonly class ChallengesRequestHandler
             metadata: new PageMetadata(
                 route: 'challenges',
                 title: new TranslatableMessage('Challenges'),
-                description: new TranslatableMessage('All completed challenges'),
+                description: new TranslatableMessage('All completed challenges', domain: 'metadata'),
             ),
         );
     }

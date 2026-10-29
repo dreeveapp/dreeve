@@ -5,12 +5,8 @@
 '> 2.0: High monotony, increased risk': '> 2.0: Monotonia elevata, rischio aumentato'
 'A 6-hour week scores higher than a 5-hour week.': 'Una settimana da 6 ore ottiene un punteggio più alto di una da 5 ore.'
 'A cluster tile is a visited tile whose four neighbours are visited too': 'Una tessera del cluster è una tessera visitata le cui quattro vicine sono anch’esse visitate'
-'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Un punteggio di intensità alto significa che una quota maggiore del tuo allenamento è impegnativa invece che facile.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Un punteggio alto significa che concentri più allenamento in meno giorni, ma più intensi.'
-'A look back at all activities': 'A look back at all activities'
-'A look back at {year}': 'A look back at {year}'
-'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'Rapporto A:C'
 'A:C optimal in': 'A:C ottimale tra'
 'AI integration settings': 'AI integration settings'
@@ -19,8 +15,6 @@
 'Active days': 'Giornate attive'
 'Active gear': 'Active gear'
 Activities: Attività
-'Activities and statistics for {month}': 'Activities and statistics for {month}'
-'Activities and statistics per month': 'Activities and statistics per month'
 Activity: Attività
 'Activity count': 'Conteggio attività'
 'Activity heatmap': 'Mappa di calore delle attività'
@@ -33,11 +27,8 @@ Activity: Attività
 'Aero sensor': 'Aero sensor'
 Afternoon: Pomeriggio
 All: Tutti
-'All completed challenges': 'All completed challenges'
-'All segments and the efforts on them': 'All segments and the efforts on them'
 'All time': 'Da sempre'
 'Alpine Ski': 'Sci alpino'
-'An overview of all activities, training load and statistics': 'An overview of all activities, training load and statistics'
 'Analyze with WindAhead': 'Analyze with WindAhead'
 Apr: Apr
 'Ask Mark something...': 'Chiedi qualcosa a Mark...'
@@ -75,7 +66,6 @@ Canoeing: Canoa
 'Carbon saved': 'Emissioni di carbonio risparmiate'
 'Challenge consistency': 'Costanza nella sfida'
 Challenges: Sfide
-'Chat with an AI assistant about your training': 'Chat with an AI assistant about your training'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': "Carico di Allenamento Cronico (Forma) - media esponenziale a 42 giorni del tuo carico giornaliero. Rappresenta l'adattamento a lungo termine."
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Cancella chat'
@@ -87,7 +77,6 @@ Commutes: 'Spostamenti quotidiani'
 'Commutes only': 'Solo spostamenti quotidiani'
 Compare: Confronta
 'Compare to': 'Confronta con'
-'Compare {left} with {right}': 'Compare {left} with {right}'
 'Completed {threshold} activities': 'Completate {threshold} attività'
 Components: Components
 'Configure gear maintenance': 'Configure gear maintenance'
@@ -127,12 +116,10 @@ Distance: Distanza
 'Distance in {unit}': 'Distanza in {unit}'
 'Distance over time per gear': 'Distanza nel tempo per attrezzatura'
 'Distance per month per gear': 'Distanza per mese per attrezzatura'
-'Distance, time and usage statistics per piece of gear': 'Distance, time and usage statistics per piece of gear'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Alternare ciclismo, corsa, nuoto e lavoro di forza aumenta il tuo punteggio di varietà.'
 Download: Download
 Duration: Duration
 'Dusting off the record books...': 'Dusting off the record books...'
-'Dynamically generated badges to embed anywhere': 'Dynamically generated badges to embed anywhere'
 'E-Bike Ride': 'E-Bike Ride'
 'E-Bike Rides': 'Uscite in e-bike'
 'E-Mountain Bike Ride': 'E-Mountain Bike Ride'
@@ -163,7 +150,6 @@ Evening: Sera
 'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
 'FTP history': 'Storico FTP'
 Fastest: Fastest
-'Fastest times over standard distances per activity type': 'Fastest times over standard distances per activity type'
 Favourite: Preferito
 Feb: Feb
 'Filling up the bottles...': 'Filling up the bottles...'
@@ -177,7 +163,6 @@ Firsts: Firsts
 Fitness: 'Forma fisica'
 'Fitness may be declining due to low recent training load': 'La forma potrebbe essere in calo a causa del basso carico di allenamento recente'
 'Fitness may decline': 'La forma potrebbe calare'
-'Fitness, fatigue and form based on training load': 'Fitness, fatigue and form based on training load'
 'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': 'Forma (TSB)'
@@ -221,7 +206,6 @@ Hike: Hike
 Hikes: Escursioni
 History: Cronologia
 'History (6 weeks)': 'Storico (6 settimane)'
-'History of best efforts over {distance}': 'History of best efforts over {distance}'
 'How diverse is your training': 'Quanto è vario il tuo allenamento'
 'How hard is your typical training session': 'Quanto è intensa la tua sessione di allenamento tipica'
 'How long is your typical training session': 'Quanto dura la tua sessione di allenamento tipica'
@@ -272,7 +256,6 @@ Low: Basso
 'Low risk': 'Rischio basso'
 'Low training load': 'Carico di allenamento basso'
 Maintenance: Manutenzione
-'Maintenance tasks and their progress per piece of gear': 'Maintenance tasks and their progress per piece of gear'
 'Manage activities': 'Manage activities'
 'Manage gear': 'Manage gear'
 'Manage recording devices': 'Manage recording devices'
@@ -289,7 +272,6 @@ Medium: Medio
 Metric: Metric
 'Metrics settings': 'Metrics settings'
 Milestones: Milestones
-'Milestones reached over time': 'Milestones reached over time'
 'Mind & Body Sports': 'Sport Mente e Corpo'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Fatica moderata con forma stabile. Ben adatto a un allenamento costante giorno dopo giorno'
 'Moderate monotony': 'Monotonia moderata'
@@ -355,12 +337,10 @@ Pace: Andatura
 Padel: Padel
 'Peak fresh': 'Picco di freschezza'
 'Peak power outputs': 'Picchi di potenza'
-'Peak power outputs over different durations': 'Peak power outputs over different durations'
 'Per {unit}': 'Per {unit}'
 'Personal bests': 'Record personali'
 Photo: Foto
 Photos: Foto
-'Photos from all activities': 'Photos from all activities'
 'Physical Therapy': 'Physical Therapy'
 'Pickle Ball': Pickleball
 Pilates: Pilates
@@ -447,7 +427,6 @@ Squash: Squash
 'Stair Stepper': 'Stepper a gradini'
 'Stand Up Paddling': 'Stand up paddle'
 'Start times': 'Orari di partenza'
-'Statistics per device used to record activities': 'Statistics per device used to record activities'
 'Stats per weekday': 'Statistiche giornaliere'
 Status: Status
 'Streak started on {date}': 'Serie iniziata il {date}'
@@ -553,8 +532,6 @@ Tennis: Tennis
 "That's {number} days of at least {distance}": "That's {number} days of at least {distance}"
 "That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
-'The Eddington number per activity type': 'The Eddington number per activity type'
-'The fastest efforts on this segment': 'The fastest efforts on this segment'
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."

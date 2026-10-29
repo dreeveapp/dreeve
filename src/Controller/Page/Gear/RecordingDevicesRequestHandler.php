@@ -57,7 +57,7 @@ final readonly class RecordingDevicesRequestHandler
             metadata: new PageMetadata(
                 route: 'gear_recording_devices',
                 title: new TranslatableMessage('Recording devices'),
-                description: new TranslatableMessage('Statistics per device used to record activities'),
+                description: new TranslatableMessage('Statistics per device used to record activities', domain: 'metadata'),
             ),
         );
     }

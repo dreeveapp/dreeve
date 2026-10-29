@@ -48,7 +48,7 @@ final readonly class SegmentsRequestHandler
             metadata: new PageMetadata(
                 route: 'segments',
                 title: new TranslatableMessage('Segments'),
-                description: new TranslatableMessage('All segments and the efforts on them'),
+                description: new TranslatableMessage('All segments and the efforts on them', domain: 'metadata'),
             ),
         );
     }

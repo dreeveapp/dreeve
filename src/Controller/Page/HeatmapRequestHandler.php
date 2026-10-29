@@ -45,7 +45,7 @@ final readonly class HeatmapRequestHandler
             metadata: new PageMetadata(
                 route: 'heatmap',
                 title: new TranslatableMessage('Heatmap'),
-                description: new TranslatableMessage('A heatmap of all recorded routes'),
+                description: new TranslatableMessage('A heatmap of all recorded routes', domain: 'metadata'),
             ),
         );
     }

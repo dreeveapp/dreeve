@@ -88,7 +88,7 @@ final readonly class SegmentRequestHandler
                 route: 'segment',
                 routeParams: ['segmentId' => (string) $segment->getId()],
                 title: (string) $segment->getName(),
-                description: new TranslatableMessage('The fastest efforts on this segment'),
+                description: new TranslatableMessage('The fastest efforts on this segment', domain: 'metadata'),
             ),
         );
     }

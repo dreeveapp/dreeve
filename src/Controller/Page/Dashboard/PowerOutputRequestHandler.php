@@ -60,7 +60,7 @@ final readonly class PowerOutputRequestHandler
             metadata: new PageMetadata(
                 route: 'dashboard_power_output',
                 title: new TranslatableMessage('Peak power outputs'),
-                description: new TranslatableMessage('Peak power outputs over different durations'),
+                description: new TranslatableMessage('Peak power outputs over different durations', domain: 'metadata'),
             ),
         );
     }

@@ -26,7 +26,7 @@ class AppShellTest extends ContainerTestCase
             metadata: new PageMetadata(
                 route: 'activity',
                 title: 'Morning Run',
-                description: new TranslatableMessage('A look back at {year}', ['{year}' => '2023']),
+                description: new TranslatableMessage('A look back at {year}', ['{year}' => '2023'], 'metadata'),
                 routeParams: ['activityId' => 'activity-1'],
                 imageRoute: 'activity_og_image',
             ),

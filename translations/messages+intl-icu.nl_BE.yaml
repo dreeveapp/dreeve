@@ -5,12 +5,8 @@
 '> 2.0: High monotony, increased risk': '> 2.0: Hoge monotonie, verhoogd risico'
 'A 6-hour week scores higher than a 5-hour week.': 'Een week van 6 uur scoort hoger dan een week van 5 uur.'
 'A cluster tile is a visited tile whose four neighbours are visited too': 'Een clustertegel is een bezochte tegel waarvan de vier buren ook bezocht zijn'
-'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Een hoge intensiteitsscore betekent dat een groter deel van je training zwaar is in plaats van licht.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Een hoge score betekent dat je meer training concentreert in minder, zwaardere dagen.'
-'A look back at all activities': 'A look back at all activities'
-'A look back at {year}': 'A look back at {year}'
-'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'A:C-ratio'
 'A:C optimal in': 'A:C optimaal binnen'
 'AI integration settings': 'Instellingen AI-integratie'
@@ -19,8 +15,6 @@
 'Active days': 'Actieve dagen'
 'Active gear': 'Active gear'
 Activities: Activiteiten
-'Activities and statistics for {month}': 'Activities and statistics for {month}'
-'Activities and statistics per month': 'Activities and statistics per month'
 Activity: Activiteit
 'Activity count': 'Aantal activiteiten'
 'Activity heatmap': Activiteitenheatmap
@@ -33,11 +27,8 @@ Activity: Activiteit
 'Aero sensor': Aerosensor
 Afternoon: Namiddag
 All: Alle
-'All completed challenges': 'All completed challenges'
-'All segments and the efforts on them': 'All segments and the efforts on them'
 'All time': 'Sinds het begin'
 'Alpine Ski': Alpineskiën
-'An overview of all activities, training load and statistics': 'An overview of all activities, training load and statistics'
 'Analyze with WindAhead': 'Analyseren met WindAhead'
 Apr: Apr
 'Ask Mark something...': 'Vraag Mark iets...'
@@ -75,7 +66,6 @@ Canoeing: Kanoën
 'Carbon saved': 'Bespaarde CO₂'
 'Challenge consistency': 'Challenge consistentie'
 Challenges: Uitdagingen
-'Chat with an AI assistant about your training': 'Chat with an AI assistant about your training'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Chronic Training Load (Fitheid) - exponentieel gewogen gemiddelde over 42 dagen van je dagelijkse trainingsbelasting. Geeft de trainingsaanpassing op lange termijn weer.'
 'Clear all filters': 'Alle filters wissen'
 'Clear chat': 'Chat wissen'
@@ -87,7 +77,6 @@ Commutes: Woon-werkritten
 'Commutes only': 'Enkel woon-werk'
 Compare: Vergelijken
 'Compare to': 'Vergelijken met'
-'Compare {left} with {right}': 'Compare {left} with {right}'
 'Completed {threshold} activities': '{threshold} activiteiten voltooid'
 Components: Onderdelen
 'Configure gear maintenance': 'Onderhoud van uitrusting configureren'
@@ -127,12 +116,10 @@ Distance: Afstand
 'Distance in {unit}': 'Afstand in {unit}'
 'Distance over time per gear': 'Afstand in tijd per gear'
 'Distance per month per gear': 'Afstand per maand per gear'
-'Distance, time and usage statistics per piece of gear': 'Distance, time and usage statistics per piece of gear'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Een mix van fietsen, lopen, zwemmen en krachttraining verhoogt je variatiescore.'
 Download: Download
 Duration: Duur
 'Dusting off the record books...': 'De recordboeken aan het afstoffen...'
-'Dynamically generated badges to embed anywhere': 'Dynamically generated badges to embed anywhere'
 'E-Bike Ride': E-bikerit
 'E-Bike Rides': E-bikeritten
 'E-Mountain Bike Ride': E-mountainbikerit
@@ -163,7 +150,6 @@ Evening: Avond
 'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
 'FTP history': FTP-historiek
 Fastest: Snelste
-'Fastest times over standard distances per activity type': 'Fastest times over standard distances per activity type'
 Favourite: Favoriet
 Feb: Feb
 'Filling up the bottles...': 'De bidons aan het vullen...'
@@ -177,7 +163,6 @@ Firsts: 'Eerste keren'
 Fitness: Fitheid
 'Fitness may be declining due to low recent training load': 'Je fitheid kan dalen door een lage recente trainingsbelasting'
 'Fitness may decline': 'Fitheid kan dalen'
-'Fitness, fatigue and form based on training load': 'Fitness, fatigue and form based on training load'
 'Foot pod': Voetsensor
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'Bijvoorbeeld: een Eddington-getal van 70 betekent dat een fietser op minstens 70 dagen minstens 70 km of mijl per dag heeft gefietst. Een hoog Eddington-getal behalen is moeilijk, want van bijvoorbeeld 70 naar 75 gaan vraagt (waarschijnlijk) meer dan vijf nieuwe lange trainingen, omdat elke training korter dan 75 km of mijl niet langer meetelt.'
 'Form (TSB)': 'Vorm (TSB)'
@@ -221,7 +206,6 @@ Hike: Hike
 Hikes: Hikes
 History: Historiek
 'History (6 weeks)': 'Historiek (6 weken)'
-'History of best efforts over {distance}': 'History of best efforts over {distance}'
 'How diverse is your training': 'Hoe gevarieerd is je training'
 'How hard is your typical training session': 'Hoe zwaar is je gemiddelde trainingssessie'
 'How long is your typical training session': 'Hoe lang duurt je gemiddelde trainingssessie'
@@ -272,7 +256,6 @@ Low: Laag
 'Low risk': 'Laag risico'
 'Low training load': 'Lage trainingsbelasting'
 Maintenance: Onderhoud
-'Maintenance tasks and their progress per piece of gear': 'Maintenance tasks and their progress per piece of gear'
 'Manage activities': 'Activiteiten beheren'
 'Manage gear': 'Uitrusting beheren'
 'Manage recording devices': 'Registratietoestellen beheren'
@@ -289,7 +272,6 @@ Medium: Gemiddeld
 Metric: Metrisch
 'Metrics settings': 'Instellingen meetwaarden'
 Milestones: Mijlpalen
-'Milestones reached over time': 'Milestones reached over time'
 'Mind & Body Sports': 'Mind & body-sporten'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Matige vermoeidheid met stabiele fitheid. Zeer geschikt voor regelmatige dagelijkse training'
 'Moderate monotony': 'Matige monotonie'
@@ -355,12 +337,10 @@ Pace: Tempo
 Padel: Padel
 'Peak fresh': 'Maximaal fris'
 'Peak power outputs': Piekvermogens
-'Peak power outputs over different durations': 'Peak power outputs over different durations'
 'Per {unit}': 'Per {unit}'
 'Personal bests': 'Persoonlijke records'
 Photo: Foto
 Photos: "Foto's"
-'Photos from all activities': 'Photos from all activities'
 'Physical Therapy': Kinesitherapie
 'Pickle Ball': Pickleball
 Pilates: Pilates
@@ -447,7 +427,6 @@ Squash: Squash
 'Stair Stepper': Trappenmachine
 'Stand Up Paddling': 'Stand-up paddling'
 'Start times': Starttijden
-'Statistics per device used to record activities': 'Statistics per device used to record activities'
 'Stats per weekday': 'Stats per weekdag'
 Status: Status
 'Streak started on {date}': 'Reeks gestart op {date}'
@@ -553,8 +532,6 @@ Tennis: Tennis
 "That's {number} days of at least {distance}": 'Dat zijn {number} dagen van minstens {distance}'
 "That's {percentage}% of all countries 🌍": 'Dat is {percentage}% van alle landen 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'Het Eddington-getal bij fietsen of lopen is het grootste getal E waarvoor de atleet op minstens E dagen minstens E km heeft afgelegd.'
-'The Eddington number per activity type': 'The Eddington number per activity type'
-'The fastest efforts on this segment': 'The fastest efforts on this segment'
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": 'De pagina die je zoekt bestaat niet of is mogelijk verplaatst.'

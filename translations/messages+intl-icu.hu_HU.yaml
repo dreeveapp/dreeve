@@ -5,12 +5,8 @@
 '> 2.0: High monotony, increased risk': '> 2,0: Magas monotonitás, fokozott kockázat'
 'A 6-hour week scores higher than a 5-hour week.': 'Egy 6 órás hét magasabb pontszámot ér el, mint egy 5 órás.'
 'A cluster tile is a visited tile whose four neighbours are visited too': 'A klasztercsempe olyan meglátogatott csempe, amelynek mind a négy szomszédja is meglátogatott'
-'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A magas intenzitási pontszám azt jelenti, hogy az edzéseid nagyobb része nehéz, nem könnyű.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A magas pontszám azt jelenti, hogy több edzést koncentrálsz kevesebb, de nehezebb napra.'
-'A look back at all activities': 'A look back at all activities'
-'A look back at {year}': 'A look back at {year}'
-'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'A:C arány'
 'A:C optimal in': 'A:C optimális ezután:'
 'AI integration settings': 'AI-integráció beállításai'
@@ -19,8 +15,6 @@
 'Active days': 'Aktív napok'
 'Active gear': 'Active gear'
 Activities: Tevékenységek
-'Activities and statistics for {month}': 'Activities and statistics for {month}'
-'Activities and statistics per month': 'Activities and statistics per month'
 Activity: Tevékenység
 'Activity count': 'Tevékenységek száma'
 'Activity heatmap': 'Tevékenységek hőtérképe'
@@ -33,11 +27,8 @@ Activity: Tevékenység
 'Aero sensor': 'Aero szenzor'
 Afternoon: Délután
 All: Mind
-'All completed challenges': 'All completed challenges'
-'All segments and the efforts on them': 'All segments and the efforts on them'
 'All time': Összesített
 'Alpine Ski': 'Alpesi sí'
-'An overview of all activities, training load and statistics': 'An overview of all activities, training load and statistics'
 'Analyze with WindAhead': 'Analyze with WindAhead'
 Apr: Ápr
 'Ask Mark something...': 'Kérdezz Marktól...'
@@ -75,7 +66,6 @@ Canoeing: Kenuzás
 'Carbon saved': 'Megtakarított szén-dioxid'
 'Challenge consistency': 'Kihívás következetesség'
 Challenges: Kihívások
-'Chat with an AI assistant about your training': 'Chat with an AI assistant about your training'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Krónikus edzésterhelés (Fitnesz) – a napi edzésterhelés 42 napos exponenciálisan súlyozott átlaga. A hosszú távú edzésadaptációt mutatja.'
 'Clear all filters': 'Összes szűrő törlése'
 'Clear chat': 'Chat törlése'
@@ -87,7 +77,6 @@ Commutes: Ingázások
 'Commutes only': 'Csak ingázások'
 Compare: Összehasonlítás
 'Compare to': 'Összehasonlítás:'
-'Compare {left} with {right}': 'Compare {left} with {right}'
 'Completed {threshold} activities': '{threshold} tevékenység teljesítve'
 Components: Komponensek
 'Configure gear maintenance': 'Felszerelés-karbantartás beállítása'
@@ -127,12 +116,10 @@ Distance: Távolság
 'Distance in {unit}': 'Távolság ({unit})'
 'Distance over time per gear': 'Távolság időben felszerelésenkén'
 'Distance per month per gear': 'Havi távolság felszerelésenkén'
-'Distance, time and usage statistics per piece of gear': 'Distance, time and usage statistics per piece of gear'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'A kerékpározás, futás, úszás és erőedzés vegyítése növeli a változatossági pontszámodat.'
 Download: Download
 Duration: Időtartam
 'Dusting off the record books...': 'Rekordkönyvek leporolása...'
-'Dynamically generated badges to embed anywhere': 'Dynamically generated badges to embed anywhere'
 'E-Bike Ride': 'E-bike kerékpározás'
 'E-Bike Rides': 'E-Bike túrák'
 'E-Mountain Bike Ride': E-hegyikerékpározás
@@ -163,7 +150,6 @@ Evening: Este
 'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
 'FTP history': 'FTP előzmények'
 Fastest: Leggyorsabb
-'Fastest times over standard distances per activity type': 'Fastest times over standard distances per activity type'
 Favourite: Kedvenc
 Feb: Febr
 'Filling up the bottles...': 'Kulacsok feltöltése...'
@@ -177,7 +163,6 @@ Firsts: Elsők
 Fitness: Fitnesz
 'Fitness may be declining due to low recent training load': 'A fitnesz csökkenhet az alacsony közelmúltbeli edzésterhelés miatt'
 'Fitness may decline': 'A fitnesz csökkenhet'
-'Fitness, fatigue and form based on training load': 'Fitness, fatigue and form based on training load'
 'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'Például egy 70-es Eddington-szám azt jelenti, hogy egy kerékpáros legalább 70 alkalommal tett meg naponta legalább 70 km-t vagy mérföldet. Magas Eddington-szám elérése nehéz, mert például a 70-ről 75-re lépés (valószínűleg) több mint öt új hosszútávú edzést igényel, hiszen a 75 km-nél vagy mérföldnél rövidebb edzések már nem számítanak bele.'
 'Form (TSB)': 'Forma (TSB)'
@@ -221,7 +206,6 @@ Hike: Túra
 Hikes: Túrák
 History: Előzmények
 'History (6 weeks)': 'Előzmények (6 hét)'
-'History of best efforts over {distance}': 'History of best efforts over {distance}'
 'How diverse is your training': 'Mennyire változatos az edzésed'
 'How hard is your typical training session': 'Milyen kemény a tipikus edzésed'
 'How long is your typical training session': 'Milyen hosszú a tipikus edzésed'
@@ -272,7 +256,6 @@ Low: Alacsony
 'Low risk': 'Alacsony kockázat'
 'Low training load': 'Alacsony edzésterhelés'
 Maintenance: Karbantartás
-'Maintenance tasks and their progress per piece of gear': 'Maintenance tasks and their progress per piece of gear'
 'Manage activities': 'Tevékenységek kezelése'
 'Manage gear': 'Felszerelések kezelése'
 'Manage recording devices': 'Rögzítő eszközök kezelése'
@@ -289,7 +272,6 @@ Medium: Közepes
 Metric: Metrikus
 'Metrics settings': 'Mérőszámok beállításai'
 Milestones: Mérföldkövek
-'Milestones reached over time': 'Milestones reached over time'
 'Mind & Body Sports': 'Test-lélek sportok'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Mérsékelt fáradtság stabil fittséggel. Kiváló a következetes napi edzéshez'
 'Moderate monotony': 'Mérsékelt monotonitás'
@@ -355,12 +337,10 @@ Pace: Tempó
 Padel: Padel
 'Peak fresh': Csúcsfriss
 'Peak power outputs': 'Csúcsteljesítmény értékek'
-'Peak power outputs over different durations': 'Peak power outputs over different durations'
 'Per {unit}': 'Per {unit}'
 'Personal bests': 'Személyes csúcsok'
 Photo: Fotó
 Photos: Fotók
-'Photos from all activities': 'Photos from all activities'
 'Physical Therapy': Gyógytorna
 'Pickle Ball': Pickleball
 Pilates: Pilates
@@ -447,7 +427,6 @@ Squash: Squash
 'Stair Stepper': 'Lépcső szimulátor'
 'Stand Up Paddling': SUP
 'Start times': 'Kezdési idők'
-'Statistics per device used to record activities': 'Statistics per device used to record activities'
 'Stats per weekday': 'Statisztikák napokra bontva'
 Status: Állapot
 'Streak started on {date}': 'Sorozat kezdete: {date}'
@@ -553,8 +532,6 @@ Tennis: Tenisz
 "That's {number} days of at least {distance}": 'Ez {number} nap legalább {distance}-vel'
 "That's {percentage}% of all countries 🌍": 'Ez az összes ország {percentage}%-a 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'Az Eddington-szám kerékpározás vagy futás esetén az a legnagyobb E szám, amelyre igaz, hogy a sportoló legalább E napon legalább E km-t tett meg.'
-'The Eddington number per activity type': 'The Eddington number per activity type'
-'The fastest efforts on this segment': 'The fastest efforts on this segment'
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": 'A keresett oldal nem létezik, vagy áthelyezték.'

@@ -58,7 +58,7 @@ final readonly class ChatRequestHandler
             metadata: new PageMetadata(
                 route: 'chat',
                 title: new TranslatableMessage('Virtual workout assistant'),
-                description: new TranslatableMessage('Chat with an AI assistant about your training'),
+                description: new TranslatableMessage('Chat with an AI assistant about your training', domain: 'metadata'),
             ),
         ));
     }

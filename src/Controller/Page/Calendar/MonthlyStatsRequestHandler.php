@@ -48,7 +48,7 @@ final readonly class MonthlyStatsRequestHandler
             metadata: new PageMetadata(
                 route: 'monthly_stats',
                 title: new TranslatableMessage('Monthly stats'),
-                description: new TranslatableMessage('Activities and statistics per month'),
+                description: new TranslatableMessage('Activities and statistics per month', domain: 'metadata'),
             ),
         );
     }

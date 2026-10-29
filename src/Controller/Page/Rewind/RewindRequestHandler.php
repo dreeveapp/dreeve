@@ -59,8 +59,8 @@ final readonly class RewindRequestHandler
                 routeParams: ['rewindOption' => $rewindOption],
                 title: $this->labelFor($rewindOption),
                 description: FindAvailableRewindOptions::ALL_TIME === $rewindOption
-                    ? new TranslatableMessage('A look back at all activities')
-                    : new TranslatableMessage('A look back at {year}', ['{year}' => $rewindOption]),
+                    ? new TranslatableMessage('A look back at all activities', domain: 'metadata')
+                    : new TranslatableMessage('A look back at {year}', ['{year}' => $rewindOption], domain: 'metadata'),
             ),
         );
     }

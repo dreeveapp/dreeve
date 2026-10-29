@@ -68,7 +68,7 @@ final readonly class MonthRequestHandler
                 route: 'monthly_stats_month',
                 routeParams: ['month' => $month->getId()],
                 title: $month->getLabel(),
-                description: new TranslatableMessage('Activities and statistics for {month}', ['{month}' => $month->getLabel()]),
+                description: new TranslatableMessage('Activities and statistics for {month}', ['{month}' => $month->getLabel()], domain: 'metadata'),
             ),
         );
     }

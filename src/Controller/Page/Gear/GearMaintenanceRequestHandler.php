@@ -59,7 +59,7 @@ final readonly class GearMaintenanceRequestHandler
             metadata: new PageMetadata(
                 route: 'gear_maintenance',
                 title: new TranslatableMessage('Maintenance'),
-                description: new TranslatableMessage('Maintenance tasks and their progress per piece of gear'),
+                description: new TranslatableMessage('Maintenance tasks and their progress per piece of gear', domain: 'metadata'),
             ),
         );
     }

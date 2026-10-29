@@ -44,7 +44,7 @@ final readonly class DashboardRequestHandler
             metadata: new PageMetadata(
                 route: 'dashboard',
                 title: new TranslatableMessage('Dashboard'),
-                description: new TranslatableMessage('An overview of all activities, training load and statistics'),
+                description: new TranslatableMessage('An overview of all activities, training load and statistics', domain: 'metadata'),
             ),
         );
     }

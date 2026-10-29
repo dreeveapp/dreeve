@@ -51,7 +51,7 @@ final readonly class EddingtonRequestHandler
             metadata: new PageMetadata(
                 route: 'eddington',
                 title: new TranslatableMessage('Eddington'),
-                description: new TranslatableMessage('The Eddington number per activity type'),
+                description: new TranslatableMessage('The Eddington number per activity type', domain: 'metadata'),
             ),
         );
     }
