@@ -56,7 +56,6 @@ final readonly class ChatRequestHandler
             content: $this->renderFor(),
             navigationSection: null,
             metadata: new PageMetadata(
-                route: 'chat',
                 title: new TranslatableMessage('Virtual workout assistant', domain: 'metadata'),
                 description: new TranslatableMessage('Chat with an AI assistant about your training', domain: 'metadata'),
             ),

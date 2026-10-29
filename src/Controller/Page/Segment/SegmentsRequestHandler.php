@@ -46,7 +46,6 @@ final readonly class SegmentsRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::SEGMENTS,
             metadata: new PageMetadata(
-                route: 'segments',
                 title: new TranslatableMessage('Segments', domain: 'metadata'),
                 description: new TranslatableMessage('All segments and the efforts on them', domain: 'metadata'),
             ),

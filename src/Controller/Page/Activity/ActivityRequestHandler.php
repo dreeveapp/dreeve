@@ -96,8 +96,6 @@ final readonly class ActivityRequestHandler
             render: fn (): string => $this->renderFor($activityId),
             navigationSection: NavigationSection::ACTIVITIES,
             metadata: new PageMetadata(
-                route: 'activity',
-                routeParams: ['activityId' => (string) $activity->getId()],
                 title: $activity->getName(),
                 description: implode(' · ', [
                     $activity->getSportType()->transSingular($this->translator),
@@ -108,7 +106,7 @@ final readonly class ActivityRequestHandler
                     $activity->getMovingTimeFormatted(),
                     $this->formatUnitWithSymbol($activity->getElevation()->toUnitSystem($unitSystem), 0),
                 ]),
-                imageRoute: 'activity_og_image',
+                imagePath: $this->urlGenerator->generate('activity_og_image', ['activityId' => (string) $activity->getId()]),
             ),
         );
     }

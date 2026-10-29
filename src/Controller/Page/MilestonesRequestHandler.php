@@ -46,7 +46,6 @@ final readonly class MilestonesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::MILESTONES,
             metadata: new PageMetadata(
-                route: 'milestones',
                 title: new TranslatableMessage('Milestones', domain: 'metadata'),
                 description: new TranslatableMessage('Milestones reached over time', domain: 'metadata'),
             ),

@@ -46,7 +46,6 @@ final readonly class MonthlyStatsRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::MONTHLY_STATS,
             metadata: new PageMetadata(
-                route: 'monthly_stats',
                 title: new TranslatableMessage('Monthly stats', domain: 'metadata'),
                 description: new TranslatableMessage('Activities and statistics per month', domain: 'metadata'),
             ),

@@ -85,8 +85,6 @@ final readonly class SegmentRequestHandler
             render: fn (): string => $this->renderFor($segment, $topTenSegmentEfforts),
             navigationSection: NavigationSection::SEGMENTS,
             metadata: new PageMetadata(
-                route: 'segment',
-                routeParams: ['segmentId' => (string) $segment->getId()],
                 title: (string) $segment->getName(),
                 description: new TranslatableMessage('The fastest efforts on this segment', domain: 'metadata'),
             ),

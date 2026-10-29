@@ -8,6 +8,8 @@ use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class MonthlyStatsRequestHandlerTest extends ControllerWebTestCase
 {
@@ -35,6 +37,7 @@ class MonthlyStatsRequestHandlerTest extends ControllerWebTestCase
 
     public function testRenderWithoutActivities(): void
     {
+        $this->getContainer()->get(RequestStack::class)->push(new Request(attributes: ['_route' => 'monthly_stats']));
         $page = new Crawler((string) $this->getContainer()->get(MonthlyStatsRequestHandler::class)->handle()->getContent());
 
         $this->assertCount(0, $page->filter('details'));

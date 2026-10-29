@@ -55,7 +55,6 @@ final readonly class ActivitiesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::ACTIVITIES,
             metadata: new PageMetadata(
-                route: 'activities',
                 title: new TranslatableMessage('Activities', domain: 'metadata'),
                 description: new TranslatableMessage('A searchable list of all recorded activities', domain: 'metadata'),
             ),

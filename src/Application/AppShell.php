@@ -9,6 +9,8 @@ use App\Application\Navigation\SideBar;
 use App\Application\PageMetadata\PageMetadata;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
@@ -24,6 +26,7 @@ final readonly class AppShell
         private LocaleSwitcher $localeSwitcher,
         private SettingsRepository $settingsRepository,
         private UrlGeneratorInterface $urlGenerator,
+        private RequestStack $requestStack,
         private TranslatorInterface $translator,
         private Environment $twig,
     ) {
@@ -34,6 +37,10 @@ final readonly class AppShell
         ?NavigationSection $navigationSection,
         PageMetadata $metadata,
     ): string {
+        if (!($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
+            throw new \LogicException('The app shell can only be rendered for a request');
+        }
+
         $general = $this->settingsRepository->general();
 
         return $this->twig->load('html/app-shell.html.twig')->render([
@@ -41,8 +48,8 @@ final readonly class AppShell
             'metadata' => [
                 'title' => $this->translate($metadata->getTitle()),
                 'description' => $this->translate($metadata->getDescription()),
-                'path' => $this->urlGenerator->generate($metadata->getRoute(), $metadata->getRouteParams()),
-                'imagePath' => $metadata->getImageRoute() ? $this->urlGenerator->generate($metadata->getImageRoute(), $metadata->getRouteParams()) : null,
+                'path' => $this->urlGenerator->generate($request->attributes->getString('_route'), $request->attributes->all('_route_params')),
+                'imagePath' => $metadata->getImagePath(),
             ],
             'sidebar' => $this->sideBar->render($navigationSection),
             'athlete' => $general->getAthlete(),

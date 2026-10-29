@@ -62,8 +62,6 @@ final readonly class RewindCompareRequestHandler
             render: fn (): string => $this->renderFor($left, $right),
             navigationSection: NavigationSection::REWIND,
             metadata: new PageMetadata(
-                route: 'rewind_compare',
-                routeParams: ['left' => $left, 'right' => $right],
                 title: new TranslatableMessage('{left} vs {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel], domain: 'metadata'),
                 description: new TranslatableMessage('Compare {left} with {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel], domain: 'metadata'),
             ),

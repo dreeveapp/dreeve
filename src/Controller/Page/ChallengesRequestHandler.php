@@ -38,7 +38,6 @@ final readonly class ChallengesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::CHALLENGES,
             metadata: new PageMetadata(
-                route: 'challenges',
                 title: new TranslatableMessage('Challenges', domain: 'metadata'),
                 description: new TranslatableMessage('All completed challenges', domain: 'metadata'),
             ),

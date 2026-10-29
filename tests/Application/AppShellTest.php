@@ -7,6 +7,8 @@ use App\Application\PageMetadata\PageMetadata;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatableMessage;
 
 class AppShellTest extends ContainerTestCase
@@ -19,16 +21,18 @@ class AppShellTest extends ContainerTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
+        $this->getContainer()->get(RequestStack::class)->push(new Request(attributes: [
+            '_route' => 'activity',
+            '_route_params' => ['activityId' => 'activity-1'],
+        ]));
 
         $render = $this->appShell->render(
             content: '<p>The page content</p>',
             navigationSection: null,
             metadata: new PageMetadata(
-                route: 'activity',
                 title: 'Morning Run',
                 description: new TranslatableMessage('A look back at {year}', ['{year}' => '2023'], 'metadata'),
-                routeParams: ['activityId' => 'activity-1'],
-                imageRoute: 'activity_og_image',
+                imagePath: '/activities/activity-1/og-image.png',
             ),
         );
 

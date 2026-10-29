@@ -8,29 +8,11 @@ use Symfony\Contracts\Translation\TranslatableInterface;
 
 final readonly class PageMetadata
 {
-    /**
-     * @param array<string, string|int> $routeParams
-     */
     public function __construct(
-        private string $route,
         private string|TranslatableInterface $title,
         private string|TranslatableInterface $description,
-        private array $routeParams = [],
-        private ?string $imageRoute = null,
+        private ?string $imagePath = null,
     ) {
-    }
-
-    public function getRoute(): string
-    {
-        return $this->route;
-    }
-
-    /**
-     * @return array<string, string|int>
-     */
-    public function getRouteParams(): array
-    {
-        return $this->routeParams;
     }
 
     public function getTitle(): string|TranslatableInterface
@@ -43,8 +25,8 @@ final readonly class PageMetadata
         return $this->description;
     }
 
-    public function getImageRoute(): ?string
+    public function getImagePath(): ?string
     {
-        return $this->imageRoute;
+        return $this->imagePath;
     }
 }

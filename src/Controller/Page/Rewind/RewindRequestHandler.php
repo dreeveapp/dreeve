@@ -55,8 +55,6 @@ final readonly class RewindRequestHandler
             render: fn (): string => $this->renderFor($rewindOption),
             navigationSection: NavigationSection::REWIND,
             metadata: new PageMetadata(
-                route: 'rewind',
-                routeParams: ['rewindOption' => $rewindOption],
                 title: $this->labelFor($rewindOption),
                 description: FindAvailableRewindOptions::ALL_TIME === $rewindOption
                     ? new TranslatableMessage('A look back at all activities', domain: 'metadata')
