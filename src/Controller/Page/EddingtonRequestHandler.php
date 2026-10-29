@@ -50,7 +50,7 @@ final readonly class EddingtonRequestHandler
             navigationSection: NavigationSection::EDDINGTON,
             metadata: new PageMetadata(
                 route: 'eddington',
-                title: new TranslatableMessage('Eddington'),
+                title: new TranslatableMessage('Eddington', domain: 'metadata'),
                 description: new TranslatableMessage('The Eddington number per activity type', domain: 'metadata'),
             ),
         );

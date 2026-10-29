@@ -72,7 +72,7 @@ final readonly class GearStatsRequestHandler
             navigationSection: NavigationSection::GEAR,
             metadata: new PageMetadata(
                 route: 'gear',
-                title: new TranslatableMessage('Gear'),
+                title: new TranslatableMessage('Gear', domain: 'metadata'),
                 description: new TranslatableMessage('Distance, time and usage statistics per piece of gear', domain: 'metadata'),
             ),
         );

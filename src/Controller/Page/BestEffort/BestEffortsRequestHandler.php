@@ -53,7 +53,7 @@ final readonly class BestEffortsRequestHandler
             navigationSection: NavigationSection::BEST_EFFORTS,
             metadata: new PageMetadata(
                 route: 'best_efforts',
-                title: new TranslatableMessage('Best efforts'),
+                title: new TranslatableMessage('Best efforts', domain: 'metadata'),
                 description: new TranslatableMessage('Fastest times over standard distances per activity type', domain: 'metadata'),
             ),
         );

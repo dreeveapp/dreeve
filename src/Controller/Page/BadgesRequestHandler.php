@@ -43,7 +43,7 @@ final readonly class BadgesRequestHandler
             navigationSection: null,
             metadata: new PageMetadata(
                 route: 'badges',
-                title: new TranslatableMessage('Badges'),
+                title: new TranslatableMessage('Badges', domain: 'metadata'),
                 description: new TranslatableMessage('Dynamically generated badges to embed anywhere', domain: 'metadata'),
             ),
         );

@@ -680,7 +680,6 @@ workouts: 锻炼
 '{daysSinceLastTagged} days': '{daysSinceLastTagged}天'
 '{days} consecutive days of activity': '{days} consecutive days of activity'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged}小时'
-'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel}每{interval}'
 '{numberOfActivities} activities': '{numberOfActivities}活动'
 '{numberOfActivities} activities in {year}': '{year}年内，{numberOfActivities}项活动'

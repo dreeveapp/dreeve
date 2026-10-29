@@ -83,9 +83,9 @@ final readonly class RewindRequestHandler
     private function labelFor(string $rewindOption): string
     {
         if (FindAvailableRewindOptions::ALL_TIME === $rewindOption) {
-            return $this->translator->trans('All time');
+            return $this->translator->trans('All time', domain: 'metadata');
         }
 
-        return sprintf('%s %s', $this->translator->trans('Rewind'), $rewindOption);
+        return sprintf('%s %s', $this->translator->trans('Rewind', domain: 'metadata'), $rewindOption);
     }
 }

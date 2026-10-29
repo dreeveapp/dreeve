@@ -48,7 +48,7 @@ final readonly class PhotosRequestHandler
             navigationSection: NavigationSection::PHOTOS,
             metadata: new PageMetadata(
                 route: 'photos',
-                title: new TranslatableMessage('Photos'),
+                title: new TranslatableMessage('Photos', domain: 'metadata'),
                 description: new TranslatableMessage('Photos from all activities', domain: 'metadata'),
             ),
         );

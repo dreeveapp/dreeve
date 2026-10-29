@@ -680,7 +680,6 @@ workouts: träningspass
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dagar'
 '{days} consecutive days of activity': '{days} consecutive days of activity'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} timmar'
-'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} varje {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} aktiviteter'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} aktiviteter på {year}'

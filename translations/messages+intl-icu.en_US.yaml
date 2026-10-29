@@ -680,7 +680,6 @@ workouts: workouts
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} days'
 '{days} consecutive days of activity': '{days} consecutive days of activity'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} hours'
-'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} every {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activities'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activities in {year}'

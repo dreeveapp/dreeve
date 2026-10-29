@@ -64,7 +64,7 @@ final readonly class RewindCompareRequestHandler
             metadata: new PageMetadata(
                 route: 'rewind_compare',
                 routeParams: ['left' => $left, 'right' => $right],
-                title: new TranslatableMessage('{left} vs {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel]),
+                title: new TranslatableMessage('{left} vs {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel], domain: 'metadata'),
                 description: new TranslatableMessage('Compare {left} with {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel], domain: 'metadata'),
             ),
         );
@@ -99,9 +99,9 @@ final readonly class RewindCompareRequestHandler
     private function labelFor(string $rewindOption): string
     {
         if (FindAvailableRewindOptions::ALL_TIME === $rewindOption) {
-            return $this->translator->trans('All time');
+            return $this->translator->trans('All time', domain: 'metadata');
         }
 
-        return sprintf('%s %s', $this->translator->trans('Rewind'), $rewindOption);
+        return sprintf('%s %s', $this->translator->trans('Rewind', domain: 'metadata'), $rewindOption);
     }
 }

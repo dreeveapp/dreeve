@@ -64,7 +64,7 @@ final readonly class BestEffortsHistoryRequestHandler
             metadata: new PageMetadata(
                 route: 'best_efforts_history',
                 routeParams: ['activityType' => $activityType->value, 'distanceInMeter' => $distanceInMeter],
-                title: sprintf('%s - %s - %s', $this->translator->trans('Best efforts'), $activityType->trans($this->translator), $distanceLabel),
+                title: sprintf('%s - %s - %s', $this->translator->trans('Best efforts', domain: 'metadata'), $activityType->trans($this->translator), $distanceLabel),
                 description: new TranslatableMessage('History of best efforts over {distance}', ['{distance}' => $distanceLabel], domain: 'metadata'),
             ),
         );
