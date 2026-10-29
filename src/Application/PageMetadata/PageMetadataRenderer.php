@@ -42,29 +42,27 @@ final readonly class PageMetadataRenderer
         }
 
         $description = $metadata->getDescription();
-        if (null === $description) {
-            $description = $this->cacheableRenderer->render(
-                cacheability: Cacheability::for(
-                    cacheKey: 'app-shell.metatag.description',
-                    cacheTags: CacheTags::of(
-                        RootCacheTag::ACTIVITIES,
-                        RootCacheTag::SETTINGS_GENERAL,
-                        RootCacheTag::SETTINGS_APPEARANCE,
-                    ),
+        $description ??= $this->cacheableRenderer->render(
+            cacheability: Cacheability::for(
+                cacheKey: 'app-shell.metatag.description',
+                cacheTags: CacheTags::of(
+                    RootCacheTag::ACTIVITIES,
+                    RootCacheTag::SETTINGS_GENERAL,
+                    RootCacheTag::SETTINGS_APPEARANCE,
                 ),
-                render: function (): string {
-                    $activityTotals = $this->queryBus->ask(new FindActivityTotals());
-                    $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+            ),
+            render: function (): string {
+                $activityTotals = $this->queryBus->ask(new FindActivityTotals());
+                $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
 
-                    return implode(' · ', [
-                        (string) $this->settingsRepository->general()->getAthlete()->getName(),
-                        $this->translator->trans('{numberOfActivities} activities', ['{numberOfActivities}' => $this->formatNumber($activityTotals->getTotalActivities(), 0)]),
-                        $this->formatUnitWithSymbol($activityTotals->getTotalDistance()->toUnitSystem($unitSystem), 0),
-                        $this->formatUnitWithSymbol(Hour::from($activityTotals->getMovingTimeInHours()), 0),
-                    ]);
-                },
-            )->getContent();
-        }
+                return implode(' · ', [
+                    (string) $this->settingsRepository->general()->getAthlete()->getName(),
+                    $this->translator->trans('{numberOfActivities} activities', ['{numberOfActivities}' => $this->formatNumber($activityTotals->getTotalActivities(), 0)]),
+                    $this->formatUnitWithSymbol($activityTotals->getTotalDistance()->toUnitSystem($unitSystem), 0),
+                    $this->formatUnitWithSymbol(Hour::from($activityTotals->getMovingTimeInHours()), 0),
+                ]);
+            },
+        )->getContent();
 
         return $this->twig->load('html/page-metadata.html.twig')->render([
             'title' => $this->translate($metadata->getTitle()),
