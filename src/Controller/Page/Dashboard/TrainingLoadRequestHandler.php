@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Dashboard;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\DailyTrainingLoad;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
@@ -54,7 +54,7 @@ final readonly class TrainingLoadRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('dashboard_training_load'),
                 title: $this->translator->trans('Training Load Analysis'),
                 description: $this->translator->trans('Fitness, fatigue and form based on training load'),

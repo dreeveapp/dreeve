@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Milestone\MilestoneCollector;
@@ -48,7 +48,7 @@ final readonly class MilestonesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::MILESTONES,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('milestones'),
                 title: $this->translator->trans('Milestones'),
                 description: $this->translator->trans('Milestones reached over time'),

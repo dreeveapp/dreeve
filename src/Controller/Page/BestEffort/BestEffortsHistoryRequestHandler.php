@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\BestEffort;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
@@ -62,7 +62,7 @@ final readonly class BestEffortsHistoryRequestHandler
             ),
             render: fn (): string => $this->renderFor($activityType, $distance),
             navigationSection: NavigationSection::BEST_EFFORTS,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('best_efforts_history', ['activityType' => $activityType->value, 'distanceInMeter' => $distanceInMeter]),
                 title: sprintf('%s - %s - %s', $this->translator->trans('Best efforts'), $activityType->trans($this->translator), $distanceLabel),
                 description: $this->translator->trans('History of best efforts over {distance}', ['{distance}' => $distanceLabel]),

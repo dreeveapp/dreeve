@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Rewind;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Domain\Rewind\RewindCacheTags;
@@ -55,7 +55,7 @@ final readonly class RewindRequestHandler
             ),
             render: fn (): string => $this->renderFor($rewindOption),
             navigationSection: NavigationSection::REWIND,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('rewind', ['rewindOption' => $rewindOption]),
                 title: $this->labelFor($rewindOption),
                 description: FindAvailableRewindOptions::ALL_TIME === $rewindOption

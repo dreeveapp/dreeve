@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\AppUrl;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\BestEffort\BestEffortPeriod;
 use App\Domain\Activity\BestEffort\BestEffortsCalculator;
@@ -44,7 +44,7 @@ final readonly class BadgesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: null,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('badges'),
                 title: $this->translator->trans('Badges'),
                 description: $this->translator->trans('Dynamically generated badges to embed anywhere'),

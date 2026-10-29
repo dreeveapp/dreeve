@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Gear;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearRepository;
@@ -59,7 +59,7 @@ final readonly class GearMaintenanceRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('gear_maintenance'),
                 title: $this->translator->trans('Maintenance'),
                 description: $this->translator->trans('Maintenance tasks and their progress per piece of gear'),

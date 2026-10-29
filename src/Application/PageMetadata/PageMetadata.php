@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\OpenGraph;
+namespace App\Application\PageMetadata;
 
-final readonly class OpenGraph
+final readonly class PageMetadata
 {
     public function __construct(
         private string $path,

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Activity;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
@@ -95,7 +95,7 @@ final readonly class ActivityRequestHandler
             ),
             render: fn (): string => $this->renderFor($activityId),
             navigationSection: NavigationSection::ACTIVITIES,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('activity', ['activityId' => (string) $activity->getId()]),
                 title: $activity->getName(),
                 description: implode(' · ', [

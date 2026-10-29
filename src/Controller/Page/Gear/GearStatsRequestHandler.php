@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Gear;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityRepository;
@@ -71,7 +71,7 @@ final readonly class GearStatsRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('gear'),
                 title: $this->translator->trans('Gear'),
                 description: $this->translator->trans('Distance, time and usage statistics per piece of gear'),

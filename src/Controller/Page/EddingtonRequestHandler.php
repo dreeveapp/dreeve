@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\Eddington\EddingtonCalculator;
 use App\Domain\Activity\Eddington\EddingtonChart;
@@ -49,7 +49,7 @@ final readonly class EddingtonRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::EDDINGTON,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('eddington'),
                 title: $this->translator->trans('Eddington'),
                 description: $this->translator->trans('The Eddington number per activity type'),

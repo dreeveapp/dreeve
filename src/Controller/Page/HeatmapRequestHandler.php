@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -45,7 +45,7 @@ final readonly class HeatmapRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::HEATMAP,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('heatmap'),
                 title: $this->translator->trans('Heatmap'),
                 description: $this->translator->trans('A heatmap of all recorded routes'),

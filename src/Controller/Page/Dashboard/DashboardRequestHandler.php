@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Dashboard;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 use App\Infrastructure\Cache\Cacheability;
@@ -44,7 +44,7 @@ final readonly class DashboardRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('dashboard'),
                 title: $this->translator->trans('Dashboard'),
                 description: $this->translator->trans('An overview of all activities, training load and statistics'),

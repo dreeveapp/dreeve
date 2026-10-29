@@ -3,7 +3,7 @@
 namespace App\Tests\Application;
 
 use App\Application\AppShell;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Tests\ContainerTestCase;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -22,7 +22,7 @@ class AppShellTest extends ContainerTestCase
         $render = $this->appShell->render(
             content: '<p>The page content</p>',
             navigationSection: null,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: 'activities/activity-1',
                 title: 'Morning Run',
                 description: 'Run · 10.00 km · 50:00 · 120 m',

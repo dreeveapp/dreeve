@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\BestEffort;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\BestEffort\BestEffortChart;
@@ -52,7 +52,7 @@ final readonly class BestEffortsRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::BEST_EFFORTS,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('best_efforts'),
                 title: $this->translator->trans('Best efforts'),
                 description: $this->translator->trans('Fastest times over standard distances per activity type'),

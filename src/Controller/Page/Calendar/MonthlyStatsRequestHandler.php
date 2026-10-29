@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Calendar;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
@@ -48,7 +48,7 @@ final readonly class MonthlyStatsRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::MONTHLY_STATS,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('monthly_stats'),
                 title: $this->translator->trans('Monthly stats'),
                 description: $this->translator->trans('Activities and statistics per month'),

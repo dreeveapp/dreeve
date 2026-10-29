@@ -6,7 +6,7 @@ namespace App\Controller\Page\Segment;
 
 use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Segment\SegmentRepository;
@@ -48,7 +48,7 @@ final readonly class SegmentsRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::SEGMENTS,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('segments'),
                 title: $this->translator->trans('Segments'),
                 description: $this->translator->trans('All segments and the efforts on them'),

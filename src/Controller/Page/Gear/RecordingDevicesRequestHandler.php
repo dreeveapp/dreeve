@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Gear;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Calendar\Months;
 use App\Domain\Gear\RecordingDevice\FindRecordingDeviceUsagePerMonth\FindRecordingDeviceUsagePerMonth;
@@ -57,7 +57,7 @@ final readonly class RecordingDevicesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('gear_recording_devices'),
                 title: $this->translator->trans('Recording devices'),
                 description: $this->translator->trans('Statistics per device used to record activities'),

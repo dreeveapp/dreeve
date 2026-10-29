@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Http\HtmlResponse;
@@ -26,7 +26,7 @@ final readonly class PageRenderer
         Cacheability $cacheability,
         \Closure $render,
         ?NavigationSection $navigationSection,
-        OpenGraph $openGraph,
+        PageMetadata $metadata,
     ): HtmlResponse {
         $renderedContent = $this->cacheableRenderer->render(
             cacheability: $cacheability,
@@ -36,7 +36,7 @@ final readonly class PageRenderer
         $html = $this->appShell->render(
             content: $renderedContent->getContent() ?? '',
             navigationSection: $navigationSection,
-            openGraph: $openGraph,
+            metadata: $metadata,
         );
 
         if ($cacheability->getCacheContexts()->isEmpty()) {

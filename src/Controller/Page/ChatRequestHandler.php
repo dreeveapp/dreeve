@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\AppShell;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -58,7 +58,7 @@ final readonly class ChatRequestHandler
         return new PrivateNoStoreHtmlResponse($this->appShell->render(
             content: $this->renderFor(),
             navigationSection: null,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('chat'),
                 title: $this->translator->trans('Virtual workout assistant'),
                 description: $this->translator->trans('Chat with an AI assistant about your training'),

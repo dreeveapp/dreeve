@@ -6,7 +6,7 @@ namespace App\Controller\Page;
 
 use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Image\ImageRepository;
@@ -49,7 +49,7 @@ final readonly class PhotosRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::PHOTOS,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('photos'),
                 title: $this->translator->trans('Photos'),
                 description: $this->translator->trans('Photos from all activities'),

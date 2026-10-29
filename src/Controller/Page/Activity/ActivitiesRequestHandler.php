@@ -6,7 +6,7 @@ namespace App\Controller\Page\Activity;
 
 use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Activity\SportType\SportTypeRepository;
@@ -57,7 +57,7 @@ final readonly class ActivitiesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::ACTIVITIES,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('activities'),
                 title: $this->translator->trans('Activities'),
                 description: $this->translator->trans('A searchable list of all recorded activities'),

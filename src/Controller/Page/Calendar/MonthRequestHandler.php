@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Calendar;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
@@ -67,7 +67,7 @@ final readonly class MonthRequestHandler
             ),
             render: fn (): string => $this->renderFor($month),
             navigationSection: NavigationSection::MONTHLY_STATS,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('monthly_stats_month', ['month' => $month->getId()]),
                 title: $month->getLabel(),
                 description: $this->translator->trans('Activities and statistics for {month}', ['{month}' => $month->getLabel()]),

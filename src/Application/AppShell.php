@@ -6,7 +6,7 @@ namespace App\Application;
 
 use App\Application\Navigation\NavigationSection;
 use App\Application\Navigation\SideBar;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\Intl\Countries;
@@ -27,13 +27,13 @@ final readonly class AppShell
     public function render(
         string $content,
         ?NavigationSection $navigationSection,
-        OpenGraph $openGraph,
+        PageMetadata $metadata,
     ): string {
         $general = $this->settingsRepository->general();
 
         return $this->twig->load('html/app-shell.html.twig')->render([
             'content' => $content,
-            'openGraph' => $openGraph,
+            'metadata' => $metadata,
             'sidebar' => $this->sideBar->render($navigationSection),
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),

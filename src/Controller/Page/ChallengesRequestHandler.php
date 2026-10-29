@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\Navigation\NavigationSection;
-use App\Application\OpenGraph\OpenGraph;
+use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Infrastructure\Cache\Cacheability;
@@ -40,7 +40,7 @@ final readonly class ChallengesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::CHALLENGES,
-            openGraph: new OpenGraph(
+            metadata: new PageMetadata(
                 path: $this->urlGenerator->generate('challenges'),
                 title: $this->translator->trans('Challenges'),
                 description: $this->translator->trans('All completed challenges'),
