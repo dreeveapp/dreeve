@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Dashboard;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\DailyTrainingLoad;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
@@ -23,6 +24,7 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -37,6 +39,7 @@ final readonly class TrainingLoadRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -51,6 +54,11 @@ final readonly class TrainingLoadRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('dashboard_training_load'),
+                title: $this->translator->trans('Training Load Analysis'),
+                description: $this->translator->trans('Fitness, fatigue and form based on training load'),
+            ),
         );
     }
 

@@ -24,8 +24,11 @@ final readonly class AppShell
     ) {
     }
 
-    public function render(string $content, ?NavigationSection $navigationSection, ?OpenGraph $openGraph): string
-    {
+    public function render(
+        string $content,
+        ?NavigationSection $navigationSection,
+        ?OpenGraph $openGraph,
+    ): string {
         $general = $this->settingsRepository->general();
 
         return $this->twig->load('html/app-shell.html.twig')->render([

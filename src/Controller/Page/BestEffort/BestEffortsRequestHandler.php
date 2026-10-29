@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\BestEffort;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\BestEffort\BestEffortChart;
@@ -20,6 +21,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -35,6 +37,7 @@ final readonly class BestEffortsRequestHandler
         private Theme $theme,
         private PageRenderer $pageRenderer,
         private SettingsRepository $settingsRepository,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -49,6 +52,11 @@ final readonly class BestEffortsRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::BEST_EFFORTS,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('best_efforts'),
+                title: $this->translator->trans('Best efforts'),
+                description: $this->translator->trans('Fastest times over standard distances per activity type'),
+            ),
         );
     }
 

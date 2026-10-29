@@ -6,6 +6,7 @@ namespace App\Controller\Page\Activity;
 
 use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Activity\SportType\SportTypeRepository;
@@ -21,6 +22,8 @@ use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -35,6 +38,8 @@ final readonly class ActivitiesRequestHandler
         private ZwiftWorlds $zwiftWorlds,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -52,6 +57,11 @@ final readonly class ActivitiesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::ACTIVITIES,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('activities'),
+                title: $this->translator->trans('Activities'),
+                description: $this->translator->trans('A searchable list of all recorded activities'),
+            ),
         );
     }
 

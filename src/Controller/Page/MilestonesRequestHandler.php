@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Milestone\MilestoneCollector;
@@ -14,6 +15,8 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -24,6 +27,8 @@ final readonly class MilestonesRequestHandler
         private ActivityRepository $activityRepository,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -43,6 +48,11 @@ final readonly class MilestonesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::MILESTONES,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('milestones'),
+                title: $this->translator->trans('Milestones'),
+                description: $this->translator->trans('Milestones reached over time'),
+            ),
         );
     }
 

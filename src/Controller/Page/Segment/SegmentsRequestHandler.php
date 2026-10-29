@@ -6,6 +6,7 @@ namespace App\Controller\Page\Segment;
 
 use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Segment\SegmentRepository;
@@ -15,6 +16,8 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -26,6 +29,8 @@ final readonly class SegmentsRequestHandler
         private Countries $countries,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -43,6 +48,11 @@ final readonly class SegmentsRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::SEGMENTS,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('segments'),
+                title: $this->translator->trans('Segments'),
+                description: $this->translator->trans('All segments and the efforts on them'),
+            ),
         );
     }
 

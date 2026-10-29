@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Infrastructure\Cache\Cacheability;
@@ -13,6 +14,8 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -22,6 +25,8 @@ final readonly class ChallengesRequestHandler
         private ChallengeRepository $challengeRepository,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -35,6 +40,11 @@ final readonly class ChallengesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::CHALLENGES,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('challenges'),
+                title: $this->translator->trans('Challenges'),
+                description: $this->translator->trans('All completed challenges'),
+            ),
         );
     }
 

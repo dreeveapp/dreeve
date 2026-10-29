@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Gear;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearRepository;
@@ -22,6 +23,8 @@ use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -35,6 +38,8 @@ final readonly class GearMaintenanceRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -54,6 +59,11 @@ final readonly class GearMaintenanceRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('gear_maintenance'),
+                title: $this->translator->trans('Maintenance'),
+                description: $this->translator->trans('Maintenance tasks and their progress per piece of gear'),
+            ),
         );
     }
 

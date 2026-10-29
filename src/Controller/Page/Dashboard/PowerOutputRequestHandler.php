@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Dashboard;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
@@ -26,6 +27,7 @@ use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -40,6 +42,7 @@ final readonly class PowerOutputRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -55,6 +58,11 @@ final readonly class PowerOutputRequestHandler
             ),
             render: fn (): ?string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('dashboard_power_output'),
+                title: $this->translator->trans('Peak power outputs'),
+                description: $this->translator->trans('Peak power outputs over different durations'),
+            ),
         );
     }
 

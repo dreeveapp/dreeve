@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Gear;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Calendar\Months;
 use App\Domain\Gear\RecordingDevice\FindRecordingDeviceUsagePerMonth\FindRecordingDeviceUsagePerMonth;
@@ -22,6 +23,8 @@ use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -34,6 +37,8 @@ final readonly class RecordingDevicesRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -52,6 +57,11 @@ final readonly class RecordingDevicesRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('gear_recording_devices'),
+                title: $this->translator->trans('Recording devices'),
+                description: $this->translator->trans('Statistics per device used to record activities'),
+            ),
         );
     }
 

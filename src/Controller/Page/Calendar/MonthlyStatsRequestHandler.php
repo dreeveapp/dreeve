@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Calendar;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Domain\Calendar\FindMonthlyStats\FindMonthlyStats;
@@ -19,6 +20,8 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\Year;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -30,6 +33,8 @@ final readonly class MonthlyStatsRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -43,6 +48,11 @@ final readonly class MonthlyStatsRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::MONTHLY_STATS,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('monthly_stats'),
+                title: $this->translator->trans('Monthly stats'),
+                description: $this->translator->trans('Activities and statistics per month'),
+            ),
         );
     }
 

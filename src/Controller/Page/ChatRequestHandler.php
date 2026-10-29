@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\AppShell;
+use App\Application\OpenGraph\OpenGraph;
 use App\Domain\Integration\AI\Chat\AddChatMessage\AddChatMessage;
 use App\Domain\Integration\AI\Chat\ChatRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -26,6 +27,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -40,6 +43,8 @@ final readonly class ChatRequestHandler
         private AppShell $appShell,
         private Environment $twig,
         private MarkdownRenderer $markdownRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -53,7 +58,11 @@ final readonly class ChatRequestHandler
         return new PrivateNoStoreHtmlResponse($this->appShell->render(
             content: $this->renderFor(),
             navigationSection: null,
-            openGraph: null,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('chat'),
+                title: $this->translator->trans('Virtual workout assistant'),
+                description: $this->translator->trans('Chat with an AI assistant about your training'),
+            ),
         ));
     }
 

@@ -5,8 +5,10 @@
 '> 2.0: High monotony, increased risk': '> 2.0: 单调性高，风险增加'
 'A 6-hour week scores higher than a 5-hour week.': 'A 6-hour week scores higher than a 5-hour week.'
 'A cluster tile is a visited tile whose four neighbours are visited too': 集群方块是指四个相邻方块也都已访问的已访问方块
+'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A high intensity score means a larger share of your training is hard rather than easy.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
+'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'A:C 比值'
 'A:C optimal in': 'A:C optimal in'
 'AI integration settings': 'AI integration settings'
@@ -15,6 +17,7 @@
 'Active days': 训练天数
 'Active gear': 'Active gear'
 Activities: 活动
+'Activities and statistics per month': 'Activities and statistics per month'
 Activity: 活动
 'Activity count': 活动量
 'Activity heatmap': 活动热图
@@ -27,8 +30,11 @@ Activity: 活动
 'Aero sensor': 'Aero sensor'
 Afternoon: 下午
 All: All
+'All completed challenges': 'All completed challenges'
+'All segments and the efforts on them': 'All segments and the efforts on them'
 'All time': 所有时间
 'Alpine Ski': 高山滑雪
+'An overview of all activities, training load and statistics': 'An overview of all activities, training load and statistics'
 'Analyze with WindAhead': 'Analyze with WindAhead'
 Apr: 四月
 'Ask Mark something...': 问问Mark...
@@ -66,6 +72,7 @@ Canoeing: 划独木舟
 'Carbon saved': 碳减排
 'Challenge consistency': 挑战一致性
 Challenges: 挑战
+'Chat with an AI assistant about your training': 'Chat with an AI assistant about your training'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': '长期训练负荷（体能）— 42天训练的负荷指数加权平均值。代表长期训练适应情况。'
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
@@ -116,10 +123,12 @@ Distance: 距离
 'Distance in {unit}': '以{unit}为单位的距离'
 'Distance over time per gear': 每个装备随时间变化的距离
 'Distance per month per gear': 每个装备每月的距离
+'Distance, time and usage statistics per piece of gear': 'Distance, time and usage statistics per piece of gear'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
 Download: Download
 Duration: Duration
 'Dusting off the record books...': 'Dusting off the record books...'
+'Dynamically generated badges to embed anywhere': 'Dynamically generated badges to embed anywhere'
 'E-Bike Ride': 'E-Bike Ride'
 'E-Bike Rides': 电动自行车骑行
 'E-Mountain Bike Ride': 'E-Mountain Bike Ride'
@@ -150,6 +159,7 @@ Evening: 晚上
 'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
 'FTP history': FTP历史
 Fastest: Fastest
+'Fastest times over standard distances per activity type': 'Fastest times over standard distances per activity type'
 Favourite: 收藏夹
 Feb: 二月
 'Filling up the bottles...': 'Filling up the bottles...'
@@ -163,6 +173,7 @@ Firsts: Firsts
 Fitness: 健身
 'Fitness may be declining due to low recent training load': 'Fitness may be declining due to low recent training load'
 'Fitness may decline': 'Fitness may decline'
+'Fitness, fatigue and form based on training load': 'Fitness, fatigue and form based on training load'
 'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': '状态 (TSB)'
@@ -256,6 +267,7 @@ Low: 低
 'Low risk': 'Low risk'
 'Low training load': 'Low training load'
 Maintenance: 维护
+'Maintenance tasks and their progress per piece of gear': 'Maintenance tasks and their progress per piece of gear'
 'Manage activities': 'Manage activities'
 'Manage gear': 'Manage gear'
 'Manage recording devices': 'Manage recording devices'
@@ -272,6 +284,7 @@ Medium: 中等
 Metric: Metric
 'Metrics settings': 'Metrics settings'
 Milestones: Milestones
+'Milestones reached over time': 'Milestones reached over time'
 'Mind & Body Sports': 心灵与身体运动
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
 'Moderate monotony': 适度单调性
@@ -337,10 +350,12 @@ Pace: 步速
 Padel: Padel
 'Peak fresh': 'Peak fresh'
 'Peak power outputs': 峰值功率输出
+'Peak power outputs over different durations': 'Peak power outputs over different durations'
 'Per {unit}': 'Per {unit}'
 'Personal bests': 'Personal bests'
 Photo: 照片
 Photos: 照片
+'Photos from all activities': 'Photos from all activities'
 'Physical Therapy': 'Physical Therapy'
 'Pickle Ball': 匹克球
 Pilates: 普拉提
@@ -427,6 +442,7 @@ Squash: 壁球
 'Stair Stepper': 楼梯机
 'Stand Up Paddling': 站立划桨
 'Start times': 开始时间
+'Statistics per device used to record activities': 'Statistics per device used to record activities'
 'Stats per weekday': 按工作日统计
 Status: Status
 'Streak started on {date}': 'Streak started on {date}'
@@ -532,6 +548,7 @@ Tennis: 网球
 "That's {number} days of at least {distance}": "That's {number} days of at least {distance}"
 "That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
+'The Eddington number per activity type': 'The Eddington number per activity type'
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."

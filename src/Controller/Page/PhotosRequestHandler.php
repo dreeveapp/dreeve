@@ -6,6 +6,7 @@ namespace App\Controller\Page;
 
 use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Image\ImageRepository;
@@ -18,6 +19,8 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -30,6 +33,8 @@ final readonly class PhotosRequestHandler
         private Countries $countries,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -44,6 +49,11 @@ final readonly class PhotosRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::PHOTOS,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('photos'),
+                title: $this->translator->trans('Photos'),
+                description: $this->translator->trans('Photos from all activities'),
+            ),
         );
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\Eddington\EddingtonCalculator;
 use App\Domain\Activity\Eddington\EddingtonChart;
@@ -20,6 +21,7 @@ use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -32,6 +34,7 @@ final readonly class EddingtonRequestHandler
         private TranslatorInterface $translator,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -46,6 +49,11 @@ final readonly class EddingtonRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::EDDINGTON,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('eddington'),
+                title: $this->translator->trans('Eddington'),
+                description: $this->translator->trans('The Eddington number per activity type'),
+            ),
         );
     }
 

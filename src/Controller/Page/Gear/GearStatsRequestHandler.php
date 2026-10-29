@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Gear;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityRepository;
@@ -34,6 +35,7 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -50,6 +52,7 @@ final readonly class GearStatsRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -68,6 +71,11 @@ final readonly class GearStatsRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('gear'),
+                title: $this->translator->trans('Gear'),
+                description: $this->translator->trans('Distance, time and usage statistics per piece of gear'),
+            ),
         );
     }
 

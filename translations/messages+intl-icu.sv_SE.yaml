@@ -5,8 +5,10 @@
 '> 2.0: High monotony, increased risk': '> 2.0: Hög enformighet, ökad risk'
 'A 6-hour week scores higher than a 5-hour week.': 'A 6-hour week scores higher than a 5-hour week.'
 'A cluster tile is a visited tile whose four neighbours are visited too': 'En klusterruta är en besökt ruta vars fyra grannar också är besökta'
+'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A high intensity score means a larger share of your training is hard rather than easy.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
+'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'A:C Förhållande'
 'A:C optimal in': 'A:C optimal in'
 'AI integration settings': 'AI integration settings'
@@ -15,6 +17,7 @@
 'Active days': 'Aktiva dagar'
 'Active gear': 'Active gear'
 Activities: Aktiviteter
+'Activities and statistics per month': 'Activities and statistics per month'
 Activity: Aktivitet
 'Activity count': 'Antal aktiviteter'
 'Activity heatmap': Aktivitskarta
@@ -27,8 +30,11 @@ Activity: Aktivitet
 'Aero sensor': 'Aero sensor'
 Afternoon: Eftermiddag
 All: Alla
+'All completed challenges': 'All completed challenges'
+'All segments and the efforts on them': 'All segments and the efforts on them'
 'All time': 'Från start'
 'Alpine Ski': Alpint
+'An overview of all activities, training load and statistics': 'An overview of all activities, training load and statistics'
 'Analyze with WindAhead': 'Analyze with WindAhead'
 Apr: Apr
 'Ask Mark something...': 'Fråga Mark någonting...'
@@ -66,6 +72,7 @@ Canoeing: Kanot
 'Carbon saved': 'Sparat koldioxid'
 'Challenge consistency': Utmaningsihållighet
 Challenges: Utmaningar
+'Chat with an AI assistant about your training': 'Chat with an AI assistant about your training'
 'Chronic Training Load (Fitness) - 42-day exponentially weighted average of your daily training load. Represents long-term training adaptation.': 'Kronisk träningsbelastning (Träningsform) - 42 dagars exponentiellt viktat medelvärde av din dagliga träningsbelastning. Representerar långsiktig träningsanpassning.'
 'Clear all filters': 'Clear all filters'
 'Clear chat': 'Clear chat'
@@ -116,10 +123,12 @@ Distance: Distans
 'Distance in {unit}': 'Distans i {unit}'
 'Distance over time per gear': 'Distans över tid per utrustning'
 'Distance per month per gear': 'Distans per månad per utrustning'
+'Distance, time and usage statistics per piece of gear': 'Distance, time and usage statistics per piece of gear'
 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.': 'Doing a mix of cycling, running, swimming, and strength work increases your variety score.'
 Download: Download
 Duration: Duration
 'Dusting off the record books...': 'Dusting off the record books...'
+'Dynamically generated badges to embed anywhere': 'Dynamically generated badges to embed anywhere'
 'E-Bike Ride': 'E-Bike Ride'
 'E-Bike Rides': 'E-Cykel Turer'
 'E-Mountain Bike Ride': 'E-Mountain Bike Ride'
@@ -150,6 +159,7 @@ Evening: Kväll
 'Explorer tiles include all your activities': 'Explorer tiles include all your activities'
 'FTP history': 'FTP historik'
 Fastest: Fastest
+'Fastest times over standard distances per activity type': 'Fastest times over standard distances per activity type'
 Favourite: Favoriter
 Feb: Feb
 'Filling up the bottles...': 'Filling up the bottles...'
@@ -163,6 +173,7 @@ Firsts: Firsts
 Fitness: Träning
 'Fitness may be declining due to low recent training load': 'Fitness may be declining due to low recent training load'
 'Fitness may decline': 'Fitness may decline'
+'Fitness, fatigue and form based on training load': 'Fitness, fatigue and form based on training load'
 'Foot pod': 'Foot pod'
 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.': 'For example, an Eddington number of 70 would imply that a cyclist has cycled at least 70 km or miles in a day on at least 70 occasions. Achieving a high Eddington number is difficult, since moving from, say, 70 to 75 will (probably) require more than five new long-distance workouts, since any workout shorter than 75 km or miles will no longer be included in the reckoning.'
 'Form (TSB)': 'Träningsform (TSB)'
@@ -256,6 +267,7 @@ Low: Låg
 'Low risk': 'Low risk'
 'Low training load': 'Low training load'
 Maintenance: Underhåll
+'Maintenance tasks and their progress per piece of gear': 'Maintenance tasks and their progress per piece of gear'
 'Manage activities': 'Manage activities'
 'Manage gear': 'Manage gear'
 'Manage recording devices': 'Manage recording devices'
@@ -272,6 +284,7 @@ Medium: Mellan
 Metric: Metric
 'Metrics settings': 'Metrics settings'
 Milestones: Milestones
+'Milestones reached over time': 'Milestones reached over time'
 'Mind & Body Sports': 'Sinne- och kroppssporter'
 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training': 'Moderate fatigue with stable fitness. Well suited for consistent day-to-day training'
 'Moderate monotony': 'Måttlig monotoni'
@@ -337,10 +350,12 @@ Pace: Tempo
 Padel: Padel
 'Peak fresh': 'Peak fresh'
 'Peak power outputs': Toppeffekt
+'Peak power outputs over different durations': 'Peak power outputs over different durations'
 'Per {unit}': 'Per {unit}'
 'Personal bests': 'Personal bests'
 Photo: Bild
 Photos: Bilder
+'Photos from all activities': 'Photos from all activities'
 'Physical Therapy': 'Physical Therapy'
 'Pickle Ball': 'Pickle Ball'
 Pilates: Pilates
@@ -427,6 +442,7 @@ Squash: Squash
 'Stair Stepper': Trappmaskin
 'Stand Up Paddling': 'Stand Up Paddling'
 'Start times': Starttider
+'Statistics per device used to record activities': 'Statistics per device used to record activities'
 'Stats per weekday': 'Sammanställning veckodagar'
 Status: Status
 'Streak started on {date}': 'Streak started on {date}'
@@ -532,6 +548,7 @@ Tennis: Tennis
 "That's {number} days of at least {distance}": "That's {number} days of at least {distance}"
 "That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
+'The Eddington number per activity type': 'The Eddington number per activity type'
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."

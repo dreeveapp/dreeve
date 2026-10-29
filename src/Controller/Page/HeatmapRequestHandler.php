@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\Route\RouteRepository;
 use App\Domain\Settings\SettingsRepository;
@@ -16,6 +17,8 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -26,6 +29,8 @@ final readonly class HeatmapRequestHandler
         private SettingsRepository $settingsRepository,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -40,6 +45,11 @@ final readonly class HeatmapRequestHandler
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::HEATMAP,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('heatmap'),
+                title: $this->translator->trans('Heatmap'),
+                description: $this->translator->trans('A heatmap of all recorded routes'),
+            ),
         );
     }
 
