@@ -8,6 +8,8 @@
 'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Een hoge intensiteitsscore betekent dat een groter deel van je training zwaar is in plaats van licht.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Een hoge score betekent dat je meer training concentreert in minder, zwaardere dagen.'
+'A look back at all activities': 'A look back at all activities'
+'A look back at {year}': 'A look back at {year}'
 'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'A:C-ratio'
 'A:C optimal in': 'A:C optimaal binnen'
@@ -17,6 +19,7 @@
 'Active days': 'Actieve dagen'
 'Active gear': 'Active gear'
 Activities: Activiteiten
+'Activities and statistics for {month}': 'Activities and statistics for {month}'
 'Activities and statistics per month': 'Activities and statistics per month'
 Activity: Activiteit
 'Activity count': 'Aantal activiteiten'
@@ -84,6 +87,7 @@ Commutes: Woon-werkritten
 'Commutes only': 'Enkel woon-werk'
 Compare: Vergelijken
 'Compare to': 'Vergelijken met'
+'Compare {left} with {right}': 'Compare {left} with {right}'
 'Completed {threshold} activities': '{threshold} activiteiten voltooid'
 Components: Onderdelen
 'Configure gear maintenance': 'Onderhoud van uitrusting configureren'
@@ -217,6 +221,7 @@ Hike: Hike
 Hikes: Hikes
 History: Historiek
 'History (6 weeks)': 'Historiek (6 weken)'
+'History of best efforts over {distance}': 'History of best efforts over {distance}'
 'How diverse is your training': 'Hoe gevarieerd is je training'
 'How hard is your typical training session': 'Hoe zwaar is je gemiddelde trainingssessie'
 'How long is your typical training session': 'Hoe lang duurt je gemiddelde trainingssessie'
@@ -549,6 +554,7 @@ Tennis: Tennis
 "That's {percentage}% of all countries 🌍": 'Dat is {percentage}% van alle landen 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'Het Eddington-getal bij fietsen of lopen is het grootste getal E waarvoor de atleet op minstens E dagen minstens E km heeft afgelegd.'
 'The Eddington number per activity type': 'The Eddington number per activity type'
+'The fastest efforts on this segment': 'The fastest efforts on this segment'
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": 'De pagina die je zoekt bestaat niet of is mogelijk verplaatst.'
@@ -697,6 +703,7 @@ workouts: trainingen
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dagen'
 '{days} consecutive days of activity': '{days} opeenvolgende dagen activiteit'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} uur'
+'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} elke {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activiteiten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activiteiten in {year}'

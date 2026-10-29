@@ -8,6 +8,8 @@
 'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A magas intenzitási pontszám azt jelenti, hogy az edzéseid nagyobb része nehéz, nem könnyű.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A magas pontszám azt jelenti, hogy több edzést koncentrálsz kevesebb, de nehezebb napra.'
+'A look back at all activities': 'A look back at all activities'
+'A look back at {year}': 'A look back at {year}'
 'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'A:C arány'
 'A:C optimal in': 'A:C optimális ezután:'
@@ -17,6 +19,7 @@
 'Active days': 'Aktív napok'
 'Active gear': 'Active gear'
 Activities: Tevékenységek
+'Activities and statistics for {month}': 'Activities and statistics for {month}'
 'Activities and statistics per month': 'Activities and statistics per month'
 Activity: Tevékenység
 'Activity count': 'Tevékenységek száma'
@@ -84,6 +87,7 @@ Commutes: Ingázások
 'Commutes only': 'Csak ingázások'
 Compare: Összehasonlítás
 'Compare to': 'Összehasonlítás:'
+'Compare {left} with {right}': 'Compare {left} with {right}'
 'Completed {threshold} activities': '{threshold} tevékenység teljesítve'
 Components: Komponensek
 'Configure gear maintenance': 'Felszerelés-karbantartás beállítása'
@@ -217,6 +221,7 @@ Hike: Túra
 Hikes: Túrák
 History: Előzmények
 'History (6 weeks)': 'Előzmények (6 hét)'
+'History of best efforts over {distance}': 'History of best efforts over {distance}'
 'How diverse is your training': 'Mennyire változatos az edzésed'
 'How hard is your typical training session': 'Milyen kemény a tipikus edzésed'
 'How long is your typical training session': 'Milyen hosszú a tipikus edzésed'
@@ -549,6 +554,7 @@ Tennis: Tenisz
 "That's {percentage}% of all countries 🌍": 'Ez az összes ország {percentage}%-a 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'Az Eddington-szám kerékpározás vagy futás esetén az a legnagyobb E szám, amelyre igaz, hogy a sportoló legalább E napon legalább E km-t tett meg.'
 'The Eddington number per activity type': 'The Eddington number per activity type'
+'The fastest efforts on this segment': 'The fastest efforts on this segment'
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": 'A keresett oldal nem létezik, vagy áthelyezték.'
@@ -697,6 +703,7 @@ workouts: edzések
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} nap'
 '{days} consecutive days of activity': '{days} egymást követő aktív nap'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} óra'
+'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} minden {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} tevékenység'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} tevékenység {year}-ben'

@@ -8,6 +8,8 @@
 'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'Uma alta pontuação de intensidade significa que uma parcela maior do seu treino é intensa em vez de leve.'
 'A high score means you concentrate more training into fewer, heavier days.': 'Uma pontuação alta significa que você concentra mais treino em menos dias, porém mais pesados.'
+'A look back at all activities': 'A look back at all activities'
+'A look back at {year}': 'A look back at {year}'
 'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'Razão A:C'
 'A:C optimal in': 'A:C ideal em'
@@ -17,6 +19,7 @@
 'Active days': 'Dias ativos'
 'Active gear': 'Equipamentos ativos'
 Activities: Atividades
+'Activities and statistics for {month}': 'Activities and statistics for {month}'
 'Activities and statistics per month': 'Activities and statistics per month'
 Activity: Atividade
 'Activity count': 'Contagem de atividades'
@@ -84,6 +87,7 @@ Commutes: Deslocamentos
 'Commutes only': 'Apenas deslocamentos'
 Compare: Comparar
 'Compare to': 'Comparar com'
+'Compare {left} with {right}': 'Compare {left} with {right}'
 'Completed {threshold} activities': 'Concluiu {threshold} atividades'
 Components: Componentes
 'Configure gear maintenance': 'Configurar manutenção do equipamento'
@@ -217,6 +221,7 @@ Hike: Trilha
 Hikes: Trilhas
 History: Histórico
 'History (6 weeks)': 'Histórico (6 semanas)'
+'History of best efforts over {distance}': 'History of best efforts over {distance}'
 'How diverse is your training': 'Quão diversificado é o seu treino'
 'How hard is your typical training session': 'Qual a intensidade da sua sessão de treino típica'
 'How long is your typical training session': 'Qual a duração da sua sessão de treino típica'
@@ -549,6 +554,7 @@ Tennis: Tênis
 "That's {percentage}% of all countries 🌍": 'Isso representa {percentage}% de todos os países 🌍'
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'O número de Eddington no contexto de ciclismo ou corrida é definido como o número máximo E tal que o atleta percorreu pelo menos E km em pelo menos E dias.'
 'The Eddington number per activity type': 'The Eddington number per activity type'
+'The fastest efforts on this segment': 'The fastest efforts on this segment'
 'The largest connected group of cluster tiles': 'O maior grupo conectado de quadrados de cluster'
 'The largest square of visited tiles': 'O maior quadrado formado por quadrados visitados'
 "The page you're looking for doesn't exist or may have been moved.": 'A página que você está procurando não existe ou pode ter sido movida.'
@@ -697,6 +703,7 @@ workouts: treinos
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dias'
 '{days} consecutive days of activity': '{days} dias consecutivos de atividade'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} horas'
+'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} a cada {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} atividades'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} atividades em {year}'

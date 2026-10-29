@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Calendar;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
@@ -21,6 +22,8 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -34,6 +37,8 @@ final readonly class MonthRequestHandler
         private Clock $clock,
         private PageRenderer $pageRenderer,
         private Environment $twig,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -62,6 +67,11 @@ final readonly class MonthRequestHandler
             ),
             render: fn (): string => $this->renderFor($month),
             navigationSection: NavigationSection::MONTHLY_STATS,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('monthly_stats_month', ['month' => $month->getId()]),
+                title: $month->getLabel(),
+                description: $this->translator->trans('Activities and statistics for {month}', ['{month}' => $month->getLabel()]),
+            ),
         );
     }
 

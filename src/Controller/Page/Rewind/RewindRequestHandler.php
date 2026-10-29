@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Rewind;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Rewind\FindAvailableRewindOptions\FindAvailableRewindOptions;
 use App\Domain\Rewind\RewindCacheTags;
@@ -15,6 +16,8 @@ use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -27,6 +30,8 @@ final readonly class RewindRequestHandler
         private RewindItemsBuilder $rewindItemsBuilder,
         private PageRenderer $pageRenderer,
         private Environment $twig,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -50,6 +55,13 @@ final readonly class RewindRequestHandler
             ),
             render: fn (): string => $this->renderFor($rewindOption),
             navigationSection: NavigationSection::REWIND,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('rewind', ['rewindOption' => $rewindOption]),
+                title: $this->labelFor($rewindOption),
+                description: FindAvailableRewindOptions::ALL_TIME === $rewindOption
+                    ? $this->translator->trans('A look back at all activities')
+                    : $this->translator->trans('A look back at {year}', ['{year}' => $rewindOption]),
+            ),
         );
     }
 
@@ -66,5 +78,14 @@ final readonly class RewindRequestHandler
             ),
             'isAllTimeRewind' => FindAvailableRewindOptions::ALL_TIME === $rewindOption,
         ]);
+    }
+
+    private function labelFor(string $rewindOption): string
+    {
+        if (FindAvailableRewindOptions::ALL_TIME === $rewindOption) {
+            return $this->translator->trans('All time');
+        }
+
+        return sprintf('%s %s', $this->translator->trans('Rewind'), $rewindOption);
     }
 }

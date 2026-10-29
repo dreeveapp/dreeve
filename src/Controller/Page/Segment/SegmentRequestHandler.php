@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\Segment;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
@@ -82,6 +83,11 @@ final readonly class SegmentRequestHandler
             ),
             render: fn (): string => $this->renderFor($segment, $topTenSegmentEfforts),
             navigationSection: NavigationSection::SEGMENTS,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('segment', ['segmentId' => (string) $segment->getId()]),
+                title: (string) $segment->getName(),
+                description: $this->translator->trans('The fastest efforts on this segment'),
+            ),
         );
     }
 

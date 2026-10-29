@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Page\BestEffort;
 
 use App\Application\Navigation\NavigationSection;
+use App\Application\OpenGraph\OpenGraph;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
@@ -17,6 +18,8 @@ use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -29,6 +32,8 @@ final readonly class BestEffortsHistoryRequestHandler
         private ActivityRepository $activityRepository,
         private PageRenderer $pageRenderer,
         private Environment $twig,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -48,6 +53,8 @@ final readonly class BestEffortsHistoryRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
+        $distanceLabel = sprintf('%s %s', $distance->isLowerThanOne() ? round($distance->toFloat(), 1) : $distance->toInt(), $distance->getSymbol());
+
         return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('%s.%s.%d', self::BASE_PATH, $activityType->value, $distanceInMeter),
@@ -55,6 +62,11 @@ final readonly class BestEffortsHistoryRequestHandler
             ),
             render: fn (): string => $this->renderFor($activityType, $distance),
             navigationSection: NavigationSection::BEST_EFFORTS,
+            openGraph: new OpenGraph(
+                path: $this->urlGenerator->generate('best_efforts_history', ['activityType' => $activityType->value, 'distanceInMeter' => $distanceInMeter]),
+                title: sprintf('%s - %s - %s', $this->translator->trans('Best efforts'), $activityType->trans($this->translator), $distanceLabel),
+                description: $this->translator->trans('History of best efforts over {distance}', ['{distance}' => $distanceLabel]),
+            ),
         );
     }
 

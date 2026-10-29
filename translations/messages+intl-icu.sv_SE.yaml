@@ -8,6 +8,8 @@
 'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
 'A high intensity score means a larger share of your training is hard rather than easy.': 'A high intensity score means a larger share of your training is hard rather than easy.'
 'A high score means you concentrate more training into fewer, heavier days.': 'A high score means you concentrate more training into fewer, heavier days.'
+'A look back at all activities': 'A look back at all activities'
+'A look back at {year}': 'A look back at {year}'
 'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 'A:C Ratio': 'A:C Förhållande'
 'A:C optimal in': 'A:C optimal in'
@@ -17,6 +19,7 @@
 'Active days': 'Aktiva dagar'
 'Active gear': 'Active gear'
 Activities: Aktiviteter
+'Activities and statistics for {month}': 'Activities and statistics for {month}'
 'Activities and statistics per month': 'Activities and statistics per month'
 Activity: Aktivitet
 'Activity count': 'Antal aktiviteter'
@@ -84,6 +87,7 @@ Commutes: Pendling
 'Commutes only': 'Endast pendling'
 Compare: Jämför
 'Compare to': 'Jämför med'
+'Compare {left} with {right}': 'Compare {left} with {right}'
 'Completed {threshold} activities': 'Completed {threshold} activities'
 Components: Components
 'Configure gear maintenance': 'Configure gear maintenance'
@@ -217,6 +221,7 @@ Hike: Hike
 Hikes: Vandringar
 History: Historik
 'History (6 weeks)': 'History (6 weeks)'
+'History of best efforts over {distance}': 'History of best efforts over {distance}'
 'How diverse is your training': 'How diverse is your training'
 'How hard is your typical training session': 'How hard is your typical training session'
 'How long is your typical training session': 'How long is your typical training session'
@@ -549,6 +554,7 @@ Tennis: Tennis
 "That's {percentage}% of all countries 🌍": "That's {percentage}% of all countries 🌍"
 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.': 'The Eddington number in the context of cycling or running is defined as the maximum number E such that the athlete has covered at least E km on at least E days.'
 'The Eddington number per activity type': 'The Eddington number per activity type'
+'The fastest efforts on this segment': 'The fastest efforts on this segment'
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": "The page you're looking for doesn't exist or may have been moved."
@@ -697,6 +703,7 @@ workouts: träningspass
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dagar'
 '{days} consecutive days of activity': '{days} consecutive days of activity'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} timmar'
+'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} varje {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} aktiviteter'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} aktiviteter på {year}'
