@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller\File;
 
-use App\Domain\Activity\ActivityOpenGraphImage;
+use App\Application\PageMetadata\OpenGraphImageCanvas;
 use App\Tests\Controller\ControllerWebTestCase;
 
 class ActivityOgImageRequestHandlerTest extends ControllerWebTestCase
@@ -18,7 +18,7 @@ class ActivityOgImageRequestHandlerTest extends ControllerWebTestCase
 
         $size = getimagesizefromstring($this->client->getInternalResponse()->getContent());
         $this->assertIsArray($size);
-        $this->assertEquals([ActivityOpenGraphImage::WIDTH, ActivityOpenGraphImage::HEIGHT], [$size[0], $size[1]]);
+        $this->assertEquals([OpenGraphImageCanvas::WIDTH, OpenGraphImageCanvas::HEIGHT], [$size[0], $size[1]]);
     }
 
     public function testItReturnsNotFoundForAnUnknownActivity(): void
