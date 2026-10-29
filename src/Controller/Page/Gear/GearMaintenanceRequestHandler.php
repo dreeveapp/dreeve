@@ -57,7 +57,7 @@ final readonly class GearMaintenanceRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Maintenance', domain: 'metadata'),
+                title: new TranslatableMessage('Maintenance'),
             ),
         );
     }

@@ -42,7 +42,7 @@ final readonly class DashboardRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Dashboard', domain: 'metadata'),
+                title: new TranslatableMessage('Dashboard'),
             ),
         );
     }

@@ -56,7 +56,7 @@ final readonly class ChatRequestHandler
             content: $this->renderFor(),
             navigationSection: null,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Virtual workout assistant', domain: 'metadata'),
+                title: new TranslatableMessage('Virtual workout assistant'),
             ),
         ));
     }

@@ -52,7 +52,7 @@ final readonly class BestEffortsRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::BEST_EFFORTS,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Best efforts', domain: 'metadata'),
+                title: new TranslatableMessage('Best efforts'),
             ),
         );
     }

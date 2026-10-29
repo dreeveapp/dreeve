@@ -54,7 +54,7 @@ final readonly class TrainingLoadRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Training Load Analysis', domain: 'metadata'),
+                title: new TranslatableMessage('Training Load Analysis'),
             ),
         );
     }

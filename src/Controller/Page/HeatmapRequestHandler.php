@@ -43,7 +43,7 @@ final readonly class HeatmapRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::HEATMAP,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Heatmap', domain: 'metadata'),
+                title: new TranslatableMessage('Heatmap'),
             ),
         );
     }

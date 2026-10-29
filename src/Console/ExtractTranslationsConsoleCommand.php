@@ -18,7 +18,7 @@ use Symfony\Component\Yaml\Yaml;
 #[AsCommand(name: 'app:translations:extract', description: 'Extract translations for all locales')]
 class ExtractTranslationsConsoleCommand extends Command
 {
-    public const array DOMAINS = ['messages', 'admin', 'metadata'];
+    public const array DOMAINS = ['messages', 'admin'];
 
     public function __construct(
         private readonly ExtractorInterface $extractor,

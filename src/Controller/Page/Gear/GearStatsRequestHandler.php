@@ -71,7 +71,7 @@ final readonly class GearStatsRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Gear', domain: 'metadata'),
+                title: new TranslatableMessage('Gear'),
             ),
         );
     }

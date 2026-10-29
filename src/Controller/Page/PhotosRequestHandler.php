@@ -47,7 +47,7 @@ final readonly class PhotosRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::PHOTOS,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Photos', domain: 'metadata'),
+                title: new TranslatableMessage('Photos'),
             ),
         );
     }

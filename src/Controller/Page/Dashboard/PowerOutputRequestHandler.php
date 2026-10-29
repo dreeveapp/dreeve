@@ -58,7 +58,7 @@ final readonly class PowerOutputRequestHandler
             render: fn (): ?string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Peak power outputs', domain: 'metadata'),
+                title: new TranslatableMessage('Peak power outputs'),
             ),
         );
     }

@@ -42,7 +42,7 @@ final readonly class BadgesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: null,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Badges', domain: 'metadata'),
+                title: new TranslatableMessage('Badges'),
             ),
         );
     }

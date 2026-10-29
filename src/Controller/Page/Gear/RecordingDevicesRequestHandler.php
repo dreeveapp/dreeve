@@ -55,7 +55,7 @@ final readonly class RecordingDevicesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Recording devices', domain: 'metadata'),
+                title: new TranslatableMessage('Recording devices'),
             ),
         );
     }

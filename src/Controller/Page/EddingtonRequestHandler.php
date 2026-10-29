@@ -49,7 +49,7 @@ final readonly class EddingtonRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::EDDINGTON,
             metadata: new PageMetadata(
-                title: new TranslatableMessage('Eddington', domain: 'metadata'),
+                title: new TranslatableMessage('Eddington'),
             ),
         );
     }

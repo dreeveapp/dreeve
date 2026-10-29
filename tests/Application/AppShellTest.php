@@ -31,7 +31,7 @@ class AppShellTest extends ContainerTestCase
             navigationSection: null,
             metadata: new PageMetadata(
                 title: 'Morning Run',
-                description: new TranslatableMessage('A look back at {year}', ['{year}' => '2023'], 'metadata'),
+                description: new TranslatableMessage('A look back at {year}', ['{year}' => '2023']),
                 imagePath: '/activities/activity-1/og-image.png',
             ),
         );

@@ -680,6 +680,7 @@ workouts: edzések
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} nap'
 '{days} consecutive days of activity': '{days} egymást követő aktív nap'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} óra'
+'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} minden {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} tevékenység'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} tevékenység {year}-ben'

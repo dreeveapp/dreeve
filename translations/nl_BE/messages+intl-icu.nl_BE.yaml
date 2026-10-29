@@ -680,6 +680,7 @@ workouts: trainingen
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} dagen'
 '{days} consecutive days of activity': '{days} opeenvolgende dagen activiteit'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} uur'
+'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} elke {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activiteiten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activiteiten in {year}'

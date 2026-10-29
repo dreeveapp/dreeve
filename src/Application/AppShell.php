@@ -7,7 +7,15 @@ namespace App\Application;
 use App\Application\Navigation\NavigationSection;
 use App\Application\Navigation\SideBar;
 use App\Application\PageMetadata\PageMetadata;
+use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Cache\Cacheability;
+use App\Infrastructure\Cache\CacheableRenderer;
+use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
+use App\Infrastructure\Measurement\ProvideMeasurementFormats;
+use App\Infrastructure\Measurement\Time\Hour;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -20,6 +28,8 @@ use Twig\Environment;
 
 final readonly class AppShell
 {
+    use ProvideMeasurementFormats;
+
     public function __construct(
         private SideBar $sideBar,
         private AppUrl $appUrl,
@@ -28,6 +38,8 @@ final readonly class AppShell
         private UrlGeneratorInterface $urlGenerator,
         private RequestStack $requestStack,
         private TranslatorInterface $translator,
+        private CacheableRenderer $cacheableRenderer,
+        private QueryBus $queryBus,
         private Environment $twig,
     ) {
     }
@@ -49,7 +61,27 @@ final readonly class AppShell
                 'title' => $this->translate($metadata->getTitle()),
                 'description' => null !== $metadata->getDescription()
                     ? $this->translate($metadata->getDescription())
-                    : implode(' · ', array_filter([(string) $general->getAthlete()->getName(), (string) $general->getAppSubTitle()])),
+                    : $this->cacheableRenderer->render(
+                        cacheability: Cacheability::for(
+                            cacheKey: 'app-shell.metatag.description',
+                            cacheTags: CacheTags::of(
+                                RootCacheTag::ACTIVITIES,
+                                RootCacheTag::SETTINGS_GENERAL,
+                                RootCacheTag::SETTINGS_APPEARANCE,
+                            ),
+                        ),
+                        render: function () use ($general): string {
+                            $activityTotals = $this->queryBus->ask(new FindActivityTotals());
+                            $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+
+                            return implode(' · ', [
+                                (string) $general->getAthlete()->getName(),
+                                $this->translator->trans('{numberOfActivities} activities', ['{numberOfActivities}' => $this->formatNumber($activityTotals->getTotalActivities(), 0)]),
+                                $this->formatUnitWithSymbol($activityTotals->getTotalDistance()->toUnitSystem($unitSystem), 0),
+                                $this->formatUnitWithSymbol(Hour::from($activityTotals->getMovingTimeInHours()), 0),
+                            ]);
+                        },
+                    )->getContent(),
                 'path' => $this->urlGenerator->generate($request->attributes->getString('_route'), $request->attributes->all('_route_params')),
                 'imagePath' => $metadata->getImagePath(),
             ],

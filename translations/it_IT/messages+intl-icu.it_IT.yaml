@@ -680,6 +680,7 @@ workouts: allenamenti
 '{daysSinceLastTagged} days': '{daysSinceLastTagged} giorni'
 '{days} consecutive days of activity': '{days} giorni consecutivi di attività'
 '{hoursSinceLastTagged} hours': '{hoursSinceLastTagged} ore'
+'{left} vs {right}': '{left} vs {right}'
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} ogni {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} attività'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} attività nel {year}'

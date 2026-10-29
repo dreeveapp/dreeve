@@ -61,7 +61,7 @@ final readonly class BestEffortsHistoryRequestHandler
             render: fn (): string => $this->renderFor($activityType, $distance),
             navigationSection: NavigationSection::BEST_EFFORTS,
             metadata: new PageMetadata(
-                title: sprintf('%s - %s - %s', $this->translator->trans('Best efforts', domain: 'metadata'), $activityType->trans($this->translator), $distanceLabel),
+                title: sprintf('%s - %s - %s', $this->translator->trans('Best efforts'), $activityType->trans($this->translator), $distanceLabel),
             ),
         );
     }
