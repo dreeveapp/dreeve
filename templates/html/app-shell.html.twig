@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{ openGraph ? openGraph.getTitle() : athlete.getName() }} | {{ appName }}</title>
+    <title>{{ openGraph.getTitle() }} | {{ appName }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta property="og:site_name" content="{{ appName }}">
     <meta property="og:type" content="website">
-    {% if openGraph %}
-        <meta property="og:title" content="{{ openGraph.getTitle() }}">
-        <meta property="og:description" content="{{ openGraph.getDescription() }}">
-        <meta property="og:url" content="{{ absoluteUrl(openGraph.getPath()) }}">
-        <meta name="description" content="{{ openGraph.getDescription() }}">
-        {% if openGraph.getImagePath() %}
-        <meta property="og:image" content="{{ absoluteUrl(openGraph.getImagePath()) }}">
-        <meta property="og:image:type" content="image/png">
-        <meta property="og:image:width" content="1200">
-        <meta property="og:image:height" content="630">
-        <meta name="twitter:card" content="summary_large_image">
-        {% endif %}
-    {% else %}
-    <meta property="og:title" content="{{ athlete.getName() }}">
+    <meta property="og:title" content="{{ openGraph.getTitle() }}">
+    {% if openGraph.getPath() %}
+    <meta property="og:url" content="{{ absoluteUrl(openGraph.getPath()) }}">
+    {% endif %}
+    {% if openGraph.getDescription() %}
+    <meta property="og:description" content="{{ openGraph.getDescription() }}">
+    <meta name="description" content="{{ openGraph.getDescription() }}">
+    {% endif %}
+    {% if openGraph.getImagePath() %}
+    <meta property="og:image" content="{{ absoluteUrl(openGraph.getImagePath()) }}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
     {% endif %}
     <meta name="theme-color" content="#F26822">
     <meta name="mobile-web-app-title" content="{{ athlete.getName() }} | {{ appName }}">

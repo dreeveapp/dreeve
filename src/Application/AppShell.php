@@ -30,7 +30,7 @@ final readonly class AppShell
 
         return $this->twig->load('html/app-shell.html.twig')->render([
             'content' => $content,
-            'openGraph' => $openGraph,
+            'openGraph' => $openGraph ?? OpenGraph::default($general->getAthlete()->getName()),
             'sidebar' => $this->sideBar->render($navigationSection),
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),
