@@ -409,6 +409,7 @@ Shifting: Schakelen
 'Shows how your TSB (Form) and A:C Ratio will recover over time if you take complete rest days.': 'Toont hoe je TSB (Vorm) en A:C-ratio in de tijd herstellen als je volledige rustdagen neemt.'
 'Similar activities': 'Gelijkaardige activiteiten'
 "Since I began working out {numberOfDaysAgo} ago on {startDate}, I've logged {totalDaysOfWorkingOut} active days of training and adventure.": 'Sinds ik {numberOfDaysAgo} geleden op {startDate} begon te sporten, heb ik {totalDaysOfWorkingOut} actieve dagen van training en avontuur gelogd.'
+'Since {date}': 'Since {date}'
 Skateboard: Skateboarden
 Skating: Skaten
 'Slightly fresh': 'Licht fris'
