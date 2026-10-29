@@ -40,8 +40,8 @@ final readonly class FindTrainingGoalMetricsQueryHandler implements QueryHandler
             SQL,
             [
                 'sportTypes' => $sportTypes->map(fn (SportType $sportType) => $sportType->value),
-                'startDate' => (string) $query->getFrom()->format('Y-m-d'),
-                'endDate' => (string) $query->getTo()->format('Y-m-d'),
+                'startDate' => $query->getFrom()->format('Y-m-d'),
+                'endDate' => $query->getTo()->format('Y-m-d'),
             ],
             [
                 'sportTypes' => ArrayParameterType::STRING,

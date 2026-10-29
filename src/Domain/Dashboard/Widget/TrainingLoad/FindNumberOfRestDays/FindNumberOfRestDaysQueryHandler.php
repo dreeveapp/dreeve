@@ -31,8 +31,8 @@ final readonly class FindNumberOfRestDaysQueryHandler implements QueryHandler
                )
             SQL,
             [
-                'startDate' => (string) $query->getDateRange()->getFrom()->format('Y-m-d'),
-                'endDate' => (string) $query->getDateRange()->getTill()->format('Y-m-d'),
+                'startDate' => $query->getDateRange()->getFrom()->format('Y-m-d'),
+                'endDate' => $query->getDateRange()->getTill()->format('Y-m-d'),
             ]
         )->fetchOne();
 
