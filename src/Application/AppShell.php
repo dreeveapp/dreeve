@@ -27,13 +27,13 @@ final readonly class AppShell
     public function render(
         string $content,
         ?NavigationSection $navigationSection,
-        ?OpenGraph $openGraph,
+        OpenGraph $openGraph,
     ): string {
         $general = $this->settingsRepository->general();
 
         return $this->twig->load('html/app-shell.html.twig')->render([
             'content' => $content,
-            'openGraph' => $openGraph ?? OpenGraph::default($general->getAthlete()->getName()),
+            'openGraph' => $openGraph,
             'sidebar' => $this->sideBar->render($navigationSection),
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),

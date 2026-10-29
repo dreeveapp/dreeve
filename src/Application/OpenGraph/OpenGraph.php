@@ -4,28 +4,17 @@ declare(strict_types=1);
 
 namespace App\Application\OpenGraph;
 
-use App\Infrastructure\ValueObject\String\Name;
-
 final readonly class OpenGraph
 {
     public function __construct(
-        private ?string $path,
+        private string $path,
         private string $title,
-        private ?string $description,
+        private string $description,
         private ?string $imagePath = null,
     ) {
     }
 
-    public static function default(Name $athleteName): self
-    {
-        return new self(
-            path: null,
-            title: (string) $athleteName,
-            description: null,
-        );
-    }
-
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -35,7 +24,7 @@ final readonly class OpenGraph
         return $this->title;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }

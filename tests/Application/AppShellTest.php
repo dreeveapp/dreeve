@@ -19,19 +19,8 @@ class AppShellTest extends ContainerTestCase
     {
         $this->provideFullTestSet();
 
-        $this->assertMatchesHtmlSnapshot($this->appShell->render(
-            content: '<p>The page content</p>',
-            navigationSection: null,
-            openGraph: null,
-        ));
-    }
-
-    public function testRenderWithAnOpenGraph(): void
-    {
-        $this->provideFullTestSet();
-
         $render = $this->appShell->render(
-            content: '',
+            content: '<p>The page content</p>',
             navigationSection: null,
             openGraph: new OpenGraph(
                 path: 'activities/activity-1',
@@ -47,6 +36,7 @@ class AppShellTest extends ContainerTestCase
         $this->assertStringContainsString('<meta property="og:url" content="http://localhost:8080/activities/activity-1">', $render);
         $this->assertStringContainsString('<meta property="og:image" content="http://localhost:8080/activities/activity-1/og-image.png">', $render);
         $this->assertStringContainsString('<meta name="twitter:card" content="summary_large_image">', $render);
+        $this->assertMatchesHtmlSnapshot($render);
     }
 
     #[\Override]

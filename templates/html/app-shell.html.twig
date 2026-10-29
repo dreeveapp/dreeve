@@ -7,13 +7,9 @@
     <meta property="og:site_name" content="{{ appName }}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ openGraph.getTitle() }}">
-    {% if openGraph.getPath() %}
     <meta property="og:url" content="{{ absoluteUrl(openGraph.getPath()) }}">
-    {% endif %}
-    {% if openGraph.getDescription() %}
     <meta property="og:description" content="{{ openGraph.getDescription() }}">
     <meta name="description" content="{{ openGraph.getDescription() }}">
-    {% endif %}
     {% if openGraph.getImagePath() %}
     <meta property="og:image" content="{{ absoluteUrl(openGraph.getImagePath()) }}">
     <meta property="og:image:type" content="image/png">

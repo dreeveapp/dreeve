@@ -26,7 +26,7 @@ final readonly class PageRenderer
         Cacheability $cacheability,
         \Closure $render,
         ?NavigationSection $navigationSection,
-        ?OpenGraph $openGraph = null,
+        OpenGraph $openGraph,
     ): HtmlResponse {
         $renderedContent = $this->cacheableRenderer->render(
             cacheability: $cacheability,
