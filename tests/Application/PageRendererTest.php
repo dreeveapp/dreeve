@@ -24,7 +24,7 @@ class PageRendererTest extends ContainerTestCase
             cacheability: Cacheability::for('page', CacheTags::of(RootCacheTag::ACTIVITIES)),
             render: fn (): string => '<p>The page content</p>',
             navigationSection: null,
-            metadata: new PageMetadata(path: 'page', title: 'Page', description: 'The page'),
+            metadata: new PageMetadata(route: 'dashboard', title: 'Page', description: 'The page'),
         );
 
         $this->assertStringContainsString('<p>The page content</p>', (string) $response->getContent());
@@ -40,7 +40,7 @@ class PageRendererTest extends ContainerTestCase
             cacheability: Cacheability::for('page', CacheTags::of(RootCacheTag::ACTIVITIES)),
             render: fn (): string => '',
             navigationSection: null,
-            metadata: new PageMetadata(path: 'page', title: 'Page', description: 'The page'),
+            metadata: new PageMetadata(route: 'dashboard', title: 'Page', description: 'The page'),
         );
 
         $this->assertStringNotContainsString('no-store', (string) $response->headers->get('Cache-Control'));
@@ -58,7 +58,7 @@ class PageRendererTest extends ContainerTestCase
             ),
             render: fn (): string => '',
             navigationSection: null,
-            metadata: new PageMetadata(path: 'page', title: 'Page', description: 'The page'),
+            metadata: new PageMetadata(route: 'dashboard', title: 'Page', description: 'The page'),
         );
 
         $this->assertStringContainsString('no-store', (string) $response->headers->get('Cache-Control'));

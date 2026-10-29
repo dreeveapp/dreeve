@@ -35,7 +35,7 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -52,7 +52,6 @@ final readonly class GearStatsRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -72,9 +71,9 @@ final readonly class GearStatsRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('gear'),
-                title: $this->translator->trans('Gear'),
-                description: $this->translator->trans('Distance, time and usage statistics per piece of gear'),
+                route: 'gear',
+                title: new TranslatableMessage('Gear'),
+                description: new TranslatableMessage('Distance, time and usage statistics per piece of gear'),
             ),
         );
     }

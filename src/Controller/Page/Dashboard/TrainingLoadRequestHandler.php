@@ -24,7 +24,7 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -39,7 +39,6 @@ final readonly class TrainingLoadRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -55,9 +54,9 @@ final readonly class TrainingLoadRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('dashboard_training_load'),
-                title: $this->translator->trans('Training Load Analysis'),
-                description: $this->translator->trans('Fitness, fatigue and form based on training load'),
+                route: 'dashboard_training_load',
+                title: new TranslatableMessage('Training Load Analysis'),
+                description: new TranslatableMessage('Fitness, fatigue and form based on training load'),
             ),
         );
     }

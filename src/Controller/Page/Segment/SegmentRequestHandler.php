@@ -33,6 +33,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -84,9 +85,10 @@ final readonly class SegmentRequestHandler
             render: fn (): string => $this->renderFor($segment, $topTenSegmentEfforts),
             navigationSection: NavigationSection::SEGMENTS,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('segment', ['segmentId' => (string) $segment->getId()]),
+                route: 'segment',
+                routeParams: ['segmentId' => (string) $segment->getId()],
                 title: (string) $segment->getName(),
-                description: $this->translator->trans('The fastest efforts on this segment'),
+                description: new TranslatableMessage('The fastest efforts on this segment'),
             ),
         );
     }

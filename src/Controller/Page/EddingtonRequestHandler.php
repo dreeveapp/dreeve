@@ -21,7 +21,7 @@ use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -34,7 +34,6 @@ final readonly class EddingtonRequestHandler
         private TranslatorInterface $translator,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -50,9 +49,9 @@ final readonly class EddingtonRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::EDDINGTON,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('eddington'),
-                title: $this->translator->trans('Eddington'),
-                description: $this->translator->trans('The Eddington number per activity type'),
+                route: 'eddington',
+                title: new TranslatableMessage('Eddington'),
+                description: new TranslatableMessage('The Eddington number per activity type'),
             ),
         );
     }

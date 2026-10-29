@@ -17,8 +17,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -29,8 +28,6 @@ final readonly class HeatmapRequestHandler
         private SettingsRepository $settingsRepository,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -46,9 +43,9 @@ final readonly class HeatmapRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::HEATMAP,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('heatmap'),
-                title: $this->translator->trans('Heatmap'),
-                description: $this->translator->trans('A heatmap of all recorded routes'),
+                route: 'heatmap',
+                title: new TranslatableMessage('Heatmap'),
+                description: new TranslatableMessage('A heatmap of all recorded routes'),
             ),
         );
     }

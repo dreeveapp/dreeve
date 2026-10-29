@@ -18,7 +18,7 @@ use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -32,7 +32,6 @@ final readonly class BestEffortsHistoryRequestHandler
         private ActivityRepository $activityRepository,
         private PageRenderer $pageRenderer,
         private Environment $twig,
-        private UrlGeneratorInterface $urlGenerator,
         private TranslatorInterface $translator,
     ) {
     }
@@ -63,9 +62,10 @@ final readonly class BestEffortsHistoryRequestHandler
             render: fn (): string => $this->renderFor($activityType, $distance),
             navigationSection: NavigationSection::BEST_EFFORTS,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('best_efforts_history', ['activityType' => $activityType->value, 'distanceInMeter' => $distanceInMeter]),
+                route: 'best_efforts_history',
+                routeParams: ['activityType' => $activityType->value, 'distanceInMeter' => $distanceInMeter],
                 title: sprintf('%s - %s - %s', $this->translator->trans('Best efforts'), $activityType->trans($this->translator), $distanceLabel),
-                description: $this->translator->trans('History of best efforts over {distance}', ['{distance}' => $distanceLabel]),
+                description: new TranslatableMessage('History of best efforts over {distance}', ['{distance}' => $distanceLabel]),
             ),
         );
     }

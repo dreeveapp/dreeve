@@ -14,8 +14,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -25,8 +24,6 @@ final readonly class ChallengesRequestHandler
         private ChallengeRepository $challengeRepository,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -41,9 +38,9 @@ final readonly class ChallengesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::CHALLENGES,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('challenges'),
-                title: $this->translator->trans('Challenges'),
-                description: $this->translator->trans('All completed challenges'),
+                route: 'challenges',
+                title: new TranslatableMessage('Challenges'),
+                description: new TranslatableMessage('All completed challenges'),
             ),
         );
     }

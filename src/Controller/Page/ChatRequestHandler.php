@@ -27,8 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -43,8 +42,6 @@ final readonly class ChatRequestHandler
         private AppShell $appShell,
         private Environment $twig,
         private MarkdownRenderer $markdownRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -59,9 +56,9 @@ final readonly class ChatRequestHandler
             content: $this->renderFor(),
             navigationSection: null,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('chat'),
-                title: $this->translator->trans('Virtual workout assistant'),
-                description: $this->translator->trans('Chat with an AI assistant about your training'),
+                route: 'chat',
+                title: new TranslatableMessage('Virtual workout assistant'),
+                description: new TranslatableMessage('Chat with an AI assistant about your training'),
             ),
         ));
     }

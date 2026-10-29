@@ -16,8 +16,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -27,8 +26,6 @@ final readonly class DashboardRequestHandler
         private ConfiguredWidgets $configuredWidgets,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -45,9 +42,9 @@ final readonly class DashboardRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('dashboard'),
-                title: $this->translator->trans('Dashboard'),
-                description: $this->translator->trans('An overview of all activities, training load and statistics'),
+                route: 'dashboard',
+                title: new TranslatableMessage('Dashboard'),
+                description: new TranslatableMessage('An overview of all activities, training load and statistics'),
             ),
         );
     }

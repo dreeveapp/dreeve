@@ -10,7 +10,10 @@ use App\Application\PageMetadata\PageMetadata;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\LocaleSwitcher;
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final readonly class AppShell
@@ -20,6 +23,8 @@ final readonly class AppShell
         private AppUrl $appUrl,
         private LocaleSwitcher $localeSwitcher,
         private SettingsRepository $settingsRepository,
+        private UrlGeneratorInterface $urlGenerator,
+        private TranslatorInterface $translator,
         private Environment $twig,
     ) {
     }
@@ -33,7 +38,12 @@ final readonly class AppShell
 
         return $this->twig->load('html/app-shell.html.twig')->render([
             'content' => $content,
-            'metadata' => $metadata,
+            'metadata' => [
+                'title' => $this->translate($metadata->getTitle()),
+                'description' => $this->translate($metadata->getDescription()),
+                'path' => $this->urlGenerator->generate($metadata->getRoute(), $metadata->getRouteParams()),
+                'imagePath' => $metadata->getImageRoute() ? $this->urlGenerator->generate($metadata->getImageRoute(), $metadata->getRouteParams()) : null,
+            ],
             'sidebar' => $this->sideBar->render($navigationSection),
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),
@@ -47,5 +57,10 @@ final readonly class AppShell
                 'leafletConfig' => $this->settingsRepository->maps()->getLeafletConfig(),
             ]),
         ]);
+    }
+
+    private function translate(string|TranslatableInterface $message): string
+    {
+        return $message instanceof TranslatableInterface ? $message->trans($this->translator) : $message;
     }
 }

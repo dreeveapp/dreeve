@@ -23,8 +23,7 @@ use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -38,8 +37,6 @@ final readonly class GearMaintenanceRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -60,9 +57,9 @@ final readonly class GearMaintenanceRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('gear_maintenance'),
-                title: $this->translator->trans('Maintenance'),
-                description: $this->translator->trans('Maintenance tasks and their progress per piece of gear'),
+                route: 'gear_maintenance',
+                title: new TranslatableMessage('Maintenance'),
+                description: new TranslatableMessage('Maintenance tasks and their progress per piece of gear'),
             ),
         );
     }

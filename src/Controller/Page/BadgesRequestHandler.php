@@ -16,8 +16,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -29,8 +28,6 @@ final readonly class BadgesRequestHandler
         private AppUrl $appUrl,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -45,9 +42,9 @@ final readonly class BadgesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: null,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('badges'),
-                title: $this->translator->trans('Badges'),
-                description: $this->translator->trans('Dynamically generated badges to embed anywhere'),
+                route: 'badges',
+                title: new TranslatableMessage('Badges'),
+                description: new TranslatableMessage('Dynamically generated badges to embed anywhere'),
             ),
         );
     }

@@ -16,7 +16,7 @@ use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -28,7 +28,6 @@ final readonly class RewindCompareRequestHandler
         private RewindItemsBuilder $rewindItemsBuilder,
         private PageRenderer $pageRenderer,
         private Environment $twig,
-        private UrlGeneratorInterface $urlGenerator,
         private TranslatorInterface $translator,
     ) {
     }
@@ -63,9 +62,10 @@ final readonly class RewindCompareRequestHandler
             render: fn (): string => $this->renderFor($left, $right),
             navigationSection: NavigationSection::REWIND,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('rewind_compare', ['left' => $left, 'right' => $right]),
-                title: $this->translator->trans('{left} vs {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel]),
-                description: $this->translator->trans('Compare {left} with {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel]),
+                route: 'rewind_compare',
+                routeParams: ['left' => $left, 'right' => $right],
+                title: new TranslatableMessage('{left} vs {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel]),
+                description: new TranslatableMessage('Compare {left} with {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel]),
             ),
         );
     }

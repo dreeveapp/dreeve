@@ -19,8 +19,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -33,8 +32,6 @@ final readonly class PhotosRequestHandler
         private Countries $countries,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -50,9 +47,9 @@ final readonly class PhotosRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::PHOTOS,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('photos'),
-                title: $this->translator->trans('Photos'),
-                description: $this->translator->trans('Photos from all activities'),
+                route: 'photos',
+                title: new TranslatableMessage('Photos'),
+                description: new TranslatableMessage('Photos from all activities'),
             ),
         );
     }

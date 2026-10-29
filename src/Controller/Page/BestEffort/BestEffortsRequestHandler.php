@@ -21,7 +21,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -37,7 +37,6 @@ final readonly class BestEffortsRequestHandler
         private Theme $theme,
         private PageRenderer $pageRenderer,
         private SettingsRepository $settingsRepository,
-        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -53,9 +52,9 @@ final readonly class BestEffortsRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::BEST_EFFORTS,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('best_efforts'),
-                title: $this->translator->trans('Best efforts'),
-                description: $this->translator->trans('Fastest times over standard distances per activity type'),
+                route: 'best_efforts',
+                title: new TranslatableMessage('Best efforts'),
+                description: new TranslatableMessage('Fastest times over standard distances per activity type'),
             ),
         );
     }

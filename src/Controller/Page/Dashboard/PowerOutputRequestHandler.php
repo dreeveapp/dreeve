@@ -27,7 +27,7 @@ use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\Years;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -42,7 +42,6 @@ final readonly class PowerOutputRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -59,9 +58,9 @@ final readonly class PowerOutputRequestHandler
             render: fn (): ?string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('dashboard_power_output'),
-                title: $this->translator->trans('Peak power outputs'),
-                description: $this->translator->trans('Peak power outputs over different durations'),
+                route: 'dashboard_power_output',
+                title: new TranslatableMessage('Peak power outputs'),
+                description: new TranslatableMessage('Peak power outputs over different durations'),
             ),
         );
     }

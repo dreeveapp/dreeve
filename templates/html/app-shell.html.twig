@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{ metadata.getTitle() }} | {{ appName }}</title>
+    <title>{{ metadata.title }} | {{ appName }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <meta property="og:site_name" content="{{ appName }}">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="{{ metadata.getTitle() }}">
-    <meta property="og:url" content="{{ absoluteUrl(metadata.getPath()) }}">
-    <meta property="og:description" content="{{ metadata.getDescription() }}">
-    <meta name="description" content="{{ metadata.getDescription() }}">
-    {% if metadata.getImagePath() %}
-    <meta property="og:image" content="{{ absoluteUrl(metadata.getImagePath()) }}">
+    <meta property="og:title" content="{{ metadata.title }}">
+    <meta property="og:url" content="{{ absoluteUrl(metadata.path) }}">
+    <meta property="og:description" content="{{ metadata.description }}">
+    <meta name="description" content="{{ metadata.description }}">
+    {% if metadata.imagePath %}
+    <meta property="og:image" content="{{ absoluteUrl(metadata.imagePath) }}">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">

@@ -15,8 +15,7 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -27,8 +26,6 @@ final readonly class MilestonesRequestHandler
         private ActivityRepository $activityRepository,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -49,9 +46,9 @@ final readonly class MilestonesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::MILESTONES,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('milestones'),
-                title: $this->translator->trans('Milestones'),
-                description: $this->translator->trans('Milestones reached over time'),
+                route: 'milestones',
+                title: new TranslatableMessage('Milestones'),
+                description: new TranslatableMessage('Milestones reached over time'),
             ),
         );
     }

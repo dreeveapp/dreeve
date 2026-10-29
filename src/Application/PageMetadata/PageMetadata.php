@@ -4,33 +4,47 @@ declare(strict_types=1);
 
 namespace App\Application\PageMetadata;
 
+use Symfony\Contracts\Translation\TranslatableInterface;
+
 final readonly class PageMetadata
 {
+    /**
+     * @param array<string, string|int> $routeParams
+     */
     public function __construct(
-        private string $path,
-        private string $title,
-        private string $description,
-        private ?string $imagePath = null,
+        private string $route,
+        private string|TranslatableInterface $title,
+        private string|TranslatableInterface $description,
+        private array $routeParams = [],
+        private ?string $imageRoute = null,
     ) {
     }
 
-    public function getPath(): string
+    public function getRoute(): string
     {
-        return $this->path;
+        return $this->route;
     }
 
-    public function getTitle(): string
+    /**
+     * @return array<string, string|int>
+     */
+    public function getRouteParams(): array
+    {
+        return $this->routeParams;
+    }
+
+    public function getTitle(): string|TranslatableInterface
     {
         return $this->title;
     }
 
-    public function getDescription(): string
+    public function getDescription(): string|TranslatableInterface
     {
         return $this->description;
     }
 
-    public function getImagePath(): ?string
+    public function getImageRoute(): ?string
     {
-        return $this->imagePath;
+        return $this->imageRoute;
     }
 }

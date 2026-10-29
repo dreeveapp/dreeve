@@ -16,7 +16,7 @@ use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -30,7 +30,6 @@ final readonly class RewindRequestHandler
         private RewindItemsBuilder $rewindItemsBuilder,
         private PageRenderer $pageRenderer,
         private Environment $twig,
-        private UrlGeneratorInterface $urlGenerator,
         private TranslatorInterface $translator,
     ) {
     }
@@ -56,11 +55,12 @@ final readonly class RewindRequestHandler
             render: fn (): string => $this->renderFor($rewindOption),
             navigationSection: NavigationSection::REWIND,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('rewind', ['rewindOption' => $rewindOption]),
+                route: 'rewind',
+                routeParams: ['rewindOption' => $rewindOption],
                 title: $this->labelFor($rewindOption),
                 description: FindAvailableRewindOptions::ALL_TIME === $rewindOption
-                    ? $this->translator->trans('A look back at all activities')
-                    : $this->translator->trans('A look back at {year}', ['{year}' => $rewindOption]),
+                    ? new TranslatableMessage('A look back at all activities')
+                    : new TranslatableMessage('A look back at {year}', ['{year}' => $rewindOption]),
             ),
         );
     }

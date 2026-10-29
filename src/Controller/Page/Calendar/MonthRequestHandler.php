@@ -22,8 +22,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -37,8 +36,6 @@ final readonly class MonthRequestHandler
         private Clock $clock,
         private PageRenderer $pageRenderer,
         private Environment $twig,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -68,9 +65,10 @@ final readonly class MonthRequestHandler
             render: fn (): string => $this->renderFor($month),
             navigationSection: NavigationSection::MONTHLY_STATS,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('monthly_stats_month', ['month' => $month->getId()]),
+                route: 'monthly_stats_month',
+                routeParams: ['month' => $month->getId()],
                 title: $month->getLabel(),
-                description: $this->translator->trans('Activities and statistics for {month}', ['{month}' => $month->getLabel()]),
+                description: new TranslatableMessage('Activities and statistics for {month}', ['{month}' => $month->getLabel()]),
             ),
         );
     }

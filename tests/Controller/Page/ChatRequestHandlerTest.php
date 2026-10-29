@@ -30,8 +30,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class ChatRequestHandlerTest extends AdminWebTestCase
@@ -254,8 +252,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
             markdownRenderer: new MarkdownRenderer(),
-            urlGenerator: $this->getContainer()->get(UrlGeneratorInterface::class),
-            translator: $this->getContainer()->get(TranslatorInterface::class),
         );
     }
 
@@ -273,8 +269,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
             markdownRenderer: new MarkdownRenderer(),
-            urlGenerator: $this->getContainer()->get(UrlGeneratorInterface::class),
-            translator: $this->getContainer()->get(TranslatorInterface::class),
         );
     }
 

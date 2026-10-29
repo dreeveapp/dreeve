@@ -23,8 +23,7 @@ use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -37,8 +36,6 @@ final readonly class RecordingDevicesRequestHandler
         private Clock $clock,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private UrlGeneratorInterface $urlGenerator,
-        private TranslatorInterface $translator,
     ) {
     }
 
@@ -58,9 +55,9 @@ final readonly class RecordingDevicesRequestHandler
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
             metadata: new PageMetadata(
-                path: $this->urlGenerator->generate('gear_recording_devices'),
-                title: $this->translator->trans('Recording devices'),
-                description: $this->translator->trans('Statistics per device used to record activities'),
+                route: 'gear_recording_devices',
+                title: new TranslatableMessage('Recording devices'),
+                description: new TranslatableMessage('Statistics per device used to record activities'),
             ),
         );
     }
