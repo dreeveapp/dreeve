@@ -18,7 +18,6 @@ use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -63,7 +62,6 @@ final readonly class BestEffortsHistoryRequestHandler
             navigationSection: NavigationSection::BEST_EFFORTS,
             metadata: new PageMetadata(
                 title: sprintf('%s - %s - %s', $this->translator->trans('Best efforts', domain: 'metadata'), $activityType->trans($this->translator), $distanceLabel),
-                description: new TranslatableMessage('History of best efforts over {distance}', ['{distance}' => $distanceLabel], domain: 'metadata'),
             ),
         );
     }

@@ -47,7 +47,9 @@ final readonly class AppShell
             'content' => $content,
             'metadata' => [
                 'title' => $this->translate($metadata->getTitle()),
-                'description' => $this->translate($metadata->getDescription()),
+                'description' => null !== $metadata->getDescription()
+                    ? $this->translate($metadata->getDescription())
+                    : implode(' · ', array_filter([(string) $general->getAthlete()->getName(), (string) $general->getAppSubTitle()])),
                 'path' => $this->urlGenerator->generate($request->attributes->getString('_route'), $request->attributes->all('_route_params')),
                 'imagePath' => $metadata->getImagePath(),
             ],

@@ -63,7 +63,6 @@ final readonly class RewindCompareRequestHandler
             navigationSection: NavigationSection::REWIND,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('{left} vs {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel], domain: 'metadata'),
-                description: new TranslatableMessage('Compare {left} with {right}', ['{left}' => $leftLabel, '{right}' => $rightLabel], domain: 'metadata'),
             ),
         );
     }

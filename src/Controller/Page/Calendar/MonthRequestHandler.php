@@ -22,7 +22,6 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Translation\TranslatableMessage;
 use Twig\Environment;
 
 #[AsController]
@@ -66,7 +65,6 @@ final readonly class MonthRequestHandler
             navigationSection: NavigationSection::MONTHLY_STATS,
             metadata: new PageMetadata(
                 title: $month->getLabel(),
-                description: new TranslatableMessage('Activities and statistics for {month}', ['{month}' => $month->getLabel()], domain: 'metadata'),
             ),
         );
     }

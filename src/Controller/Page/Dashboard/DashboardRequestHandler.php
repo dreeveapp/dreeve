@@ -43,7 +43,6 @@ final readonly class DashboardRequestHandler
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Dashboard', domain: 'metadata'),
-                description: new TranslatableMessage('An overview of all activities, training load and statistics', domain: 'metadata'),
             ),
         );
     }

@@ -57,7 +57,6 @@ final readonly class ChatRequestHandler
             navigationSection: null,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Virtual workout assistant', domain: 'metadata'),
-                description: new TranslatableMessage('Chat with an AI assistant about your training', domain: 'metadata'),
             ),
         ));
     }

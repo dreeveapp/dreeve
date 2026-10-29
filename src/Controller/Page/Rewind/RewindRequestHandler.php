@@ -16,7 +16,6 @@ use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -56,9 +55,6 @@ final readonly class RewindRequestHandler
             navigationSection: NavigationSection::REWIND,
             metadata: new PageMetadata(
                 title: $this->labelFor($rewindOption),
-                description: FindAvailableRewindOptions::ALL_TIME === $rewindOption
-                    ? new TranslatableMessage('A look back at all activities', domain: 'metadata')
-                    : new TranslatableMessage('A look back at {year}', ['{year}' => $rewindOption], domain: 'metadata'),
             ),
         );
     }

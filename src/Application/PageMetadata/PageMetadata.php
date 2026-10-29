@@ -10,7 +10,7 @@ final readonly class PageMetadata
 {
     public function __construct(
         private string|TranslatableInterface $title,
-        private string|TranslatableInterface $description,
+        private string|TranslatableInterface|null $description = null,
         private ?string $imagePath = null,
     ) {
     }
@@ -20,7 +20,7 @@ final readonly class PageMetadata
         return $this->title;
     }
 
-    public function getDescription(): string|TranslatableInterface
+    public function getDescription(): string|TranslatableInterface|null
     {
         return $this->description;
     }

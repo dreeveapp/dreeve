@@ -56,7 +56,6 @@ final readonly class ActivitiesRequestHandler
             navigationSection: NavigationSection::ACTIVITIES,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Activities', domain: 'metadata'),
-                description: new TranslatableMessage('A searchable list of all recorded activities', domain: 'metadata'),
             ),
         );
     }

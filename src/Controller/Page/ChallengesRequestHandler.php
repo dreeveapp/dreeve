@@ -39,7 +39,6 @@ final readonly class ChallengesRequestHandler
             navigationSection: NavigationSection::CHALLENGES,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Challenges', domain: 'metadata'),
-                description: new TranslatableMessage('All completed challenges', domain: 'metadata'),
             ),
         );
     }

@@ -44,7 +44,6 @@ final readonly class HeatmapRequestHandler
             navigationSection: NavigationSection::HEATMAP,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Heatmap', domain: 'metadata'),
-                description: new TranslatableMessage('A heatmap of all recorded routes', domain: 'metadata'),
             ),
         );
     }

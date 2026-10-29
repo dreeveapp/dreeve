@@ -59,7 +59,6 @@ final readonly class PowerOutputRequestHandler
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Peak power outputs', domain: 'metadata'),
-                description: new TranslatableMessage('Peak power outputs over different durations', domain: 'metadata'),
             ),
         );
     }

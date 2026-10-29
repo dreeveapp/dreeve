@@ -47,7 +47,6 @@ final readonly class MonthlyStatsRequestHandler
             navigationSection: NavigationSection::MONTHLY_STATS,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Monthly stats', domain: 'metadata'),
-                description: new TranslatableMessage('Activities and statistics per month', domain: 'metadata'),
             ),
         );
     }

@@ -55,7 +55,6 @@ final readonly class TrainingLoadRequestHandler
             navigationSection: NavigationSection::DASHBOARD,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Training Load Analysis', domain: 'metadata'),
-                description: new TranslatableMessage('Fitness, fatigue and form based on training load', domain: 'metadata'),
             ),
         );
     }

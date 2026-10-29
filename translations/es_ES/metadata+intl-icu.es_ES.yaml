@@ -1,43 +1,20 @@
-'A heatmap of all recorded routes': 'A heatmap of all recorded routes'
-'A look back at all activities': 'A look back at all activities'
-'A look back at {year}': 'A look back at {year}'
-'A searchable list of all recorded activities': 'A searchable list of all recorded activities'
 Activities: Actividades
-'Activities and statistics for {month}': 'Activities and statistics for {month}'
-'Activities and statistics per month': 'Activities and statistics per month'
-'All completed challenges': 'All completed challenges'
-'All segments and the efforts on them': 'All segments and the efforts on them'
 'All time': 'De todos los tiempos'
-'An overview of all activities, training load and statistics': 'An overview of all activities, training load and statistics'
 Badges: Insignias
 'Best efforts': 'Mejores esfuerzos'
 Challenges: Retos
-'Chat with an AI assistant about your training': 'Chat with an AI assistant about your training'
-'Compare {left} with {right}': 'Compare {left} with {right}'
 Dashboard: 'Panel de control'
-'Distance, time and usage statistics per piece of gear': 'Distance, time and usage statistics per piece of gear'
-'Dynamically generated badges to embed anywhere': 'Dynamically generated badges to embed anywhere'
 Eddington: Eddington
-'Fastest times over standard distances per activity type': 'Fastest times over standard distances per activity type'
-'Fitness, fatigue and form based on training load': 'Fitness, fatigue and form based on training load'
 Gear: Equipamiento
 Heatmap: 'Mapa de calor'
-'History of best efforts over {distance}': 'History of best efforts over {distance}'
 Maintenance: Mantenimiento
-'Maintenance tasks and their progress per piece of gear': 'Maintenance tasks and their progress per piece of gear'
 Milestones: Hitos
-'Milestones reached over time': 'Milestones reached over time'
 'Monthly stats': 'Estadísticas mensuales'
 'Peak power outputs': 'Picos de potencia'
-'Peak power outputs over different durations': 'Peak power outputs over different durations'
 Photos: Fotos
-'Photos from all activities': 'Photos from all activities'
 'Recording devices': 'Dispositivos de grabación'
 Rewind: Rewind
 Segments: Segmentos
-'Statistics per device used to record activities': 'Statistics per device used to record activities'
-'The Eddington number per activity type': 'The Eddington number per activity type'
-'The fastest efforts on this segment': 'The fastest efforts on this segment'
 'Training Load Analysis': 'Análisis de la carga de entrenamiento'
 'Virtual workout assistant': 'Asistente de entrenamiento virtual'
 '{left} vs {right}': '{left} vs {right}'

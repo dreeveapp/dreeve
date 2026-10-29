@@ -47,7 +47,6 @@ final readonly class MilestonesRequestHandler
             navigationSection: NavigationSection::MILESTONES,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Milestones', domain: 'metadata'),
-                description: new TranslatableMessage('Milestones reached over time', domain: 'metadata'),
             ),
         );
     }

@@ -72,7 +72,6 @@ final readonly class GearStatsRequestHandler
             navigationSection: NavigationSection::GEAR,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Gear', domain: 'metadata'),
-                description: new TranslatableMessage('Distance, time and usage statistics per piece of gear', domain: 'metadata'),
             ),
         );
     }
