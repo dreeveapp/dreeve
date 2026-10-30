@@ -266,31 +266,15 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
         $this->eventBus->publishEvents($activity->getRecordedEvents());
     }
 
-    public function delete(ActivityId $activityId): void
+    public function delete(Activity $activity): void
     {
-        // The start date determines which year scoped cache tags need to be invalidated,
-        // so it has to be read before the row is gone.
-        $startDateTime = $this->connection->executeQuery(
-            'SELECT startDateTime FROM Activity WHERE activityId = :activityId',
-            ['activityId' => (string) $activityId],
-        )->fetchOne();
-
         $sql = 'DELETE FROM Activity WHERE activityId = :activityId';
 
         $this->connection->executeStatement($sql, [
-            'activityId' => $activityId,
+            'activityId' => $activity->getId(),
         ]);
 
-        if (false === $startDateTime) {
-            return;
-        }
-
-        $this->eventBus->publishEvents([
-            new ActivityWasDeleted(
-                activityId: $activityId,
-                startDate: SerializableDateTime::fromString((string) $startDateTime)
-            ),
-        ]);
+        $this->eventBus->publishEvents($activity->getRecordedEvents());
     }
 
     public function markActivitiesForDeletion(ActivityIds $activityIds): void

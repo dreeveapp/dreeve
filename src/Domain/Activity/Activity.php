@@ -343,6 +343,14 @@ final class Activity
         );
     }
 
+    public function delete(): void
+    {
+        $this->recordThat(new ActivityWasDeleted(
+            activityId: $this->getId(),
+            startDate: $this->getStartDate(),
+        ));
+    }
+
     public function getId(): ActivityId
     {
         return $this->activityId;

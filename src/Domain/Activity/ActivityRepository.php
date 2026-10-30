@@ -27,7 +27,7 @@ interface ActivityRepository
 
     public function update(ActivityWithRawData $activityWithRawData): void;
 
-    public function delete(ActivityId $activityId): void;
+    public function delete(Activity $activity): void;
 
     public function markActivitiesForDeletion(ActivityIds $activityIds): void;
 }
