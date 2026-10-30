@@ -59,7 +59,7 @@ class NonEmptyStringLiteralTest extends TestCase
         yield 'padded with extra spaces' => [' Hello   World ', 'helloWorld', 'HelloWorld', 'hello_world', 'hello-world'];
         yield 'dashes' => ['hello-world', 'helloWorld', 'HelloWorld', 'hello_world', 'hello-world'];
         yield 'underscores' => ['hello_world', 'helloWorld', 'HelloWorld', 'hello_world', 'hello-world'];
-        yield 'camelCase input' => ['helloWorld', 'helloWorld', 'HelloWorld', 'helloworld', 'helloworld'];
+        yield 'camelCase input' => ['helloWorld', 'helloWorld', 'HelloWorld', 'hello_world', 'helloworld'];
         yield 'leading and trailing spaces' => ['  leading and trailing  ', 'leadingAndTrailing', 'LeadingAndTrailing', 'leading_and_trailing', 'leading-and-trailing'];
         yield 'multiple spaces' => ['multiple   spaces', 'multipleSpaces', 'MultipleSpaces', 'multiple_spaces', 'multiple-spaces'];
         yield 'special characters' => ['special@#characters!', 'specialCharacters', 'SpecialCharacters', 'special_characters', 'special-characters'];

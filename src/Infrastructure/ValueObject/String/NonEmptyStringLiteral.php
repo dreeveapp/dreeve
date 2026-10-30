@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\ValueObject\String;
 
+use function Symfony\Component\String\u;
+
 abstract readonly class NonEmptyStringLiteral implements \JsonSerializable, \Stringable
 {
     private const string ENCODING = 'UTF-8';
@@ -49,46 +51,29 @@ abstract readonly class NonEmptyStringLiteral implements \JsonSerializable, \Str
 
     public function camelCase(): string
     {
-        $words = array_map(fn (string $word): string => mb_strtoupper(mb_substr($word, 0, 1, self::ENCODING), self::ENCODING).mb_substr($word, 1, null, self::ENCODING), $this->words());
-
-        $word = implode('', $words);
-
-        return mb_strtolower(mb_substr($word, 0, 1, self::ENCODING), self::ENCODING).mb_substr($word, 1, null, self::ENCODING);
+        return (string) u($this->value)->camel();
     }
 
     public function studlyCase(): string
     {
-        $words = array_map(fn (string $word): string => mb_strtoupper(mb_substr($word, 0, 1, self::ENCODING), self::ENCODING).mb_substr($word, 1, null, self::ENCODING), $this->words());
-
-        return implode('', $words);
+        return $this->pascalCase();
     }
 
     public function pascalCase(): string
     {
-        return $this->studlyCase();
+        return (string) u($this->value)->pascal();
     }
 
     public function snakeCase(): string
     {
-        $words = array_map(fn (string $word): string => mb_strtolower($word, self::ENCODING), $this->words());
-
-        return implode('_', $words);
+        return (string) u($this->value)->snake();
     }
 
     public function kebabCase(): string
     {
-        $words = array_map(fn (string $word): string => mb_strtolower($word, self::ENCODING), $this->words());
-
-        return implode('-', $words);
-    }
-
-    /**
-     * @return string[]
-     */
-    private function words(): array
-    {
+        // Not Symfony's kebab(): it turns "Garmin Edge 530" into "garmin-edge530" and "iPhone" into "i-phone", which would change persisted ids.
         preg_match_all('/[\p{L}0-9]+/u', $this->value, $matches);
 
-        return array_filter($matches[0]);
+        return mb_strtolower(implode('-', $matches[0]), self::ENCODING);
     }
 }
