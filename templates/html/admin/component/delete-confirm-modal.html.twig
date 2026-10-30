@@ -4,9 +4,11 @@
         {% block hidden_fields %}{% endblock %}
         <div data-form-error class="form-error hidden" role="alert"></div>
         <div class="flex items-start gap-3">
-            <span class="grid place-items-center size-10 shrink-0 rounded-full bg-red-100 text-red-600" aria-hidden="true">
-                {{ svg('trash') }}
-            </span>
+            {% block icon %}
+                <span class="grid place-items-center size-10 shrink-0 rounded-full bg-red-100 text-red-600" aria-hidden="true">
+                    {{ svg('trash') }}
+                </span>
+            {% endblock %}
             <div class="space-y-1 text-sm text-gray-600">
                 {% block message %}{% endblock %}
             </div>
@@ -15,8 +17,8 @@
         <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
             <a href="{{ closeUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
             <button type="submit" data-has-loading-state class="group btn--danger">
-                <span class="label">{{ "Delete"|trans({}, 'admin') }}</span>
-                <span class="label--loading">{{ "Deleting..."|trans({}, 'admin') }}</span>
+                <span class="label">{% block submit_label %}{{ "Delete"|trans({}, 'admin') }}{% endblock %}</span>
+                <span class="label--loading">{% block submit_loading_label %}{{ "Deleting..."|trans({}, 'admin') }}{% endblock %}</span>
             </button>
         </div>
     </form>
