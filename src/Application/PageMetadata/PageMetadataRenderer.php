@@ -67,6 +67,7 @@ final readonly class PageMetadataRenderer
         return $this->twig->load('html/page-metadata.html.twig')->render([
             'title' => $this->translate($metadata->getTitle()),
             'description' => $this->translate($description ?? ''),
+            'locale' => $this->translator->getLocale(),
             'path' => $this->urlGenerator->generate(
                 name: $request->attributes->getString('_route'),
                 parameters: $request->attributes->all('_route_params')

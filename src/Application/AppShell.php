@@ -35,6 +35,7 @@ final readonly class AppShell
 
         return $this->twig->load('html/app-shell.html.twig')->render([
             'content' => $content,
+            'locale' => $this->localeSwitcher->getLocale(),
             'pageMetadata' => $this->pageMetadataRenderer->render($metadata),
             'sidebar' => $this->sideBar->render($navigationSection),
             'athlete' => $general->getAthlete(),

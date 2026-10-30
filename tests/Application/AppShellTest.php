@@ -36,6 +36,8 @@ class AppShellTest extends ContainerTestCase
             ),
         );
 
+        $this->assertStringContainsString('<html lang="en-US">', $render);
+        $this->assertStringContainsString('<meta property="og:locale" content="en_US">', $render);
         $this->assertStringContainsString('<title>Morning Run | Dreeve</title>', $render);
         $this->assertStringContainsString('<meta property="og:title" content="Morning Run">', $render);
         $this->assertStringContainsString('<meta property="og:description" content="15 activities">', $render);
