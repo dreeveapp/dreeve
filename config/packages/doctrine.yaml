@@ -3,11 +3,8 @@ doctrine:
     url: '%env(sqlite_db_url:DATABASE_DIRECTORY)%'
     profiling_collect_backtrace: false
   orm:
-    enable_native_lazy_objects: true
     validate_xml_mapping: true
     naming_strategy: Linkin\Component\DoctrineNamingStrategy\ORM\Mapping\CamelCaseNamingStrategy
-    identity_generation_preferences:
-      Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
     auto_mapping: true
     mappings:
       App:
@@ -21,8 +18,6 @@ doctrine:
         dir: "%kernel.project_dir%/config/packages/doctrine"
         prefix: Money
         is_bundle: false
-    controller_resolver:
-      auto_mapping: false
 
 when@test:
   doctrine:
