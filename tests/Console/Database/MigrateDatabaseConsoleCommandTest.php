@@ -4,12 +4,11 @@ namespace App\Tests\Console\Database;
 
 use App\Console\Database\MigrateDatabaseConsoleCommand;
 use App\Infrastructure\Doctrine\Migrations\CouldNotRunMigrations;
-use App\Infrastructure\Doctrine\Migrations\MigrationRunner;
 use App\Infrastructure\Doctrine\Migrations\MigrationsOutdated;
 use App\Tests\Console\ConsoleCommandTestCase;
+use App\Tests\Infrastructure\Doctrine\Migrations\MigrationRunnerStub;
 use App\Tests\Infrastructure\Doctrine\Migrations\VoidMigrationRunner;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class MigrateDatabaseConsoleCommandTest extends ConsoleCommandTestCase
@@ -28,17 +27,7 @@ class MigrateDatabaseConsoleCommandTest extends ConsoleCommandTestCase
     public function testExecuteReturnsFailureWhenMigrationsOutdated(): void
     {
         $this->migrateDatabaseConsoleCommand = new MigrateDatabaseConsoleCommand(
-            new class implements MigrationRunner {
-                public function run(OutputInterface $output): void
-                {
-                    throw new MigrationsOutdated();
-                }
-
-                public function isAtLatestVersion(): bool
-                {
-                    return false;
-                }
-            },
+            new MigrationRunnerStub(runException: new MigrationsOutdated()),
         );
 
         $command = $this->getCommandInApplication('app:db:migrate');
@@ -52,17 +41,7 @@ class MigrateDatabaseConsoleCommandTest extends ConsoleCommandTestCase
     public function testExecuteReturnsFailureWhenMigrationsCouldNotRun(): void
     {
         $this->migrateDatabaseConsoleCommand = new MigrateDatabaseConsoleCommand(
-            new class implements MigrationRunner {
-                public function run(OutputInterface $output): void
-                {
-                    throw new CouldNotRunMigrations('Boom');
-                }
-
-                public function isAtLatestVersion(): bool
-                {
-                    return false;
-                }
-            },
+            new MigrationRunnerStub(runException: new CouldNotRunMigrations('Boom')),
         );
 
         $command = $this->getCommandInApplication('app:db:migrate');
