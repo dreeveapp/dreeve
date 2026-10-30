@@ -3,13 +3,12 @@
 namespace App\Tests\Console\Database;
 
 use App\Console\Database\WaitForDatabaseSchemaConsoleCommand;
-use App\Infrastructure\Doctrine\Migrations\MigrationRunner;
 use App\Tests\Console\ConsoleCommandTestCase;
+use App\Tests\Infrastructure\Doctrine\Migrations\MigrationRunnerStub;
 use App\Tests\Infrastructure\Time\Sleep\NullSleep;
 use Doctrine\DBAL\Driver\SQLite3\Exception;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
@@ -19,8 +18,6 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testExecuteReturnsSuccessWhenSchemaIsUpToDate(): void
     {
-        $this->buildCommandThatIsAtLatestVersionAfter(0);
-
         $command = $this->getCommandInApplication('app:db:wait-for-schema');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
@@ -31,7 +28,10 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testExecuteWaitsUntilTheMigratingContainerIsDone(): void
     {
-        $this->buildCommandThatIsAtLatestVersionAfter(3);
+        $this->waitForDatabaseSchemaConsoleCommand = new WaitForDatabaseSchemaConsoleCommand(
+            new MigrationRunnerStub(numberOfChecksBeforeLatestVersion: 3),
+            $this->sleep,
+        );
 
         $command = $this->getCommandInApplication('app:db:wait-for-schema');
         $commandTester = new CommandTester($command);
@@ -44,22 +44,9 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
     public function testExecuteKeepsWaitingWhenTheDatabaseCannotBeReachedYet(): void
     {
         $this->waitForDatabaseSchemaConsoleCommand = new WaitForDatabaseSchemaConsoleCommand(
-            new class implements MigrationRunner {
-                private int $numberOfChecks = 0;
-
-                public function run(OutputInterface $output): void
-                {
-                }
-
-                public function isAtLatestVersion(): bool
-                {
-                    if (1 === ++$this->numberOfChecks) {
-                        throw new ConnectionException(new Exception('unable to open database file'), null);
-                    }
-
-                    return true;
-                }
-            },
+            new MigrationRunnerStub(
+                firstCheckException: new ConnectionException(new Exception('unable to open database file'), null),
+            ),
             $this->sleep,
         );
 
@@ -73,7 +60,10 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
 
     public function testExecuteReturnsFailureWhenSchemaDoesNotBecomeUpToDate(): void
     {
-        $this->buildCommandThatIsAtLatestVersionAfter(PHP_INT_MAX);
+        $this->waitForDatabaseSchemaConsoleCommand = new WaitForDatabaseSchemaConsoleCommand(
+            new MigrationRunnerStub(numberOfChecksBeforeLatestVersion: PHP_INT_MAX),
+            $this->sleep,
+        );
 
         $command = $this->getCommandInApplication('app:db:wait-for-schema');
         $commandTester = new CommandTester($command);
@@ -84,37 +74,16 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
         $this->assertStringContainsString('still not up to date after 300 seconds', $commandTester->getDisplay());
     }
 
-    private function buildCommandThatIsAtLatestVersionAfter(int $numberOfChecks): void
-    {
-        $this->waitForDatabaseSchemaConsoleCommand = new WaitForDatabaseSchemaConsoleCommand(
-            new class($numberOfChecks) implements MigrationRunner {
-                private int $numberOfChecks = 0;
-
-                public function __construct(
-                    private readonly int $numberOfChecksBeforeLatestVersion,
-                ) {
-                }
-
-                public function run(OutputInterface $output): void
-                {
-                }
-
-                public function isAtLatestVersion(): bool
-                {
-                    return $this->numberOfChecks++ >= $this->numberOfChecksBeforeLatestVersion;
-                }
-            },
-            $this->sleep,
-        );
-    }
-
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->sleep = new NullSleep();
-        $this->buildCommandThatIsAtLatestVersionAfter(0);
+        $this->waitForDatabaseSchemaConsoleCommand = new WaitForDatabaseSchemaConsoleCommand(
+            new MigrationRunnerStub(),
+            $this->sleep,
+        );
     }
 
     protected function getConsoleCommand(): Command
