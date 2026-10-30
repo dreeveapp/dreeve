@@ -55,7 +55,8 @@ class GearMaintenanceInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->gearMaintenanceLogRepository->add($log);
         $this->warmUpRenderCache();
 
-        $this->gearMaintenanceLogRepository->delete($log->getId());
+        $log->delete();
+        $this->gearMaintenanceLogRepository->delete($log);
 
         $this->assertFalse($this->isServedFromCache());
     }

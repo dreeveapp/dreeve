@@ -68,13 +68,13 @@ final readonly class DbalGearMaintenanceLogRepository extends DbalRepository imp
         return $this->hydrate($result);
     }
 
-    public function delete(GearMaintenanceLogId $gearMaintenanceLogId): void
+    public function delete(GearMaintenanceLog $gearMaintenanceLog): void
     {
         $this->connection->executeStatement(
             'DELETE FROM GearMaintenanceLog WHERE gearMaintenanceLogId = :gearMaintenanceLogId',
-            ['gearMaintenanceLogId' => $gearMaintenanceLogId]
+            ['gearMaintenanceLogId' => $gearMaintenanceLog->getId()]
         );
-        $this->eventBus->publishEvents([new GearMaintenanceLogWasUpdated()]);
+        $this->eventBus->publishEvents($gearMaintenanceLog->getRecordedEvents());
     }
 
     public function existsForGear(GearId $gearId): bool
