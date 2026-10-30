@@ -7,6 +7,7 @@ namespace App\Domain\Gear\Maintenance\Log\DeleteGearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\Exception\EntityNotFound;
 
 final readonly class DeleteGearMaintenanceLogCommandHandler implements CommandHandler
 {
@@ -19,6 +20,13 @@ final readonly class DeleteGearMaintenanceLogCommandHandler implements CommandHa
     {
         assert($command instanceof DeleteGearMaintenanceLog);
 
-        $this->gearMaintenanceLogRepository->delete($command->getGearMaintenanceLogId());
+        try {
+            $gearMaintenanceLog = $this->gearMaintenanceLogRepository->find($command->getGearMaintenanceLogId());
+        } catch (EntityNotFound) {
+            return;
+        }
+
+        $gearMaintenanceLog->delete();
+        $this->gearMaintenanceLogRepository->delete($gearMaintenanceLog);
     }
 }

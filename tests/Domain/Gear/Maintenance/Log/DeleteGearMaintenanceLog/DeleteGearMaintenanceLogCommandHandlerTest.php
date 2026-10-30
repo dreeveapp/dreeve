@@ -36,6 +36,10 @@ class DeleteGearMaintenanceLogCommandHandlerTest extends ContainerTestCase
             GearMaintenanceLogs::empty(),
             $this->gearMaintenanceLogRepository->findAll(),
         );
+
+        $this->commandBus->dispatch(DeleteGearMaintenanceLog::fromPayload([
+            'gearMaintenanceLogId' => (string) $log->getId(),
+        ]));
     }
 
     #[\Override]

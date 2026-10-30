@@ -75,6 +75,11 @@ final class GearMaintenanceLog
         return $clone;
     }
 
+    public function delete(): void
+    {
+        $this->recordThat(new GearMaintenanceLogWasUpdated());
+    }
+
     public function getId(): GearMaintenanceLogId
     {
         return $this->gearMaintenanceLogId;

@@ -111,7 +111,8 @@ class DbalGearMaintenanceLogRepositoryTest extends ContainerTestCase
         );
         $this->gearMaintenanceLogRepository->add($log);
 
-        $this->gearMaintenanceLogRepository->delete($log->getId());
+        $log->delete();
+        $this->gearMaintenanceLogRepository->delete($log);
 
         $this->assertEquals(
             GearMaintenanceLogs::empty(),

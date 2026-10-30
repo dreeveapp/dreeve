@@ -15,7 +15,7 @@ interface GearMaintenanceLogRepository
 
     public function find(GearMaintenanceLogId $gearMaintenanceLogId): GearMaintenanceLog;
 
-    public function delete(GearMaintenanceLogId $gearMaintenanceLogId): void;
+    public function delete(GearMaintenanceLog $gearMaintenanceLog): void;
 
     public function findAll(): GearMaintenanceLogs;
 
