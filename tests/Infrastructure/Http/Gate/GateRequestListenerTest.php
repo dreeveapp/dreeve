@@ -2,7 +2,6 @@
 
 namespace App\Tests\Infrastructure\Http\Gate;
 
-use App\Infrastructure\Http\Gate\Gate;
 use App\Infrastructure\Http\Gate\GateDecision;
 use App\Infrastructure\Http\Gate\GateRequestListener;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,9 +17,9 @@ class GateRequestListenerTest extends TestCase
     {
         $redirect = new RedirectResponse('/gated');
         $listener = new GateRequestListener([
-            $this->gate(GateDecision::defer()),
-            $this->gate(GateDecision::respond($redirect)),
-            $this->gate(GateDecision::respond(new RedirectResponse('/never-reached'))),
+            new GateStub(GateDecision::defer()),
+            new GateStub(GateDecision::respond($redirect)),
+            new GateStub(GateDecision::respond(new RedirectResponse('/never-reached'))),
         ]);
 
         $event = new RequestEvent(
@@ -38,9 +37,9 @@ class GateRequestListenerTest extends TestCase
         /** @var \ArrayObject<int, string> $calls */
         $calls = new \ArrayObject();
         $listener = new GateRequestListener([
-            $this->recordingGate($calls, 'first', GateDecision::defer()),
-            $this->recordingGate($calls, 'second', GateDecision::respond(new RedirectResponse('/gated'))),
-            $this->recordingGate($calls, 'third', GateDecision::respond(new RedirectResponse('/never-reached'))),
+            new GateStub(calls: $calls, name: 'first', decision: GateDecision::defer()),
+            new GateStub(calls: $calls, name: 'second', decision: GateDecision::respond(new RedirectResponse('/gated'))),
+            new GateStub(calls: $calls, name: 'third', decision: GateDecision::respond(new RedirectResponse('/never-reached'))),
         ]);
 
         $event = new RequestEvent(
@@ -60,8 +59,8 @@ class GateRequestListenerTest extends TestCase
         /** @var \ArrayObject<int, string> $calls */
         $calls = new \ArrayObject();
         $listener = new GateRequestListener([
-            $this->recordingGate($calls, 'first', GateDecision::allow()),
-            $this->recordingGate($calls, 'second', GateDecision::respond(new RedirectResponse('/never-reached'))),
+            new GateStub(calls: $calls, name: 'first', decision: GateDecision::allow()),
+            new GateStub(calls: $calls, name: 'second', decision: GateDecision::respond(new RedirectResponse('/never-reached'))),
         ]);
 
         $event = new RequestEvent(
@@ -79,7 +78,7 @@ class GateRequestListenerTest extends TestCase
 
     public function testItLetsTheRequestThroughWhenNoGateIntercepts(): void
     {
-        $listener = new GateRequestListener([$this->gate(GateDecision::defer()), $this->gate(GateDecision::defer())]);
+        $listener = new GateRequestListener([new GateStub(GateDecision::defer()), new GateStub(GateDecision::defer())]);
 
         $event = new RequestEvent(
             kernel: $this->createStub(HttpKernelInterface::class),
@@ -94,7 +93,7 @@ class GateRequestListenerTest extends TestCase
     #[DataProvider('provideAlwaysOpenPaths')]
     public function testItNeverGatesAlwaysOpenPaths(string $path): void
     {
-        $listener = new GateRequestListener([$this->gate(GateDecision::respond(new RedirectResponse('/gated')))]);
+        $listener = new GateRequestListener([new GateStub(GateDecision::respond(new RedirectResponse('/gated')))]);
 
         $event = new RequestEvent(
             kernel: $this->createStub(HttpKernelInterface::class),
@@ -121,7 +120,7 @@ class GateRequestListenerTest extends TestCase
 
     public function testItDoesNothingForSubRequests(): void
     {
-        $listener = new GateRequestListener([$this->gate(GateDecision::respond(new RedirectResponse('/gated')))]);
+        $listener = new GateRequestListener([new GateStub(GateDecision::respond(new RedirectResponse('/gated')))]);
 
         $event = new RequestEvent(
             kernel: $this->createStub(HttpKernelInterface::class),
@@ -131,44 +130,5 @@ class GateRequestListenerTest extends TestCase
         $listener->onKernelRequest($event);
 
         $this->assertNull($event->getResponse());
-    }
-
-    private function gate(GateDecision $decision): Gate
-    {
-        return new readonly class($decision) implements Gate {
-            public function __construct(private GateDecision $decision)
-            {
-            }
-
-            public function handle(Request $request): GateDecision
-            {
-                return $this->decision;
-            }
-        };
-    }
-
-    /**
-     * @param \ArrayObject<int, string> $calls
-     */
-    private function recordingGate(\ArrayObject $calls, string $name, GateDecision $decision): Gate
-    {
-        return new class($calls, $name, $decision) implements Gate {
-            /**
-             * @param \ArrayObject<int, string> $calls
-             */
-            public function __construct(
-                private \ArrayObject $calls,
-                private readonly string $name,
-                private readonly GateDecision $decision,
-            ) {
-            }
-
-            public function handle(Request $request): GateDecision
-            {
-                $this->calls[] = $this->name;
-
-                return $this->decision;
-            }
-        };
     }
 }
