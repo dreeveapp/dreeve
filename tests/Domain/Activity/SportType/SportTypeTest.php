@@ -4,6 +4,8 @@ namespace App\Tests\Domain\Activity\SportType;
 
 use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\Pace;
 use App\Tests\ContainerTestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -26,8 +28,15 @@ class SportTypeTest extends ContainerTestCase
         $snapshot = [];
         foreach (SportType::cases() as $sportType) {
             $snapshot[$sportType->value] = $sportType->getVelocityDisplayPreference()::class;
+
+            $this->assertInstanceOf($sportType->getVelocityDisplayPreference()::class, $sportType->toDisplayVelocity(KmPerHour::from(10)));
+            $this->assertSame($sportType->getVelocityDisplayPreference() instanceof Pace, $sportType->displaysPace());
         }
         $this->assertMatchesJsonSnapshot($snapshot);
+
+        $this->assertEquals(KmPerHour::from(10)->toMetersPerSecond()->toSecPerKm(), SportType::RUN->toDisplayVelocity(KmPerHour::from(10)));
+        $this->assertEquals(KmPerHour::from(10)->toMetersPerSecond()->toSecPerKm()->toSecPer100Meter(), SportType::POOL_SWIM->toDisplayVelocity(KmPerHour::from(10)));
+        $this->assertEquals(KmPerHour::from(10)->toKnots(), SportType::SAIL->toDisplayVelocity(KmPerHour::from(10)));
     }
 
     public function testSupportsShiftingStats(): void

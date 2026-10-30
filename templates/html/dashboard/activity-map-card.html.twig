@@ -32,32 +32,19 @@
                     <span class="text-lg font-black tracking-tight text-gray-900">{{ activity.getMovingTimeFormatted() }}</span>
                 </div>
             </div>
-            {% set velocityPreference = activity.getSportType().getVelocityDisplayPreference() %}
+            {% set averageVelocity = activity.getSportType().toDisplayVelocity(activity.getAverageSpeed()) %}
             <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
                 <div class="flex items-center justify-between mb-1">
                     <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">
-                        {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') or velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}{{ "Avg pace"|trans }}{% else %}{{ "Avg speed"|trans }}{% endif %}
+                        {% if activity.getSportType().displaysPace() %}{{ "Avg pace"|trans }}{% else %}{{ "Avg speed"|trans }}{% endif %}
                     </span>
                     <div class="size-5 rounded-md bg-primary-soft text-primary flex items-center justify-center">
                         {{ svg('speed', 'size-3') }}
                     </div>
                 </div>
                 <div class="flex items-baseline gap-1">
-                    {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
-                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activity.getPaceInSecPer100Meter()|formatPace }}</span>
-                        <span class="text-xs font-medium text-gray-500">/100m</span>
-                    {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
-                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activity.getPaceInSecPerKm()|convertMeasurement|formatPace }}</span>
-                        <span class="text-xs font-medium text-gray-500">{{ renderUnitSymbol('pace') }}</span>
-                    {% else %}
-                        {% set averageSpeed = activity.getAverageSpeedInDisplayUnit() %}
-                        {% if averageSpeed %}
-                            <span class="text-lg font-black tracking-tight text-gray-900">{{ averageSpeed|formatMeasurement(1) }}</span>
-                            <span class="text-xs font-medium text-gray-500">{{ averageSpeed|measurementSymbol }}</span>
-                        {% else %}
-                            <span class="text-lg font-black tracking-tight text-gray-900">{{ "n/a"|trans }}</span>
-                        {% endif %}
-                    {% endif %}
+                    <span class="text-lg font-black tracking-tight text-gray-900">{{ averageVelocity|formatVelocity }}</span>
+                    <span class="text-xs font-medium text-gray-500">{{ averageVelocity|velocitySymbol }}</span>
                 </div>
             </div>
             <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
