@@ -44,7 +44,7 @@ final readonly class PageMetadataRenderer
         $description = $metadata->getDescription();
         $description ??= $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
-                cacheKey: 'app-shell.metatag.description',
+                cacheKey: 'page-metadata.description',
                 cacheTags: CacheTags::of(
                     RootCacheTag::ACTIVITIES,
                     RootCacheTag::SETTINGS_GENERAL,
