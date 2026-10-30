@@ -29,7 +29,7 @@ class SettingsInvalidateCacheTagsListenerTest extends ContainerTestCase
             );
         }
 
-        $this->settingsRepository->saveGroup($updatedGroup, ['some' => 'setting']);
+        $this->settingsRepository->saveGroup($updatedGroup, []);
 
         $updatedGroupIsCrossCutting = in_array(
             RootCacheTag::forSettingsGroup($updatedGroup),

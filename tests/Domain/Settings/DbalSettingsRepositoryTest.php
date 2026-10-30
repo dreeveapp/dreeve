@@ -61,6 +61,15 @@ class DbalSettingsRepositoryTest extends ContainerTestCase
         $this->assertSame([], $this->settingsRepository->findGroup(SettingsGroup::SECURITY));
     }
 
+    public function testSaveGroupRejectsSettingsOfAnotherGroup(): void
+    {
+        $this->settingsRepository->saveGroup(SettingsGroup::ZWIFT, ['level' => 80]);
+
+        $this->expectExceptionObject(new \InvalidArgumentException('Unknown setting "level" for group "maps"'));
+
+        $this->settingsRepository->saveGroup(SettingsGroup::MAPS, ['level' => 81]);
+    }
+
     public function testSaveUpdatesASingleSettingAndAddsNewOnes(): void
     {
         $this->settingsRepository->saveGroup(SettingsGroup::APPEARANCE, [
