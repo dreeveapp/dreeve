@@ -29,6 +29,7 @@ enum RootCacheTag: string implements CacheTag
     case SETTINGS_DAEMON = 'settings.daemon';
     case SETTINGS_SECURITY = 'settings.security';
     case SETTINGS_ATHLETE_WEIGHT = 'settings.athleteWeight';
+    case SETTINGS_ATHLETE_FTP = 'settings.athleteFtp';
 
     public function toTagString(): string
     {
@@ -66,6 +67,7 @@ enum RootCacheTag: string implements CacheTag
             SettingsGroup::DAEMON => self::SETTINGS_DAEMON,
             SettingsGroup::SECURITY => self::SETTINGS_SECURITY,
             SettingsGroup::ATHLETE_WEIGHT => self::SETTINGS_ATHLETE_WEIGHT,
+            SettingsGroup::ATHLETE_FTP => self::SETTINGS_ATHLETE_FTP,
         };
     }
 }

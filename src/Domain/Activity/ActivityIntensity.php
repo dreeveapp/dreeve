@@ -41,7 +41,7 @@ final readonly class ActivityIntensity
         }
 
         try {
-            $ftp = $this->settingsRepository->general()->getFtpHistory()->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
+            $ftp = $this->settingsRepository->athleteFtp()->getHistory()->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
         } catch (EntityNotFound) {
             throw new CouldNotDetermineActivityIntensity('Ftp not found');
         }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
-use App\Domain\Activity\ActivityType;
 use App\Domain\Settings\AthleteHasNotBeenConfigured;
 use App\Domain\Settings\GeneralSettings;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -22,7 +21,6 @@ class GeneralSettingsTest extends TestCase
             'lastName' => 'Ingelbrecht',
             'gender' => 'M',
             'maxHeartRateFormula' => 'fox',
-            'ftpHistory' => [['on' => '2023-01-01', 'ftp' => 250]],
         ];
     }
 
@@ -52,7 +50,6 @@ class GeneralSettingsTest extends TestCase
         $settings = GeneralSettings::fromArray(self::validData());
 
         $this->assertSame('https://example.com/me.png', (string) $settings->getProfilePictureUrl());
-        $this->assertNotEmpty($settings->getFtpHistory()->findAll(ActivityType::RIDE));
     }
 
     public function testItAppliesDefaultsForOptionalSettings(): void

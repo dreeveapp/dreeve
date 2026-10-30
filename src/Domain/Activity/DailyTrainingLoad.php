@@ -48,6 +48,7 @@ final readonly class DailyTrainingLoad
     {
         $load = 0;
         $general = $this->settingsRepository->general();
+        $ftpHistory = $this->settingsRepository->athleteFtp()->getHistory();
 
         foreach ($enrichedActivities as $enrichedActivity) {
             $activity = $enrichedActivity->getActivity();
@@ -56,7 +57,7 @@ final readonly class DailyTrainingLoad
             try {
                 $intensity = $this->activityIntensity->calculatePowerBased($enrichedActivity) / 100;
                 $normalizedPower = (int) $enrichedActivity->getNormalizedPower();
-                $ftp = $general->getFtpHistory()->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
+                $ftp = $ftpHistory->find(ActivityType::RIDE, $activity->getStartDate())->getFtp();
                 $load += ($movingTimeInSeconds * $normalizedPower * $intensity) / ($ftp->getValue() * 3600) * 100;
 
                 continue;

@@ -18,6 +18,7 @@ enum SettingsGroup: string
     case DAEMON = 'daemon';
     case SECURITY = 'security';
     case ATHLETE_WEIGHT = 'athleteWeight';
+    case ATHLETE_FTP = 'athleteFtp';
 
     public static function fromSlug(string $slug): ?self
     {
@@ -45,6 +46,7 @@ enum SettingsGroup: string
             self::DAEMON => DaemonSettings::fromArray($data),
             self::SECURITY => SecuritySettings::fromArray($data),
             self::ATHLETE_WEIGHT => AthleteWeightSettings::fromArray($data),
+            self::ATHLETE_FTP => AthleteFtpSettings::fromArray($data),
         };
     }
 }

@@ -21,6 +21,7 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     private ?DaemonSettings $daemonSettings = null;
     private ?SecuritySettings $securitySettings = null;
     private ?AthleteWeightSettings $athleteWeightSettings = null;
+    private ?AthleteFtpSettings $athleteFtpSettings = null;
 
     public function __construct(
         #[Autowire(service: DbalSettingsRepository::class)]
@@ -65,6 +66,7 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
         $this->daemonSettings = null;
         $this->securitySettings = null;
         $this->athleteWeightSettings = null;
+        $this->athleteFtpSettings = null;
     }
 
     public function general(): GeneralSettings
@@ -115,5 +117,10 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     public function athleteWeight(): AthleteWeightSettings
     {
         return $this->athleteWeightSettings ??= $this->settingsRepository->athleteWeight();
+    }
+
+    public function athleteFtp(): AthleteFtpSettings
+    {
+        return $this->athleteFtpSettings ??= $this->settingsRepository->athleteFtp();
     }
 }

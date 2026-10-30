@@ -59,7 +59,7 @@ final readonly class DistributionChartsBuilder
             && count($powerDistribution) > 1) {
             $ftp = null;
             try {
-                $ftp = $general->getFtpHistory()->find(
+                $ftp = $this->settingsRepository->athleteFtp()->getHistory()->find(
                     activityType: $activityType,
                     on: $activity->getStartDate()
                 );

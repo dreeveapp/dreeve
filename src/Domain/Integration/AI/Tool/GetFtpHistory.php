@@ -34,6 +34,6 @@ final readonly class GetFtpHistory implements AITool
 
     public function __invoke(ToolArguments $arguments): array
     {
-        return $this->settingsRepository->general()->getFtpHistory()->exportForAITooling();
+        return $this->settingsRepository->athleteFtp()->getHistory()->exportForAITooling();
     }
 }

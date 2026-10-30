@@ -21,6 +21,11 @@ final class Version20261030125032 extends AbstractMigration
             SET settingsGroup = 'appearance'
             WHERE settingsGroup = 'general' AND name = 'appSubTitle'
             SQL);
+        $this->addSql(<<<'SQL'
+            UPDATE Setting
+            SET settingsGroup = 'athleteFtp'
+            WHERE settingsGroup = 'general' AND name = 'ftpHistory'
+            SQL);
     }
 
     public function down(Schema $schema): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\AppearanceSettings;
+use App\Domain\Settings\AthleteFtpSettings;
 use App\Domain\Settings\AthleteHasNotBeenConfigured;
 use App\Domain\Settings\AthleteWeightSettings;
 use App\Domain\Settings\CachingSettingsRepository;
@@ -47,6 +48,7 @@ class CachingSettingsRepositoryTest extends TestCase
         yield 'integrations' => ['integrations', IntegrationsSettings::fromArray(null), fn (SettingsRepository $r) => $r->integrations()];
         yield 'daemon' => ['daemon', DaemonSettings::fromArray(null), fn (SettingsRepository $r) => $r->daemon()];
         yield 'athleteWeight' => ['athleteWeight', AthleteWeightSettings::fromArray(null), fn (SettingsRepository $r) => $r->athleteWeight()];
+        yield 'athleteFtp' => ['athleteFtp', AthleteFtpSettings::fromArray(null), fn (SettingsRepository $r) => $r->athleteFtp()];
     }
 
     public function testFindGroupIsReadFromInnerOncePerGroup(): void

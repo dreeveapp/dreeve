@@ -73,12 +73,7 @@ class ActivityIntensityTest extends ContainerTestCase
     public function testCalculateWithPowerWhenFtpNotFound(): void
     {
         // Remove the FTP history so the power-based calculation cannot find an FTP.
-        $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::GENERAL, [
-            'birthday' => '1989-08-14',
-            'firstName' => 'Robin',
-            'lastName' => 'Ingelbrecht',
-            'maxHeartRateFormula' => 'fox',
-        ]);
+        $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::ATHLETE_FTP, []);
 
         $enrichedActivity = $this->persist(
             ActivityBuilder::fromDefaults()

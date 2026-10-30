@@ -39,4 +39,6 @@ interface SettingsRepository
     public function security(): SecuritySettings;
 
     public function athleteWeight(): AthleteWeightSettings;
+
+    public function athleteFtp(): AthleteFtpSettings;
 }
