@@ -73,6 +73,7 @@ Apply: Toepassen
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Ben je zeker dat je {task} op {component} voor {gear}, uitgevoerd op {date}, wil verwijderen?'
 'Are you sure you want to remove the {widget} widget?': 'Ben je zeker dat je de widget {widget} wil verwijderen?'
 'Assign gear': 'Uitrusting toewijzen'
+Athlete: Athlete
 'Athlete settings': Atleetinstellingen
 'Attached to': 'Gekoppeld aan'
 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.': 'Vul automatisch uitrusting, woon-werk, sporttype en meer in bij nieuw geïmporteerde activiteiten. Regels worden van boven naar onder uitgevoerd en kunnen ook toegepast worden op activiteiten die je al geïmporteerd hebt.'
@@ -141,6 +142,7 @@ Deleting...: 'Aan het verwijderen...'
 Description: Beschrijving
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Gedetailleerde instructies vind je in {linkOpen}de documentatie{linkClose}.'
 Disabled: Uitgeschakeld
+Display: Display
 Distance: Afstand
 'Do not download activity photos': "Geen activiteitsfoto's downloaden"
 Done: Klaar
@@ -467,6 +469,7 @@ Subtitle: Ondertitel
 Success: Geslaagd
 Sunday: Zondag
 'Supported types': 'Ondersteunde types'
+System: System
 Task: Taak
 'Task name': 'Naam taak'
 Tasks: Taken

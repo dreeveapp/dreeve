@@ -73,6 +73,7 @@ Apply: Tillämpa
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
 'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
 'Assign gear': 'Assign gear'
+Athlete: Athlete
 'Athlete settings': 'Athlete settings'
 'Attached to': 'Attached to'
 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.': 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.'
@@ -141,6 +142,7 @@ Deleting...: Deleting...
 Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
 Disabled: Disabled
+Display: Display
 Distance: Distance
 'Do not download activity photos': 'Do not download activity photos'
 Done: Done
@@ -467,6 +469,7 @@ Subtitle: Subtitle
 Success: Success
 Sunday: Sunday
 'Supported types': 'Supported types'
+System: System
 Task: Task
 'Task name': 'Task name'
 Tasks: Tasks
