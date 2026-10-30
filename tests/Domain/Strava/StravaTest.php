@@ -605,15 +605,6 @@ class StravaTest extends TestCase
             ],
         ];
 
-        yield 'activity zones' => [
-            static fn (Strava $strava) => $strava->getActivityZones(ActivityId::fromUnprefixed(3)),
-            'api/v3/activities/3/zones',
-            [
-                'base_uri' => 'https://www.strava.com/',
-                'headers' => ['Authorization' => 'Bearer theAccessToken'],
-            ],
-        ];
-
         yield 'activity streams' => [
             static fn (Strava $strava) => $strava->getAllActivityStreams(ActivityId::fromUnprefixed(3)),
             'api/v3/activities/3/streams',

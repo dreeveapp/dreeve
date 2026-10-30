@@ -97,20 +97,6 @@ final readonly class DbalGearMaintenanceLogRepository extends DbalRepository imp
         ));
     }
 
-    public function findMostRecentForMaintenanceTask(MaintenanceTaskId $maintenanceTaskId): ?GearMaintenanceLog
-    {
-        $result = $this->connection->executeQuery(
-            'SELECT * FROM GearMaintenanceLog WHERE maintenanceTaskId = :maintenanceTaskId ORDER BY performedOn DESC LIMIT 1',
-            ['maintenanceTaskId' => $maintenanceTaskId]
-        )->fetchAssociative();
-
-        if (false === $result) {
-            return null;
-        }
-
-        return $this->hydrate($result);
-    }
-
     public function findMostRecentPerMaintenanceTask(): array
     {
         $results = $this->connection->executeQuery(
