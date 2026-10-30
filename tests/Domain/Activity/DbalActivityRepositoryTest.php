@@ -432,7 +432,8 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             ['raw' => 'data']
         ));
 
-        $this->activityRepository->delete($activity->getId());
+        $activity->delete();
+        $this->activityRepository->delete($activity);
 
         $this->expectExceptionObject(new EntityNotFound(sprintf('Activity "%s" not found', $activity->getId())));
         $this->activityRepository->find($activity->getId());

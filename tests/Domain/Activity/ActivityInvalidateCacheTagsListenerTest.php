@@ -60,7 +60,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
         $this->warmUpRenderCache();
 
-        $this->activityRepository->delete($activity->getId());
+        $activity->delete();
+        $this->activityRepository->delete($activity);
 
         $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES));
         $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES));
@@ -240,7 +241,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
         $this->warmUpRenderCache();
 
-        $this->activityRepository->delete($activity->getId());
+        $activity->delete();
+        $this->activityRepository->delete($activity);
 
         $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITIES->forYear(Year::fromInt(2023))));
         $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_IMAGES->forYear(Year::fromInt(2023))));
@@ -324,7 +326,8 @@ class ActivityInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState($activity, []));
         $this->warmUpRenderCache();
 
-        $this->activityRepository->delete($activity->getId());
+        $activity->delete();
+        $this->activityRepository->delete($activity);
 
         $this->assertFalse($this->isServedFromCache(ActivityCacheTag::for($activity->getId())));
         $this->assertTrue($this->isServedFromCache(ActivityCacheTag::for(ActivityId::fromUnprefixed('1'))));

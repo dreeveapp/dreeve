@@ -48,6 +48,8 @@ final readonly class DeleteActivitiesCommandHandler implements CommandHandler
         assert($command instanceof DeleteActivities);
 
         foreach ($command->getActivityIds() as $activityId) {
+            $activity = $this->activityRepository->find($activityId);
+
             $this->activityStreamRepository->deleteForActivity($activityId);
             $this->activityStreamMetricRepository->deleteForActivity($activityId);
             $this->combinedActivityStreamRepository->deleteForActivity($activityId);
@@ -61,7 +63,8 @@ final readonly class DeleteActivitiesCommandHandler implements CommandHandler
             $this->activityDrivetrainUsageRepository->deleteForActivity($activityId);
             $this->fileImportRepository->deleteForActivity($activityId);
             $this->imageRepository->deleteForActivity($activityId);
-            $this->activityRepository->delete($activityId);
+            $activity->delete();
+            $this->activityRepository->delete($activity);
         }
 
         $this->segmentRepository->deleteOrphanedImported();
