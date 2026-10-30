@@ -71,6 +71,11 @@ class UpdateAthleteSettingsTest extends TestCase
             ]],
             'The resting heart rate formula needs a heart rate greater than zero',
         ];
+
+        yield 'setting of another group' => [
+            ['athlete' => ['birthday' => '1990-01-01', 'ftpHistory' => []]],
+            'Unknown setting "ftpHistory" for group "general"',
+        ];
     }
 
     public function testItDeserializes(): void

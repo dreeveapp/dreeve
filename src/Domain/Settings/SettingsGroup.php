@@ -31,6 +31,29 @@ enum SettingsGroup: string
     }
 
     /**
+     * @return list<SettingsName>
+     */
+    public function getSettingsNames(): array
+    {
+        return array_values(array_filter(
+            SettingsName::cases(),
+            fn (SettingsName $name): bool => $this === $name->group(),
+        ));
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function assertOwnsSettings(array $data): void
+    {
+        foreach (array_keys($data) as $name) {
+            if ($this !== SettingsName::tryFrom((string) $name)?->group()) {
+                throw new \InvalidArgumentException(sprintf('Unknown setting "%s" for group "%s"', $name, $this->value));
+            }
+        }
+    }
+
+    /**
      * @param array<string, mixed> $data
      */
     public function settingsFromArray(array $data): object

@@ -40,6 +40,7 @@ final readonly class UpdateSettings extends DomainCommand implements Deserializa
             if (SettingsGroup::GENERAL === $group) {
                 $data = AthleteSettingsPayload::normalize($data);
             }
+            $group->assertOwnsSettings($data);
             $group->settingsFromArray($data);
         } catch (\RuntimeException|\InvalidArgumentException $e) {
             throw CouldNotDeserializeCommand::invalidPayload($e->getMessage());
