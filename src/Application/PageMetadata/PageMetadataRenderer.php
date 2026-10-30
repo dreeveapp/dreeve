@@ -64,7 +64,7 @@ final readonly class PageMetadataRenderer
             },
         )->getContent();
 
-        return $this->twig->load('html/page-metadata.html.twig')->render([
+        return $this->twig->load('html/layout/page-metadata.html.twig')->render([
             'title' => $this->translate($metadata->getTitle()),
             'description' => $this->translate($description ?? ''),
             'locale' => $this->translator->getLocale(),
