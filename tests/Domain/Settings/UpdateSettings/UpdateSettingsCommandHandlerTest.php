@@ -26,7 +26,6 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
     {
         $data = [
             'profilePictureUrl' => null,
-            'appSubTitle' => 'A brand new subtitle',
             'birthday' => '1990-01-01',
             'firstName' => 'Jane',
             'lastName' => 'Doe',
@@ -45,6 +44,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
     public function testItUpdatesAppearanceSettings(): void
     {
         $data = [
+            'appSubTitle' => 'A brand new subtitle',
             'unitSystem' => 'imperial',
             'locale' => 'nl_BE',
             'timeFormat' => 12,

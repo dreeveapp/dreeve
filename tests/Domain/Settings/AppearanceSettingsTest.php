@@ -16,6 +16,7 @@ class AppearanceSettingsTest extends TestCase
     {
         $settings = AppearanceSettings::fromArray([]);
 
+        $this->assertNull($settings->getAppSubTitle());
         $this->assertSame(UnitSystem::METRIC, $settings->getUnitSystem());
         $this->assertSame(Locale::en_US, $settings->getLocale());
         $this->assertSame(TimeFormat::TWENTY_FOUR, $settings->getDateAndTimeFormat()->getTimeFormat());
@@ -27,6 +28,7 @@ class AppearanceSettingsTest extends TestCase
     public function testItBuildsFromStoredValues(): void
     {
         $settings = AppearanceSettings::fromArray([
+            'appSubTitle' => 'The King',
             'unitSystem' => 'imperial',
             'locale' => 'nl_BE',
             'timeFormat' => 12,
@@ -39,6 +41,7 @@ class AppearanceSettingsTest extends TestCase
             ],
         ]);
 
+        $this->assertSame('The King', (string) $settings->getAppSubTitle());
         $this->assertSame(UnitSystem::IMPERIAL, $settings->getUnitSystem());
         $this->assertSame(Locale::nl_BE, $settings->getLocale());
         $this->assertSame(TimeFormat::AM_PM, $settings->getDateAndTimeFormat()->getTimeFormat());

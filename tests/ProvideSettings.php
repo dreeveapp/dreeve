@@ -23,7 +23,6 @@ trait ProvideSettings
 
         $settingsRepository->saveGroup(SettingsGroup::GENERAL, [
             'profilePictureUrl' => null,
-            'appSubTitle' => 'Robin The King 👑',
             'birthday' => '1989-08-14',
             'firstName' => 'Robin',
             'lastName' => 'Ingelbrecht',
@@ -54,6 +53,7 @@ trait ProvideSettings
         ]);
 
         $settingsRepository->saveGroup(SettingsGroup::APPEARANCE, [
+            'appSubTitle' => 'Robin The King 👑',
             'locale' => 'en_US',
             'unitSystem' => 'metric',
             'timeFormat' => 24,

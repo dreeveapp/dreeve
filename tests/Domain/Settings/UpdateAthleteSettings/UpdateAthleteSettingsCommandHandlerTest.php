@@ -20,7 +20,6 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
         $this->settingsRepository->saveGroup(
             group: SettingsGroup::GENERAL,
             data: [
-                'appSubTitle' => 'A subtitle that should be left alone',
                 'profilePictureUrl' => 'https://example.com/picture.png',
                 'birthday' => '1980-01-01',
                 'firstName' => 'John',
@@ -40,7 +39,6 @@ class UpdateAthleteSettingsCommandHandlerTest extends ContainerTestCase
         ]));
 
         $this->assertEquals([
-            'appSubTitle' => 'A subtitle that should be left alone',
             'profilePictureUrl' => 'https://example.com/picture.png',
             'birthday' => '1990-01-01',
             'firstName' => 'Jane',
