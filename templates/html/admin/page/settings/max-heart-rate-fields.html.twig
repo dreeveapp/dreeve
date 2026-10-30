@@ -1,0 +1,33 @@
+{% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
+{% set maxHeartRateFormulaOptions = ['arena', 'astrand', 'fox', 'gellish', 'nes', 'tanaka'] %}
+{% set maxHeartRateFormula = athlete.maxHeartRateFormula %}
+{% set maxHeartRateType = maxHeartRateFormula is iterable ? 'dateRangeBased' : maxHeartRateFormula %}
+{% set maxHeartRateRanges = [] %}
+{% for on, bpm in 'dateRangeBased' == maxHeartRateType ? maxHeartRateFormula : [] %}
+    {% set maxHeartRateRanges = maxHeartRateRanges|merge([{'on': on, 'bpm': bpm}]) %}
+{% endfor %}
+<div class="group/max-hr">
+    <label for="maxHeartRateFormula">{{ "Max heart rate formula"|trans({}, 'admin') }}</label>
+    <select id="maxHeartRateFormula" name="{{ fieldPrefix }}[maxHeartRateFormula]">
+        {% for formula in maxHeartRateFormulaOptions %}
+            <option value="{{ formula }}" {{ maxHeartRateType == formula ? 'selected' : '' }}>{{ formula }}</option>
+        {% endfor %}
+        <option value="dateRangeBased" {{ 'dateRangeBased' == maxHeartRateType ? 'selected' : '' }}>{{ "Date range based"|trans({}, 'admin') }}</option>
+    </select>
+    <p class="description">
+        {{ "The formula used to calculate your max heart rate. The default is Fox (220 − age)."|trans({}, 'admin') }}
+    </p>
+    <div class="hidden mt-2 border-l-2 border-gray-200 pl-4 group-has-[option[value=dateRangeBased]:checked]/max-hr:block">
+        {{ editor.historyEditor(
+            fieldPrefix ~ '[maxHeartRateFormulaRanges]',
+            maxHeartRateRanges,
+            null,
+            "Your measured max heart rate, applied from the given date onwards."|trans({}, 'admin'),
+            "Max heart rate (bpm)"|trans({}, 'admin'),
+            "Add max heart rate"|trans({}, 'admin'),
+            'bpm',
+            '1',
+            false
+        ) }}
+    </div>
+</div>

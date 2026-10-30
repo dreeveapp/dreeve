@@ -274,6 +274,7 @@ Match: Illeszkedés
 'Matches when any point of the route comes near the location.': 'Akkor illeszkedik, ha az útvonal bármely pontja a hely közelébe kerül.'
 'Matches when the activity finishes close to where it started.': 'Akkor illeszkedik, ha a tevékenység a kiindulópont közelében ér véget.'
 'Matching activities': 'Illeszkedő tevékenységek'
+'Max heart rate': 'Max heart rate'
 'Max heart rate (bpm)': 'Maximális pulzus (bpm)'
 'Max heart rate formula': 'Maximális pulzus képlete'
 Message: Üzenet
@@ -377,6 +378,7 @@ Removing...: Eltávolítás...
 'Reset dashboard to default': 'Dashboard visszaállítása alapértelmezettre'
 'Reset to default': 'Visszaállítás alapértelmezettre'
 Resetting...: Visszaállítás...
+'Resting heart rate': 'Resting heart rate'
 'Resting heart rate (bpm)': 'Nyugalmi pulzus (bpm)'
 'Resting heart rate formula': 'Nyugalmi pulzus képlete'
 'Restrict to date range': 'Korlátozás dátumtartományra'

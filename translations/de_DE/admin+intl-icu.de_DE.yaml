@@ -274,6 +274,7 @@ Match: Übereinstimmung
 'Matches when any point of the route comes near the location.': 'Übereinstimmung, wenn irgendein Punkt der Route in die Nähe des Punktes kommt.'
 'Matches when the activity finishes close to where it started.': 'Übereinstimmung, wenn die Aktivität in der Nähe des Startpunkts endet.'
 'Matching activities': 'Übereinstimmende Aktivitäten'
+'Max heart rate': 'Max heart rate'
 'Max heart rate (bpm)': 'Max. herzfrequenz (bpm)'
 'Max heart rate formula': 'Formel für max. Herzfrequenz'
 Message: Nachricht
@@ -377,6 +378,7 @@ Removing...: Entfernen...
 'Reset dashboard to default': 'Dashboard auf Standard zurücksetzen'
 'Reset to default': 'Auf Standard zurücksetzen'
 Resetting...: 'Wird zurückgesetzt...'
+'Resting heart rate': 'Resting heart rate'
 'Resting heart rate (bpm)': 'Ruhepuls (bpm)'
 'Resting heart rate formula': Ruhepuls-Formel
 'Restrict to date range': 'Auf Datumsbereich beschränken'

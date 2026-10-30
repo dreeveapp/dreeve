@@ -274,6 +274,7 @@ Match: Corresponder
 'Matches when any point of the route comes near the location.': 'Corresponde quando qualquer ponto da rota passa perto do local.'
 'Matches when the activity finishes close to where it started.': 'Corresponde quando a atividade termina perto de onde começou.'
 'Matching activities': 'Atividades correspondentes'
+'Max heart rate': 'Max heart rate'
 'Max heart rate (bpm)': 'Frequência cardíaca máxima (bpm)'
 'Max heart rate formula': 'Fórmula da frequência cardíaca máxima'
 Message: Mensagem
@@ -377,6 +378,7 @@ Removing...: Removendo...
 'Reset dashboard to default': 'Restaurar o painel para o padrão'
 'Reset to default': 'Restaurar para o padrão'
 Resetting...: Restaurando...
+'Resting heart rate': 'Resting heart rate'
 'Resting heart rate (bpm)': 'Frequência cardíaca de repouso (bpm)'
 'Resting heart rate formula': 'Fórmula da frequência cardíaca de repouso'
 'Restrict to date range': 'Restringir a intervalo de datas'

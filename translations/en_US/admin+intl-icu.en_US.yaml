@@ -274,6 +274,7 @@ Match: Match
 'Matches when any point of the route comes near the location.': 'Matches when any point of the route comes near the location.'
 'Matches when the activity finishes close to where it started.': 'Matches when the activity finishes close to where it started.'
 'Matching activities': 'Matching activities'
+'Max heart rate': 'Max heart rate'
 'Max heart rate (bpm)': 'Max heart rate (bpm)'
 'Max heart rate formula': 'Max heart rate formula'
 Message: Message
@@ -377,6 +378,7 @@ Removing...: Removing...
 'Reset dashboard to default': 'Reset dashboard to default'
 'Reset to default': 'Reset to default'
 Resetting...: Resetting...
+'Resting heart rate': 'Resting heart rate'
 'Resting heart rate (bpm)': 'Resting heart rate (bpm)'
 'Resting heart rate formula': 'Resting heart rate formula'
 'Restrict to date range': 'Restrict to date range'

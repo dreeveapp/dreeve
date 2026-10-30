@@ -16,6 +16,14 @@
                     fieldPrefix: 'athlete',
                     athlete: settings,
                 } only %}
+                {% include 'html/admin/page/settings/max-heart-rate-fields.html.twig' with {
+                    fieldPrefix: 'athlete',
+                    athlete: settings,
+                } only %}
+                {% include 'html/admin/page/settings/resting-heart-rate-fields.html.twig' with {
+                    fieldPrefix: 'athlete',
+                    athlete: settings,
+                } only %}
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     <button type="submit" data-has-loading-state class="group btn--primary">
                         <span class="label">{{ "Save"|trans({}, 'admin') }}</span>

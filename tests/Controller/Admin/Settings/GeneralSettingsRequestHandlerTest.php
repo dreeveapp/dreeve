@@ -20,6 +20,12 @@ class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[name="data[birthday]"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[firstName]"][required]'));
         $this->assertCount(1, $crawler->filter('input[name="data[lastName]"][required]'));
+        $this->assertSame(
+            ['Athlete profile', 'Max heart rate', 'Resting heart rate', 'Heart rate zones'],
+            $crawler->filter('section h3')->each(fn ($heading): string => $heading->text()),
+        );
+        $this->assertCount(1, $crawler->filter('select[name="data[maxHeartRateFormula]"]'));
+        $this->assertCount(1, $crawler->filter('select[name="data[restingHeartRateFormula]"]'));
 
         // Two repeaters: max heart rate ranges, resting heart rate ranges.
         $this->assertCount(2, $crawler->filter('form[data-dispatch-command="update-settings"] [data-repeater]'));
