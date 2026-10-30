@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Measurement\Velocity;
 
-interface Velocity
+use App\Infrastructure\Measurement\Unit;
+
+interface Velocity extends Unit
 {
 }

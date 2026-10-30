@@ -11,11 +11,10 @@ use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Measurement\Unit;
 use App\Infrastructure\Measurement\UnitSystem;
-use App\Infrastructure\Measurement\Velocity\KmPerHour;
-use App\Infrastructure\Measurement\Velocity\Knot;
 use App\Infrastructure\Measurement\Velocity\Pace;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\Measurement\Velocity\Velocity;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
@@ -97,7 +96,7 @@ final readonly class MeasurementTwigExtension
     }
 
     #[AsTwigFilter('formatVelocity')]
-    public function formatVelocity(SecPer100Meter|SecPerKm|Knot|KmPerHour $velocity): string
+    public function formatVelocity(Velocity $velocity): string
     {
         if ($velocity instanceof Pace) {
             return $this->formatPace($velocity);
@@ -107,7 +106,7 @@ final readonly class MeasurementTwigExtension
     }
 
     #[AsTwigFilter('velocitySymbol')]
-    public function velocitySymbol(SecPer100Meter|SecPerKm|Knot|KmPerHour $velocity): string
+    public function velocitySymbol(Velocity $velocity): string
     {
         return match (true) {
             $velocity instanceof SecPer100Meter => '/100m',
@@ -117,7 +116,7 @@ final readonly class MeasurementTwigExtension
     }
 
     #[AsTwigFilter('renderVelocity')]
-    public function renderVelocity(SecPer100Meter|SecPerKm|Knot|KmPerHour $velocity): string
+    public function renderVelocity(Velocity $velocity): string
     {
         if (!$velocity instanceof Pace) {
             return $this->renderMeasurement($velocity, 1);

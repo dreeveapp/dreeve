@@ -14,6 +14,7 @@ use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\Knot;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\Measurement\Velocity\Velocity;
 use App\Infrastructure\Twig\MeasurementTwigExtension;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -47,7 +48,7 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         string $expectedSymbol,
         string $expectedRender,
         UnitSystem $unitSystem,
-        SecPer100Meter|SecPerKm|Knot|KmPerHour $velocity,
+        Velocity $velocity,
     ): void {
         $extension = $this->extensionFor($unitSystem);
 
