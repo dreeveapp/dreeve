@@ -36,11 +36,7 @@ final readonly class ActivityPolylinesRequestHandler
     {
         $activityId = ActivityId::fromString($activityId);
 
-        try {
-            $activity = $this->activityRepository->find($activityId);
-        } catch (EntityNotFound) {
-            throw new NotFoundHttpException('Not found');
-        }
+        $activity = $this->activityRepository->find($activityId);
 
         if (!$activity->getLeafletMap() instanceof LeafletMap) {
             throw new NotFoundHttpException('Not found');

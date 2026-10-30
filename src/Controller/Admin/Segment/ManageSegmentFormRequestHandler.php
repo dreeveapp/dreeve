@@ -12,7 +12,6 @@ use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
 use App\Domain\Segment\UpdateSegment\UpdateSegment;
 use App\Domain\Settings\SettingsRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -83,10 +82,6 @@ final readonly class ManageSegmentFormRequestHandler
             throw new NotFoundHttpException('Page not found');
         }
 
-        try {
-            return $this->segmentRepository->find(SegmentId::fromString($segmentId));
-        } catch (EntityNotFound) {
-            throw new NotFoundHttpException('Segment not found');
-        }
+        return $this->segmentRepository->find(SegmentId::fromString($segmentId));
     }
 }

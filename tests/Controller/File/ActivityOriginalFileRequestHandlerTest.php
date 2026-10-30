@@ -83,18 +83,16 @@ class ActivityOriginalFileRequestHandlerTest extends AdminWebTestCase
         );
 
         $this->client->loginUser($this->adminUser());
-        $this->client->catchExceptions(false);
 
-        $this->expectExceptionObject(new NotFoundHttpException('Activity "activity-1" has no original file'));
         $this->client->request('GET', '/activities/activity-1/original-file');
+        $this->assertResponseStatusCodeSame(404);
     }
 
     public function testCannotDownloadForAnActivityWithoutAFileImport(): void
     {
         $this->client->loginUser($this->adminUser());
-        $this->client->catchExceptions(false);
 
-        $this->expectExceptionObject(new NotFoundHttpException('Activity "activity-nope" has no original file'));
         $this->client->request('GET', '/activities/activity-nope/original-file');
+        $this->assertResponseStatusCodeSame(404);
     }
 }

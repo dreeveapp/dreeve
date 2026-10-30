@@ -12,7 +12,6 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
 use PHPUnit\Framework\Attributes\TestWith;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestCase
 {
@@ -137,10 +136,9 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->importGearMaintenanceConfig();
 
         $this->client->loginUser($this->adminUser());
-        $this->client->catchExceptions(false);
 
-        $this->expectExceptionObject(new NotFoundHttpException('Component not found'));
         $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/'.$action);
+        $this->assertResponseStatusCodeSame(404);
     }
 
     private function seedGears(): void

@@ -6,7 +6,6 @@ namespace App\Controller\File;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Import\FileImportRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\AttachmentResponse;
 use App\Infrastructure\Security\Visitor;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -29,11 +28,7 @@ final readonly class ActivityOriginalFileRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        try {
-            $fileImport = $this->fileImportRepository->findForActivity(ActivityId::fromString($activityId));
-        } catch (EntityNotFound) {
-            throw new NotFoundHttpException(sprintf('Activity "%s" has no original file', $activityId));
-        }
+        $fileImport = $this->fileImportRepository->findForActivity(ActivityId::fromString($activityId));
 
         return new AttachmentResponse((string) $fileImport->getFileContents(), $fileImport->getOriginalFilename());
     }
