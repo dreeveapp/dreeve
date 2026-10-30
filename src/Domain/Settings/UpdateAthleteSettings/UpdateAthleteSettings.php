@@ -6,6 +6,7 @@ namespace App\Domain\Settings\UpdateAthleteSettings;
 
 use App\Domain\Settings\AthleteSettingsPayload;
 use App\Domain\Settings\GeneralSettings;
+use App\Domain\Settings\SettingsGroup;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -32,6 +33,7 @@ final readonly class UpdateAthleteSettings extends DomainCommand implements Dese
 
         try {
             $athlete = AthleteSettingsPayload::normalize($athlete);
+            SettingsGroup::GENERAL->assertOwnsSettings($athlete);
             GeneralSettings::fromArray($athlete);
         } catch (\RuntimeException|\InvalidArgumentException $e) {
             throw CouldNotDeserializeCommand::invalidPayload($e->getMessage());

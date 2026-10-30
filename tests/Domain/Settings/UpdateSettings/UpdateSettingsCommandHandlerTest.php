@@ -224,6 +224,16 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertEquals($data, $this->settingsRepository->findGroup(SettingsGroup::SECURITY));
     }
 
+    public function testItRejectsUnknownSettings(): void
+    {
+        $this->expectExceptionObject(new CouldNotDeserializeCommand('Unknown setting "level" for group "appearance"'));
+
+        UpdateSettings::fromPayload([
+            'group' => SettingsGroup::APPEARANCE->value,
+            'data' => ['unitSystem' => 'metric', 'level' => 80],
+        ]);
+    }
+
     public function testItRejectsInvalidDaemonSettings(): void
     {
         $this->expectExceptionObject(new CouldNotDeserializeCommand('"not-a-cron" is not a valid cron expression'));

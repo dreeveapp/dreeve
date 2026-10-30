@@ -38,11 +38,7 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
             )->fetchAllKeyValue(),
         );
 
-        foreach (SettingsName::cases() as $name) {
-            if ($group !== $name->group()) {
-                continue;
-            }
-
+        foreach ($group->getSettingsNames() as $name) {
             $value = $this->applyDefault($name, $data[$name->value] ?? null);
             if (null !== $value) {
                 $data[$name->value] = $value;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Settings;
 
 use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use PHPUnit\Framework\TestCase;
 
 class SettingsGroupTest extends TestCase
@@ -17,10 +18,16 @@ class SettingsGroupTest extends TestCase
         $this->assertNull(SettingsGroup::fromSlug('unknown'));
     }
 
+    public function testItListsItsSettingsNames(): void
+    {
+        $this->assertSame([SettingsName::ZWIFT_LEVEL, SettingsName::ZWIFT_RACING_SCORE], SettingsGroup::ZWIFT->getSettingsNames());
+    }
+
     public function testEveryGroupRoundTripsItsSlugAndHasATemplate(): void
     {
         foreach (SettingsGroup::cases() as $group) {
             $this->assertSame($group, SettingsGroup::fromSlug($group->getSlug()));
+            $this->assertNotEmpty($group->getSettingsNames());
             $this->assertFileExists(sprintf('%s/templates/html/admin/page/settings/%s.html.twig', dirname(__DIR__, 3), $group->getSlug()));
         }
     }
