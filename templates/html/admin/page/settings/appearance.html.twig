@@ -8,6 +8,25 @@
     {% set dateFormat = settings.dateFormat ?? {} %}
     {% set photos = settings.photos ?? {} %}
     {% set hidePhotosForSportTypes = photos.hidePhotosForSportTypes ?? [] %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Instance"|trans({}, 'admin')} %}
+        {% block body %}
+            <div>
+                <label for="appUrl">{{ "App URL"|trans({}, 'admin') }}</label>
+                <input type="text" id="appUrl" value="{{ appUrl }}" disabled>
+                <p class="description">
+                    {{ "The URL the app is hosted on."|trans({}, 'admin') }}
+                    {{ "Configured via an environment variable and cannot be changed here."|trans({}, 'admin') }}
+                </p>
+            </div>
+            <div>
+                <label for="appSubTitle">{{ "App subtitle"|trans({}, 'admin') }}</label>
+                <input type="text" id="appSubTitle" name="data[appSubTitle]" value="{{ settings.appSubTitle ?? '' }}">
+                <p class="description">
+                    {{ "Optional subtitle to display in the navbar. Useful for distinguishing between multiple instances of the app. Leave empty to disable."|trans({}, 'admin') }}
+                </p>
+            </div>
+        {% endblock %}
+    {% endembed %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Units & language"|trans({}, 'admin')} %}
         {% block body %}
             <div class="grid gap-4 sm:grid-cols-2">

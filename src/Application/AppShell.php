@@ -40,7 +40,7 @@ final readonly class AppShell
             'sidebar' => $this->sideBar->render($navigationSection),
             'athlete' => $general->getAthlete(),
             'profilePictureUrl' => $general->getProfilePictureUrl(),
-            'subTitle' => $general->getAppSubTitle(),
+            'subTitle' => $this->settingsRepository->appearance()->getAppSubTitle(),
             'javascriptWindowConstants' => Json::encode([
                 'countries' => Countries::getNames($this->localeSwitcher->getLocale()),
                 'appVersion' => AppVersion::getSemanticVersion(),

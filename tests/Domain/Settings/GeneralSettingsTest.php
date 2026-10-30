@@ -16,7 +16,6 @@ class GeneralSettingsTest extends TestCase
     private static function validData(): array
     {
         return [
-            'appSubTitle' => 'The King',
             'profilePictureUrl' => 'https://example.com/me.png',
             'birthday' => '1989-08-14',
             'firstName' => 'Robin',
@@ -52,7 +51,6 @@ class GeneralSettingsTest extends TestCase
     {
         $settings = GeneralSettings::fromArray(self::validData());
 
-        $this->assertSame('The King', (string) $settings->getAppSubTitle());
         $this->assertSame('https://example.com/me.png', (string) $settings->getProfilePictureUrl());
         $this->assertNotEmpty($settings->getFtpHistory()->findAll(ActivityType::RIDE));
     }
@@ -66,7 +64,6 @@ class GeneralSettingsTest extends TestCase
             'maxHeartRateFormula' => 'fox',
         ]);
 
-        $this->assertNull($settings->getAppSubTitle());
         $this->assertNull($settings->getProfilePictureUrl());
         // Resting heart rate defaults to the heuristic age-based formula.
         $this->assertGreaterThan(0, $settings->getAthlete()->getRestingHeartRate(SerializableDateTime::fromString('2024-01-01')));
