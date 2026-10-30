@@ -34,7 +34,7 @@
             {% else %}
                 <div data-async-content-url="{{ relativeUrl(path('admin_backfill_automation_rules_preview', {automationRuleIds: selectedAutomationRuleIds})) }}">
                     <div class="flex min-h-64 items-center justify-center">
-                        {% include 'html/loader.html.twig' with {modifier: 'loader--md'} %}
+                        {% include 'html/component/loader.html.twig' with {modifier: 'loader--md'} %}
                     </div>
                 </div>
             {% endif %}

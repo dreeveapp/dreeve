@@ -35,7 +35,7 @@ final readonly class ReleaseAnnouncementRequestHandler
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
             render: fn (): string => $this->visitor->isAuthenticated()
-                ? $this->twig->load('html/release-announcement.html.twig')->render()
+                ? $this->twig->load('html/component/release-announcement.html.twig')->render()
                 : '',
         );
 
