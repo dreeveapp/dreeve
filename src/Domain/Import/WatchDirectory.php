@@ -9,6 +9,7 @@ use App\Infrastructure\ValueObject\String\Path;
 use League\Flysystem\DirectoryListing;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 final readonly class WatchDirectory
 {
@@ -17,6 +18,7 @@ final readonly class WatchDirectory
 
     public function __construct(
         private KernelProjectDir $projectDir,
+        #[Target('default.storage')]
         private FilesystemOperator $defaultStorage,
     ) {
     }

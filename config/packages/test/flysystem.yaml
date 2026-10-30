@@ -1,13 +1,13 @@
 flysystem:
     storages:
         default.storage:
-            adapter: 'memory'
+            memory: ~
 
         file.storage:
-            adapter: 'memory'
+            memory: ~
 
         database.storage:
-            adapter: 'memory'
+            memory: ~
 
         build.storage:
-            adapter: 'memory'
+            memory: ~

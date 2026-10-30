@@ -16,12 +16,14 @@ use App\Infrastructure\ValueObject\Time\Years;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use League\Flysystem\FilesystemOperator;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 final readonly class ActivityBasedImageRepository implements ImageRepository
 {
     public function __construct(
         private Connection $connection,
         private ActivityRepository $activityRepository,
+        #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
         private SettingsRepository $settingsRepository,
         private KernelProjectDir $kernelProjectDir,

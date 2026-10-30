@@ -8,6 +8,7 @@ use App\Domain\Image\ImageDirectory;
 use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\ValueObject\String\Path;
 use League\Flysystem\FilesystemOperator;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -21,6 +22,7 @@ final readonly class LocalImageRequestHandler
     private const array ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'svg'];
 
     public function __construct(
+        #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
         private Visitor $visitor,
     ) {

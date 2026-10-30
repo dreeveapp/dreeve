@@ -12,6 +12,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Time\Sleep;
 use App\Infrastructure\ValueObject\Identifier\UuidFactory;
 use League\Flysystem\FilesystemOperator;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 final readonly class ImportChallengesCommandHandler implements CommandHandler
 {
@@ -20,6 +21,7 @@ final readonly class ImportChallengesCommandHandler implements CommandHandler
     public function __construct(
         private Strava $strava,
         private ChallengeRepository $challengeRepository,
+        #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
         private UuidFactory $uuidFactory,
         private Sleep $sleep,

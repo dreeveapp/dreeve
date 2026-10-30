@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 #[AsCommand(name: ClearRenderCacheConsoleCommand::NAME, description: 'Delete all rendered pages from the render cache')]
 final class ClearRenderCacheConsoleCommand extends Command
@@ -23,6 +24,7 @@ final class ClearRenderCacheConsoleCommand extends Command
 
     public function __construct(
         private readonly RenderCache $renderCache,
+        #[Target('build.storage')]
         private readonly FilesystemOperator $buildStorage,
     ) {
         parent::__construct();

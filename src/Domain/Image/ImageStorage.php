@@ -6,10 +6,12 @@ namespace App\Domain\Image;
 
 use App\Infrastructure\ValueObject\Identifier\UuidFactory;
 use League\Flysystem\FilesystemOperator;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 final readonly class ImageStorage
 {
     public function __construct(
+        #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
         private UuidFactory $uuidFactory,
     ) {
