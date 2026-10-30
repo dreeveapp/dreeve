@@ -17,9 +17,7 @@
                 </h3>
                 <a href="{{ overviewUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
                    class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
-                    <svg class="size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                    </svg>
+                    {{ svg('close') }}
                 </a>
             </div>
             <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ overviewUrl }}" class="flex flex-col gap-4">
@@ -52,9 +50,7 @@
                     <p class="mt-0.5 text-xxs text-gray-500">{{ "Conditions are combined with AND."|trans({}, 'admin') }}</p>
                     <div class="mt-2 flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ initialConditions|e('html_attr') }}"></div>
                     <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
-                        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-                        </svg>
+                        {{ svg('plus', 'size-4') }}
                         <span>{{ "Add condition"|trans({}, 'admin') }}</span>
                     </button>
                     <template data-repeater-template>
@@ -68,9 +64,7 @@
                                 <button type="button" data-repeater-remove
                                         class="grid place-items-center size-9 shrink-0 rounded-lg border border-gray-200 bg-white text-gray-400 transition-colors hover:text-red-600 hover:border-red-200"
                                         aria-label="{{ "Remove condition"|trans({}, 'admin') }}">
-                                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                                    </svg>
+                                    {{ svg('close', 'size-4') }}
                                 </button>
                             </div>
                             {% for type, condition in conditions %}
@@ -87,9 +81,7 @@
                     <label class="mt-0!">{{ "Then do this"|trans({}, 'admin') }}</label>
                     <div class="mt-2 flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ initialActions|e('html_attr') }}"></div>
                     <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
-                        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
-                        </svg>
+                        {{ svg('plus', 'size-4') }}
                         <span>{{ "Add action"|trans({}, 'admin') }}</span>
                     </button>
                     <template data-repeater-template>
@@ -103,9 +95,7 @@
                                 <button type="button" data-repeater-remove
                                         class="grid place-items-center size-9 shrink-0 rounded-lg border border-gray-200 bg-white text-gray-400 transition-colors hover:text-red-600 hover:border-red-200"
                                         aria-label="{{ "Remove action"|trans({}, 'admin') }}">
-                                    <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
-                                    </svg>
+                                    {{ svg('close', 'size-4') }}
                                 </button>
                             </div>
                             {% for type, action in actions %}
