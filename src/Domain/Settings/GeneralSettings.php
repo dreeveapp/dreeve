@@ -10,7 +10,6 @@ use App\Domain\Athlete\AthleteBirthDate;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
 use App\Domain\Athlete\MaxHeartRate\MaxHeartRateFormulas;
 use App\Domain\Athlete\RestingHeartRate\RestingHeartRateFormulas;
-use App\Domain\Ftp\FtpHistory;
 
 final readonly class GeneralSettings
 {
@@ -18,7 +17,6 @@ final readonly class GeneralSettings
         private ?ProfilePictureUrl $profilePictureUrl,
         private Athlete $athlete,
         private HeartRateZoneConfiguration $heartRateZoneConfiguration,
-        private FtpHistory $ftpHistory,
     ) {
     }
 
@@ -70,7 +68,6 @@ final readonly class GeneralSettings
                 restingHeartRateFormula: new RestingHeartRateFormulas()->determineFormula($restingHeartRateFormula),
             ),
             heartRateZoneConfiguration: HeartRateZoneConfiguration::fromArray($data['heartRateZones'] ?? []),
-            ftpHistory: FtpHistory::fromArray($data['ftpHistory'] ?? []),
         );
     }
 
@@ -87,10 +84,5 @@ final readonly class GeneralSettings
     public function getHeartRateZoneConfiguration(): HeartRateZoneConfiguration
     {
         return $this->heartRateZoneConfiguration;
-    }
-
-    public function getFtpHistory(): FtpHistory
-    {
-        return $this->ftpHistory;
     }
 }

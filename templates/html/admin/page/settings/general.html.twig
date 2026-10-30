@@ -17,42 +17,6 @@
             </div>
         {% endblock %}
     {% endembed %}
-    {% embed 'html/admin/page/settings/component/section.html.twig' with {
-        title: "FTP history (cycling)"|trans({}, 'admin'),
-        description: "History of cycling FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
-    } %}
-        {% block body %}
-            {% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
-            {{ editor.historyEditor(
-                'data[ftpHistory][cycling]',
-                settings.ftpHistory.cycling ?? [],
-                null,
-                null,
-                "FTP"|trans({}, 'admin'),
-                "Add FTP"|trans({}, 'admin'),
-                'ftp',
-                '1'
-            ) }}
-        {% endblock %}
-    {% endembed %}
-    {% embed 'html/admin/page/settings/component/section.html.twig' with {
-        title: "FTP history (running)"|trans({}, 'admin'),
-        description: "History of running FTP. Needed to calculate activity stress level."|trans({}, 'admin'),
-    } %}
-        {% block body %}
-            {% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
-            {{ editor.historyEditor(
-                'data[ftpHistory][running]',
-                settings.ftpHistory.running ?? [],
-                null,
-                null,
-                "FTP"|trans({}, 'admin'),
-                "Add FTP"|trans({}, 'admin'),
-                'ftp',
-                '1'
-            ) }}
-        {% endblock %}
-    {% endembed %}
     {% set heartRateZoneModeOptions = enum('App\\Domain\\Athlete\\HeartRateZone\\HeartRateZoneMode').cases() %}
     {% set heartRateZones = settings.heartRateZones ?? {} %}
     {% set heartRateZoneRows = (heartRateZones.zones is defined and heartRateZones.zones) ? heartRateZones.zones : defaultHeartRateZones %}

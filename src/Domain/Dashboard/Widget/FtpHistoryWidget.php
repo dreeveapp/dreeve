@@ -44,7 +44,7 @@ final readonly class FtpHistoryWidget implements Widget
 
     public function getCacheTags(): CacheTags
     {
-        return CacheTags::of(RootCacheTag::SETTINGS_GENERAL, RootCacheTag::SETTINGS_ATHLETE_WEIGHT);
+        return CacheTags::of(RootCacheTag::SETTINGS_ATHLETE_FTP, RootCacheTag::SETTINGS_ATHLETE_WEIGHT);
     }
 
     public function getDefaultConfiguration(): WidgetConfiguration
@@ -60,7 +60,7 @@ final readonly class FtpHistoryWidget implements Widget
     {
         $ftpHistoryCharts = [];
 
-        $ftpHistory = $this->settingsRepository->general()->getFtpHistory();
+        $ftpHistory = $this->settingsRepository->athleteFtp()->getHistory();
         $athleteWeightHistory = $this->settingsRepository->athleteWeight()->getHistory($this->settingsRepository->appearance()->getUnitSystem());
 
         /** @var ActivityType $activityType */

@@ -144,4 +144,9 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
     {
         return AthleteWeightSettings::fromArray($this->findGroup(SettingsGroup::ATHLETE_WEIGHT));
     }
+
+    public function athleteFtp(): AthleteFtpSettings
+    {
+        return AthleteFtpSettings::fromArray($this->findGroup(SettingsGroup::ATHLETE_FTP));
+    }
 }

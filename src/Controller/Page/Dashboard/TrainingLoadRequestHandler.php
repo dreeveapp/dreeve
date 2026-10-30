@@ -48,7 +48,11 @@ final readonly class TrainingLoadRequestHandler
         return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'dashboard.training-load',
-                cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_GENERAL),
+                cacheTags: CacheTags::of(
+                    RootCacheTag::ACTIVITIES,
+                    RootCacheTag::SETTINGS_GENERAL,
+                    RootCacheTag::SETTINGS_ATHLETE_FTP
+                ),
                 ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),

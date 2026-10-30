@@ -53,7 +53,7 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activities.9756441741, gear, settings.security, settings.general, settings.athleteWeight',
+            'settings.appearance, activities.9756441741, gear, settings.security, settings.general, settings.athleteWeight, settings.athleteFtp',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

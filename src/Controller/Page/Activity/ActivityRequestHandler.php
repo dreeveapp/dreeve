@@ -85,6 +85,7 @@ final readonly class ActivityRequestHandler
                     RootCacheTag::SETTINGS_SECURITY,
                     RootCacheTag::SETTINGS_GENERAL,
                     RootCacheTag::SETTINGS_ATHLETE_WEIGHT,
+                    RootCacheTag::SETTINGS_ATHLETE_FTP,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class, TrustedVisitorCacheContext::class),
             ),

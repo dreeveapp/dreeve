@@ -27,6 +27,9 @@ trait ProvideSettings
             'firstName' => 'Robin',
             'lastName' => 'Ingelbrecht',
             'maxHeartRateFormula' => 'fox',
+        ]);
+
+        $settingsRepository->saveGroup(SettingsGroup::ATHLETE_FTP, [
             'ftpHistory' => [
                 'cycling' => [
                     ['on' => '2023-01-01', 'ftp' => 198],
