@@ -40,6 +40,7 @@ class AppShellTest extends ContainerTestCase
         $this->assertStringContainsString('<meta property="og:title" content="Morning Run">', $render);
         $this->assertStringContainsString('<meta property="og:description" content="15 activities">', $render);
         $this->assertStringContainsString('<meta property="og:url" content="http://localhost:8080/activities/activity-1">', $render);
+        $this->assertStringContainsString('<link rel="canonical" href="http://localhost:8080/activities/activity-1">', $render);
         $this->assertStringContainsString('<meta property="og:image" content="http://localhost:8080/activities/activity-1/og-image.png">', $render);
         $this->assertStringContainsString('<meta name="twitter:card" content="summary_large_image">', $render);
         $this->assertMatchesHtmlSnapshot($render);
