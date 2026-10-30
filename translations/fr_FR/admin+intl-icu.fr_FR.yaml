@@ -73,6 +73,7 @@ Apply: Appliquer
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Êtes-vous sûr de vouloir supprimer {task} sur {component} pour {gear}, effectuée le {date} ?'
 'Are you sure you want to remove the {widget} widget?': 'Êtes-vous sûr de vouloir retirer le widget {widget} ?'
 'Assign gear': 'Associer un matériel'
+Athlete: Athlete
 'Athlete settings': "Paramètres de l'athlète"
 'Attached to': 'Associé à'
 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.': "Renseignez automatiquement le matériel, le trajet domicile-travail, le type de sport et plus encore sur les activités nouvellement importées. Les règles s'exécutent de haut en bas et peuvent aussi être appliquées aux activités déjà importées."
@@ -141,6 +142,7 @@ Deleting...: 'Suppression en cours...'
 Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Des instructions détaillées sont disponibles dans {linkOpen}la documentation{linkClose}.'
 Disabled: Désactivé
+Display: Display
 Distance: Distance
 'Do not download activity photos': 'Ne pas télécharger les photos des activités'
 Done: Fait
@@ -467,6 +469,7 @@ Subtitle: Sous-titre
 Success: Succès
 Sunday: Dimanche
 'Supported types': 'Types pris en charge'
+System: System
 Task: Tâche
 'Task name': 'Nom de la tâche'
 Tasks: Tâches

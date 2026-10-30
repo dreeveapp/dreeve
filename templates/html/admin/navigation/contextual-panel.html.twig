@@ -89,8 +89,8 @@
         {% set inSecurity = isActiveNavItem({'/admin/settings/security': false}) %}
         {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
         <nav class="contextual-panel" aria-label="{{ "Settings"|trans({}, 'admin') }}">
-            <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
-                {{ "Settings"|trans({}, 'admin') }}
+            <p class="px-2 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {{ "Athlete"|trans({}, 'admin') }}
             </p>
             <ul class="space-y-1">
                 <li>
@@ -103,14 +103,14 @@
                         {{ "Weight history"|trans }}
                     </a>
                 </li>
+            </ul>
+            <p class="mt-4 px-2 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {{ "Display"|trans({}, 'admin') }}
+            </p>
+            <ul class="space-y-1">
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'appearance'})) }}" {{ inAppearance ? 'aria-selected="true"' : '' }}>
                         {{ "Appearance"|trans({}, 'admin') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'maps'})) }}" {{ inMaps ? 'aria-selected="true"' : '' }}>
-                        {{ "Maps"|trans({}, 'admin') }}
                     </a>
                 </li>
                 <li>
@@ -118,6 +118,21 @@
                         {{ "Dashboard"|trans }}
                     </a>
                 </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'metrics'})) }}" {{ inMetrics ? 'aria-selected="true"' : '' }}>
+                        {{ "Metrics"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'maps'})) }}" {{ inMaps ? 'aria-selected="true"' : '' }}>
+                        {{ "Maps"|trans({}, 'admin') }}
+                    </a>
+                </li>
+            </ul>
+            <p class="mt-4 px-2 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {{ "System"|trans({}, 'admin') }}
+            </p>
+            <ul class="space-y-1">
                 {% if importMode.isStravaApi() %}
                     <li>
                         <a href="{{ relativeUrl(path('admin_settings', {'group': 'import'})) }}" {{ inImport ? 'aria-selected="true"' : '' }}>
@@ -126,13 +141,8 @@
                     </li>
                 {% endif %}
                 <li>
-                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'metrics'})) }}" {{ inMetrics ? 'aria-selected="true"' : '' }}>
-                        {{ "Metrics"|trans({}, 'admin') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'zwift'})) }}" {{ inZwift ? 'aria-selected="true"' : '' }}>
-                        {{ "Zwift"|trans({}, 'admin') }}
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'daemon'})) }}" {{ inDaemon ? 'aria-selected="true"' : '' }}>
+                        {{ "Daemon"|trans({}, 'admin') }}
                     </a>
                 </li>
                 <li>
@@ -140,14 +150,16 @@
                         {{ "Integrations"|trans({}, 'admin') }}
                     </a>
                 </li>
-                <li>
-                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'daemon'})) }}" {{ inDaemon ? 'aria-selected="true"' : '' }}>
-                        {{ "Daemon"|trans({}, 'admin') }}
-                    </a>
-                </li>
+            </ul>
+            <ul class="mt-4 space-y-1 border-t border-gray-200 pt-4">
                 <li>
                     <a href="{{ relativeUrl(path('admin_settings', {'group': 'security'})) }}" {{ inSecurity ? 'aria-selected="true"' : '' }}>
                         {{ "Security"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'zwift'})) }}" {{ inZwift ? 'aria-selected="true"' : '' }}>
+                        {{ "Zwift"|trans({}, 'admin') }}
                     </a>
                 </li>
             </ul>

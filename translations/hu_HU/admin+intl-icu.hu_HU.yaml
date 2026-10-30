@@ -73,6 +73,7 @@ Apply: Alkalmaz
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Biztosan törölni szeretnéd a(z) {task} feladatot a(z) {component} komponensen a(z) {gear} felszereléshez, amely {date} napon történt?'
 'Are you sure you want to remove the {widget} widget?': 'Biztosan el szeretnéd távolítani a(z) {widget} widgetet?'
 'Assign gear': 'Felszerelés hozzárendelése'
+Athlete: Athlete
 'Athlete settings': 'Sportoló beállításai'
 'Attached to': 'Hozzárendelve ehhez'
 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.': 'Automatikusan kitölti a felszerelést, ingázást, sporttípust és továbbiakat az újonnan importált tevékenységeken. A szabályok fentről lefelé futnak, és a már importált tevékenységekre is alkalmazhatók.'
@@ -141,6 +142,7 @@ Deleting...: 'Törlés folyamatban...'
 Description: Leírás
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Részletes útmutató elérhető {linkOpen}a dokumentációban{linkClose}.'
 Disabled: Letiltva
+Display: Display
 Distance: Távolság
 'Do not download activity photos': 'Do not download activity photos'
 Done: Kész
@@ -467,6 +469,7 @@ Subtitle: Alcím
 Success: Sikeres
 Sunday: Vasárnap
 'Supported types': 'Támogatott típusok'
+System: System
 Task: Feladat
 'Task name': 'Feladat neve'
 Tasks: Feladatok
