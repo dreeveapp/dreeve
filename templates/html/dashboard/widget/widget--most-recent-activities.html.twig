@@ -61,14 +61,7 @@
                         {{ activity.getMovingTimeFormatted() }}
                     </td>
                     <td>
-                        {% set velocityPreference = sportType.getVelocityDisplayPreference() %}
-                        {% if velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPer100Meter') %}
-                            {{ activity.getPaceInSecPer100Meter()|formatPace }}<span class="text-xxs ml-px">/100m</span>
-                        {% elseif velocityPreference is instanceof('App\\Infrastructure\\Measurement\\Velocity\\SecPerKm') %}
-                            {{ activity.getPaceInSecPerKm()|formatPace }}<span class="text-xxs ml-px">{{ renderUnitSymbol('pace') }}</span>
-                        {% else %}
-                            {{ activity.getAverageSpeedInDisplayUnit()|renderMeasurement(1) }}
-                        {% endif %}
+                        {{ sportType.toDisplayVelocity(activity.getAverageSpeed())|renderVelocity }}
                     </td>
                     <td>
                         {{ activity.getAverageHeartRate() ?? 'n/a' }}

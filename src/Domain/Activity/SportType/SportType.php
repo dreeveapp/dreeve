@@ -10,6 +10,7 @@ use App\Infrastructure\Measurement\Length\NauticalMile;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\Knot;
+use App\Infrastructure\Measurement\Velocity\Pace;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Measurement\Velocity\Velocity;
@@ -122,6 +123,20 @@ enum SportType: string implements TranslatableInterface
         }
 
         return $distance;
+    }
+
+    public function displaysPace(): bool
+    {
+        return $this->getVelocityDisplayPreference() instanceof Pace;
+    }
+
+    public function toDisplayVelocity(KmPerHour $speed): SecPer100Meter|SecPerKm|Knot|KmPerHour
+    {
+        return match (true) {
+            $this->getVelocityDisplayPreference() instanceof SecPer100Meter => $speed->toMetersPerSecond()->toSecPerKm()->toSecPer100Meter(),
+            $this->getVelocityDisplayPreference() instanceof SecPerKm => $speed->toMetersPerSecond()->toSecPerKm(),
+            default => $this->toDisplaySpeed($speed),
+        };
     }
 
     public function toDisplaySpeed(KmPerHour $speed): Knot|KmPerHour

@@ -11,7 +11,11 @@ use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Measurement\Unit;
 use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\Measurement\Velocity\Knot;
 use App\Infrastructure\Measurement\Velocity\Pace;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
+use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
@@ -90,6 +94,40 @@ final readonly class MeasurementTwigExtension
         $pace = $pace->toUnitSystem($this->settingsRepository->appearance()->getUnitSystem());
 
         return $this->formatDurationAsClock($pace->toInt());
+    }
+
+    #[AsTwigFilter('formatVelocity')]
+    public function formatVelocity(SecPer100Meter|SecPerKm|Knot|KmPerHour $velocity): string
+    {
+        if ($velocity instanceof Pace) {
+            return $this->formatPace($velocity);
+        }
+
+        return $this->formatMeasurement($velocity, 1);
+    }
+
+    #[AsTwigFilter('velocitySymbol')]
+    public function velocitySymbol(SecPer100Meter|SecPerKm|Knot|KmPerHour $velocity): string
+    {
+        return match (true) {
+            $velocity instanceof SecPer100Meter => '/100m',
+            $velocity instanceof SecPerKm => $this->getUnitSymbol('pace'),
+            default => $this->measurementSymbol($velocity),
+        };
+    }
+
+    #[AsTwigFilter('renderVelocity')]
+    public function renderVelocity(SecPer100Meter|SecPerKm|Knot|KmPerHour $velocity): string
+    {
+        if (!$velocity instanceof Pace) {
+            return $this->renderMeasurement($velocity, 1);
+        }
+
+        return sprintf(
+            '%s<span class="text-xxs ml-px">%s</span>',
+            $this->formatPace($velocity),
+            $this->velocitySymbol($velocity)
+        );
     }
 
     #[AsTwigFunction('renderUnitSymbol')]

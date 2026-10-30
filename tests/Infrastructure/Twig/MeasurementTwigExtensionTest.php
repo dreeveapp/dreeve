@@ -12,6 +12,7 @@ use App\Infrastructure\Measurement\Unit;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\Knot;
+use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Twig\MeasurementTwigExtension;
 use App\Tests\ContainerTestCase;
@@ -38,6 +39,21 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
             '10:00',
             $extension->formatPace(SecPerKm::from(600))
         );
+    }
+
+    #[DataProvider(methodName: 'provideVelocities')]
+    public function testVelocity(
+        string $expectedValue,
+        string $expectedSymbol,
+        string $expectedRender,
+        UnitSystem $unitSystem,
+        SecPer100Meter|SecPerKm|Knot|KmPerHour $velocity,
+    ): void {
+        $extension = $this->extensionFor($unitSystem);
+
+        $this->assertSame($expectedValue, $extension->formatVelocity($velocity));
+        $this->assertSame($expectedSymbol, $extension->velocitySymbol($velocity));
+        $this->assertSame($expectedRender, $extension->renderVelocity($velocity));
     }
 
     #[DataProvider(methodName: 'provideMeasurementSymbols')]
@@ -115,6 +131,19 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
             [Meter::from(10), UnitSystem::METRIC, Meter::from(10)],
             [Foot::from(9.998964), UnitSystem::IMPERIAL, Meter::from(3.048)],
             [Foot::from(10), UnitSystem::IMPERIAL, Foot::from(10)],
+        ];
+    }
+
+    public static function provideVelocities(): array
+    {
+        return [
+            ['6:00', '/km', '6:00<span class="text-xxs ml-px">/km</span>', UnitSystem::METRIC, SecPerKm::from(360)],
+            ['9:39', '/mi', '9:39<span class="text-xxs ml-px">/mi</span>', UnitSystem::IMPERIAL, SecPerKm::from(360)],
+            ['1:35', '/100m', '1:35<span class="text-xxs ml-px">/100m</span>', UnitSystem::METRIC, SecPer100Meter::from(95)],
+            ['1:35', '/100m', '1:35<span class="text-xxs ml-px">/100m</span>', UnitSystem::IMPERIAL, SecPer100Meter::from(95)],
+            ['22.0', 'km/h', '22.0<span class="text-xxs ml-px whitespace-nowrap">km/h</span>', UnitSystem::METRIC, KmPerHour::from(22)],
+            ['13.7', 'mph', '13.7<span class="text-xxs ml-px whitespace-nowrap">mph</span>', UnitSystem::IMPERIAL, KmPerHour::from(22)],
+            ['10.0', 'kn', '10.0<span class="text-xxs ml-px whitespace-nowrap">kn</span>', UnitSystem::IMPERIAL, Knot::from(10)],
         ];
     }
 
