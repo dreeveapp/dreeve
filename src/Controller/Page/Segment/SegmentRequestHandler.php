@@ -26,12 +26,10 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -59,11 +57,7 @@ final readonly class SegmentRequestHandler
     #[Route(path: '/segments/{segmentId}', name: 'segment', requirements: ['segmentId' => 'segment-[^/]+'], methods: ['GET'])]
     public function handle(string $segmentId): HtmlResponse
     {
-        try {
-            $segment = $this->segmentRepository->find(SegmentId::fromString($segmentId));
-        } catch (EntityNotFound) {
-            throw new NotFoundHttpException('Not found');
-        }
+        $segment = $this->segmentRepository->find(SegmentId::fromString($segmentId));
 
         $topTenSegmentEfforts = $this->segmentEffortRepository->findTopXBySegmentId(
             $segment->getId(),

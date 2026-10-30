@@ -37,7 +37,6 @@ use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\Security\Visitor;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -73,11 +72,7 @@ final readonly class ActivityRequestHandler
     {
         $activityId = ActivityId::fromString($activityId);
 
-        try {
-            $activity = $this->activityRepository->find($activityId);
-        } catch (EntityNotFound) {
-            throw new NotFoundHttpException('Not found');
-        }
+        $activity = $this->activityRepository->find($activityId);
 
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
 
