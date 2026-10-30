@@ -3,6 +3,7 @@
 namespace App\Tests\Infrastructure\Http;
 
 use App\Infrastructure\Config\PlatformEnvironment;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\ErrorResponseExceptionListener;
 use App\Infrastructure\Http\HttpStatusCode;
 use App\Infrastructure\Http\ServerErrorLogger;
@@ -39,6 +40,7 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
     public static function provideExceptions(): iterable
     {
         yield 'not found' => [new NotFoundHttpException('Unknown settings group "bogus"'), HttpStatusCode::NOT_FOUND];
+        yield 'entity not found' => [new EntityNotFound('Gear "gear-1" not found'), HttpStatusCode::NOT_FOUND];
         yield 'invalid argument' => [new \InvalidArgumentException(), HttpStatusCode::BAD_REQUEST];
         yield 'anything else' => [new \RuntimeException('A message'), HttpStatusCode::INTERNAL_SERVER_ERROR];
     }
