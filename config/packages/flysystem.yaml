@@ -2,29 +2,19 @@
 flysystem:
     storages:
         default.storage:
-            adapter: 'local'
-            options:
+            local:
                 directory: '%kernel.project_dir%'
-                lock: 0
         file.storage:
-            adapter: 'local'
-            options:
+            local:
                 directory: '%kernel.project_dir%/storage/files'
-                lock: 0
         countries-geography.storage:
-            adapter: 'local'
-            options:
+            local:
                 directory: '%kernel.project_dir%/resources/countries'
-                lock: 0
             visibility: public
             directory_visibility: public
         database.storage:
-            adapter: 'local'
-            options:
+            local:
                 directory: '%kernel.project_dir%/storage/database'
-                lock: 0
         build.storage:
-            adapter: 'local'
-            options:
+            local:
                 directory: '%kernel.project_dir%/build'
-                lock: 0
