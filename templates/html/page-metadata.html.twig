@@ -3,12 +3,13 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{ title }}">
 <meta property="og:url" content="{{ absoluteUrl(path) }}">
+<link rel="canonical" href="{{ absoluteUrl(path) }}">
 <meta property="og:description" content="{{ description }}">
 <meta name="description" content="{{ description }}">
+<meta name="twitter:card" content="{{ imagePath ? 'summary_large_image' : 'summary' }}">
 {% if imagePath %}
 <meta property="og:image" content="{{ absoluteUrl(imagePath) }}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="{{ imageWidth }}">
 <meta property="og:image:height" content="{{ imageHeight }}">
-<meta name="twitter:card" content="summary_large_image">
 {% endif %}
