@@ -67,11 +67,6 @@ final readonly class LoggableConsoleOutput implements OutputInterface
         return $this->output->isQuiet();
     }
 
-    public function isSuccessful(): bool
-    {
-        return $this->output->isSilent();
-    }
-
     public function isVerbose(): bool
     {
         return $this->output->isVerbose();

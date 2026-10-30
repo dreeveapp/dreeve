@@ -246,18 +246,6 @@ class Strava
     /**
      * @return array<mixed>
      */
-    public function getActivityZones(ActivityId $activityId): array
-    {
-        return Json::decode($this->request('api/v3/activities/'.$activityId->toUnprefixedString().'/zones', 'GET', [
-            RequestOptions::HEADERS => [
-                'Authorization' => 'Bearer '.$this->getAccessToken(),
-            ],
-        ]));
-    }
-
-    /**
-     * @return array<mixed>
-     */
     public function getAllActivityStreams(ActivityId $activityId): array
     {
         return Json::decode($this->request('api/v3/activities/'.$activityId->toUnprefixedString().'/streams', 'GET', [

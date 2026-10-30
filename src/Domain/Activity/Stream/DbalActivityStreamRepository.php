@@ -47,20 +47,6 @@ final readonly class DbalActivityStreamRepository extends DbalRepository impleme
         return $queryBuilder->executeQuery()->fetchOne() > 0;
     }
 
-    public function findByStreamType(StreamType $streamType): ActivityStreams
-    {
-        $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('*')
-            ->from('ActivityStream')
-            ->andWhere('streamType = :streamType')
-            ->setParameter('streamType', $streamType->value);
-
-        return ActivityStreams::fromArray(array_map(
-            $this->hydrate(...),
-            $queryBuilder->executeQuery()->fetchAllAssociative()
-        ));
-    }
-
     public function findActivityIdsByStreamType(StreamType $streamType): ActivityIds
     {
         $queryBuilder = $this->connection->createQueryBuilder();

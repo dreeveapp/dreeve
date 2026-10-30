@@ -32,11 +32,6 @@ class DbalActivityStreamRepositoryTest extends ContainerTestCase
             activityId: $stream->getActivityId(),
             streamType: StreamType::CADENCE
         ));
-
-        $this->assertEquals(
-            ActivityStreams::fromArray([$stream]),
-            $this->activityStreamRepository->findByStreamType($stream->getStreamType())
-        );
     }
 
     public function testFindActivityIdsByStreamType(): void

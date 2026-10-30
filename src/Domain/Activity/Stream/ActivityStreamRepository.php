@@ -15,8 +15,6 @@ interface ActivityStreamRepository
 
     public function hasOneForActivityAndStreamType(ActivityId $activityId, StreamType $streamType): bool;
 
-    public function findByStreamType(StreamType $streamType): ActivityStreams;
-
     public function findActivityIdsByStreamType(StreamType $streamType): ActivityIds;
 
     public function findOneByActivityAndStreamType(ActivityId $activityId, StreamType $streamType): ActivityStream;
