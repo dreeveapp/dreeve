@@ -1,6 +1,5 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
-    {% autoescape false %}
     {% set activity = activity is defined ? activity : null %}
     {% set overviewUrl = redirectUrl(relativeUrl(path('admin_manage_activity_overview'))) %}
     {% set distance = activity ? (activity.getDistance()|convertMeasurement).toFloat()|round(2) : 0 %}
@@ -9,17 +8,10 @@
     {% set calories = activity ? activity.getCalories() : null %}
     {% set averageHeartRate = activity ? activity.getAverageHeartRate() : null %}
     {% set maxHeartRate = activity ? activity.getMaxHeartRate() : null %}
-    <div class="modal-like-form">
-        <div class="w-full max-w-3xl overflow-y-auto p-6 bg-white border border-gray-200 rounded-lg shadow-xl">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold">
-                    {{ activity ? "Edit activity"|trans({}, 'admin') : "Add activity"|trans({}, 'admin') }}
-                </h3>
-                <a href="{{ overviewUrl }}" aria-label="{{ "Close"|trans({}, 'admin') }}"
-                   class="grid place-items-center size-8 rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900">
-                    {{ svg('close') }}
-                </a>
-            </div>
+    {% embed 'html/admin/component/modal.html.twig' with {closeUrl: overviewUrl, modalSize: 'max-w-3xl'} %}
+        {% block title %}{{ activity ? "Edit activity"|trans({}, 'admin') : "Add activity"|trans({}, 'admin') }}{% endblock %}
+        {% block body %}
+            {% autoescape false %}
             <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ overviewUrl }}" class="flex flex-col gap-4">
                 {% if activity %}
                     <input type="hidden" name="activityId" value="{{ activity.getId() }}">
@@ -145,7 +137,7 @@
                     </button>
                 </div>
             </form>
-        </div>
-    </div>
-    {% endautoescape %}
+            {% endautoescape %}
+        {% endblock %}
+    {% endembed %}
 {% endblock main %}
