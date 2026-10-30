@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http;
 
 use App\Infrastructure\Config\PlatformEnvironment;
+use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,8 @@ final readonly class ErrorResponseExceptionListener implements EventSubscriberIn
         $exception = $event->getThrowable();
 
         $statusCode = match (true) {
-            $exception instanceof NotFoundHttpException => HttpStatusCode::NOT_FOUND,
+            $exception instanceof NotFoundHttpException,
+            $exception instanceof EntityNotFound => HttpStatusCode::NOT_FOUND,
             $exception instanceof \InvalidArgumentException,
             $exception instanceof BadRequestException => HttpStatusCode::BAD_REQUEST,
             $exception instanceof TooManyRequestsHttpException => HttpStatusCode::TOO_MANY_REQUESTS,

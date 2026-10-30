@@ -248,6 +248,9 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('[data-image-dropzone]'));
 
         $this->assertCount(0, $crawler->filter('a.btn--danger'));
+
+        $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('unknown').'/edit');
+        $this->assertResponseStatusCodeSame(404);
     }
 
     #[DataProvider('provideRedirectToQueryParams')]
