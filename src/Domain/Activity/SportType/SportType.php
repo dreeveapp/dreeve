@@ -130,7 +130,7 @@ enum SportType: string implements TranslatableInterface
         return $this->getVelocityDisplayPreference() instanceof Pace;
     }
 
-    public function toDisplayVelocity(KmPerHour $speed): SecPer100Meter|SecPerKm|Knot|KmPerHour
+    public function toDisplayVelocity(KmPerHour $speed): Velocity
     {
         return match (true) {
             $this->getVelocityDisplayPreference() instanceof SecPer100Meter => $speed->toMetersPerSecond()->toSecPerKm()->toSecPer100Meter(),
