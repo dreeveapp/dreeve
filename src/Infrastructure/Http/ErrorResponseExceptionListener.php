@@ -49,7 +49,7 @@ final readonly class ErrorResponseExceptionListener implements EventSubscriberIn
         $path = $event->getRequest()->getPathInfo();
         $response = str_starts_with($path, '/api/internal/') || str_starts_with($path, '/badge/')
             ? new Response('')
-            : new HtmlResponse($this->twig->render('html/error.html.twig', [
+            : new HtmlResponse($this->twig->render('html/error/error.html.twig', [
                 'statusCode' => $statusCode->value,
                 'errorReference' => $errorReference,
             ]));
