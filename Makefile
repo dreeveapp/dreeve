@@ -22,9 +22,6 @@ down:
 console:
 	@make dcr cmd="bin/console $(arg)"
 
-console-blackfire:
-	@make dcr cmd="blackfire run bin/console $(arg)"
-
 console-profiler:
 	# We need to use the app container here, otherwise the profiler can't access the files through web requests.
 	docker compose exec app bin/console --profile -v $(arg)
@@ -100,10 +97,6 @@ app-docs-build:
 
 clear-cache:
 	docker compose exec app bin/console app:cache:render:clear
-# Ollama models
-ollama-run-llama32:
-	docker compose exec ollama ollama pull llama3.2
-
 # Helpers for forks and PRs
 fork-fetch-remote:
 	git remote add $(remote-name) $(fork-url)
