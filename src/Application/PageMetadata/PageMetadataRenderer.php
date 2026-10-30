@@ -72,6 +72,8 @@ final readonly class PageMetadataRenderer
                 parameters: $request->attributes->all('_route_params')
             ),
             'imagePath' => $metadata->getImagePath(),
+            'imageWidth' => OpenGraphImageCanvas::WIDTH,
+            'imageHeight' => OpenGraphImageCanvas::HEIGHT,
         ]);
     }
 
