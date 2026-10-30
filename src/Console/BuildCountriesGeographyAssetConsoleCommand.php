@@ -13,6 +13,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 #[AsCommand(name: 'app:geography:build-countries-asset', description: 'Build the country boundary asset from Natural Earth')]
 final class BuildCountriesGeographyAssetConsoleCommand extends Command
@@ -25,6 +26,7 @@ final class BuildCountriesGeographyAssetConsoleCommand extends Command
     public function __construct(
         private readonly KernelProjectDir $kernelProjectDir,
         private readonly Client $client,
+        #[Target('countries-geography.storage')]
         private readonly FilesystemOperator $countriesGeographyStorage,
     ) {
         parent::__construct();

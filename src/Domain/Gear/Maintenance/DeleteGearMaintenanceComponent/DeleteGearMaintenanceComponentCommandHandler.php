@@ -11,11 +11,13 @@ use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Exception\EntityNotFound;
 use League\Flysystem\FilesystemOperator;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 
 final readonly class DeleteGearMaintenanceComponentCommandHandler implements CommandHandler
 {
     public function __construct(
         private GearComponentRepository $gearComponentRepository,
+        #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
     ) {
     }

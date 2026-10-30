@@ -11,6 +11,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Uri\Rfc3986\Uri;
 
 #[AsTaggedItem(priority: 10)]
@@ -18,6 +19,7 @@ final readonly class DownloadActivityImages implements ActivityImportStep
 {
     public function __construct(
         private Strava $strava,
+        #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
         private UuidFactory $uuidFactory,
         private SettingsRepository $settingsRepository,
