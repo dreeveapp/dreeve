@@ -17,6 +17,22 @@
             </div>
         {% endblock %}
     {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Max heart rate"|trans({}, 'admin')} %}
+        {% block body %}
+            {% include 'html/admin/page/settings/max-heart-rate-fields.html.twig' with {
+                fieldPrefix: 'data',
+                athlete: settings,
+            } only %}
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Resting heart rate"|trans({}, 'admin')} %}
+        {% block body %}
+            {% include 'html/admin/page/settings/resting-heart-rate-fields.html.twig' with {
+                fieldPrefix: 'data',
+                athlete: settings,
+            } only %}
+        {% endblock %}
+    {% endembed %}
     {% set heartRateZoneModeOptions = enum('App\\Domain\\Athlete\\HeartRateZone\\HeartRateZoneMode').cases() %}
     {% set heartRateZones = settings.heartRateZones ?? {} %}
     {% set heartRateZoneRows = (heartRateZones.zones is defined and heartRateZones.zones) ? heartRateZones.zones : defaultHeartRateZones %}

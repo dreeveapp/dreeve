@@ -1,0 +1,38 @@
+{% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
+{% set restingHeartRateFormula = athlete.restingHeartRateFormula %}
+{% set restingHeartRateType = restingHeartRateFormula is iterable ? 'dateRangeBased' : (restingHeartRateFormula == 'heuristicAgeBased' ? 'heuristicAgeBased' : 'fixed') %}
+{% set restingHeartRateFixedValue = 'fixed' == restingHeartRateType ? restingHeartRateFormula : '' %}
+{% set restingHeartRateRanges = [] %}
+{% for on, bpm in 'dateRangeBased' == restingHeartRateType ? restingHeartRateFormula : [] %}
+    {% set restingHeartRateRanges = restingHeartRateRanges|merge([{'on': on, 'bpm': bpm}]) %}
+{% endfor %}
+<div class="group/resting-hr">
+    <label for="restingHeartRateFormula">{{ "Resting heart rate formula"|trans({}, 'admin') }}</label>
+    <select id="restingHeartRateFormula" name="{{ fieldPrefix }}[restingHeartRateFormula]">
+        <option value="heuristicAgeBased" {{ 'heuristicAgeBased' == restingHeartRateType ? 'selected' : '' }}>{{ "Age-based estimate"|trans({}, 'admin') }}</option>
+        <option value="fixed" {{ 'fixed' == restingHeartRateType ? 'selected' : '' }}>{{ "Fixed value"|trans({}, 'admin') }}</option>
+        <option value="dateRangeBased" {{ 'dateRangeBased' == restingHeartRateType ? 'selected' : '' }}>{{ "Date range based"|trans({}, 'admin') }}</option>
+    </select>
+    <p class="description">
+        {{ "The formula used to calculate your resting heart rate. The default is an age-based estimate."|trans({}, 'admin') }}
+    </p>
+    <div class="hidden mt-2 border-l-2 border-gray-200 pl-4 group-has-[option[value=fixed]:checked]/resting-hr:block">
+        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <label for="restingHeartRateFormulaFixedValue" class="mt-0! text-xs text-gray-500">{{ "Resting heart rate (bpm)"|trans({}, 'admin') }}</label>
+            <input type="number" min="20" max="250" step="1" id="restingHeartRateFormulaFixedValue" name="{{ fieldPrefix }}[restingHeartRateFormulaFixedValue]" value="{{ restingHeartRateFixedValue }}">
+        </div>
+    </div>
+    <div class="hidden mt-2 border-l-2 border-gray-200 pl-4 group-has-[option[value=dateRangeBased]:checked]/resting-hr:block">
+        {{ editor.historyEditor(
+            fieldPrefix ~ '[restingHeartRateFormulaRanges]',
+            restingHeartRateRanges,
+            null,
+            "Your measured resting heart rate, applied from the given date onwards."|trans({}, 'admin'),
+            "Resting heart rate (bpm)"|trans({}, 'admin'),
+            "Add resting heart rate"|trans({}, 'admin'),
+            'bpm',
+            '1',
+            false
+        ) }}
+    </div>
+</div>
