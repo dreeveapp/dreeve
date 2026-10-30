@@ -41,9 +41,7 @@
     {{ sidebar|raw }}
     <!-- MAIN -->
     <main class="p-4 md:ml-64 sidebar-collapsed:md:ml-16 h-auto min-h-screen pt-20 text-gray-900">
-        {% block main %}
-            {{ content|raw }}
-        {% endblock %}
+        {{ content|raw }}
     </main>
 </div>
 <script>
@@ -54,8 +52,5 @@
         "{{ relativeUrl(asset('libraries/echarts/echarts.world.min.js')) }}",
     ];
 </script>
-<script src="{{ relativeUrl(asset('js/dist/app.min.js')) }}" type="module"></script>
-{% block customScripts %}
-{% endblock customScripts %}
-</body>
+<script src="{{ relativeUrl(asset('js/dist/app.min.js')) }}" type="module"></script></body>
 </html>
