@@ -1,3 +1,43 @@
+# [v5.8.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.8.0) - 2026-10-31
+
+> [!NOTE]
+> Dreeve now supports single sign-on (OIDC), so you can log in to the admin panel with your own identity provider.
+> See the [single sign-on documentation](https://docs.dreeve.app/integrations/single-sign-on/) for setup instructions.
+
+## New features
+* Added support for OpenID Connect (OIDC) authentication
+* Added support for the new Zwift video routes
+
+## Improvements
+* Updated the Watopia map to include the Wild Isles expansion
+* Improved the power curve chart on the peak power outputs page
+* Redesigned the monthly statistics page
+* Improved activity search with start city and region
+* Improved the best efforts history page
+* Improved page metadata and meta tags
+* Grouped settings in the admin panel for easier navigation
+
+## Technical details
+* ISSUE #2927: Update Watopia map with the Wild Isles expansion by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2928
+* ISSUE #2929: Improve power curve chart by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2930
+* ISSUE #2931: Improve Echarts callbacks by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2932
+* ISSUE #2925: Provide support for OICD authentication by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2933
+* ISSUE #2925: Show the SSO configuration on the security settings page by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2934
+* ISSUE #2935: Confirm Strava webhook deletions with the Strava API by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2936
+* ISSUE #2937: Redesign the monthly stats page by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2938
+* ISSUE #2937: Fix font weight and color by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2939
+* ISSUE #2940: Make activities searchable by start city and region by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2941
+* ISSUE #2942: Improve best effort history page by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2943
+* ISSUE #2942: Show best efforts as a speed/pace curve by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2944
+* ISSUE #2937: Show the moving time share bar on md screens by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2945
+* ISSUE #2947: Improve page meta tags by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2948
+* ISSUE #2947: Improve page meta tags - BIS by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2949
+* ISSUE #2950: 404 for missing records, deprecation fixes and dead code cleanup by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2951
+* ISSUE #2952: Group settings in the admin panel by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2953
+* ISSUE #2954: Render a real-world map for Zwift video routes by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2955
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.7.0...v5.8.0
+
 # [v5.7.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.7.0) - 2026-10-26
 
 > [!NOTE]
