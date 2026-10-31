@@ -12,6 +12,7 @@ use App\Domain\Activity\ActivityRouteWasUpdated;
 use App\Domain\Activity\ActivitySportTypeWasChanged;
 use App\Domain\Activity\ActivityWasAdded;
 use App\Domain\Activity\ActivityWasUpdated;
+use App\Domain\Activity\RealWorldMap;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
@@ -60,7 +61,7 @@ class ActivityTest extends TestCase
         $this->assertNull($activity->getLeafletMap());
     }
 
-    public function testLeafletMapWhenZwiftMapCouldNotBeDetermined(): void
+    public function testLeafletMapFallsBackToRealWorldWhenZwiftMapCouldNotBeDetermined(): void
     {
         $activity = ActivityBuilder::fromDefaults()
             ->withWorldType(WorldType::ZWIFT)
@@ -70,7 +71,7 @@ class ActivityTest extends TestCase
             ->withPolyline('line')
             ->build();
 
-        $this->assertNull($activity->getLeafletMap());
+        $this->assertInstanceOf(RealWorldMap::class, $activity->getLeafletMap());
     }
 
     public function testGetPaceInSecPer100Meter(): void

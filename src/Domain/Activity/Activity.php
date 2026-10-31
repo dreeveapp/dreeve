@@ -825,10 +825,8 @@ final class Activity
         try {
             return ZwiftMap::forStartingCoordinate($startingCoordinate);
         } catch (CouldNotDetermineZwiftMap) {
-            // Very old Zwift activities have routes that we don't have corresponding maps for.
+            return new RealWorldMap();
         }
-
-        return null;
     }
 
     public function getRouteGeography(): RouteGeography
