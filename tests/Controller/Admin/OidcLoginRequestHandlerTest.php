@@ -13,6 +13,7 @@ use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\Algorithm\ES256;
 use Jose\Component\Signature\JWSBuilder;
 use Jose\Component\Signature\Serializer\CompactSerializer;
+use Monolog\Handler\TestHandler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -174,6 +175,39 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         yield 'wrong audience' => [['aud' => 'another-client']];
         yield 'wrong issuer' => [['iss' => 'https://evil.example.com/']];
         yield 'expired' => [['exp' => time() - 60]];
+    }
+
+    /**
+     * @param array<string, mixed> $claims
+     */
+    #[DataProvider(methodName: 'provideNotAllowedClaims')]
+    public function testCallbackRefusesAUserThatIsNotAllowed(array $claims): void
+    {
+        $this->client->request('GET', '/admin/login/oidc');
+        /** @var OidcLoginAttempt $loginAttempt */
+        $loginAttempt = $this->client->getRequest()->getSession()->get(OidcLoginAttempt::SESSION_KEY);
+
+        $this->idToken = $this->signIdToken([...$this->validClaims($loginAttempt), ...$claims], $this->signingKey);
+
+        $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => $loginAttempt->getState()]);
+        $this->assertResponseRedirects('/admin/login');
+
+        $errorLog = static::getContainer()->get('monolog.handler.errors');
+        $this->assertInstanceOf(TestHandler::class, $errorLog);
+        $this->assertFalse($errorLog->hasErrorRecords());
+
+        $crawler = $this->client->followRedirect();
+        $this->assertStringContainsString('You are not allowed to sign in to this admin panel.', $crawler->filter('.text-red-700')->text());
+
+        $this->client->request('GET', '/admin/upload');
+        $this->assertResponseRedirects('/admin/login');
+    }
+
+    /**
+     * @return iterable<string, array{0: array<string, mixed>}>
+     */
+    public static function provideNotAllowedClaims(): iterable
+    {
         yield 'subject not allowed' => [['sub' => 'someone-else']];
         yield 'unverified email' => [['sub' => 'someone-else', 'email' => 'athlete@example.com', 'email_verified' => false]];
     }
@@ -257,6 +291,10 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
     private function assertLoginIsRejected(): void
     {
         $this->assertResponseRedirects('/admin/login');
+
+        $errorLog = static::getContainer()->get('monolog.handler.errors');
+        $this->assertInstanceOf(TestHandler::class, $errorLog);
+        $this->assertTrue($errorLog->hasErrorThatContains('OIDC login failed'));
 
         $crawler = $this->client->followRedirect();
         $this->assertCount(1, $crawler->filter('.text-red-700'));

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Oidc;
 
+use App\Infrastructure\Logging\Monolog;
 use App\Infrastructure\Security\Admin\AdminUserName;
+use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+#[WithMonologChannel('errors')]
 final class OidcAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;
@@ -43,26 +46,38 @@ final class OidcAuthenticator extends AbstractAuthenticator
         $loginAttempt = $request->getSession()->remove(OidcLoginAttempt::SESSION_KEY);
         $code = $request->query->getString('code');
 
-        if (!$loginAttempt instanceof OidcLoginAttempt
-            || !hash_equals($loginAttempt->getState(), $request->query->getString('state'))
-            || '' === $code) {
+        if (!$loginAttempt instanceof OidcLoginAttempt) {
+            $this->logger->error(new Monolog('OIDC login failed', 'the session no longer holds the login attempt'));
+
+            throw new CustomUserMessageAuthenticationException('Single sign-on failed, please try again.');
+        }
+
+        if (!hash_equals($loginAttempt->getState(), $request->query->getString('state'))) {
+            $this->logger->error(new Monolog('OIDC login failed', 'the state does not match the login attempt'));
+
+            throw new CustomUserMessageAuthenticationException('Single sign-on failed, please try again.');
+        }
+
+        if ('' === $code) {
+            $this->logger->error(new Monolog(
+                'OIDC login failed',
+                'the provider returned no code',
+                sprintf('error: %s', $request->query->getString('error')),
+                sprintf('error_description: %s', $request->query->getString('error_description')),
+            ));
+
             throw new CustomUserMessageAuthenticationException('Single sign-on failed, please try again.');
         }
 
         try {
             $claims = $this->oidcProvider->fetchIdTokenClaims($code, $loginAttempt);
         } catch (\Exception $e) {
-            $this->logger->error('OIDC login failed: '.$e->getMessage(), ['exception' => $e]);
+            $this->logger->error(new Monolog('OIDC login failed', (string) $e), ['exception' => $e]);
 
             throw new CustomUserMessageAuthenticationException('Single sign-on failed, please try again.', previous: $e);
         }
 
         if (!$this->oidcConfig->allows($claims)) {
-            $this->logger->warning('OIDC login refused, the user is not in OIDC_ALLOWED_USERS', [
-                'sub' => $claims['sub'] ?? null,
-                'email' => $claims['email'] ?? null,
-            ]);
-
             throw new CustomUserMessageAuthenticationException('You are not allowed to sign in to this admin panel.');
         }
 
