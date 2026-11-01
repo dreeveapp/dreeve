@@ -58,7 +58,7 @@ class AnalyzeRouteGeographyTest extends ContainerTestCase
             isNewActivity: false,
         )->withActivity(
             ActivityBuilder::fromDefaults()
-                ->withSportType(SportType::VIRTUAL_RIDE)
+                ->withSportType(SportType::RIDE)
                 ->withRouteGeography(RouteGeography::create(['test' => 'lol']))
                 ->withWorldType(WorldType::ZWIFT)
                 ->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('-11.636883'), Longitude::fromString('166.972044')))

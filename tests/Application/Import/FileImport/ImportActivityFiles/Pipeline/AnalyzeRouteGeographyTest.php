@@ -50,7 +50,7 @@ class AnalyzeRouteGeographyTest extends ContainerTestCase
     {
         $context = ActivityImportContext::create(Path::fromString('/lol/lol.png'))->withActivity(
             ActivityBuilder::fromDefaults()
-                ->withSportType(SportType::VIRTUAL_RIDE)
+                ->withSportType(SportType::RIDE)
                 ->withRouteGeography(RouteGeography::create(['test' => 'lol']))
                 ->withWorldType(WorldType::ZWIFT)
                 ->withStartingCoordinate(Coordinate::createFromLatAndLng(Latitude::fromString('-11.636883'), Longitude::fromString('166.972044')))
