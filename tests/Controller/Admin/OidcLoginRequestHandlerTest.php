@@ -144,6 +144,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
     {
         yield 'allowed subject' => [['sub' => 'athlete-subject']];
         yield 'allowed verified email' => [['sub' => 'unknown', 'email' => 'Athlete@Example.com', 'email_verified' => true]];
+        yield 'issued slightly in the future' => [['iat' => time() + 30]];
     }
 
     /**
