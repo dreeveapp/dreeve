@@ -49,24 +49,29 @@ final class OidcAuthenticator extends AbstractAuthenticator
         if (!$loginAttempt instanceof OidcLoginAttempt) {
             $this->logger->error(new Monolog('OIDC login failed', 'the session no longer holds the login attempt'));
 
-            throw new CustomUserMessageAuthenticationException('Single sign-on failed, please try again.');
+            throw new CustomUserMessageAuthenticationException('Your sign-in session expired, please try again.');
         }
 
         if (!hash_equals($loginAttempt->getState(), $request->query->getString('state'))) {
             $this->logger->error(new Monolog('OIDC login failed', 'the state does not match the login attempt'));
 
-            throw new CustomUserMessageAuthenticationException('Single sign-on failed, please try again.');
+            throw new CustomUserMessageAuthenticationException('Your sign-in session expired, please try again.');
         }
 
         if ('' === $code) {
+            $providerError = $request->query->getString('error');
             $this->logger->error(new Monolog(
                 'OIDC login failed',
                 'the provider returned no code',
-                sprintf('error: %s', $request->query->getString('error')),
+                sprintf('error: %s', $providerError),
                 sprintf('error_description: %s', $request->query->getString('error_description')),
             ));
 
-            throw new CustomUserMessageAuthenticationException('Single sign-on failed, please try again.');
+            if ('' === $providerError) {
+                throw new CustomUserMessageAuthenticationException('Single sign-on failed, see errors.log for details.');
+            }
+
+            throw new CustomUserMessageAuthenticationException('The provider returned an error: %error%', ['%error%' => $providerError]);
         }
 
         try {
@@ -74,7 +79,7 @@ final class OidcAuthenticator extends AbstractAuthenticator
         } catch (\Exception $e) {
             $this->logger->error(new Monolog('OIDC login failed', (string) $e), ['exception' => $e]);
 
-            throw new CustomUserMessageAuthenticationException('Single sign-on failed, please try again.', previous: $e);
+            throw new CustomUserMessageAuthenticationException('Single sign-on failed, see errors.log for details.', previous: $e);
         }
 
         if (!$this->oidcConfig->allows($claims)) {
