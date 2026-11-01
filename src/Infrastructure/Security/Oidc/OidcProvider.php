@@ -76,6 +76,7 @@ final readonly class OidcProvider
             signatureKeyset: null,
             audience: $this->oidcConfig->getClientId(),
             issuers: [$this->getDiscoveredString('issuer')],
+            clock: new OidcTokenClock(),
         );
         $idTokenHandler->enableDiscovery(
             cache: $this->cache,
