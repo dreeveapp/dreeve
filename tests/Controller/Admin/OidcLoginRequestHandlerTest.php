@@ -225,6 +225,12 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $this->assertLoginIsRejected('Your sign-in session expired, please try again.');
     }
 
+    public function testCallbackRejectsAMissingLoginAttempt(): void
+    {
+        $this->client->request('GET', '/admin/login/oidc/callback', ['code' => 'the-code', 'state' => 'state']);
+        $this->assertLoginIsRejected('Your sign-in session expired, please try again.');
+    }
+
     public function testCallbackShowsTheProviderError(): void
     {
         $this->client->request('GET', '/admin/login/oidc');
