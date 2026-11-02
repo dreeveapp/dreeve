@@ -23,8 +23,8 @@ services:
     App\Domain\Strava\Strava:
         class: App\Tests\Domain\Strava\SpyStrava
 
-    App\Infrastructure\Time\Clock\Clock:
-        factory: [ 'App\Tests\Infrastructure\Time\Clock\PausedClock', 'fromString' ]
+    clock:
+        class: Symfony\Component\Clock\MockClock
         arguments: [ '2023-10-17 16:15:04' ]
 
     App\Infrastructure\Time\Sleep:
