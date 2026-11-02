@@ -27,9 +27,6 @@ services:
         class: Symfony\Component\Clock\MockClock
         arguments: [ '2023-10-17 16:15:04' ]
 
-    App\Infrastructure\Time\Sleep:
-        class: App\Tests\Infrastructure\Time\Sleep\NullSleep
-
     App\Infrastructure\ValueObject\Identifier\UuidFactory:
         class: App\Tests\Infrastructure\ValueObject\Identifier\FakeUuidFactory
 

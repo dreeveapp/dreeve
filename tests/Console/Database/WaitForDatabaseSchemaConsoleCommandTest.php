@@ -3,9 +3,10 @@
 namespace App\Tests\Console\Database;
 
 use App\Console\Database\WaitForDatabaseSchemaConsoleCommand;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\Infrastructure\Doctrine\Migrations\MigrationRunnerStub;
-use App\Tests\Infrastructure\Time\Sleep\NullSleep;
+use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use Doctrine\DBAL\Driver\SQLite3\Exception;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Symfony\Component\Console\Command\Command;
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
 {
     private WaitForDatabaseSchemaConsoleCommand $waitForDatabaseSchemaConsoleCommand;
-    private NullSleep $sleep;
+    private PausedClock $clock;
 
     public function testExecuteReturnsSuccessWhenSchemaIsUpToDate(): void
     {
@@ -23,14 +24,14 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
         $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
-        $this->assertSame(0, $this->sleep->getTotalSleptInSeconds());
+        $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:04'), $this->clock->now());
     }
 
     public function testExecuteWaitsUntilTheMigratingContainerIsDone(): void
     {
         $this->waitForDatabaseSchemaConsoleCommand = new WaitForDatabaseSchemaConsoleCommand(
             new MigrationRunnerStub(numberOfChecksBeforeLatestVersion: 3),
-            $this->sleep,
+            $this->clock,
         );
 
         $command = $this->getCommandInApplication('app:db:wait-for-schema');
@@ -38,7 +39,7 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
         $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
-        $this->assertSame(6, $this->sleep->getTotalSleptInSeconds());
+        $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:10'), $this->clock->now());
     }
 
     public function testExecuteKeepsWaitingWhenTheDatabaseCannotBeReachedYet(): void
@@ -47,7 +48,7 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
             new MigrationRunnerStub(
                 firstCheckException: new ConnectionException(new Exception('unable to open database file'), null),
             ),
-            $this->sleep,
+            $this->clock,
         );
 
         $command = $this->getCommandInApplication('app:db:wait-for-schema');
@@ -55,14 +56,14 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
         $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
-        $this->assertSame(2, $this->sleep->getTotalSleptInSeconds());
+        $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:06'), $this->clock->now());
     }
 
     public function testExecuteReturnsFailureWhenSchemaDoesNotBecomeUpToDate(): void
     {
         $this->waitForDatabaseSchemaConsoleCommand = new WaitForDatabaseSchemaConsoleCommand(
             new MigrationRunnerStub(numberOfChecksBeforeLatestVersion: PHP_INT_MAX),
-            $this->sleep,
+            $this->clock,
         );
 
         $command = $this->getCommandInApplication('app:db:wait-for-schema');
@@ -70,7 +71,7 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
         $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
-        $this->assertSame(300, $this->sleep->getTotalSleptInSeconds());
+        $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:20:04'), $this->clock->now());
         $this->assertStringContainsString('still not up to date after 300 seconds', $commandTester->getDisplay());
     }
 
@@ -79,10 +80,10 @@ class WaitForDatabaseSchemaConsoleCommandTest extends ConsoleCommandTestCase
     {
         parent::setUp();
 
-        $this->sleep = new NullSleep();
+        $this->clock = PausedClock::fromString('2023-10-17 16:15:04');
         $this->waitForDatabaseSchemaConsoleCommand = new WaitForDatabaseSchemaConsoleCommand(
             new MigrationRunnerStub(),
-            $this->sleep,
+            $this->clock,
         );
     }
 

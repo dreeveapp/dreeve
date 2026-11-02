@@ -7,7 +7,7 @@ namespace App\Domain\Integration\Geocoding\Nominatim;
 use App\Application\AppName;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Infrastructure\Serialization\Json;
-use App\Infrastructure\Time\Sleep;
+use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -18,7 +18,7 @@ final readonly class LiveNominatim implements Nominatim
 {
     public function __construct(
         private Client $client,
-        private Sleep $sleep,
+        private Clock $clock,
     ) {
     }
 
@@ -41,7 +41,7 @@ final readonly class LiveNominatim implements Nominatim
             );
 
             $response = Json::decode($response->getBody()->getContents());
-            $this->sleep->sweetDreams(1);
+            $this->clock->sleep(1);
         } catch (ConnectException|RequestException) {
             throw new CouldNotReverseGeocodeAddress();
         }
