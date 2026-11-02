@@ -98,3 +98,24 @@ with an account through. The allow-list is what keeps them out of your admin pan
 
 When single sign-on is set up, you can leave `ADMIN_PASSWORD_HASH` empty to switch off the password login entirely.
 The allowed IP addresses for the admin panel (`ADMIN_ALLOWED_IPS`) still apply to single sign-on.
+
+## Identity provider with a private CA
+
+If your identity provider uses a certificate signed by your own certificate authority (CA), you need to
+mount the CA certificate (PEM format) into the `app` container:
+
+```yaml title="docker-compose.yml"
+services:
+  app:
+    volumes:
+      # ...
+      - ./certs/my-ca.pem:/certs/my-ca.pem:ro
+```
+
+Point Dreeve to it in your `.env` file and recreate your containers:
+
+```dotenv title=".env"
+OIDC_CA_FILE=/certs/my-ca.pem
+```
+
+Dreeve then only trusts this file for requests to your identity provider, instead of the default certificates.
