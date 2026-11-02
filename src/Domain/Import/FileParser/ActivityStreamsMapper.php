@@ -23,7 +23,7 @@ final readonly class ActivityStreamsMapper
     public function fromStreamMap(array $streamMap, ActivityId $activityId): ActivityStreams
     {
         $streamMap = $this->fillGaps($streamMap);
-        $createdOn = $this->clock->getCurrentDateTimeImmutable();
+        $createdOn = $this->clock->now();
 
         $streams = ActivityStreams::empty();
         foreach ($streamMap as $type => $values) {

@@ -47,7 +47,7 @@ final readonly class CalculateMovingStream implements CalculateActivityMetricsSt
                 activityId: $activityId,
                 streamType: StreamType::MOVING,
                 streamData: $movingData,
-                createdOn: $this->clock->getCurrentDateTimeImmutable(),
+                createdOn: $this->clock->now(),
             ));
 
             ++$countActivitiesProcessed;

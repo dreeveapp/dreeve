@@ -80,7 +80,7 @@ final readonly class StreaksWidget implements Widget, DependsOnCurrentDay
             $configuration->get('sportTypesToInclude'),  // @phpstan-ignore argument.type
         ));
         $findStreaksResponse = $this->queryBus->ask(new FindStreaks(
-            years: Years::all($this->clock->getCurrentDateTimeImmutable()),
+            years: Years::all($this->clock->now()),
             restrictToSportTypes: $sportTypesToInclude,
         ));
 

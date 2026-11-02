@@ -25,7 +25,7 @@ final readonly class CronProcess
     {
         $this->output->writeln(sprintf(
             '<info>[%s] Starting cron action "%s"</info>',
-            $this->clock->getCurrentDateTimeImmutable()->format('d-m-Y H:i:s'),
+            $this->clock->now()->format('d-m-Y H:i:s'),
             $this->cronActionId
         ));
 
@@ -43,7 +43,7 @@ final readonly class CronProcess
         $process->on('exit', function (): void {
             $this->output->writeln(sprintf(
                 '<info>[%s] Finished cron action "%s"</info>',
-                $this->clock->getCurrentDateTimeImmutable()->format('d-m-Y H:i:s'),
+                $this->clock->now()->format('d-m-Y H:i:s'),
                 $this->cronActionId
             ));
         });

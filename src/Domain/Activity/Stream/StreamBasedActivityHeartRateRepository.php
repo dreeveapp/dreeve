@@ -90,7 +90,7 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
 
     private function aggregate(): HeartRateZoneTotals
     {
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         $rollingWindow = \DateInterval::createFromDateString(self::CALCULATE_HEART_RATE_ZONES_FOR_LAST_X_DAYS.' days');
 
         $cutOffDate = $now->sub($rollingWindow);

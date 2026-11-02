@@ -58,7 +58,7 @@ final readonly class FetchActivityStreams implements ActivityImportStep
                 activityId: $activityId,
                 streamType: $streamType,
                 streamData: $stravaStream['data'],
-                createdOn: $this->clock->getCurrentDateTimeImmutable(),
+                createdOn: $this->clock->now(),
             ));
         }
 

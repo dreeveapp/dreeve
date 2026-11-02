@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Time\Clock;
 
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Psr\Clock\ClockInterface;
 
-interface Clock
+interface Clock extends ClockInterface
 {
-    public function getCurrentDateTimeImmutable(): SerializableDateTime;
+    public function now(): SerializableDateTime;
 }

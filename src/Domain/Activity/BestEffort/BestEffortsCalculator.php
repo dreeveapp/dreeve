@@ -37,7 +37,7 @@ final readonly class BestEffortsCalculator
         $periodBoundaries = [];
         foreach (BestEffortPeriod::cases() as $period) {
             $periodBoundaries[$period->value] = $this->boundariesFor(
-                $period->getDateRange($this->clock->getCurrentDateTimeImmutable())
+                $period->getDateRange($this->clock->now())
             );
         }
 

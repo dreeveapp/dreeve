@@ -30,7 +30,7 @@ trait ProvideConsoleIntro
         $output->block(
             messages: [
                 sprintf('%s %s | DAEMON', AppName::LABEL, AppVersion::getSemanticVersion()),
-                sprintf('Started on %s', $clock->getCurrentDateTimeImmutable()->format('d-m-Y H:i:s')),
+                sprintf('Started on %s', $clock->now()->format('d-m-Y H:i:s')),
             ],
             style: 'fg=black;bg=green',
             padding: true

@@ -47,7 +47,7 @@ final readonly class BestEffortsRequestHandler
             cacheability: Cacheability::for(
                 cacheKey: 'best-efforts',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES),
-                ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
+                ttlInSeconds: $this->clock->now()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::BEST_EFFORTS,

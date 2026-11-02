@@ -50,7 +50,7 @@ final readonly class RecordingDevicesRequestHandler
                     RootCacheTag::ACTIVITIES,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
-                ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
+                ttlInSeconds: $this->clock->now()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
@@ -71,7 +71,7 @@ final readonly class RecordingDevicesRequestHandler
             ),
             'deviceUsage' => $deviceUsage,
             'totalMovingTime' => Seconds::from((int) $devices->sum(fn (RecordingDevice $device): int => $device->getTimeTracked()->toInt())),
-            'lastTwelveMonths' => Months::lastXMonths(12, $this->clock->getCurrentDateTimeImmutable()),
+            'lastTwelveMonths' => Months::lastXMonths(12, $this->clock->now()),
             'unitSystem' => $this->settingsRepository->appearance()->getUnitSystem(),
         ]);
     }

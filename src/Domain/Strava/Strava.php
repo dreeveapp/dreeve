@@ -61,7 +61,7 @@ class Strava
             'base_uri' => 'https://www.strava.com/',
         ], $options);
         // An application's 15-minute limit is reset at natural 15-minute intervals corresponding to 0, 15, 30 and 45 minutes after the hour.
-        $minutesUntilNextFifteenMinuteInterval = (15 - ($this->clock->getCurrentDateTimeImmutable()->getMinutesWithoutLeadingZero() % 15)) + 1;
+        $minutesUntilNextFifteenMinuteInterval = (15 - ($this->clock->now()->getMinutesWithoutLeadingZero() % 15)) + 1;
         $secondsUntilNextFifteenMinuteInterval = $minutesUntilNextFifteenMinuteInterval * 60;
 
         try {

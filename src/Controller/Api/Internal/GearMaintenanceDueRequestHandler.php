@@ -37,7 +37,7 @@ final readonly class GearMaintenanceDueRequestHandler
                     RootCacheTag::ACTIVITIES,
                     RootCacheTag::GEAR,
                 ),
-                ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
+                ttlInSeconds: $this->clock->now()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
         );

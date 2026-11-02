@@ -46,7 +46,7 @@ final readonly class GearMaintenanceTaskSearchRequestHandler
             ]);
         }
 
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         $gearComponents = $this->gearComponentRepository->findAll();
         $maintenanceTaskStatuses = $this->maintenanceTaskProgressCalculator->calculateStatuses();
         $retiredGearIds = $gearMaintenanceConfig->ignoreRetiredGear()

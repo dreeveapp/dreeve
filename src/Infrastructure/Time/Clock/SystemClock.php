@@ -14,7 +14,7 @@ readonly class SystemClock implements Clock
     ) {
     }
 
-    public function getCurrentDateTimeImmutable(): SerializableDateTime
+    public function now(): SerializableDateTime
     {
         return SerializableDateTime::createFromInterface($this->clock->now());
     }

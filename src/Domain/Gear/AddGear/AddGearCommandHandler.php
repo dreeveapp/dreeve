@@ -31,7 +31,7 @@ final readonly class AddGearCommandHandler implements CommandHandler
 
         $gear = Gear::create(
             gearId: GearId::random(),
-            createdOn: $this->clock->getCurrentDateTimeImmutable(),
+            createdOn: $this->clock->now(),
             name: $command->getName(),
             isRetired: $command->isRetired(),
             type: GearType::CUSTOM,

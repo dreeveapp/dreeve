@@ -54,7 +54,7 @@ final readonly class ManageGearMaintenanceConfigRequestHandler
             );
         }
 
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         $componentsWithCurrentGears = [];
         foreach ($gearComponents as $gearComponent) {
             $currentGearIds = $gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now);

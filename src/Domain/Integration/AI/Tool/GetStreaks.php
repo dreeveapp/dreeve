@@ -41,7 +41,7 @@ final readonly class GetStreaks implements AITool
     public function __invoke(ToolArguments $arguments): array
     {
         $streaks = $this->queryBus->ask(new FindStreaks(
-            years: Years::all($this->clock->getCurrentDateTimeImmutable()),
+            years: Years::all($this->clock->now()),
             restrictToSportTypes: $arguments->getSportTypes(),
         ));
 

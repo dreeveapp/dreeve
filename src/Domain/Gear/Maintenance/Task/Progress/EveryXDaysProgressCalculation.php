@@ -29,7 +29,7 @@ final readonly class EveryXDaysProgressCalculation implements MaintenanceTaskPro
             return null;
         }
 
-        $today = $this->clock->getCurrentDateTimeImmutable();
+        $today = $this->clock->now();
         $daysSinceLastTagged = (int) $today->diff($countFrom)->days;
         $intervalValue = $context->getIntervalValue();
 

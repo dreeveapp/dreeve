@@ -46,7 +46,7 @@ final class SystemDaemon implements Daemon
         Loop::addPeriodicTimer(1.0, function (): void {
             $this->getConsoleOutput()->writeln(sprintf(
                 '[%s] Periodic debug timer',
-                $this->clock->getCurrentDateTimeImmutable()->format('H:i:s'),
+                $this->clock->now()->format('H:i:s'),
             ));
         });
     }

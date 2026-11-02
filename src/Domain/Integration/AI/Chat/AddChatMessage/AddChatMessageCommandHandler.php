@@ -27,7 +27,7 @@ final readonly class AddChatMessageCommandHandler implements CommandHandler
             messageId: ChatMessageId::random(),
             message: $command->getMessage(),
             messageRole: $command->getMessageRole(),
-            on: $this->clock->getCurrentDateTimeImmutable()
+            on: $this->clock->now()
         ));
     }
 }

@@ -65,7 +65,7 @@ final readonly class ImportGearCommandHandler implements CommandHandler
             } catch (EntityNotFound) {
                 $gear = Gear::create(
                     gearId: $gearId,
-                    createdOn: $this->clock->getCurrentDateTimeImmutable(),
+                    createdOn: $this->clock->now(),
                     name: $stravaGear['name'],
                     isRetired: $stravaGear['retired'] ?? false,
                     type: GearType::IMPORTED,

@@ -66,7 +66,7 @@ final readonly class GearStatsRequestHandler
                     RootCacheTag::ACTIVITIES,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
-                ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
+                ttlInSeconds: $this->clock->now()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
@@ -78,7 +78,7 @@ final readonly class GearStatsRequestHandler
 
     private function renderFor(): string
     {
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
         $activities = $this->activityRepository->findAll();
         $allUsedGear = $this->gearRepository->findAllUsed();

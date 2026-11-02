@@ -41,7 +41,7 @@ final readonly class GetDefaultHeartRateZone implements AITool
 
     public function __invoke(ToolArguments $arguments): array
     {
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         $sportType = SportType::tryFrom($arguments->getString('sportType') ?? '');
         $general = $this->settingsRepository->general();
         $heartRateZones = $general->getHeartRateZoneConfiguration()->getDefaultHeartRateZones($sportType);

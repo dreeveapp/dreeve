@@ -68,7 +68,7 @@ final readonly class DbalChatRepository extends DbalRepository implements ChatRe
             messageId: ChatMessageId::random(),
             message: $message,
             messageRole: $messageRole,
-            on: $this->clock->getCurrentDateTimeImmutable()
+            on: $this->clock->now()
         )->withUserProfilePictureUrl($general->getProfilePictureUrl())
             ->withFirstLetterOfFirstName(substr((string) $general->getAthlete()->getName(), 0, 1));
     }

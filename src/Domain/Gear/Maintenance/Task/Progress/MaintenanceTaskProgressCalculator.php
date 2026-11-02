@@ -68,7 +68,7 @@ final readonly class MaintenanceTaskProgressCalculator
             ? $this->gearIdRepository->findRetired()
             : GearIds::empty();
 
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         foreach ($gearComponents->withoutRetired() as $gearComponent) {
             $currentGearIds = $gearComponents->getGearIdsCurrentlyUsing($gearComponent, $now);
             foreach ($gearComponent->getMaintenanceTasks() as $maintenanceTask) {

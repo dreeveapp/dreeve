@@ -53,7 +53,7 @@ final readonly class PowerOutputRequestHandler
                 cacheKey: 'dashboard.power-output',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ATHLETE_WEIGHT),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
-                ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
+                ttlInSeconds: $this->clock->now()->getSecondsUntilMidnight(),
             ),
             render: fn (): ?string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,
@@ -65,7 +65,7 @@ final readonly class PowerOutputRequestHandler
 
     private function renderFor(): ?string
     {
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
 
         $allYears = null;
         $allTimeLabel = $this->translator->trans('All time');
