@@ -12,6 +12,7 @@ use App\Infrastructure\Config\AdminAllowedIpAddresses;
 use App\Infrastructure\Http\ClientIpResolver;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Security\Admin\AdminUserName;
+use App\Infrastructure\Security\Oidc\OidcCaFilePath;
 use App\Infrastructure\Security\Oidc\OidcConfig;
 use App\Infrastructure\Security\Oidc\OidcProvider;
 use App\Infrastructure\Security\Token\ApiToken;
@@ -37,6 +38,7 @@ final readonly class SecuritySettingsRequestHandler
         #[\SensitiveParameter]
         private OidcConfig $oidcConfig,
         private OidcProvider $oidcProvider,
+        private ?OidcCaFilePath $oidcCaFilePath,
     ) {
     }
 
@@ -54,6 +56,7 @@ final readonly class SecuritySettingsRequestHandler
             'mcpKey' => $this->mcpKey,
             'oidcConfig' => $this->oidcConfig,
             'oidcRedirectUri' => $this->oidcProvider->getRedirectUri(),
+            'oidcCaFilePath' => $this->oidcCaFilePath,
         ]));
     }
 }

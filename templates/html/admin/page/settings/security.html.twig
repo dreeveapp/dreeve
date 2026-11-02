@@ -80,6 +80,15 @@
                         {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'OIDC_ALLOWED_USERS'}, 'admin') }}
                     </p>
                 </div>
+                {% if oidcCaFilePath %}
+                    <div>
+                        <label for="oidcCaFilePath">{{ "CA certificate"|trans({}, 'admin') }}</label>
+                        <input type="text" id="oidcCaFilePath" value="{{ oidcCaFilePath }}" disabled>
+                        <p class="description">
+                            {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'OIDC_CA_FILE'}, 'admin') }}
+                        </p>
+                    </div>
+                {% endif %}
                 <div>
                     <label for="oidcRedirectUri">{{ "Redirect URI"|trans({}, 'admin') }}</label>
                     <input type="text" id="oidcRedirectUri" value="{{ oidcRedirectUri }}" readonly>

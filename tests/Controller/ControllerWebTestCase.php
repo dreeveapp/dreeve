@@ -27,7 +27,7 @@ abstract class ControllerWebTestCase extends WebTestCase
         parent::setUp();
 
         $this->originalImportMode = $_ENV['IMPORT_MODE'] ?? null;
-        foreach (['DREEVE_API_KEY', 'DREEVE_MCP_KEY', 'OIDC_ISSUER_URL', 'OIDC_CLIENT_ID', 'OIDC_CLIENT_SECRET', 'OIDC_ALLOWED_USERS'] as $envVar) {
+        foreach (['DREEVE_API_KEY', 'DREEVE_MCP_KEY', 'OIDC_ISSUER_URL', 'OIDC_CLIENT_ID', 'OIDC_CLIENT_SECRET', 'OIDC_ALLOWED_USERS', 'OIDC_CA_FILE'] as $envVar) {
             $this->originalKeys[$envVar] = $_ENV[$envVar] ?? null;
         }
 
@@ -111,12 +111,13 @@ abstract class ControllerWebTestCase extends WebTestCase
         $this->rebootClient();
     }
 
-    protected function withOidc(string $issuerUrl, string $clientId, string $clientSecret, string $allowedUsers): void
+    protected function withOidc(string $issuerUrl, string $clientId, string $clientSecret, string $allowedUsers, string $caFile): void
     {
         $_SERVER['OIDC_ISSUER_URL'] = $_ENV['OIDC_ISSUER_URL'] = $issuerUrl;
         $_SERVER['OIDC_CLIENT_ID'] = $_ENV['OIDC_CLIENT_ID'] = $clientId;
         $_SERVER['OIDC_CLIENT_SECRET'] = $_ENV['OIDC_CLIENT_SECRET'] = $clientSecret;
         $_SERVER['OIDC_ALLOWED_USERS'] = $_ENV['OIDC_ALLOWED_USERS'] = $allowedUsers;
+        $_SERVER['OIDC_CA_FILE'] = $_ENV['OIDC_CA_FILE'] = $caFile;
 
         $this->rebootClient();
     }
