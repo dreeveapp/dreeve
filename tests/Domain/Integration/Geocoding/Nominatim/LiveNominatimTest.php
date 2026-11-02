@@ -10,7 +10,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Tests\Infrastructure\Time\Sleep\NullSleep;
+use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
@@ -110,7 +110,7 @@ class LiveNominatimTest extends TestCase
 
         $this->nominatim = new LiveNominatim(
             $this->client,
-            new NullSleep(),
+            PausedClock::fromString('2023-10-17 16:15:04'),
         );
     }
 }

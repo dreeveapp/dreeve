@@ -18,4 +18,9 @@ readonly class SystemClock implements Clock
     {
         return SerializableDateTime::createFromInterface($this->clock->now());
     }
+
+    public function sleep(int $seconds): void
+    {
+        $this->clock->sleep($seconds);
+    }
 }

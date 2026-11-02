@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Database;
 
 use App\Infrastructure\Doctrine\Migrations\MigrationRunner;
-use App\Infrastructure\Time\Sleep;
+use App\Infrastructure\Time\Clock\Clock;
 use Doctrine\DBAL\Exception as DbalException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +21,7 @@ final class WaitForDatabaseSchemaConsoleCommand extends Command
 
     public function __construct(
         private readonly MigrationRunner $migrationRunner,
-        private readonly Sleep $sleep,
+        private readonly Clock $clock,
     ) {
         parent::__construct();
     }
@@ -36,7 +36,7 @@ final class WaitForDatabaseSchemaConsoleCommand extends Command
                 return Command::SUCCESS;
             }
 
-            $this->sleep->sweetDreams(self::POLL_INTERVAL_IN_SECONDS);
+            $this->clock->sleep(self::POLL_INTERVAL_IN_SECONDS);
         }
 
         $output->error(sprintf(

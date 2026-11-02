@@ -19,7 +19,6 @@ use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Infrastructure\ValueObject\String\Url;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
-use App\Tests\Infrastructure\Time\Sleep\NullSleep;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -46,7 +45,6 @@ class SpyStrava extends Strava
             stravaClientSecret: StravaClientSecret::fromString('clientSecret'),
             stravaRefreshToken: StravaRefreshToken::fromString('refreshToken'),
             filesystemOperator: new Filesystem(new InMemoryFilesystemAdapter()),
-            sleep: new NullSleep(),
             logger: new NullLogger(),
             clock: PausedClock::fromString('2025-11-02 23:45:12')
         );

@@ -13,7 +13,6 @@ use App\Infrastructure\Console\ConsoleOutputAware;
 use App\Infrastructure\Logging\Monolog;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
-use App\Infrastructure\Time\Sleep;
 use App\Infrastructure\ValueObject\String\Url;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use GuzzleHttp\Client;
@@ -43,7 +42,6 @@ class Strava
         #[\SensitiveParameter]
         private readonly StravaRefreshToken $stravaRefreshToken,
         private readonly FilesystemOperator $filesystemOperator,
-        private readonly Sleep $sleep,
         private readonly LoggerInterface $logger,
         private readonly Clock $clock,
     ) {
@@ -109,7 +107,7 @@ class Strava
                     '<comment>Whoa there! We are about to hit Strava’s 15-minute API rate limit. Taking a short %s-minute breather before getting back on track. Please be patient</comment>',
                     $minutesUntilNextFifteenMinuteInterval
                 ));
-                $this->sleep->sweetDreams($secondsUntilNextFifteenMinuteInterval);
+                $this->clock->sleep($secondsUntilNextFifteenMinuteInterval);
             }
         }
 

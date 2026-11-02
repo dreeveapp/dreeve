@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Doctrine\Migrations;
 
 use App\Infrastructure\Console\ConsoleApplication;
-use App\Infrastructure\Time\Sleep;
+use App\Infrastructure\Time\Clock\Clock;
 use Doctrine\DBAL\Exception\LockWaitTimeoutException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,7 +17,7 @@ final readonly class DoctrineMigrationRunner implements MigrationRunner
 
     public function __construct(
         private MigrationSquashHandler $migrationSquashHandler,
-        private Sleep $sleep,
+        private Clock $clock,
     ) {
     }
 
@@ -44,7 +44,7 @@ final readonly class DoctrineMigrationRunner implements MigrationRunner
                     '<comment>The database is locked by another process, retrying in %d seconds...</comment>',
                     self::SECONDS_BETWEEN_ATTEMPTS
                 ));
-                $this->sleep->sweetDreams(self::SECONDS_BETWEEN_ATTEMPTS);
+                $this->clock->sleep(self::SECONDS_BETWEEN_ATTEMPTS);
             }
         }
     }

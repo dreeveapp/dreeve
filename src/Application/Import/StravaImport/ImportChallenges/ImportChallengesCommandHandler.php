@@ -9,7 +9,7 @@ use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Time\Sleep;
+use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Identifier\UuidFactory;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\Target;
@@ -24,7 +24,7 @@ final readonly class ImportChallengesCommandHandler implements CommandHandler
         #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
         private UuidFactory $uuidFactory,
-        private Sleep $sleep,
+        private Clock $clock,
     ) {
     }
 
@@ -103,7 +103,7 @@ final readonly class ImportChallengesCommandHandler implements CommandHandler
             }
             $this->challengeRepository->add($challenge);
             $command->getOutput()->writeln(sprintf('  => Imported challenge "%s"', $challenge->getName()));
-            $this->sleep->sweetDreams(1); // Make sure timestamp is increased by at least one second.
+            $this->clock->sleep(1); // Make sure timestamp is increased by at least one second.
         }
 
         $this->challengeRepository->deleteWithNonAlphanumericIds();

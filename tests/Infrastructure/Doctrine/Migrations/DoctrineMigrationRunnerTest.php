@@ -8,8 +8,9 @@ use App\Infrastructure\Console\ConsoleApplication;
 use App\Infrastructure\Doctrine\Migrations\CouldNotRunMigrations;
 use App\Infrastructure\Doctrine\Migrations\DoctrineMigrationRunner;
 use App\Infrastructure\Doctrine\Migrations\MigrationSquashHandler;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
-use App\Tests\Infrastructure\Time\Sleep\NullSleep;
+use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use Doctrine\DBAL\Driver\SQLite3\Exception;
 use Doctrine\DBAL\Exception\LockWaitTimeoutException;
 use Symfony\Component\Console\Application;
@@ -21,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DoctrineMigrationRunnerTest extends ContainerTestCase
 {
-    private NullSleep $sleep;
+    private PausedClock $clock;
     private BufferedOutput $output;
 
     public function testRunRetriesWhenTheDatabaseIsLockedByAnotherProcess(): void
@@ -32,7 +33,7 @@ class DoctrineMigrationRunnerTest extends ContainerTestCase
         $migrationRunner->run($this->output);
 
         $this->assertSame(2, $migrateCommand->numberOfRuns);
-        $this->assertSame(5, $this->sleep->getTotalSleptInSeconds());
+        $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:09'), $this->clock->now());
         $this->assertStringContainsString('The database is locked by another process, retrying', $this->output->fetch());
     }
 
@@ -47,7 +48,7 @@ class DoctrineMigrationRunnerTest extends ContainerTestCase
             $migrationRunner->run($this->output);
         } finally {
             $this->assertSame(3, $migrateCommand->numberOfRuns);
-            $this->assertSame(10, $this->sleep->getTotalSleptInSeconds());
+            $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:14'), $this->clock->now());
         }
     }
 
@@ -62,7 +63,7 @@ class DoctrineMigrationRunnerTest extends ContainerTestCase
             $migrationRunner->run($this->output);
         } finally {
             $this->assertSame(1, $migrateCommand->numberOfRuns);
-            $this->assertSame(0, $this->sleep->getTotalSleptInSeconds());
+            $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:04'), $this->clock->now());
         }
     }
 
@@ -75,7 +76,7 @@ class DoctrineMigrationRunnerTest extends ContainerTestCase
 
         return new DoctrineMigrationRunner(
             new MigrationSquashHandler($this->getConnection()),
-            $this->sleep,
+            $this->clock,
         );
     }
 
@@ -107,7 +108,7 @@ class DoctrineMigrationRunnerTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->sleep = new NullSleep();
+        $this->clock = PausedClock::fromString('2023-10-17 16:15:04');
         $this->output = new BufferedOutput();
     }
 }

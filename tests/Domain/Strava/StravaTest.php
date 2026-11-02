@@ -16,8 +16,8 @@ use App\Domain\Strava\StravaClientSecret;
 use App\Domain\Strava\StravaRefreshToken;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\Url;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
-use App\Tests\Infrastructure\Time\Sleep\NullSleep;
 use App\Tests\SpyOutput;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -55,7 +55,7 @@ class StravaTest extends TestCase
      * @var MockObject&FilesystemOperator
      */
     private MockObject $filesystemOperator;
-    private NullSleep $sleep;
+    private PausedClock $clock;
     /**
      * @var MockObject&LoggerInterface
      */
@@ -475,8 +475,8 @@ class StravaTest extends TestCase
         );
 
         $this->assertEquals(
-            180,
-            $this->sleep->getTotalSleptInSeconds(),
+            SerializableDateTime::fromString('2025-11-02 12:46:20'),
+            $this->clock->now(),
         );
     }
 
@@ -534,8 +534,8 @@ class StravaTest extends TestCase
             ],
         );
         $this->assertEquals(
-            0,
-            $this->sleep->getTotalSleptInSeconds(),
+            SerializableDateTime::fromString('2025-11-02 12:43:20'),
+            $this->clock->now(),
         );
     }
 
@@ -926,9 +926,8 @@ class StravaTest extends TestCase
             stravaClientSecret: StravaClientSecret::fromString('clientSecret'),
             stravaRefreshToken: StravaRefreshToken::fromString('refreshToken'),
             filesystemOperator: $this->filesystemOperator,
-            sleep: $this->sleep = new NullSleep(),
             logger: $this->logger,
-            clock: PausedClock::fromString('2025-11-02 12:43:20')
+            clock: $this->clock = PausedClock::fromString('2025-11-02 12:43:20')
         );
         $this->strava::$cachedAccessToken = null;
         $this->strava::$cachedActivitiesResponse = null;
