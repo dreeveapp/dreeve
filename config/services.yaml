@@ -15,6 +15,7 @@ parameters:
     env(OIDC_CLIENT_ID): ''
     env(OIDC_CLIENT_SECRET): ''
     env(OIDC_ALLOWED_USERS): ''
+    env(OIDC_CA_FILE): ''
     env(TRUSTED_PROXIES): 'private_ranges'
     env(STRAVA_CLIENT_ID): 'replace-me'
     env(STRAVA_CLIENT_SECRET): 'replace-me'
@@ -88,6 +89,10 @@ services:
     App\Infrastructure\Security\Oidc\OidcConfig:
         factory: [ null, 'fromStrings' ]
         arguments: ['%env(string:OIDC_ISSUER_URL)%', '%env(string:OIDC_CLIENT_ID)%', '%env(string:OIDC_CLIENT_SECRET)%', '%env(string:OIDC_ALLOWED_USERS)%']
+
+    App\Infrastructure\Security\Oidc\OidcCaFilePath:
+        factory: [ null, 'fromOptionalString' ]
+        arguments: ['%env(string:OIDC_CA_FILE)%']
 
     App\Application\AppUrl:
         factory: [ null, 'fromString' ]
