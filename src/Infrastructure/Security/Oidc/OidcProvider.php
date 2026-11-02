@@ -31,7 +31,7 @@ final readonly class OidcProvider
         private UrlGeneratorInterface $urlGenerator,
         ?OidcCaFilePath $caFilePath,
     ) {
-        $this->httpClient = $httpClient->withOptions(['cafile' => $caFilePath ? (string) $caFilePath : null]);
+        $this->httpClient = $httpClient->withOptions(['cafile' => $caFilePath instanceof OidcCaFilePath ? (string) $caFilePath : null]);
     }
 
     public function buildAuthorizationUrl(OidcLoginAttempt $loginAttempt): string
