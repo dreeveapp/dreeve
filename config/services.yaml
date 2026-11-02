@@ -61,6 +61,10 @@ services:
         factory: [ null, 'fromOptionalString' ]
         arguments: ['%env(string:TZ)%']
 
+    clock:
+        class: Symfony\Component\Clock\Clock
+        arguments: [ null, '@App\Infrastructure\ValueObject\Time\SerializableTimezone' ]
+
     App\Infrastructure\Config\AdminAllowedIpAddresses:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:ADMIN_ALLOWED_IPS)%']

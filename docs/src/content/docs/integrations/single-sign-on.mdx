@@ -37,12 +37,16 @@ Create an **OAuth2/OpenID Provider** and an application that uses it.
 ```yaml title="configuration.yml"
 identity_providers:
   oidc:
+    claims_policies:
+      dreeve:
+        id_token: ['email', 'email_verified', 'preferred_username', 'name']
     clients:
       - client_id: 'dreeve'
         client_name: 'Dreeve'
         client_secret: '$pbkdf2-sha512$310000$...' # A hashed secret, see the Authelia docs.
         public: false
         authorization_policy: 'two_factor'
+        claims_policy: 'dreeve'
         require_pkce: true
         pkce_challenge_method: 'S256'
         redirect_uris:
@@ -52,6 +56,10 @@ identity_providers:
         grant_types: ['authorization_code']
         token_endpoint_auth_method: 'client_secret_basic'
 ```
+
+The claims policy puts your email address in the ID token. Authelia leaves it out by default, and Dreeve then
+answers with "You are not allowed to sign in to this admin panel". Without the claims policy, add your
+Authelia subject (`authelia storage user identifiers export`) to `OIDC_ALLOWED_USERS` instead of your email address.
 
 The issuer URL is the URL of Authelia itself, for example `https://auth.example.com`.
 
