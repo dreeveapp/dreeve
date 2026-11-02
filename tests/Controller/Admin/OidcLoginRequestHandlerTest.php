@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Admin;
 
 use App\Controller\Admin\OidcLoginRequestHandler;
+use App\Infrastructure\Security\Oidc\OidcCaFilePath;
 use App\Infrastructure\Security\Oidc\OidcConfig;
 use App\Infrastructure\Security\Oidc\OidcLoginAttempt;
 use App\Infrastructure\Security\Oidc\OidcProvider;
@@ -73,6 +74,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
             }),
             new ArrayAdapter(),
             static::getContainer()->get(UrlGeneratorInterface::class),
+            OidcCaFilePath::fromString('/certs/ca.pem'),
         ));
     }
 
@@ -124,6 +126,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
 
         $tokenRequest = array_first(array_filter($this->requests, fn (array $request): bool => self::TOKEN_ENDPOINT === $request['url']));
         $this->assertSame('POST', $tokenRequest['method']);
+        $this->assertSame('/certs/ca.pem', $tokenRequest['options']['cafile']);
         $this->assertContains('Authorization: Basic '.base64_encode('dreeve:secret'), $tokenRequest['options']['normalized_headers']['authorization']);
         parse_str($tokenRequest['options']['body'], $tokenRequestBody);
         $this->assertSame([
@@ -284,7 +287,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $oidcConfig = OidcConfig::fromStrings('', '', '', '');
         $handler = new OidcLoginRequestHandler(
             $oidcConfig,
-            new OidcProvider($oidcConfig, new MockHttpClient(), new ArrayAdapter(), $this->createStub(UrlGeneratorInterface::class)),
+            new OidcProvider($oidcConfig, new MockHttpClient(), new ArrayAdapter(), $this->createStub(UrlGeneratorInterface::class), null),
         );
 
         $this->expectException(NotFoundHttpException::class);
@@ -297,7 +300,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $oidcConfig = OidcConfig::fromStrings('', '', '', '');
         $handler = new OidcLoginRequestHandler(
             $oidcConfig,
-            new OidcProvider($oidcConfig, new MockHttpClient(), new ArrayAdapter(), $this->createStub(UrlGeneratorInterface::class)),
+            new OidcProvider($oidcConfig, new MockHttpClient(), new ArrayAdapter(), $this->createStub(UrlGeneratorInterface::class), null),
         );
 
         $this->expectException(NotFoundHttpException::class);
