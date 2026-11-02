@@ -14,7 +14,7 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
     {
         $this->withApiKey((string) ApiToken::generate());
         $this->withMcpKey((string) McpToken::generate());
-        $this->withOidc('https://idp.example.com/application/o/dreeve/', 'dreeve', 'oidc-client-secret', 'athlete-subject, athlete@example.com');
+        $this->withOidc('https://idp.example.com/application/o/dreeve/', 'dreeve', 'oidc-client-secret', 'athlete-subject, athlete@example.com', '/certs/ca.pem');
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/security');
@@ -28,6 +28,7 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('dreeve', $crawler->filter('input#oidcClientId[disabled]')->attr('value'));
         $this->assertSame('Configured', $crawler->filter('input#oidcClientSecretState[disabled]')->attr('value'));
         $this->assertSame('athlete-subject, athlete@example.com', $crawler->filter('input#oidcAllowedUsers[disabled]')->attr('value'));
+        $this->assertSame('/certs/ca.pem', $crawler->filter('input#oidcCaFilePath[disabled]')->attr('value'));
         $this->assertSame('http://localhost/admin/login/oidc/callback', $crawler->filter('input#oidcRedirectUri[readonly]')->attr('value'));
         $this->assertCount(0, $crawler->filter('a[href="https://docs.dreeve.app/integrations/single-sign-on/"]'));
         $this->assertStringNotContainsString('oidc-client-secret', (string) $this->client->getResponse()->getContent());
