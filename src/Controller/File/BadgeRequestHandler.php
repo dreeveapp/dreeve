@@ -57,7 +57,7 @@ final readonly class BadgeRequestHandler
                 'activities' => $this->activityRepository->findMostRecent(self::NUMBER_OF_MOST_RECENT_ACTIVITIES),
                 'activityTotals' => ActivityTotals::create(
                     totals: $this->queryBus->ask(new FindActivityTotals()),
-                    now: $this->clock->getCurrentDateTimeImmutable(),
+                    now: $this->clock->now(),
                     translator: $this->translator,
                 ),
                 'challengesCompleted' => $this->challengeRepository->count(),

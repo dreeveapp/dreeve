@@ -54,7 +54,7 @@ final readonly class MonthlyStatsRequestHandler
     private function renderFor(): string
     {
         $monthlyStats = $this->queryBus->ask(new FindMonthlyStats());
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         $currentMonth = Month::fromDate($now);
         $today = $now->getDayOfTheMonth();
         $sportTypes = $this->sportTypeRepository->findAll();

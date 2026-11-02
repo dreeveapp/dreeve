@@ -37,7 +37,7 @@ final readonly class DashboardWidgetRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         $widget = $configuredWidget->getWidget();
 
         $render = $this->cacheableRenderer->render(

@@ -52,7 +52,7 @@ final readonly class GearMaintenanceRequestHandler
                     RootCacheTag::GEAR,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
-                ttlInSeconds: $this->clock->getCurrentDateTimeImmutable()->getSecondsUntilMidnight(),
+                ttlInSeconds: $this->clock->now()->getSecondsUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::GEAR,
@@ -73,7 +73,7 @@ final readonly class GearMaintenanceRequestHandler
             ]);
         }
 
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
         $gearComponents = $this->gearComponentRepository->findAll();
         $gearsWithComponents = [];
         $componentsNotFitted = GearComponents::empty();

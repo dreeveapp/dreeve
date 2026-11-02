@@ -48,7 +48,7 @@ final readonly class MonthRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
-        if ($month->isBefore($firstMonth) || $month->isAfter(Month::fromDate($this->clock->getCurrentDateTimeImmutable()))) {
+        if ($month->isBefore($firstMonth) || $month->isAfter(Month::fromDate($this->clock->now()))) {
             throw new NotFoundHttpException('Not found');
         }
 
@@ -75,7 +75,7 @@ final readonly class MonthRequestHandler
 
         return $this->twig->load('html/calendar/month.html.twig')->render([
             'hasPreviousMonth' => $month->getId() !== $monthlyStats->getFirstMonth()?->getId(),
-            'hasNextMonth' => $month->getId() !== Month::fromDate($this->clock->getCurrentDateTimeImmutable())->getId(),
+            'hasNextMonth' => $month->getId() !== Month::fromDate($this->clock->now())->getId(),
             'statistics' => $monthlyStats->getForMonth($month),
             'calendar' => Calendar::create(
                 month: $month,

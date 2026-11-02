@@ -90,7 +90,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
                     status: FileImportStatus::SKIPPED,
                     errorMessage: 'Skipped, activity was already imported',
                     activityId: null,
-                    importedOn: $this->clock->getCurrentDateTimeImmutable(),
+                    importedOn: $this->clock->now(),
                 ));
 
                 $output->writeln(sprintf('  => [%d/%d] Skipping "%s", activity was already imported', $delta, $countTotalFilesInWatchDirectory, $filePath->getFilename()));
@@ -108,7 +108,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
                     status: FileImportStatus::FAILED,
                     errorMessage: $e->getMessage(),
                     activityId: null,
-                    importedOn: $this->clock->getCurrentDateTimeImmutable(),
+                    importedOn: $this->clock->now(),
                 ));
                 $this->watchDirectory->deleteFile($filePath);
 
@@ -149,7 +149,7 @@ final readonly class ImportActivityFilesCommandHandler implements CommandHandler
                 status: FileImportStatus::SUCCESS,
                 errorMessage: null,
                 activityId: $activityId,
-                importedOn: $this->clock->getCurrentDateTimeImmutable(),
+                importedOn: $this->clock->now(),
             ));
 
             $this->watchDirectory->deleteFile($filePath);

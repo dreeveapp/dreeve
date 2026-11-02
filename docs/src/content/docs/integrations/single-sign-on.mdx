@@ -57,10 +57,6 @@ identity_providers:
         token_endpoint_auth_method: 'client_secret_basic'
 ```
 
-The claims policy puts your email address in the ID token. Authelia leaves it out by default, and Dreeve then
-answers with "You are not allowed to sign in to this admin panel". Without the claims policy, add your
-Authelia subject (`authelia storage user identifiers export`) to `OIDC_ALLOWED_USERS` instead of your email address.
-
 The issuer URL is the URL of Authelia itself, for example `https://auth.example.com`.
 
 </TabItem>

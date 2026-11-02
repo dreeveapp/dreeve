@@ -22,7 +22,7 @@ class PausedClock implements Clock
         return self::on(SerializableDateTime::fromString($dateTime));
     }
 
-    public function getCurrentDateTimeImmutable(): SerializableDateTime
+    public function now(): SerializableDateTime
     {
         return SerializableDateTime::createFromInterface($this->clock->now());
     }

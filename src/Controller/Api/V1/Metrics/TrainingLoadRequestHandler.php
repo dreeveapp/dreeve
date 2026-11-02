@@ -30,7 +30,7 @@ final readonly class TrainingLoadRequestHandler
     #[Route(path: '/api/v1/metrics/training-load', name: 'api_v1_metrics_training_load', methods: ['GET'], priority: 3)]
     public function handle(): JsonResponse
     {
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
 
         $trainingMetrics = TrainingMetrics::create($this->dailyTrainingLoad->calculateForDateRange(DateRange::fromDates(
             from: $now->modify('- '.(TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + TrainingLoadChart::EMA_WARMUP_DAYS).' days'),

@@ -75,7 +75,7 @@ final readonly class GearStatsWidget implements Widget
 
     public function render(DashboardWidgetId $dashboardWidgetId, SerializableDateTime $now, WidgetConfiguration $configuration): ?string
     {
-        $allYears = Years::all($this->clock->getCurrentDateTimeImmutable());
+        $allYears = Years::all($this->clock->now());
         $allUsedGears = $this->gearRepository->findAllUsed();
         $importedActivityTypes = $this->activityTypeRepository->findAll();
 

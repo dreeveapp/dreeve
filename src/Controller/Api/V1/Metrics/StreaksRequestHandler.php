@@ -26,7 +26,7 @@ final readonly class StreaksRequestHandler
     public function handle(Request $request): JsonResponse
     {
         $streaks = $this->queryBus->ask(new FindStreaks(
-            years: Years::all($this->clock->getCurrentDateTimeImmutable()),
+            years: Years::all($this->clock->now()),
             restrictToSportTypes: MetricsFilters::fromRequest($request)->getSportTypes(),
         ));
 

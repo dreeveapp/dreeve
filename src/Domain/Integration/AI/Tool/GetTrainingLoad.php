@@ -43,7 +43,7 @@ final readonly class GetTrainingLoad implements AITool
 
     public function __invoke(ToolArguments $arguments): array
     {
-        $now = $this->clock->getCurrentDateTimeImmutable();
+        $now = $this->clock->now();
 
         $trainingMetrics = TrainingMetrics::create($this->dailyTrainingLoad->calculateForDateRange(DateRange::fromDates(
             from: $now->modify('- '.(TrainingLoadChart::NUMBER_OF_DAYS_TO_DISPLAY + TrainingLoadChart::EMA_WARMUP_DAYS).' days'),

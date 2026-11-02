@@ -83,7 +83,7 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
             );
         }
 
-        $today = $this->clock->getCurrentDateTimeImmutable();
+        $today = $this->clock->now();
 
         $longestDayStreak = $runningDayStreak = 1;
         $longestWeekStreak = $runningWeekStreak = 1;

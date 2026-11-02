@@ -42,7 +42,7 @@ final readonly class AddAutomationRuleCommandHandler implements CommandHandler
             sortOrder: $this->automationRuleRepository->findAll()->count(),
             conditions: $conditions,
             actions: $actions,
-            createdOn: $this->clock->getCurrentDateTimeImmutable(),
+            createdOn: $this->clock->now(),
         ));
     }
 }

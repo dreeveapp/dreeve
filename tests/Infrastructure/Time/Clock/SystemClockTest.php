@@ -15,14 +15,14 @@ class SystemClockTest extends TestCase
     #[TestWith(['Europe/Brussels', '2023-10-17 18:15:04.123456 Europe/Brussels'])]
     #[TestWith(['America/New_York', '2023-10-17 12:15:04.123456 America/New_York'])]
     #[TestWith([null, '2023-10-17 16:15:04.123456 UTC'])]
-    public function testGetCurrentDateTimeImmutable(?string $timezone, string $expectedDateTime): void
+    public function testNow(?string $timezone, string $expectedDateTime): void
     {
         $clock = new SystemClock(new Clock(
             new MockClock('2023-10-17 16:15:04.123456', 'UTC'),
             SerializableTimezone::fromOptionalString($timezone),
         ));
 
-        $now = $clock->getCurrentDateTimeImmutable();
+        $now = $clock->now();
 
         $this->assertInstanceOf(SerializableDateTime::class, $now);
         $this->assertEquals($expectedDateTime, $now->format('Y-m-d H:i:s.u e'));

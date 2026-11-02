@@ -72,7 +72,7 @@ class FindStreaksQueryHandlerTest extends ContainerTestCase
             ),
             $findStreaksQueryHandler->handle(
                 new FindStreaks(
-                    years: Years::all($clock->getCurrentDateTimeImmutable()),
+                    years: Years::all($clock->now()),
                     restrictToSportTypes: SportTypes::fromArray([SportType::RIDE])
                 )
             )
@@ -103,7 +103,7 @@ class FindStreaksQueryHandlerTest extends ContainerTestCase
             ),
             $findStreaksQueryHandler->handle(
                 new FindStreaks(
-                    years: Years::all($clock->getCurrentDateTimeImmutable()),
+                    years: Years::all($clock->now()),
                     restrictToSportTypes: null,
                 )
             )

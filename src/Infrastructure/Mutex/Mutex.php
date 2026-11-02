@@ -26,7 +26,7 @@ final class Mutex
 
     public function acquireLock(string $lockAcquiredBy): void
     {
-        $now = $this->clock->getCurrentDateTimeImmutable()->getTimestamp();
+        $now = $this->clock->now()->getTimestamp();
 
         $this->connection->beginTransaction();
 
@@ -79,7 +79,7 @@ final class Mutex
             throw new \RuntimeException(sprintf('Cannot heartbeat: lock "%s" does not exist', $this->lockName->value));
         }
 
-        $now = $this->clock->getCurrentDateTimeImmutable()->getTimestamp();
+        $now = $this->clock->now()->getTimestamp();
         $this->updateLockRow(
             timestamp: $now,
             lockAcquiredBy: Json::decode($row)[self::LOCK_ACQUIRED_BY_KEY]
