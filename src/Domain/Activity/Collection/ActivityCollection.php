@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Collection;
 
+use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -108,6 +109,24 @@ final class ActivityCollection
     public function getActivityIds(): ActivityIds
     {
         return $this->activityIds;
+    }
+
+    public function addActivity(ActivityId $activityId): self
+    {
+        if ($this->activityIds->has($activityId)) {
+            return $this;
+        }
+
+        return clone ($this, [
+            'activityIds' => ActivityIds::fromArray([...$this->activityIds, $activityId]),
+        ]);
+    }
+
+    public function removeActivity(ActivityId $activityId): self
+    {
+        return clone ($this, [
+            'activityIds' => $this->activityIds->without($activityId),
+        ]);
     }
 
     public function getCreatedOn(): SerializableDateTime
