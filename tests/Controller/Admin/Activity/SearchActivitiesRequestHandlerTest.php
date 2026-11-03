@@ -39,6 +39,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->assertSame([
             [
                 'value' => 'activity-1',
+                'reference' => 'Morning commute (activity-1)',
                 'label' => 'Morning commute',
                 'sublabel' => '2025-06-01 08:00 · Ride',
             ],
@@ -89,6 +90,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->assertSame([
             [
                 'value' => 'activity-1',
+                'reference' => 'Morning Run (activity-1)',
                 'label' => 'Morning Run',
                 'sublabel' => '2025-06-01 08:00 · Run',
             ],

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Activity;
 
+use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\Overview\ActivityOverviewItem;
 use App\Domain\Activity\Overview\ActivityOverviewRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,6 +33,7 @@ final readonly class SearchActivitiesRequestHandler
         return new JsonResponse(array_map(
             static fn (ActivityOverviewItem $item): array => [
                 'value' => (string) $item->getActivityId(),
+                'reference' => ActivityReference::format((string) $item->getName(), $item->getActivityId()),
                 'label' => (string) $item->getName(),
                 'sublabel' => sprintf(
                     '%s · %s',
