@@ -45,7 +45,7 @@ const initSearchAutocomplete = (input) => {
 
     autoCompleteJS.input.addEventListener('selection', (event) => {
         const selection = event.detail.selection.value;
-        input.value = input.hasAttribute('data-autocomplete-show-label') ? selection.reference : selection.value;
+        input.value = input.hasAttribute('data-autocomplete-use-reference') ? selection.reference : selection.value;
         input.dispatchEvent(new Event('change', {bubbles: true}));
     });
 };

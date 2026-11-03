@@ -58,9 +58,9 @@ final readonly class ActivityOverviewItem implements Item
         return $this->activityId;
     }
 
-    public function getName(): ActivityName
+    public function getName(): string
     {
-        return $this->name;
+        return ActivityName::forDisplay((string) $this->name);
     }
 
     public function getSportType(): SportType

@@ -498,11 +498,7 @@ final class Activity
 
     public function getName(): string
     {
-        $name = str_replace('Zwift - ', '', $this->getOriginalName());
-        // Strip legacy gear-maintenance hashtags (e.g. "#sfs-chain-lubed") from the display name.
-        $name = (string) preg_replace('/\s*#sfs-\S+/', '', $name);
-
-        return trim($name);
+        return ActivityName::forDisplay($this->getOriginalName());
     }
 
     public function getSanitizedName(): string
