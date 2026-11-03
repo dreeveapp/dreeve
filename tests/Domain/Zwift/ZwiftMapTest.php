@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class ZwiftMapTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideStartingCoordinates')]
+    #[DataProvider('provideStartingCoordinates')]
     public function testFromStartingCoordinate(string $latitude, string $longitude, string $expectedLabel, string $expectedOverlayImageUrl, string $expectedBackgroundColor): void
     {
         $map = ZwiftMap::forStartingCoordinate(Coordinate::createFromLatAndLng(

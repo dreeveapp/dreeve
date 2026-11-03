@@ -61,9 +61,9 @@ class GeoMathTest extends TestCase
         );
     }
 
-    #[TestWith(data: [2 ** 31, 180.0])]
-    #[TestWith(data: [2 ** 30, 90.0])]
-    #[TestWith(data: [0, 0.0])]
+    #[TestWith([2 ** 31, 180.0])]
+    #[TestWith([2 ** 30, 90.0])]
+    #[TestWith([0, 0.0])]
     public function testSemicirclesToDegrees(int $semicircles, float $expectedDegrees): void
     {
         self::assertEqualsWithDelta(

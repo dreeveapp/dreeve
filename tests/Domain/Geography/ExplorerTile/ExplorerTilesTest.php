@@ -14,7 +14,7 @@ class ExplorerTilesTest extends TestCase
      * @param list<string>          $grid
      * @param list<array{int, int}> $expectedMaxCluster
      */
-    #[DataProvider(methodName: 'provideGrids')]
+    #[DataProvider('provideGrids')]
     public function testClustersAndMaxSquare(
         array $grid,
         int $offsetX,

@@ -33,16 +33,16 @@ class FitProductTest extends TestCase
         $this->assertMatchesJsonSnapshot(Json::encode($names));
     }
 
-    #[TestWith(data: [1, true])]
-    #[TestWith(data: [13, true])]
-    #[TestWith(data: [15, true])]
-    #[TestWith(data: [89, true])]
-    #[TestWith(data: [263, true])]
-    #[TestWith(data: [0, false])]
-    #[TestWith(data: [23, false])]
-    #[TestWith(data: [32, false])]
-    #[TestWith(data: [123, false])]
-    #[TestWith(data: [294, false])]
+    #[TestWith([1, true])]
+    #[TestWith([13, true])]
+    #[TestWith([15, true])]
+    #[TestWith([89, true])]
+    #[TestWith([263, true])]
+    #[TestWith([0, false])]
+    #[TestWith([23, false])]
+    #[TestWith([32, false])]
+    #[TestWith([123, false])]
+    #[TestWith([294, false])]
     public function testItSupportsOnlyGarminFamilyAndFavero(int $manufacturerId, bool $expectedIsSupported): void
     {
         $this->assertEquals($expectedIsSupported, FitProduct::supports($manufacturerId));

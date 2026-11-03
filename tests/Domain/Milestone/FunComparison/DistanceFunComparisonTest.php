@@ -25,7 +25,7 @@ class DistanceFunComparisonTest extends TestCase
         $this->assertNull(DistanceFunComparison::resolve(Kilometer::from(99)));
     }
 
-    #[DataProvider(methodName: 'resolveProvider')]
+    #[DataProvider('resolveProvider')]
     public function testResolve(float $km, DistanceFunComparison $expected): void
     {
         $this->assertEquals($expected, DistanceFunComparison::resolve(Kilometer::from($km)));

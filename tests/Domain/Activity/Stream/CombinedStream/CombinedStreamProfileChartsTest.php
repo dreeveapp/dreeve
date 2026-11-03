@@ -16,9 +16,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CombinedStreamProfileChartsTest extends ContainerTestCase
 {
-    #[TestWith(data: [1, '65px'])]
-    #[TestWith(data: [4, '75px'])]
-    #[TestWith(data: [5, '85px'])]
+    #[TestWith([1, '65px'])]
+    #[TestWith([4, '75px'])]
+    #[TestWith([5, '85px'])]
     public function testGridLeftPadding(int $maxYAxisDigits, string $expectedPadding): void
     {
         $chart = $this->buildChart(
@@ -34,10 +34,10 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         );
     }
 
-    #[TestWith(data: [1, false, 245])]
-    #[TestWith(data: [4, false, 620])]
-    #[TestWith(data: [1, true, 268])]
-    #[TestWith(data: [4, true, 643])]
+    #[TestWith([1, false, 245])]
+    #[TestWith([4, false, 620])]
+    #[TestWith([1, true, 268])]
+    #[TestWith([4, true, 643])]
     public function testTotalHeightFor(int $numberOfLanes, bool $hasTemperatureRibbon, int $expectedHeight): void
     {
         $this->assertEquals(
@@ -205,8 +205,8 @@ class CombinedStreamProfileChartsTest extends ContainerTestCase
         $this->assertTrue($chart['xAxis'][0]['axisPointer']['label']['show']);
     }
 
-    #[TestWith(data: [SportType::RIDE, 0])]
-    #[TestWith(data: [SportType::RUN, 1])]
+    #[TestWith([SportType::RIDE, 0])]
+    #[TestWith([SportType::RUN, 1])]
     public function testItShouldRoundTheDistanceTicksPerActivityType(SportType $sportType, int $expectedDecimals): void
     {
         $chart = $this->buildChart(

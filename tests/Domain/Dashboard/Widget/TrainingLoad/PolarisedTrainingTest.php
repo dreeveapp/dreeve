@@ -17,7 +17,7 @@ class PolarisedTrainingTest extends ContainerTestCase
      * @param array<int, ZoneDistributionTrend> $expectedTrends
      * @param array<int, float>                 $expectedPercentages
      */
-    #[DataProvider(methodName: 'fromRollingWindowProvider')]
+    #[DataProvider('fromRollingWindowProvider')]
     public function testFromRollingWindow(
         TimeInHeartRateZones $current,
         TimeInHeartRateZones $asOfPreviousDay,

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class DateRangeBasedTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideCalculateData')]
+    #[DataProvider('provideCalculateData')]
     public function testCalculate(SerializableDateTime $on, int $expectedHeartRate): void
     {
         $dateRangeBased = DateRangeBased::empty()

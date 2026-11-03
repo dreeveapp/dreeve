@@ -15,7 +15,7 @@ class VelocityDistributionChartTest extends TestCase
      * The velocity data is bucketed in the sport type's display unit at import time, so for a sail
      * activity the buckets are knots and the average marker has to be plotted in knots too.
      */
-    #[DataProvider(methodName: 'provideUnitSystems')]
+    #[DataProvider('provideUnitSystems')]
     public function testItMarksTheAverageInKnotsForSailActivities(UnitSystem $unitSystem): void
     {
         $chart = VelocityDistributionChart::create(

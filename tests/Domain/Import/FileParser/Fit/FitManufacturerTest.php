@@ -10,10 +10,10 @@ use PHPUnit\Framework\TestCase;
 
 class FitManufacturerTest extends TestCase
 {
-    #[TestWith(data: [260, true])]
-    #[TestWith(data: [1, false])]
-    #[TestWith(data: [23, false])]
-    #[TestWith(data: [255, false])]
+    #[TestWith([260, true])]
+    #[TestWith([1, false])]
+    #[TestWith([23, false])]
+    #[TestWith([255, false])]
     public function testHasUnreliableProductName(int $manufacturerId, bool $expected): void
     {
         $this->assertSame($expected, FitManufacturer::hasUnreliableProductName($manufacturerId));

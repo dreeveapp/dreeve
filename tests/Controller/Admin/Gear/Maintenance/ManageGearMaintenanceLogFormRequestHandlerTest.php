@@ -52,8 +52,8 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Lube', $formText);
     }
 
-    #[TestWith(data: ['delete'])]
-    #[TestWith(data: ['edit'])]
+    #[TestWith(['delete'])]
+    #[TestWith(['edit'])]
     public function testCannotManageALogWhoseGearWasDeleted(string $action): void
     {
         $this->importGearMaintenanceConfig();

@@ -64,7 +64,7 @@ class IntegrationsSettingsTest extends TestCase
         $this->assertFalse($settings->isAIIntegrationEnabled());
     }
 
-    #[DataProvider(methodName: 'provideInvalidAIConfig')]
+    #[DataProvider('provideInvalidAIConfig')]
     public function testItGuardsValidAIConfiguration(array $config, string $expectedExceptionMessage): void
     {
         $this->expectExceptionObject(new InvalidAIConfiguration($expectedExceptionMessage));

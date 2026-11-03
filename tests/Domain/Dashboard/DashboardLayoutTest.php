@@ -18,7 +18,7 @@ class DashboardLayoutTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testFromYmlStringItShouldThrow(array $yml, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidDashboardLayout($expectedException));

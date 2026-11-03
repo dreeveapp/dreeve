@@ -85,7 +85,7 @@ class AddCustomSegmentCommandHandlerTest extends ContainerTestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideUnprocessableCommands')]
+    #[DataProvider('provideUnprocessableCommands')]
     public function testHandleThrows(array $streamTypes, int $startIndex, int $endIndex, string $expectedReason): void
     {
         $streams = Json::decode(file_get_contents(self::FIXTURES.'exact-pass.json') ?: '');

@@ -12,7 +12,7 @@ class YearlyStatsWidgetTest extends ContainerTestCase
 {
     private YearlyStatsWidget $widget;
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testGuardValidConfigurationItShouldThrow(WidgetConfiguration $config, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidDashboardLayout($expectedException));

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class ProvideDistributionChartTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideTestData')]
+    #[DataProvider('provideTestData')]
     public function testFindClosestSteppedValue(int $min, int $max, int $step, int|float $target, int $expectedOutcome): void
     {
         $class = new readonly class($min, $max, $step, $target) {

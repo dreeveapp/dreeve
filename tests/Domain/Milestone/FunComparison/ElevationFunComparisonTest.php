@@ -25,7 +25,7 @@ class ElevationFunComparisonTest extends TestCase
         $this->assertNull(ElevationFunComparison::resolve(Meter::from(299)));
     }
 
-    #[DataProvider(methodName: 'resolveProvider')]
+    #[DataProvider('resolveProvider')]
     public function testResolve(float $meters, ElevationFunComparison $expected): void
     {
         $this->assertEquals($expected, ElevationFunComparison::resolve(Meter::from($meters)));

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class CssColorTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideValidCssColors')]
+    #[DataProvider('provideValidCssColors')]
     public function testShouldBeValid(string $color): void
     {
         $this->assertEquals(

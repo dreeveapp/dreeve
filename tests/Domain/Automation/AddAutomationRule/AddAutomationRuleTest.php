@@ -70,8 +70,8 @@ class AddAutomationRuleTest extends TestCase
         $this->assertTrue($command->stopProcessing());
     }
 
-    #[TestWith(data: ['false', false])]
-    #[TestWith(data: ['true', true])]
+    #[TestWith(['false', false])]
+    #[TestWith(['true', true])]
     public function testStopProcessingCanBeToggledExplicitly(string $stopProcessing, bool $expectedStopProcessing): void
     {
         $command = AddAutomationRule::fromPayload(['stopProcessing' => $stopProcessing] + [

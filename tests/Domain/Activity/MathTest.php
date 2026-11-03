@@ -8,8 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class MathTest extends TestCase
 {
-    #[TestWith(data: [[1, 2, 3], 2])]
-    #[TestWith(data: [[1, 2, 3, 4], 2.5])]
+    #[TestWith([[1, 2, 3], 2])]
+    #[TestWith([[1, 2, 3, 4], 2.5])]
     public function testMedian(array $values, float $expectedResult): void
     {
         $this->assertEquals(
@@ -25,8 +25,8 @@ class MathTest extends TestCase
         Math::median([]);
     }
 
-    #[TestWith(data: [[], []])]
-    #[TestWith(data: [[1, 2, 3, 4], [2, 2.5, 2.5, 3]])]
+    #[TestWith([[], []])]
+    #[TestWith([[1, 2, 3, 4], [2, 2.5, 2.5, 3]])]
     public function testMovingAverage(array $values, array $expectedResult): void
     {
         $this->assertEquals(
@@ -35,9 +35,9 @@ class MathTest extends TestCase
         );
     }
 
-    #[TestWith(data: [[], null])]
-    #[TestWith(data: [[null, null], null])]
-    #[TestWith(data: [[1.9, null, 2.9], 2.4])]
+    #[TestWith([[], null])]
+    #[TestWith([[null, null], null])]
+    #[TestWith([[1.9, null, 2.9], 2.4])]
     public function testAverageFloat(array $values, ?float $expectedResult): void
     {
         $this->assertSame(
@@ -46,9 +46,9 @@ class MathTest extends TestCase
         );
     }
 
-    #[TestWith(data: [[], null])]
-    #[TestWith(data: [[null, null], null])]
-    #[TestWith(data: [[1.9, null, 2.9, 2.4], 2.9])]
+    #[TestWith([[], null])]
+    #[TestWith([[null, null], null])]
+    #[TestWith([[1.9, null, 2.9, 2.4], 2.9])]
     public function testMaxFloat(array $values, ?float $expectedResult): void
     {
         $this->assertSame(

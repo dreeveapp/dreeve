@@ -50,13 +50,13 @@ class ToolboxTest extends ContainerTestCase
     use MatchesSnapshots;
     use ProvideGearMaintenanceConfig;
 
-    #[DataProvider(methodName: 'provideTools')]
+    #[DataProvider('provideTools')]
     public function testTools(string $name, array $inputs): void
     {
         $this->assertMatchesJsonSnapshot($this->executeTool($name, $inputs));
     }
 
-    #[DataProvider(methodName: 'provideToolErrors')]
+    #[DataProvider('provideToolErrors')]
     public function testItReturnsAToolError(string $name, array $inputs, string $message): void
     {
         $this->assertSame($message, $this->executeTool($name, $inputs));

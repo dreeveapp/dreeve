@@ -21,7 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class MeasurementTwigExtensionTest extends ContainerTestCase
 {
-    #[DataProvider(methodName: 'provideConversions')]
+    #[DataProvider('provideConversions')]
     public function testDoConversion(Unit $expectedMeasurement, UnitSystem $unitSystem, Unit $measurementToConvert): void
     {
         $extension = $this->extensionFor($unitSystem);
@@ -42,7 +42,7 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideVelocities')]
+    #[DataProvider('provideVelocities')]
     public function testVelocity(
         string $expectedValue,
         string $expectedSymbol,
@@ -57,7 +57,7 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         $this->assertSame($expectedRender, $extension->renderVelocity($velocity));
     }
 
-    #[DataProvider(methodName: 'provideMeasurementSymbols')]
+    #[DataProvider('provideMeasurementSymbols')]
     public function testMeasurementSymbol(string $expectedUnitSymbol, UnitSystem $unitSystem, Unit $measurement): void
     {
         $extension = $this->extensionFor($unitSystem);
@@ -68,7 +68,7 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideUnitSymbols')]
+    #[DataProvider('provideUnitSymbols')]
     public function testGetUnitSymbol(string $expectedUnitSymbol, UnitSystem $unitSystem, string $unitName): void
     {
         $extension = $this->extensionFor($unitSystem);
@@ -86,7 +86,7 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         $extension->getUnitSymbol('invalid');
     }
 
-    #[DataProvider(methodName: 'provideProximityToMeterFactors')]
+    #[DataProvider('provideProximityToMeterFactors')]
     public function testGetProximityToMeterFactor(float $expectedFactor, UnitSystem $unitSystem): void
     {
         $extension = $this->extensionFor($unitSystem);

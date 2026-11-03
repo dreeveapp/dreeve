@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class SlugTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideData')]
+    #[DataProvider('provideData')]
     public function testItShouldSlugify(string $input, string $expected): void
     {
         self::assertEquals($expected, (string) Slug::fromString($input));

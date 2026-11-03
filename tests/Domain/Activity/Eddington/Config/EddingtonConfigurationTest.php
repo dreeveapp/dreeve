@@ -48,7 +48,7 @@ class EddingtonConfigurationTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideInvalidEddingtonConfig')]
+    #[DataProvider('provideInvalidEddingtonConfig')]
     public function testFromScalarArrayItShouldThrow(array $config, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidEddingtonConfiguration($expectedException));

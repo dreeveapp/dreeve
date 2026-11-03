@@ -14,7 +14,7 @@ class EddingtonTest extends TestCase
     /**
      * @param list<int> $expectedUpcomingNumbers
      */
-    #[DataProvider(methodName: 'provideUpcomingNumbers')]
+    #[DataProvider('provideUpcomingNumbers')]
     public function testGetUpcomingNumbers(int $eddingtonNumber, array $expectedUpcomingNumbers): void
     {
         $eddington = Eddington::create(

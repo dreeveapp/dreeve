@@ -56,7 +56,7 @@ class ConfiguredCronActionsTest extends TestCase
         ]);
     }
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testFromConfigItShouldThrow(array $config, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidCronConfig($expectedException));

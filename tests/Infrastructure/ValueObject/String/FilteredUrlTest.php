@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class FilteredUrlTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideFilters')]
+    #[DataProvider('provideFilters')]
     public function testToRelativeUrl(string $expected, array $filters): void
     {
         $this->assertEquals(
