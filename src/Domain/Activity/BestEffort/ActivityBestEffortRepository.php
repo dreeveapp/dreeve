@@ -6,8 +6,9 @@ namespace App\Domain\Activity\BestEffort;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 
-interface ActivityBestEffortRepository
+interface ActivityBestEffortRepository extends DeletesActivityData
 {
     public function add(ActivityBestEffort $activityBestEffort): void;
 
@@ -16,6 +17,4 @@ interface ActivityBestEffortRepository
     public function findActivityIdsThatNeedBestEffortsCalculation(): ActivityIds;
 
     public function findByActivity(ActivityId $activity): ActivityBestEfforts;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 }

@@ -6,13 +6,12 @@ namespace App\Domain\Activity\Stream\CombinedStream;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 use App\Infrastructure\Measurement\UnitSystem;
 
-interface CombinedActivityStreamRepository
+interface CombinedActivityStreamRepository extends DeletesActivityData
 {
     public function add(CombinedActivityStream $combinedActivityStream): void;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 
     public function findOneForActivityAndUnitSystem(
         ActivityId $activityId,

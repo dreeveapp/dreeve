@@ -6,12 +6,11 @@ namespace App\Domain\Activity\Stream\Metric;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 
-interface ActivityStreamMetricRepository
+interface ActivityStreamMetricRepository extends DeletesActivityData
 {
     public function add(ActivityStreamMetric $metric): void;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 
     public function deleteForActivityAndMetricType(ActivityId $activityId, ActivityStreamMetricType $metricType): void;
 

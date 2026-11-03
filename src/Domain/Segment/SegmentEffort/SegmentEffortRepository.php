@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Domain\Segment\SegmentEffort;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentType;
 
-interface SegmentEffortRepository
+interface SegmentEffortRepository extends DeletesActivityData
 {
     public function add(SegmentEffort $segmentEffort): void;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 
     public function deleteForActivityAndSegmentType(ActivityId $activityId, SegmentType $segmentType): void;
 

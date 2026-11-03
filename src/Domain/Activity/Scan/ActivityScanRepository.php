@@ -6,16 +6,15 @@ namespace App\Domain\Activity\Scan;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\StreamType;
 
-interface ActivityScanRepository
+interface ActivityScanRepository extends DeletesActivityData
 {
     public function add(ActivityScan $activityScan): void;
 
     public function isScanned(ActivityId $activityId, ActivityScanType $type, string $subjectId = ''): bool;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 
     public function deleteForActivityAndType(ActivityId $activityId, ActivityScanType $type): void;
 
