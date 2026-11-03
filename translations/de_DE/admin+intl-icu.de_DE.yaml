@@ -68,12 +68,12 @@ Apply: Anwenden
 'Are you sure you want to delete the import of {name}?': 'Möchtest du den Import von {name} wirklich löschen?'
 'Are you sure you want to delete the {component} component?': 'Möchtest du die Komponente {component} wirklich löschen?'
 'Are you sure you want to delete the {rule} rule?': 'Möchtest du die Regel {rule} wirklich löschen?'
-'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
+'Are you sure you want to delete {count} activities?': 'Möchtest du wirklich {count} Aktivitäten löschen?'
 'Are you sure you want to delete {name}?': 'Möchtest du {name} wirklich löschen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Möchtest du {task} an {component} für {gear}, durchgeführt am {date}, wirklich löschen?'
 'Are you sure you want to remove the {widget} widget?': 'Möchtest du das {widget} Widget entfernen?'
 'Assign gear': 'Ausrüstung zuweisen'
-Athlete: Athlete
+Athlete: Athlet
 'Athlete settings': Athleteneinstellung
 'Attached to': 'Zugeordnet zu'
 'Automatically fill in gear, commute, sport type and more on newly imported activities. Rules run top to bottom, and can also be applied to activities you already imported.': 'Ausrüstung, Pendelstrecke, Sportart und mehr werden bei neu importierten Aktivitäten automatisch ausgefüllt. Die Regeln gelten von oben nach unten und können auch auf bereits importierte Aktivitäten angewendet werden.'
@@ -89,7 +89,7 @@ Athlete: Athlete
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Bevor Sie die App nutzen können, benötigen wir einige Informationen über Sie. Diese werden verwendet, um Ihre Herzfrequenzzonen und Ihre Trainingsbelastung zu berechnen. Alle weiteren Einstellungen können Sie später anpassen.'
 Birthday: Geburtstag
 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'Standardmäßig lassen sich von einer Aktivitätsseite nur die Originaldatei im FIT-, TCX- oder GPX-Format herunterladen. Originaldateien können mehr Details enthalten als auf der Seite angezeigt werden.'
-'CA certificate': 'CA certificate'
+'CA certificate': 'CA Zertifikat'
 'Calculate energy (kJ)': 'Energie (kJ) berechnen'
 Cancel: Abbrechen
 'Challenge name': Herausforderungsname
@@ -129,7 +129,7 @@ Daemon: Daemon
 'Date range based': 'Nach Datumsbereich'
 'Define what needs doing and how often.': 'Lege fest, was wie oft erledigt werden muss.'
 Delete: Löschen
-'Delete activities': 'Delete activities'
+'Delete activities': 'Aktivitäten löschen'
 'Delete activity': 'Aktivität löschen'
 'Delete automation rule': 'Automatisierungsregel löschen'
 'Delete component': 'Komponente löschen'
@@ -137,7 +137,7 @@ Delete: Löschen
 'Delete gear': 'Ausrüstung löschen'
 'Delete maintenance log': 'Wartungsprotokoll löschen'
 'Delete segment': 'Segment löschen'
-'Delete selected': 'Delete selected'
+'Delete selected': 'Ausgewählte löschen'
 'Deleting a rule does not revert changes it already made to activities. This action cannot be undone.': 'Das Löschen einer Regel macht bereits vorgenommene Änderungen an Aktivitäten nicht rückgängig. Diese Aktion kann nicht rückgängig gemacht werden.'
 Deleting...: 'wird gelöscht...'
 Description: Beschreibung
@@ -276,8 +276,8 @@ Match: Übereinstimmung
 'Matches when any point of the route comes near the location.': 'Übereinstimmung, wenn irgendein Punkt der Route in die Nähe des Punktes kommt.'
 'Matches when the activity finishes close to where it started.': 'Übereinstimmung, wenn die Aktivität in der Nähe des Startpunkts endet.'
 'Matching activities': 'Übereinstimmende Aktivitäten'
-'Max heart rate': 'Max heart rate'
-'Max heart rate (bpm)': 'Max. herzfrequenz (bpm)'
+'Max heart rate': 'Max. Herzfrequenz'
+'Max heart rate (bpm)': 'Max. Herzfrequenz (bpm)'
 'Max heart rate formula': 'Formel für max. Herzfrequenz'
 Message: Nachricht
 'Metric display order': 'Anzeigereihenfolge der Metriken'
@@ -382,7 +382,7 @@ Removing...: Entfernen...
 'Reset dashboard to default': 'Dashboard auf Standard zurücksetzen'
 'Reset to default': 'Auf Standard zurücksetzen'
 Resetting...: 'Wird zurückgesetzt...'
-'Resting heart rate': 'Resting heart rate'
+'Resting heart rate': 'Ruhepuls'
 'Resting heart rate (bpm)': 'Ruhepuls (bpm)'
 'Resting heart rate formula': Ruhepuls-Formel
 'Restrict to date range': 'Auf Datumsbereich beschränken'
@@ -545,7 +545,7 @@ To: bis
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Verfolge die Nutzung deiner Ausrüstung anhand deiner Aktivitäten und behalte nutzungs- sowie zeitbasierte Wartungen im Blick.'
 Tuesday: Dienstag
 'Turn gear maintenance tracking on or off.': 'Wartungsverfolgung für Ausrüstung ein- oder ausschalten.'
-'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
+'Turns on the AI-powered workout assistant.': 'KI-gestützten Trainingsassistenten aktivieren.'
 Type: Typ
 URL: URL
 Unit: Einheit
@@ -559,7 +559,7 @@ Until: Bis
 'Upload files': 'Dateien hochladen'
 Uploaded: Hochgeladen
 Uploading...: 'Wird hochgeladen...'
-'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
+'Use caution when enabling this if your app is publicly accessible.': 'Sei vorsichtig, wenn du diese Funktion aktivierst, falls die App öffentlich zugänglich ist.'
 'Used to calculate the training load of this activity': 'Wird verwendet, um die Trainingsbelastung dieser Aktivität zu berechnen.'
 Username: Benutzername
 'Verify token': 'Token verifizieren'
