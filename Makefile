@@ -78,7 +78,6 @@ delete-snapshots:
 
 rector:
 	@make dcr cmd="vendor/bin/rector"
-	@make dcr cmd="vendor/bin/rector --config rector-tests.php"
 
 # Helpers to build the app.
 app-build-assets:
