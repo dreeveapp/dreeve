@@ -80,6 +80,13 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
         ));
     }
 
+    public function findForActivity(ActivityId $activityId): ActivityCollections
+    {
+        return $this->findAll()->filter(
+            static fn (ActivityCollection $activityCollection): bool => $activityCollection->getActivityIds()->has($activityId)
+        );
+    }
+
     /**
      * @param array<string, mixed> $result
      */
