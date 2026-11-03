@@ -40,8 +40,8 @@
                 </div>
                 <div class="group/route" data-state="empty"
                      data-route-range-picker='{{ {
-                         url: relativeUrl(path('admin_activity_route', {activityId: 'activity-__ID__'})),
-                         placeholder: 'activity-__ID__',
+                         url: relativeUrl(path('admin_activity_route', {activityId: '__ID__'})),
+                         placeholder: '__ID__',
                          source: '#segment-activity',
                      }|merge(unitFactors)|json_encode }}'>
                     <p class="text-sm text-gray-500 group-data-[state=ready]/route:hidden">
