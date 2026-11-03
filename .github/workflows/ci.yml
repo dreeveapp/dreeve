@@ -35,9 +35,9 @@ jobs:
           path: |
             var/cache/phpstan
             var/cache/rector
-          key: ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php', 'rector-tests.php') }}-${{ github.sha }}
+          key: ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php') }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php', 'rector-tests.php') }}-
+            ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php') }}-
             ${{ runner.os }}-static-analysis-
 
       - name: Run PHPStan

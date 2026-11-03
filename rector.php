@@ -10,13 +10,15 @@ use Rector\Php85\Rector\FuncCall\OrdSingleByteRector;
 
 return RectorConfig::configure()
     ->withCache(
-        cacheDirectory: __DIR__.'/var/cache/rector/src',
+        cacheDirectory: __DIR__.'/var/cache/rector',
         cacheClass: FileCacheStorage::class,
     )
     ->withPaths([
         __DIR__.'/src',
+        __DIR__.'/tests',
     ])
     ->withPhpSets(php85: true)
+    ->withComposerBased(phpunit: true)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
