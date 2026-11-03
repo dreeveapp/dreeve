@@ -95,6 +95,53 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
         $this->assertEquals($updated, $this->repository->find($activityCollection->getId()));
     }
 
+    public function testAddAndRemoveActivities(): void
+    {
+        $activityCollection = ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]))
+            ->build();
+        $this->repository->add($activityCollection);
+
+        $this->repository->update(
+            $activityCollection
+                ->addActivity(ActivityId::fromUnprefixed('2'))
+                ->addActivity(ActivityId::fromUnprefixed('3'))
+                ->addActivity(ActivityId::fromUnprefixed('2'))
+                ->removeActivity(ActivityId::fromUnprefixed('1'))
+        );
+
+        $this->assertEquals(
+            ActivityIds::fromArray([ActivityId::fromUnprefixed('2'), ActivityId::fromUnprefixed('3')]),
+            $this->repository->find($activityCollection->getId())->getActivityIds(),
+        );
+        $this->assertEquals(
+            ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]),
+            $activityCollection->getActivityIds(),
+        );
+    }
+
+    public function testFindForActivity(): void
+    {
+        $this->repository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('a'))
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1'), ActivityId::fromUnprefixed('2')]))
+            ->build());
+        $this->repository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('b'))
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('3')]))
+            ->build());
+        $this->repository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('c'))
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('2')]))
+            ->build());
+
+        $this->assertSame(
+            ['activityCollection-a', 'activityCollection-c'],
+            $this->repository->findForActivity(ActivityId::fromUnprefixed('2'))->map(static fn (ActivityCollection $activityCollection): string => (string) $activityCollection->getId())
+        );
+    }
+
     public function testDelete(): void
     {
         $activityCollection = ActivityCollectionBuilder::fromDefaults()
