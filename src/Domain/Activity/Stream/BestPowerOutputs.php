@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Stream;
 
+/**
+ * @implements \IteratorAggregate<int, array<mixed>>
+ */
 final class BestPowerOutputs implements \IteratorAggregate
 {
     /** @var array<int, array<mixed>> */

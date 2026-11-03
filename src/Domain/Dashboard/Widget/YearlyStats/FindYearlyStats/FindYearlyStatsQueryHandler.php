@@ -20,6 +20,9 @@ final readonly class FindYearlyStatsQueryHandler implements QueryHandler
     ) {
     }
 
+    /**
+     * @param Query<Response> $query
+     */
     public function handle(Query $query): Response
     {
         assert($query instanceof FindYearlyStats);

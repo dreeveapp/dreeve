@@ -6,6 +6,9 @@ namespace App\Domain\Activity\SportType;
 
 use App\Infrastructure\ValueObject\Collection;
 
+/**
+ * @extends Collection<SportType>
+ */
 class SportTypesSortingOrder extends Collection
 {
     public function getItemClassName(): string

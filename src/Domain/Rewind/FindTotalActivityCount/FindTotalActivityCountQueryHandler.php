@@ -17,6 +17,9 @@ final readonly class FindTotalActivityCountQueryHandler implements QueryHandler
     ) {
     }
 
+    /**
+     * @param Query<Response> $query
+     */
     public function handle(Query $query): Response
     {
         assert($query instanceof FindTotalActivityCount);

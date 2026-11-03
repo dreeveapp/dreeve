@@ -2,6 +2,9 @@
 
 namespace App\Domain\Integration\Notification\Shoutrrr;
 
+/**
+ * @implements \IteratorAggregate<int, ShoutrrrUrl>
+ */
 final readonly class ConfiguredNotificationUrls implements \IteratorAggregate
 {
     public function __construct(

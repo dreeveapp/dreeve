@@ -54,6 +54,9 @@ final readonly class ConnectedSensors implements \JsonSerializable, \IteratorAgg
         return false;
     }
 
+    /**
+     * @return \ArrayIterator<int, ConnectedSensor>
+     */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->sensors);

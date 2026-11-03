@@ -17,6 +17,9 @@ final readonly class FindRecordingDeviceUsagePerMonthQueryHandler implements Que
     ) {
     }
 
+    /**
+     * @param Query<Response> $query
+     */
     public function handle(Query $query): Response
     {
         assert($query instanceof FindRecordingDeviceUsagePerMonth);

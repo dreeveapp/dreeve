@@ -19,6 +19,9 @@ final readonly class FindDaytimeStatsQueryHandler implements QueryHandler
     ) {
     }
 
+    /**
+     * @param Query<Response> $query
+     */
     public function handle(Query $query): Response
     {
         assert($query instanceof FindDaytimeStats);

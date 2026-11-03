@@ -17,6 +17,9 @@ final readonly class FindFirstActivityStartDateQueryHandler implements QueryHand
     ) {
     }
 
+    /**
+     * @param Query<Response> $query
+     */
     public function handle(Query $query): Response
     {
         assert($query instanceof FindFirstActivityStartDate);

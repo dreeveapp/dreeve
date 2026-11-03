@@ -7,6 +7,9 @@ namespace App\Application\Import\StravaImport\ImportActivities;
 use App\Domain\Activity\ActivityVisibility;
 use App\Infrastructure\ValueObject\Collection;
 
+/**
+ * @extends Collection<ActivityVisibility>
+ */
 final class ActivityVisibilitiesToImport extends Collection
 {
     public function getItemClassName(): string

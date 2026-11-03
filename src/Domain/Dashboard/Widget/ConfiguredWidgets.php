@@ -8,6 +8,9 @@ use App\Domain\Dashboard\DashboardLayoutRepository;
 use App\Domain\Dashboard\DashboardWidgetId;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
+/**
+ * @implements \IteratorAggregate<int, ConfiguredWidget>
+ */
 final class ConfiguredWidgets implements \IteratorAggregate
 {
     /** @var array<string, Widget> */

@@ -25,6 +25,8 @@ final readonly class Overview implements \IteratorAggregate
      * @template TItem of Item
      *
      * @param list<TItem> $items
+     *
+     * @return self<TItem>
      */
     public static function create(
         Pagination $pagination,
