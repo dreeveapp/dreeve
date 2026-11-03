@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\CQRS\Command\Bus;
 
 use App\Infrastructure\Serialization\Json;

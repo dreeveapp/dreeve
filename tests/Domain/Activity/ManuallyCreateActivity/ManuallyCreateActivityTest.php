@@ -55,7 +55,7 @@ class ManuallyCreateActivityTest extends TestCase
     public function testFromPayloadWithSecondsInStartDateTime(): void
     {
         $command = ManuallyCreateActivity::fromPayload([
-            ...self::validPayload(),
+            ...$this->validPayload(),
             'startDateTime' => '2023-10-17T16:15:32',
         ]);
 
@@ -65,7 +65,7 @@ class ManuallyCreateActivityTest extends TestCase
     public function testFromPayloadWithEmptyOptionalFields(): void
     {
         $command = ManuallyCreateActivity::fromPayload([
-            ...self::validPayload(),
+            ...$this->validPayload(),
             'description' => '   ',
             'gearId' => '',
             'elevation' => '',
@@ -89,7 +89,7 @@ class ManuallyCreateActivityTest extends TestCase
     public function testFromPayloadWithPartialDuration(): void
     {
         $command = ManuallyCreateActivity::fromPayload([
-            ...self::validPayload(),
+            ...$this->validPayload(),
             'duration' => ['minutes' => '50'],
         ]);
 
@@ -99,7 +99,7 @@ class ManuallyCreateActivityTest extends TestCase
     public function testFromPayloadParsesNewImages(): void
     {
         $command = ManuallyCreateActivity::fromPayload([
-            ...self::validPayload(),
+            ...$this->validPayload(),
             'images' => json_encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => base64_encode('binary-content')],
             ]),
@@ -119,7 +119,7 @@ class ManuallyCreateActivityTest extends TestCase
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        ManuallyCreateActivity::fromPayload([...self::validPayload(), ...$payload]);
+        ManuallyCreateActivity::fromPayload([...$this->validPayload(), ...$payload]);
     }
 
     /**
@@ -152,7 +152,7 @@ class ManuallyCreateActivityTest extends TestCase
     /**
      * @return array<string, mixed>
      */
-    private static function validPayload(): array
+    private function validPayload(): array
     {
         return [
             'name' => 'My manual activity',

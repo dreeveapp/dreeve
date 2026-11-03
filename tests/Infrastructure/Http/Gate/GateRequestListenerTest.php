@@ -37,9 +37,9 @@ class GateRequestListenerTest extends TestCase
         /** @var \ArrayObject<int, string> $calls */
         $calls = new \ArrayObject();
         $listener = new GateRequestListener([
-            new GateStub(calls: $calls, name: 'first', decision: GateDecision::defer()),
-            new GateStub(calls: $calls, name: 'second', decision: GateDecision::respond(new RedirectResponse('/gated'))),
-            new GateStub(calls: $calls, name: 'third', decision: GateDecision::respond(new RedirectResponse('/never-reached'))),
+            new GateStub(decision: GateDecision::defer(), calls: $calls, name: 'first'),
+            new GateStub(decision: GateDecision::respond(new RedirectResponse('/gated')), calls: $calls, name: 'second'),
+            new GateStub(decision: GateDecision::respond(new RedirectResponse('/never-reached')), calls: $calls, name: 'third'),
         ]);
 
         $event = new RequestEvent(
@@ -61,8 +61,8 @@ class GateRequestListenerTest extends TestCase
         /** @var \ArrayObject<int, string> $calls */
         $calls = new \ArrayObject();
         $listener = new GateRequestListener([
-            new GateStub(calls: $calls, name: 'first', decision: GateDecision::allow()),
-            new GateStub(calls: $calls, name: 'second', decision: GateDecision::respond(new RedirectResponse('/never-reached'))),
+            new GateStub(decision: GateDecision::allow(), calls: $calls, name: 'first'),
+            new GateStub(decision: GateDecision::respond(new RedirectResponse('/never-reached')), calls: $calls, name: 'second'),
         ]);
 
         $event = new RequestEvent(

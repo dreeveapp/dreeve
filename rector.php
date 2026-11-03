@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPublicMethodParameterRector;
+use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\Php85\Rector\FuncCall\OrdSingleByteRector;
 
 return RectorConfig::configure()
@@ -29,4 +30,7 @@ return RectorConfig::configure()
         OrdSingleByteRector::class,
         ThrowWithPreviousExceptionRector::class,
         RemoveUnusedPublicMethodParameterRector::class,
+        RemoveUnusedPrivatePropertyRector::class => [
+            __DIR__.'/tests/Infrastructure/CQRS/Command/Bus/RunAnOperation/RunAnOperation.php',
+        ],
     ]);

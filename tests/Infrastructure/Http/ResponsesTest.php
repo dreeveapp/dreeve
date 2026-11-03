@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\Http;
 
 use App\Infrastructure\Http\HtmlResponse;

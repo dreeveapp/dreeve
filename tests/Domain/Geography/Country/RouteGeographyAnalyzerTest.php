@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Geography\Country;
 
 use App\Domain\Geography\Country\CountryGeographyAssets;

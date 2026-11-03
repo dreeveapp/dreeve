@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Page\Gear;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Athlete\HeartRateZone;
 
 use App\Domain\Activity\SportType\SportType;

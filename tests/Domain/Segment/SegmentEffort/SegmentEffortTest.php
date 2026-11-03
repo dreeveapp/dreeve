@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Segment\SegmentEffort;
 
 use App\Infrastructure\Measurement\Velocity\KmPerHour;

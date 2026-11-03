@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\CQRS\Command\Bus\StoreAValueAndFailFromPayload;
 
 use App\Infrastructure\CQRS\Command\Command;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Api\Internal\Activity;
 
 use App\Domain\Activity\ActivityId;

@@ -23,7 +23,7 @@ class ExplorerTilesTest extends TestCase
         array $expectedMaxCluster,
         ?ExplorerTileSquare $expectedMaxSquare,
     ): void {
-        $tiles = self::tilesFromGrid($grid, $offsetX, $offsetY);
+        $tiles = $this->tilesFromGrid($grid, $offsetX, $offsetY);
         $clusters = $tiles->clusters();
 
         $this->assertSame($expectedClusterTileCount, $clusters->getClusterTiles()->count());
@@ -116,7 +116,7 @@ class ExplorerTilesTest extends TestCase
     /**
      * @param list<string> $grid
      */
-    private static function tilesFromGrid(array $grid, int $offsetX, int $offsetY): ExplorerTiles
+    private function tilesFromGrid(array $grid, int $offsetX, int $offsetY): ExplorerTiles
     {
         $tiles = [];
         foreach ($grid as $y => $row) {

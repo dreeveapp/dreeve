@@ -67,8 +67,8 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertSame(
             ['peakPowerOutputs' => 'Peak power outputs', 'bestEfforts' => 'Best efforts'],
             array_combine(
-                $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn (Crawler $option) => (string) $option->attr('value')),
-                $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn (Crawler $option) => $option->text()),
+                $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn (Crawler $option): string => (string) $option->attr('value')),
+                $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn (Crawler $option): string => $option->text()),
             ),
         );
         $this->assertCount(1, $form->filter('button[type="submit"]'));
@@ -316,7 +316,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             ['Manual', 'Strava API'],
-            $crawler->filter('table.data-table tbody tr td:nth-child(5)')->each(fn (Crawler $cell) => trim($cell->text())),
+            $crawler->filter('table.data-table tbody tr td:nth-child(5)')->each(fn (Crawler $cell): string => trim($cell->text())),
         );
     }
 

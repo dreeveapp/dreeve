@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Dashboard\Widget\RollingStats;
 
 use App\Domain\Dashboard\Widget\RollingStats\RollingWindow;

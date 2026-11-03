@@ -23,7 +23,7 @@ final class SegmentEffortBuilder
     private float $elapsedTimeInSeconds = 9.3;
     private Kilometer $distance;
     private float $averageWatts = 200;
-    private ?int $averageHeartRate;
+    private ?int $averageHeartRate = null;
     private ?int $rank = 1;
 
     private function __construct()
@@ -33,7 +33,6 @@ final class SegmentEffortBuilder
         $this->activityId = ActivityId::fromUnprefixed('1');
         $this->startDateTime = SerializableDateTime::fromString('2023-10-10');
         $this->distance = Kilometer::from(0.1);
-        $this->averageHeartRate = null;
     }
 
     public static function fromDefaults(): self

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Api\V1\Metrics;
 
 use App\Infrastructure\Security\Token\ApiToken;

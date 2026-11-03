@@ -30,7 +30,7 @@ class AthleteWeightSettingsTest extends TestCase
 
         $this->assertSame(
             [['on' => '2024-02-01', 'weight' => 69.5], ['on' => '2024-01-01', 'weight' => 70.0]],
-            array_values(array_map(fn (AthleteWeight $weight) => $weight->jsonSerialize(), $weights)),
+            array_values(array_map(fn (AthleteWeight $weight): array => $weight->jsonSerialize(), $weights)),
         );
     }
 

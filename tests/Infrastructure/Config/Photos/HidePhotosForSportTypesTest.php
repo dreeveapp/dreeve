@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\Config\Photos;
 
 use App\Domain\Activity\SportType\SportType;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Console\Database;
 
 use App\Console\Database\WaitForDatabaseSchemaConsoleCommand;

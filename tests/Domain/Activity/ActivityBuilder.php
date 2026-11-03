@@ -32,19 +32,19 @@ final class ActivityBuilder
     private ImportSource $importSource = ImportSource::STRAVA_API;
     private ?ExternalReferenceId $externalReferenceId;
     private ActivityName $name;
-    private string $description;
+    private string $description = '';
     private Kilometer $distance;
     private Meter $elevation;
     private ?Coordinate $startingCoordinate = null;
-    private ?int $calories;
+    private ?int $calories = 0;
     private ?int $kilojoules = null;
     private ?int $averagePower = null;
-    private ?int $maxPower;
+    private ?int $maxPower = null;
     private KmPerHour $averageSpeed;
     private KmPerHour $maxSpeed;
     private ?int $averageHeartRate = null;
-    private ?int $maxHeartRate;
-    private ?int $averageCadence;
+    private ?int $maxHeartRate = null;
+    private ?int $averageCadence = null;
     private int $movingTimeInSeconds = 10;
     private int $elapsedTimeInSeconds = 10;
     private int $totalImageCount = 0;
@@ -55,9 +55,9 @@ final class ActivityBuilder
     private ?string $polyline = null;
     private RouteGeography $routeGeography;
     private ?GearId $gearId = null;
-    private bool $isCommute;
-    private bool $isGroupActivity;
-    private ?WorkoutType $workoutType;
+    private bool $isCommute = false;
+    private bool $isGroupActivity = false;
+    private ?WorkoutType $workoutType = null;
     private ActivityExclusions $excludedFrom;
 
     private function __construct()
@@ -65,19 +65,11 @@ final class ActivityBuilder
         $this->activityId = ActivityId::fromUnprefixed('903645');
         $this->startDateTime = SerializableDateTime::fromString('2023-10-10');
         $this->name = ActivityName::fromString('Test activity');
-        $this->description = '';
         $this->distance = Kilometer::from(10);
         $this->elevation = Meter::from(0);
-        $this->calories = 0;
-        $this->maxPower = null;
         $this->averageSpeed = KmPerHour::from(0);
         $this->maxSpeed = KmPerHour::from(0);
-        $this->maxHeartRate = null;
-        $this->averageCadence = null;
         $this->routeGeography = RouteGeography::create([]);
-        $this->isCommute = false;
-        $this->isGroupActivity = false;
-        $this->workoutType = null;
         $this->excludedFrom = ActivityExclusions::empty();
         $this->externalReferenceId = ExternalReferenceId::fromString('1234567');
     }

@@ -244,10 +244,10 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             chatAgent: $this->chatAgent,
             chatRepository: $chatRepository,
             commandBus: $this->getContainer()->get(CommandBus::class),
-            twig: $this->getContainer()->get(Environment::class),
             settingsRepository: $this->buildSettingsRepository($aiEnabled),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
+            twig: $this->getContainer()->get(Environment::class),
             markdownRenderer: new MarkdownRenderer(),
         );
     }
@@ -261,10 +261,10 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             chatAgent: $agent,
             chatRepository: $chatRepository,
             commandBus: $commandBus,
-            twig: $this->getContainer()->get(Environment::class),
             settingsRepository: $this->buildSettingsRepository(true),
             formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
+            twig: $this->getContainer()->get(Environment::class),
             markdownRenderer: new MarkdownRenderer(),
         );
     }

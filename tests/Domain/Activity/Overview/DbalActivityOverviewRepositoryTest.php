@@ -147,7 +147,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->assertSame(
             $expectedNames,
             array_map(
-                static fn (ActivityOverviewItem $item): string => (string) $item->getName(),
+                static fn (ActivityOverviewItem $item): string => $item->getName(),
                 $overview->getItems()
             )
         );
@@ -239,7 +239,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->assertSame(
             $expectedNames,
             array_map(
-                static fn (ActivityOverviewItem $item): string => (string) $item->getName(),
+                static fn (ActivityOverviewItem $item): string => $item->getName(),
                 $this->activityOverviewRepository->search($query, 10)
             )
         );
@@ -298,7 +298,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->assertSame(
             ['Morning Swim'],
             array_map(
-                static fn (ActivityOverviewItem $item): string => (string) $item->getName(),
+                static fn (ActivityOverviewItem $item): string => $item->getName(),
                 $this->activityOverviewRepository->search('morning', 1)
             )
         );
@@ -337,7 +337,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->assertSame(
             $expectedNames,
             array_map(
-                static fn (ActivityOverviewItem $item): string => (string) $item->getName(),
+                static fn (ActivityOverviewItem $item): string => $item->getName(),
                 $overview->getItems()
             )
         );

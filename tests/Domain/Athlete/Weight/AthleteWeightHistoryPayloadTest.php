@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Athlete\Weight;
 
 use App\Domain\Athlete\Weight\AthleteWeightHistoryPayload;

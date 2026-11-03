@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\Repository;
 
 use App\Infrastructure\Repository\Pagination;
