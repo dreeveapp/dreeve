@@ -32,6 +32,15 @@ jobs:
       - name: Run PHPStan
         run: $PHP vendor/bin/phpstan analyse
 
+      - name: Cache Rector results
+        uses: actions/cache@v5
+        with:
+          path: var/cache/rector
+          key: ${{ runner.os }}-rector-${{ hashFiles('composer.lock', 'rector.php', 'rector-tests.php') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-rector-${{ hashFiles('composer.lock', 'rector.php', 'rector-tests.php') }}-
+            ${{ runner.os }}-rector-
+
       - name: Run Rector
         run: $PHP vendor/bin/rector --dry-run
 
