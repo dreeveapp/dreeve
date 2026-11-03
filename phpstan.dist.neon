@@ -2,11 +2,14 @@ includes:
     - vendor/tomasvotruba/type-coverage/config/extension.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-symfony/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
 parameters:
     level: 8
     paths:
         - migrations/
         - src/
+        - tests/
     type_coverage:
         return: 100
         param: 100
