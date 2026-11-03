@@ -76,6 +76,43 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
         );
     }
 
+    public function testUpdate(): void
+    {
+        $activityCollection = ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->withName('Before')
+            ->withDescription('Before')
+            ->withType(ActivityCollectionType::TRIP)
+            ->build();
+        $this->repository->add($activityCollection);
+
+        $updated = $activityCollection
+            ->withName('After')
+            ->withDescription(null)
+            ->withType(ActivityCollectionType::EVENT);
+        $this->repository->update($updated);
+
+        $this->assertEquals($updated, $this->repository->find($activityCollection->getId()));
+    }
+
+    public function testDelete(): void
+    {
+        $activityCollection = ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->build();
+        $this->repository->add($activityCollection);
+        $this->repository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('2'))
+            ->build());
+
+        $this->repository->delete($activityCollection);
+
+        $this->assertSame(
+            ['activityCollection-2'],
+            $this->repository->findAll()->map(static fn (ActivityCollection $activityCollection): string => (string) $activityCollection->getId())
+        );
+    }
+
     #[\Override]
     protected function setUp(): void
     {
