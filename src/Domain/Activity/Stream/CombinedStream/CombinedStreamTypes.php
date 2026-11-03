@@ -19,7 +19,7 @@ final class CombinedStreamTypes extends Collection
 
     public static function othersFor(ActivityType $activityType): self
     {
-        if (in_array($activityType, [ActivityType::RUN, ActivityType::WALK])) {
+        if (in_array($activityType, [ActivityType::RUN, ActivityType::WALK], true)) {
             return self::fromArray([
                 CombinedStreamType::ALTITUDE,
                 CombinedStreamType::HEART_RATE,

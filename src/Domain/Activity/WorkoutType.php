@@ -19,7 +19,7 @@ enum WorkoutType: string implements TranslatableInterface
             return null;
         }
 
-        if (in_array($workoutType, [0, 10])) {
+        if (in_array($workoutType, [0, 10], true)) {
             // Equals to "none" in Strava.
             return null;
         }

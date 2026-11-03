@@ -20,7 +20,7 @@ final readonly class EveryXDistanceUsedProgressCalculation implements Maintenanc
         return in_array($intervalUnit, [
             IntervalUnit::EVERY_X_KILOMETERS_USED,
             IntervalUnit::EVERY_X_MILES_USED,
-        ]);
+        ], true);
     }
 
     public function calculate(ProgressCalculationContext $context): MaintenanceTaskProgress

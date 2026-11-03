@@ -134,7 +134,7 @@ final class ConsistencyChallenges extends Collection
                 throw new InvalidDashboardLayout(sprintf('"%s" is not a valid type', $challengeConfig['type']));
             }
 
-            if (in_array($type, ChallengeConsistencyType::simpleUnitRelated())) {
+            if (in_array($type, ChallengeConsistencyType::simpleUnitRelated(), true)) {
                 // These challenge types have no unit, any configured unit is ignored.
                 $challengeConfig['unit'] = ConsistencyChallenge::SIMPLE;
             } elseif (empty($challengeConfig['unit'])) {
@@ -153,19 +153,19 @@ final class ConsistencyChallenges extends Collection
                 $sportTypesToInclude->add($sportType);
             }
 
-            if (in_array($type, ChallengeConsistencyType::lengthRelated()) && !in_array($challengeConfig['unit'], [
+            if (in_array($type, ChallengeConsistencyType::lengthRelated(), true) && !in_array($challengeConfig['unit'], [
                 ConsistencyChallenge::KILOMETER,
                 ConsistencyChallenge::METER,
                 ConsistencyChallenge::MILES,
                 ConsistencyChallenge::FOOT,
-            ])) {
+            ], true)) {
                 throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for challenge type "%s"', $challengeConfig['unit'], $type->value));
             }
 
             if (ChallengeConsistencyType::MOVING_TIME === $type && !in_array($challengeConfig['unit'], [
                 ConsistencyChallenge::HOUR,
                 ConsistencyChallenge::MINUTE,
-            ])) {
+            ], true)) {
                 throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for challenge type "%s"', $challengeConfig['unit'], $type->value));
             }
 

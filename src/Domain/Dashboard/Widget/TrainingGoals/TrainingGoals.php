@@ -66,7 +66,7 @@ final class TrainingGoals extends Collection
                     throw new InvalidDashboardLayout(sprintf('"%s" is not a valid goalType', $goalConfig['type']));
                 }
 
-                if (in_array($type, TrainingGoalType::simpleUnitRelated())) {
+                if (in_array($type, TrainingGoalType::simpleUnitRelated(), true)) {
                     // These goal types have no unit, any configured unit is ignored.
                     $goalConfig['unit'] = TrainingGoal::SIMPLE;
                 } elseif (empty($goalConfig['unit'])) {
@@ -89,19 +89,19 @@ final class TrainingGoals extends Collection
                     $sportTypesToInclude->add($sportType);
                 }
 
-                if (in_array($type, TrainingGoalType::lengthRelated()) && !in_array($goalConfig['unit'], [
+                if (in_array($type, TrainingGoalType::lengthRelated(), true) && !in_array($goalConfig['unit'], [
                     TrainingGoal::KILOMETER,
                     TrainingGoal::METER,
                     TrainingGoal::MILES,
                     TrainingGoal::FOOT,
-                ])) {
+                ], true)) {
                     throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for goal type "%s"', $goalConfig['unit'], $type->value));
                 }
 
                 if (TrainingGoalType::MOVING_TIME === $type && !in_array($goalConfig['unit'], [
                     TrainingGoal::HOUR,
                     TrainingGoal::MINUTE,
-                ])) {
+                ], true)) {
                     throw new InvalidDashboardLayout(sprintf('The unit "%s" is not valid for goal type "%s"', $goalConfig['unit'], $type->value));
                 }
 

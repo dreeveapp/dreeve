@@ -518,7 +518,7 @@ final class Segment implements SupportsAITooling
             19631565,
         ];
 
-        if ($this->type->isImported() && in_array((int) $this->getId()->toUnprefixedString(), $komSegmentIds)) {
+        if ($this->type->isImported() && in_array((int) $this->getId()->toUnprefixedString(), $komSegmentIds, true)) {
             return true;
         }
 

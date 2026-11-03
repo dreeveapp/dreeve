@@ -87,6 +87,7 @@
         "friendsofphp/php-cs-fixer": "^3.64",
         "league/flysystem-memory": "^3.29",
         "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.1",
         "phpstan/phpstan-symfony": "^2.1",
         "phpunit/phpunit": "^13",
         "rector/rector": "^2.6",

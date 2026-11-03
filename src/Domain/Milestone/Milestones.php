@@ -34,7 +34,7 @@ final class Milestones extends Collection
         /** @var Milestone $milestone */
         foreach ($this as $milestone) {
             $group = $milestone->getCategory()->getFilterGroup();
-            $groups[array_search($group, MilestoneFilterGroup::cases())] = $group;
+            $groups[array_search($group, MilestoneFilterGroup::cases(), true)] = $group;
         }
 
         ksort($groups);

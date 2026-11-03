@@ -96,7 +96,7 @@ final readonly class Countries
 
     public function findCountryCodeByCountryName(string $countryName): ?string
     {
-        if (!$countryCode = array_search($countryName, $this->countriesKeyedByAlpha2codes)) {
+        if (!$countryCode = array_search($countryName, $this->countriesKeyedByAlpha2codes, true)) {
             return null;
         }
 

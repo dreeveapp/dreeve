@@ -55,7 +55,7 @@ final readonly class HeartRateDistributionChart
             max: $maxHeartRate,
             step: $step,
             target: $this->averageHeartRate
-        ), $xAxisValues);
+        ), $xAxisValues, true);
         // Calculate the mark areas to display the zones.
         $oneHeartBeatPercentage = 100 / ($maxHeartRate - $minHeartRate);
 

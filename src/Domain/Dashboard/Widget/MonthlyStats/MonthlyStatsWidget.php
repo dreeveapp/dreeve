@@ -93,7 +93,7 @@ final readonly class MonthlyStatsWidget implements Widget
         $enableLastXYearsByDefault = $configuration->get('enableLastXYearsByDefault');
         foreach (StatsContext::cases() as $monthlyStatsContext) {
             foreach ($activityTypes as $activityType) {
-                if (in_array($monthlyStatsContext, [StatsContext::DISTANCE, StatsContext::ELEVATION]) && !$activityType->supportsDistanceAndElevation()) {
+                if (in_array($monthlyStatsContext, [StatsContext::DISTANCE, StatsContext::ELEVATION], true) && !$activityType->supportsDistanceAndElevation()) {
                     continue;
                 }
 
