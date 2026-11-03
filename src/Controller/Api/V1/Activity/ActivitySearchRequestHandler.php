@@ -29,9 +29,9 @@ final readonly class ActivitySearchRequestHandler
         $pagination = $this->paginationFromRequest($request);
 
         return ActivityResponse::list(
-            $this->activitySearchRepository->find($pagination, ActivitySearchFilters::fromRequest($request)),
-            $pagination,
-            $this->appUrl,
+            overview: $this->activitySearchRepository->find($pagination, ActivitySearchFilters::fromRequest($request)),
+            pagination: $pagination,
+            appUrl: $this->appUrl,
         );
     }
 }
