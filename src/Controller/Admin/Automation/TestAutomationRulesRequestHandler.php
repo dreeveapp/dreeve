@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Automation;
 
-use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Automation\Action\Actions;
 use App\Domain\Automation\AutomationRuleRepository;
@@ -49,18 +49,20 @@ final readonly class TestAutomationRulesRequestHandler
 
         $dryRun = null;
         $notFound = false;
+        $activitySearch = $activityId;
 
         if (null !== $activityId) {
             try {
-                $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
+                $activity = $this->activityRepository->find(ActivityReference::parse($activityId));
                 $dryRun = $this->dryRunner->run($activity);
+                $activitySearch = ActivityReference::format($activity->getName(), $activity->getId());
             } catch (EntityNotFound|\InvalidArgumentException) {
                 $notFound = true;
             }
         }
 
         return new HtmlResponse($this->twig->render('html/admin/page/automation-rules/test-automation-rules.html.twig', [
-            'activityId' => $activityId,
+            'activitySearch' => $activitySearch,
             'dryRun' => $dryRun,
             'notFound' => $notFound,
             'conditions' => $this->conditions->all(),
