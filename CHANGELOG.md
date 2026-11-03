@@ -1,3 +1,28 @@
+# [v5.8.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.8.1) - 2026-11-03
+
+## New features
+*  Added support for custom CA certificates in OIDC configurations
+
+## Improvements
+* Added logging for failed OIDC login attempts
+* Improved autocomplete suggestions with clearer labels
+* Added distinct navigation icons for activities and monthly statistics
+
+## Bug fixes
+* Skip reverse geocoding for Zwift activities recorded as regular rides
+
+## Technical details
+* ISSUE #2960: Never reverse geocode Zwift activities recorded as a regular ride by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2961
+* ISSUE #2959: Log OIDC login failures by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2962
+* ISSUE #2964: Back SystemClock with Symfony's clock service by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2965
+* ISSUE #2966: Support custom CA certificates for OIDC by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2967
+* ISSUE #2968: Improve the autocomplete widget by including a sensible label by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2969
+* ISSUE #2970: Use distinct icons for activities and monthly stats in the navigation by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2971
+* ISSUE #2972: Delete activity related data through a tagged interface by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2974
+* ISSUE #2975: Harden PHPstan by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2976
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.8.0...v5.8.1
+
 # [v5.8.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.8.0) - 2026-10-31
 
 > [!NOTE]
