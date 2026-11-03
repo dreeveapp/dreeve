@@ -126,6 +126,7 @@ class GearComponentsTest extends TestCase
         $gearComponent = $gearComponents->find(
             static fn (GearComponent $gearComponent): bool => (string) $gearComponent->getId() === $gearComponentId
         );
+        $this->assertNotNull($gearComponent);
 
         $this->assertEquals(
             UsageWindows::fromArray(array_map(
@@ -164,11 +165,14 @@ class GearComponentsTest extends TestCase
             Json::decode((string) file_get_contents(__DIR__.'/fixtures/nested-installations.json'))['components'],
         ));
 
+        $gearComponent = $gearComponents->find(
+            static fn (GearComponent $gearComponent): bool => 'gearComponent-loop-a' === (string) $gearComponent->getId()
+        );
+        $this->assertNotNull($gearComponent);
+
         $this->expectExceptionObject(new GearComponentInstallationLoopDetected('Component "loop-a" is installed on itself'));
 
-        $gearComponents->resolveUsageWindowsFor($gearComponents->find(
-            static fn (GearComponent $gearComponent): bool => 'gearComponent-loop-a' === (string) $gearComponent->getId()
-        ));
+        $gearComponents->resolveUsageWindowsFor($gearComponent);
     }
 
     #[DataProvider('provideComponentsWithAndWithoutParts')]
@@ -179,9 +183,12 @@ class GearComponentsTest extends TestCase
             Json::decode((string) file_get_contents(__DIR__.'/fixtures/nested-installations.json'))['components'],
         ));
 
-        $this->assertSame($expected, $gearComponents->hasComponentsInstalledOn($gearComponents->find(
+        $gearComponent = $gearComponents->find(
             static fn (GearComponent $gearComponent): bool => (string) $gearComponent->getId() === $gearComponentId
-        )));
+        );
+        $this->assertNotNull($gearComponent);
+
+        $this->assertSame($expected, $gearComponents->hasComponentsInstalledOn($gearComponent));
     }
 
     /**

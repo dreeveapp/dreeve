@@ -41,7 +41,9 @@ class InitializeActivityTest extends ContainerTestCase
             isNewActivity: false,
         ));
 
-        $this->assertEquals($expected, $context->getActivity()->isGroupActivity());
+        $activity = $context->getActivity();
+        $this->assertNotNull($activity);
+        $this->assertEquals($expected, $activity->isGroupActivity());
     }
 
     public function testProcessKeepsTheGroupActivityFlagWhenStravaDoesNotReportAnAthleteCount(): void
@@ -64,7 +66,9 @@ class InitializeActivityTest extends ContainerTestCase
             isNewActivity: false,
         ));
 
-        $this->assertTrue($context->getActivity()->isGroupActivity());
+        $activity = $context->getActivity();
+        $this->assertNotNull($activity);
+        $this->assertTrue($activity->isGroupActivity());
     }
 
     public function testProcessReAppliesTheDescriptionOfAnActivityWeAlreadyKnow(): void
@@ -87,7 +91,9 @@ class InitializeActivityTest extends ContainerTestCase
             isNewActivity: false,
         ));
 
-        $this->assertEquals('Updated description', $context->getActivity()->getDescription());
+        $activity = $context->getActivity();
+        $this->assertNotNull($activity);
+        $this->assertEquals('Updated description', $activity->getDescription());
     }
 
     public function testProcessKeepsTheDescriptionWhenStravaDoesNotReportOne(): void
@@ -110,7 +116,9 @@ class InitializeActivityTest extends ContainerTestCase
             isNewActivity: false,
         ));
 
-        $this->assertEquals('Old description', $context->getActivity()->getDescription());
+        $activity = $context->getActivity();
+        $this->assertNotNull($activity);
+        $this->assertEquals('Old description', $activity->getDescription());
     }
 
     public static function provideAthleteCounts(): \Generator
@@ -124,6 +132,8 @@ class InitializeActivityTest extends ContainerTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->initializeActivity = new InitializeActivity(
             $this->getContainer()->get(ActivityRepository::class),
             $this->getContainer()->get(GearRepository::class),

@@ -66,7 +66,7 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: $config
         );
-        $this->assertMatchesHtmlSnapshot($render);
+        $this->assertMatchesHtmlSnapshot((string) $render);
     }
 
     #[DataProvider('provideConfigurationsWithoutGoalsToRender')]
@@ -112,7 +112,7 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
             now: SerializableDateTime::fromString('2025-10-16'),
             configuration: $config
         );
-        $this->assertMatchesHtmlSnapshot($render);
+        $this->assertMatchesHtmlSnapshot((string) $render);
     }
 
     #[\Override]

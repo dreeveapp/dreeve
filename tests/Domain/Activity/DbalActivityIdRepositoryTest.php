@@ -10,7 +10,6 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\DbalActivityIdRepository;
 use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\ImportSource;
-use App\Domain\Gear\GearRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
@@ -18,7 +17,6 @@ use App\Tests\Infrastructure\Eventing\SpyEventBus;
 class DbalActivityIdRepositoryTest extends ContainerTestCase
 {
     private ActivityIdRepository $activityIdRepository;
-    private readonly GearRepository $gearRepository;
     private ActivityRepository $activityRepository;
 
     public function testFindAllAndCount(): void

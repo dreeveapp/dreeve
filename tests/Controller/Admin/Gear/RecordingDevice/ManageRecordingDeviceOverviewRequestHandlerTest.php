@@ -68,7 +68,7 @@ class ManageRecordingDeviceOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(2, $editLinks);
         $this->assertStringContainsString(
             '/admin/gear/recording-devices/'.RecordingDeviceId::fromName('Garmin Edge 530').'/edit',
-            $editLinks->first()->attr('href')
+            (string) $editLinks->first()->attr('href')
         );
     }
 }

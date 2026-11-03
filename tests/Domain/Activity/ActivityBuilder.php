@@ -30,7 +30,7 @@ final class ActivityBuilder
     private SportType $sportType = SportType::RIDE;
     private WorldType $worldType = WorldType::REAL_WORLD;
     private ImportSource $importSource = ImportSource::STRAVA_API;
-    private ExternalReferenceId $externalReferenceId;
+    private ?ExternalReferenceId $externalReferenceId;
     private ActivityName $name;
     private string $description;
     private Kilometer $distance;
@@ -54,7 +54,6 @@ final class ActivityBuilder
     private array $localImagePaths = [];
     private ?string $polyline = null;
     private RouteGeography $routeGeography;
-    private readonly ?string $weather;
     private ?GearId $gearId = null;
     private bool $isCommute;
     private bool $isGroupActivity;
@@ -75,7 +74,6 @@ final class ActivityBuilder
         $this->maxSpeed = KmPerHour::from(0);
         $this->maxHeartRate = null;
         $this->averageCadence = null;
-        $this->weather = null;
         $this->routeGeography = RouteGeography::create([]);
         $this->isCommute = false;
         $this->isGroupActivity = false;
@@ -120,7 +118,7 @@ final class ActivityBuilder
             localImagePaths: $this->localImagePaths,
             polyline: $this->polyline,
             routeGeography: $this->routeGeography,
-            weather: $this->weather,
+            weather: null,
             gearId: $this->gearId,
             isCommute: $this->isCommute,
             isGroupActivity: $this->isGroupActivity,
@@ -159,7 +157,7 @@ final class ActivityBuilder
             localImagePaths: $this->localImagePaths,
             polyline: $this->polyline,
             routeGeography: $this->routeGeography,
-            weather: $this->weather,
+            weather: null,
             gearId: $this->gearId,
             isCommute: $this->isCommute,
             isGroupActivity: $this->isGroupActivity,

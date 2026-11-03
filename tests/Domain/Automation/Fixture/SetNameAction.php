@@ -18,9 +18,9 @@ final readonly class SetNameAction implements Action
         return $translator->trans('Set name', domain: 'admin', locale: $locale);
     }
 
-    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): ?string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        return (string) $configuration->get('name');
+        return $configuration->getString('name');
     }
 
     public function getPriority(): int
@@ -40,13 +40,14 @@ final readonly class SetNameAction implements Action
 
     public function guardValidConfiguration(RuleConfiguration $configuration): void
     {
-        if ('' === trim((string) $configuration->get('name'))) {
+        $name = $configuration->get('name');
+        if (!is_string($name) || '' === trim($name)) {
             throw new InvalidAutomationRule('A "name" is required.');
         }
     }
 
     public function applyTo(Activity $activity, RuleConfiguration $configuration): Activity
     {
-        return $activity->withName(ActivityName::fromString((string) $configuration->get('name')));
+        return $activity->withName(ActivityName::fromString($configuration->getString('name')));
     }
 }

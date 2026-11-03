@@ -85,13 +85,13 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertStringContainsString('value="component:gearComponent-di-2"', $installationTemplate);
         $this->assertStringNotContainsString('value="component:gearComponent-chain"', $installationTemplate);
 
-        $initialTasks = $form->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial');
+        $initialTasks = (string) $form->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial');
         $this->assertStringContainsString('Lube', $initialTasks);
         $this->assertStringContainsString('chain-lubed', $initialTasks);
 
         $this->assertStringContainsString(
             'chain.png',
-            $form->filter('[data-image-dropzone]')->attr('data-existing-images')
+            (string) $form->filter('[data-image-dropzone]')->attr('data-existing-images')
         );
     }
 

@@ -16,7 +16,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class StravaCreateWebhookSubscriptionConsoleCommandTest extends ConsoleCommandTestCase
 {
     private StravaCreateWebhookSubscriptionConsoleCommand $stravaCreateWebhookSubscriptionConsoleCommand;
-    private MockObject $logger;
+    private LoggerInterface&MockObject $logger;
 
     public function testExecute(): void
     {

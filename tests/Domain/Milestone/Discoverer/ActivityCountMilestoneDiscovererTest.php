@@ -78,7 +78,7 @@ class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 1; $i <= 15; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $i))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i)))
                     ->withSportType(SportType::RIDE)
                     ->withDistance(Kilometer::from(10))
@@ -88,7 +88,7 @@ class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 16; $i <= 25; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $i))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i)))
                     ->withSportType(SportType::RUN)
                     ->withDistance(Kilometer::from(10))
@@ -143,7 +143,7 @@ class ActivityCountMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 1; $i <= $count; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $i))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', min($i, 28))))
                     ->withDistance(Kilometer::from(10))
                     ->build(), []

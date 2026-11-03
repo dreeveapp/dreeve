@@ -41,6 +41,8 @@ class FinishSetupRequestHandlerTest extends ContainerTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->finishSetupRequestHandler = new FinishSetupRequestHandler(
             $this->getContainer()->get(ActivityIdRepository::class),
             $this->getContainer()->get(Environment::class),

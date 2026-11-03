@@ -13,6 +13,7 @@ use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 
 class DispatchCommandRequestHandlerTest extends AdminWebTestCase
 {
@@ -43,9 +44,11 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $dispatchedCommands);
         $this->assertInstanceOf(UploadActivityFile::class, $dispatchedCommands[0]);
 
+        $session = $this->client->getRequest()->getSession();
+        $this->assertInstanceOf(FlashBagAwareSessionInterface::class, $session);
         $this->assertSame(
             [],
-            $this->client->getRequest()->getSession()->getFlashBag()->peek('success'),
+            $session->getFlashBag()->peek('success'),
         );
     }
 
@@ -75,9 +78,11 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $dispatchedCommands);
         $this->assertInstanceOf(AddWidget::class, $dispatchedCommands[0]);
 
+        $session = $this->client->getRequest()->getSession();
+        $this->assertInstanceOf(FlashBagAwareSessionInterface::class, $session);
         $this->assertSame(
             ['Your changes have been saved.'],
-            $this->client->getRequest()->getSession()->getFlashBag()->peek('success'),
+            $session->getFlashBag()->peek('success'),
         );
     }
 
@@ -107,9 +112,11 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $dispatchedCommands);
         $this->assertInstanceOf(EnrichActivity::class, $dispatchedCommands[0]);
 
+        $session = $this->client->getRequest()->getSession();
+        $this->assertInstanceOf(FlashBagAwareSessionInterface::class, $session);
         $this->assertSame(
             ['Weather and reverse geocoding have been retrieved.'],
-            $this->client->getRequest()->getSession()->getFlashBag()->peek('success'),
+            $session->getFlashBag()->peek('success'),
         );
     }
 
@@ -229,6 +236,6 @@ class DispatchCommandRequestHandlerTest extends AdminWebTestCase
     {
         $crawler = $this->client->request('GET', '/admin/upload');
 
-        return $crawler->filter('meta[name="csrf-token"]')->attr('content');
+        return (string) $crawler->filter('meta[name="csrf-token"]')->attr('content');
     }
 }

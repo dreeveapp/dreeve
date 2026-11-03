@@ -9,13 +9,11 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\AI\Platform\Message\Role;
 
 class DbalChatRepositoryTest extends ContainerTestCase
 {
     private ChatRepository $chatRepository;
-    private readonly MockObject $messageIdFactory;
 
     public function testAddAndGetHistory(): void
     {

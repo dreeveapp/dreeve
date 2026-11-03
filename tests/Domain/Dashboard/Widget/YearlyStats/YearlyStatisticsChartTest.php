@@ -26,7 +26,7 @@ class YearlyStatisticsChartTest extends TestCase
         $cumulativeElevation = 0;
 
         for ($month = 1; $month <= 6; ++$month) {
-            $daysInMonth = (int) date('t', mktime(0, 0, 0, $month, 1, 2025));
+            $daysInMonth = (int) date('t', (int) mktime(0, 0, 0, $month, 1, 2025));
             for ($day = 1; $day <= $daysInMonth; ++$day) {
                 $cumulativeDistance += 10000;
                 $cumulativeMovingTime += 3600;

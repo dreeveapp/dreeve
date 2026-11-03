@@ -51,7 +51,7 @@ final class CombinedActivityStream
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param array<mixed> $data
      */
     public static function fromState(
         ActivityId $activityId,

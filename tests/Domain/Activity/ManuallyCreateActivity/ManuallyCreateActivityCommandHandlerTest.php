@@ -53,6 +53,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         ]));
 
         $activity = $this->activityRepository->findAll()->getFirst();
+        $this->assertNotNull($activity);
 
         $this->assertSame('My manual activity', $activity->getOriginalName());
         $this->assertSame('A nice run', $activity->getDescription());
@@ -94,6 +95,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         ]));
 
         $activity = $this->activityRepository->findAll()->getFirst();
+        $this->assertNotNull($activity);
 
         $this->assertSame('', $activity->getDescription());
         $this->assertNull($activity->getCalories());
@@ -123,6 +125,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         ]));
 
         $activity = $this->activityRepository->findAll()->getFirst();
+        $this->assertNotNull($activity);
 
         $this->assertSame(16.093, round($activity->getDistance()->toFloat(), 3));
         $this->assertSame(30.0, round($activity->getElevation()->toFloat(), 1));
@@ -142,6 +145,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         ]));
 
         $activity = $this->activityRepository->findAll()->getFirst();
+        $this->assertNotNull($activity);
 
         $localImagePaths = $activity->getLocalImagePaths();
         $this->assertCount(1, $localImagePaths);

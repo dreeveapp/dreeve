@@ -865,7 +865,7 @@ trait ProvideTestData
     }
 
     /**
-     * @return array<int, int>
+     * @return array<int|string, int>
      */
     private static function valueDistributionFor(ActivityStream $activityStream): array
     {

@@ -24,7 +24,6 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
     public function testItExportsTheActivityAsAGpxAttachment(): void
     {
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
-        assert($activityRepository instanceof ActivityRepository);
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -35,7 +34,6 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
             rawData: [],
         ));
         $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
-        assert($activityStreamRepository instanceof ActivityStreamRepository);
         foreach ([
             StreamType::LAT_LNG->value => [[51.2, 3.2], null, [51.21, 3.21]],
             StreamType::TIME->value => [0, 1, 2],
@@ -75,7 +73,6 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
     public function testItReportsWhenAnActivityHasNoGpxData(): void
     {
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
-        assert($activityRepository instanceof ActivityRepository);
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -84,7 +81,6 @@ class ActivityGpxRequestHandlerTest extends ControllerWebTestCase
             rawData: [],
         ));
         $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
-        assert($activityStreamRepository instanceof ActivityStreamRepository);
         foreach ([StreamType::TIME, StreamType::HEART_RATE, StreamType::CADENCE] as $streamType) {
             $activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))

@@ -296,7 +296,7 @@ class Strava
     }
 
     /**
-     * @return array<string, mixed>
+     * @return list<array<string, mixed>>
      */
     public function getWebhookSubscription(): array
     {

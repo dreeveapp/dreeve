@@ -19,7 +19,7 @@ class StravaWebhookRequestHandlerTest extends ContainerTestCase
 {
     private StravaWebhookRequestHandler $stravaWebhookRequestHandler;
     private SpyCommandBus $commandBus;
-    private MockObject $logger;
+    private LoggerInterface&MockObject $logger;
 
     public function testHandleValidation(): void
     {

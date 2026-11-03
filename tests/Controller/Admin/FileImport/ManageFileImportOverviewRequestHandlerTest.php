@@ -266,7 +266,7 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(2, $detailLinks);
         $this->assertStringContainsString(
             '/activities/'.ActivityId::fromUnprefixed('1'),
-            $detailLinks->first()->attr('href')
+            (string) $detailLinks->first()->attr('href')
         );
         $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
         $this->assertSame('01-05-26', trim($detailLinks->first()->siblings()->filter('span')->text()));

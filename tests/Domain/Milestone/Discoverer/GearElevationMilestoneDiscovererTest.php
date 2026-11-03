@@ -192,7 +192,9 @@ class GearElevationMilestoneDiscovererTest extends ContainerTestCase
         );
         $milestones = $discoverer->discover($this->milestoneIdFactory);
 
-        $context = $milestones->getFirst()->getContext();
+        $milestone = $milestones->getFirst();
+        $this->assertNotNull($milestone);
+        $context = $milestone->getContext();
         $this->assertInstanceOf(GearElevationContext::class, $context);
         $this->assertEquals(
             [

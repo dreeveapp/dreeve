@@ -173,7 +173,6 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         parent::setUp();
 
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);
-        assert($settingsRepository instanceof SettingsRepository);
         $this->settingsRepository = $settingsRepository;
     }
 }

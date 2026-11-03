@@ -38,6 +38,7 @@ class AddAutomationRuleCommandHandlerTest extends ContainerTestCase
         $this->assertCount(1, $rules);
 
         $rule = $rules->getFirst();
+        $this->assertNotNull($rule);
         $this->assertSame('Tag commutes', $rule->getLabel());
         $this->assertFalse($rule->isEnabled());
         $this->assertFalse($rule->stopProcessing());
@@ -58,6 +59,7 @@ class AddAutomationRuleCommandHandlerTest extends ContainerTestCase
         ]));
 
         $appended = $this->repository->findAll()->getLast();
+        $this->assertNotNull($appended);
         $this->assertSame('Second', $appended->getLabel());
         $this->assertSame(1, $appended->getSortOrder());
     }

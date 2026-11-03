@@ -23,7 +23,6 @@ class ActivityStreamsRequestHandlerTest extends ControllerWebTestCase
     public function testItReturnsTheStreamsOfAnActivityWithoutGps(): void
     {
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
-        assert($activityRepository instanceof ActivityRepository);
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -32,7 +31,6 @@ class ActivityStreamsRequestHandlerTest extends ControllerWebTestCase
             rawData: [],
         ));
         $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
-        assert($activityStreamRepository instanceof ActivityStreamRepository);
         foreach ([
             StreamType::TIME->value => [0, 1, 2],
             StreamType::HEART_RATE->value => [120, 121, 122],

@@ -16,9 +16,9 @@ final readonly class DistanceCondition implements Condition
         return $translator->trans('Distance', domain: 'admin', locale: $locale);
     }
 
-    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): ?string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        return (string) $configuration->get('minKm');
+        return (string) $configuration->getNumber('minKm');
     }
 
     public function getPriority(): int

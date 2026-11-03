@@ -24,7 +24,9 @@ class PowerOutputsTest extends TestCase
             ['5 s', '1 m', '20 m'],
             array_map(fn (PowerOutput $powerOutput): string => $powerOutput->getFormattedTimeInterval(), $powerOutputs->toArray()),
         );
-        $this->assertEquals(5.0, $powerOutputs->getFirst()->getRelativePower());
+        $powerOutput = $powerOutputs->getFirst();
+        $this->assertNotNull($powerOutput);
+        $this->assertEquals(5.0, $powerOutput->getRelativePower());
     }
 
     public function testFromBestAveragesWithAZeroedAthleteWeight(): void
@@ -34,8 +36,10 @@ class PowerOutputsTest extends TestCase
             athleteWeight: Kilogram::zero(),
         );
 
-        $this->assertEquals(400, $powerOutputs->getFirst()->getPower());
-        $this->assertNull($powerOutputs->getFirst()->getRelativePower());
+        $powerOutput = $powerOutputs->getFirst();
+        $this->assertNotNull($powerOutput);
+        $this->assertEquals(400, $powerOutput->getPower());
+        $this->assertNull($powerOutput->getRelativePower());
     }
 
     public function testFromBestAveragesWithoutAthleteWeight(): void
@@ -45,8 +49,10 @@ class PowerOutputsTest extends TestCase
             athleteWeight: null,
         );
 
-        $this->assertEquals(400, $powerOutputs->getFirst()->getPower());
-        $this->assertNull($powerOutputs->getFirst()->getRelativePower());
+        $powerOutput = $powerOutputs->getFirst();
+        $this->assertNotNull($powerOutput);
+        $this->assertEquals(400, $powerOutput->getPower());
+        $this->assertNull($powerOutput->getRelativePower());
     }
 
     public function testFromBestAveragesWithoutAnyRedactedInterval(): void

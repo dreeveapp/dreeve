@@ -9,7 +9,6 @@ use App\Domain\Segment\SegmentRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Strava\Strava;
-use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\ValueObject\String\Name;
@@ -21,7 +20,6 @@ use App\Tests\SpyOutput;
 
 class ImportSegmentsCommandHandlerTest extends ContainerTestCase
 {
-    private CommandBus $commandBus;
     private SpyStrava $strava;
 
     public function testHandle(): void
@@ -121,7 +119,6 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->commandBus = $this->getContainer()->get(CommandBus::class);
         $this->strava = $this->getContainer()->get(Strava::class);
 
         $this->getConnection()->executeStatement(

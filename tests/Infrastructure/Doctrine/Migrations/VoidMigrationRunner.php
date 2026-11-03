@@ -27,7 +27,7 @@ final class VoidMigrationRunner implements MigrationRunner
     public function run(OutputInterface $output): void
     {
         if ($this->throwOnNextRun) {
-            throw new ConnectionException(new Exception(new \RuntimeException()), null);
+            throw new ConnectionException(new Exception('test'), null);
         }
         $this->throwOnNextRun = false;
     }

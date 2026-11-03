@@ -42,7 +42,7 @@ class UpcomingMaintenanceWidgetTest extends ContainerTestCase
             configuration: WidgetConfiguration::empty()->add('numberOfTasksToDisplay', 5),
         );
 
-        $this->assertMatchesHtmlSnapshot($render);
+        $this->assertMatchesHtmlSnapshot((string) $render);
     }
 
     public function testRenderOnlyKeepsTheMostUrgentTasks(): void

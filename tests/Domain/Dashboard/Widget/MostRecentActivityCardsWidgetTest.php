@@ -36,7 +36,7 @@ class MostRecentActivityCardsWidgetTest extends ContainerTestCase
                 ->add('onlyShowActivitiesWithAMap', false)
                 ->add('sportTypesToInclude', [])
         );
-        $this->assertMatchesHtmlSnapshot($render);
+        $this->assertMatchesHtmlSnapshot((string) $render);
     }
 
     public function testRenderWithMultipleActivities(): void
@@ -51,7 +51,7 @@ class MostRecentActivityCardsWidgetTest extends ContainerTestCase
                 ->add('onlyShowActivitiesWithAMap', false)
                 ->add('sportTypesToInclude', [])
         );
-        $this->assertMatchesHtmlSnapshot($render);
+        $this->assertMatchesHtmlSnapshot((string) $render);
     }
 
     public function testRenderForAnActivityWithoutAMap(): void
@@ -67,7 +67,7 @@ class MostRecentActivityCardsWidgetTest extends ContainerTestCase
                 ->add('onlyShowActivitiesWithAMap', false)
                 ->add('sportTypesToInclude', [])
         );
-        $this->assertMatchesHtmlSnapshot($render);
+        $this->assertMatchesHtmlSnapshot((string) $render);
     }
 
     public function testRenderWithOnlyActivitiesWithAMapItShouldSkipActivitiesWithoutARoute(): void

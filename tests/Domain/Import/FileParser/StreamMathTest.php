@@ -116,7 +116,8 @@ class StreamMathTest extends TestCase
         $this->assertNull(StreamMath::firstCoordinate([StreamType::LAT_LNG->value => [null, null]]));
 
         $coordinate = StreamMath::firstCoordinate([StreamType::LAT_LNG->value => [null, [43.0, 3.0], [44.0, 4.0]]]);
-        $this->assertSame(43.0, $coordinate?->getLatitude()->toFloat());
-        $this->assertSame(3.0, $coordinate?->getLongitude()->toFloat());
+        $this->assertNotNull($coordinate);
+        $this->assertSame(43.0, $coordinate->getLatitude()->toFloat());
+        $this->assertSame(3.0, $coordinate->getLongitude()->toFloat());
     }
 }

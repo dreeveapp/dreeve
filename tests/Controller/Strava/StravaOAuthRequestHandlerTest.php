@@ -29,8 +29,8 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
     use MatchesSnapshots;
 
     private StravaOAuthRequestHandler $stravaOAuthRequestHandler;
-    private MockObject $strava;
-    private MockObject $client;
+    private Strava&MockObject $strava;
+    private Client&MockObject $client;
 
     public function testHandleWithValidRefreshToken(): void
     {
@@ -182,6 +182,8 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->stravaOAuthRequestHandler = new StravaOAuthRequestHandler(
             StravaClientId::fromString('client'),
             StravaClientSecret::fromString('secret'),

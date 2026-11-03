@@ -17,9 +17,9 @@ final readonly class DeviceCondition implements Condition
         return $translator->trans('Recorded with device', domain: 'admin', locale: $locale);
     }
 
-    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): ?string
+    public function describeValue(TranslatorInterface $translator, RuleConfiguration $configuration): string
     {
-        return (string) $configuration->get('deviceName');
+        return $configuration->getString('deviceName');
     }
 
     public function getPriority(): int
@@ -39,7 +39,8 @@ final readonly class DeviceCondition implements Condition
 
     public function guardValidConfiguration(RuleConfiguration $configuration): void
     {
-        if ('' === trim((string) $configuration->get('deviceName'))) {
+        $deviceName = $configuration->get('deviceName');
+        if (!is_string($deviceName) || '' === trim($deviceName)) {
             throw new InvalidAutomationRule('A "deviceName" is required.');
         }
     }

@@ -100,9 +100,11 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         ]));
 
         $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $di2 = $this->findComponentById($components, 'gearComponent-di-2');
+        $this->assertNotNull($di2);
         $this->assertSame(
             [['parent' => 'component:gearComponent-chain', 'from' => null, 'until' => null, 'sportTypes' => []]],
-            $this->findComponentById($components, 'gearComponent-di-2')['installations'],
+            $di2['installations'],
         );
     }
 

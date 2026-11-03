@@ -315,9 +315,11 @@ class AutomationRuleDryRunnerTest extends ContainerTestCase
         $this->assertFalse($notApplied->wasApplied());
         $this->assertCount(1, $notApplied->getConfiguredActions(), 'Configured actions are available for rules that were not applied too.');
         $this->assertCount(1, $applied->getConfiguredActions());
+        $configuredAction = $applied->getConfiguredActions()->getFirst();
+        $this->assertNotNull($configuredAction);
         $this->assertSame(
             'Morning Ride to work',
-            $applied->getConfiguredActions()->getFirst()->getConfiguration()->getString('name'),
+            $configuredAction->getConfiguration()->getString('name'),
             'A rule that was not applied does not change the activity later tokens resolve against.'
         );
     }

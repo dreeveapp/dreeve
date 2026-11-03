@@ -31,8 +31,6 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
     use MatchesSnapshots;
     use ProvideSnapshotAssertion;
 
-    private CalculateStreamValueDistribution $calculateStreamValueDistribution;
-
     #[DataProvider('provideUnitSystems')]
     public function testProcess(UnitSystem $unitSystem): void
     {
@@ -149,13 +147,5 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
     {
         yield 'metric' => [UnitSystem::METRIC];
         yield 'imperial' => [UnitSystem::IMPERIAL];
-    }
-
-    #[\Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->calculateStreamValueDistribution = $this->getContainer()->get(CalculateStreamValueDistribution::class);
     }
 }

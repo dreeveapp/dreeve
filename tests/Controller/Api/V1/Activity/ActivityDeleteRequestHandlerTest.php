@@ -79,11 +79,9 @@ class ActivityDeleteRequestHandlerTest extends ControllerWebTestCase
         parent::setUp();
 
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
-        assert($activityRepository instanceof ActivityRepository);
         $this->activityRepository = $activityRepository;
 
         $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
-        assert($activityStreamRepository instanceof ActivityStreamRepository);
         $this->activityStreamRepository = $activityStreamRepository;
 
         $this->activityRepository->add(ActivityWithRawData::fromState(

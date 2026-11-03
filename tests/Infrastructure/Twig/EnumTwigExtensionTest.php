@@ -50,6 +50,8 @@ class EnumTwigExtensionTest extends ContainerTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->enumTwigExtension = $this->getContainer()->get(EnumTwigExtension::class);
     }
 }

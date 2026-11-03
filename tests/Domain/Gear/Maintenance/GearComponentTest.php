@@ -47,9 +47,12 @@ class GearComponentTest extends TestCase
 
     public function testFromArrayReadsComponentParents(): void
     {
+        $installation = GearComponent::fromArray($this->getComponents()[1])->getInstallations()->getFirst();
+        $this->assertNotNull($installation);
+
         $this->assertEquals(
             InstallationParent::component(GearComponentId::fromString('gearComponent-winter-wheelset')),
-            GearComponent::fromArray($this->getComponents()[1])->getInstallations()->getFirst()->getParent()
+            $installation->getParent()
         );
     }
 

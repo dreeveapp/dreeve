@@ -26,7 +26,7 @@ class AutomationRulesTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        AutomationRules::fromArray(['not-a-rule']);
+        AutomationRules::fromArray(['not-a-rule']); // @phpstan-ignore argument.type
     }
 
     public function testEnabled(): void

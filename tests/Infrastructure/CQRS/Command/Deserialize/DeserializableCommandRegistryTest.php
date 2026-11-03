@@ -12,7 +12,6 @@ class DeserializableCommandRegistryTest extends ContainerTestCase
     public function testItAutoDiscoversCommandsByName(): void
     {
         $registry = $this->getContainer()->get(DeserializableCommandRegistry::class);
-        \assert($registry instanceof DeserializableCommandRegistry);
 
         $this->assertSame(UploadActivityFile::class, $registry->resolve('upload-activity-file'));
     }
@@ -20,7 +19,6 @@ class DeserializableCommandRegistryTest extends ContainerTestCase
     public function testItThrowsForUnknownId(): void
     {
         $registry = $this->getContainer()->get(DeserializableCommandRegistry::class);
-        \assert($registry instanceof DeserializableCommandRegistry);
 
         $this->expectExceptionObject(CouldNotDeserializeCommand::unknownCommand('not-a-known-command'));
 

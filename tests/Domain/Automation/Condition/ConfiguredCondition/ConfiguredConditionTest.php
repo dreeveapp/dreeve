@@ -25,6 +25,6 @@ class ConfiguredConditionTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        ConfiguredConditions::fromArray(['not-a-condition']);
+        ConfiguredConditions::fromArray(['not-a-condition']); // @phpstan-ignore argument.type
     }
 }

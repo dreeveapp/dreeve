@@ -101,6 +101,7 @@ class TrainingGoalsTest extends TestCase
 
         $goals = TrainingGoals::fromConfig($yml);
         $goal = $goals->getFirst();
+        $this->assertNotNull($goal);
 
         $this->assertTrue($goal->isActiveOn(SerializableDateTime::fromString('2026-01-01')));
         $this->assertTrue($goal->isActiveOn(SerializableDateTime::fromString('2026-02-15')));
@@ -120,6 +121,7 @@ class TrainingGoalsTest extends TestCase
         $yml['weekly'][0]['restrictToDateRange'] = ['from' => '', 'to' => ''];
 
         $goal = TrainingGoals::fromConfig($yml)->getFirst();
+        $this->assertNotNull($goal);
 
         $this->assertTrue($goal->isActiveOn(SerializableDateTime::fromString('2020-01-01')));
         $this->assertTrue($goal->isActiveOn(SerializableDateTime::fromString('2099-12-31')));

@@ -70,6 +70,8 @@ final class GapCalculatorTest extends TestCase
         $smoothedSegments = iterator_to_array($smoothedCalculator->calculateSegments($this->trackPointsWithElevationSpike()), false);
 
         self::assertCount(\count($unsmoothedSegments), $smoothedSegments);
+        self::assertNotEmpty($unsmoothedSegments);
+        self::assertNotEmpty($smoothedSegments);
         self::assertGreaterThan(
             max(array_map(static fn (GapSegment $segment): float => abs($segment->getGrade()), $smoothedSegments)),
             max(array_map(static fn (GapSegment $segment): float => abs($segment->getGrade()), $unsmoothedSegments)),

@@ -36,7 +36,9 @@ class DeleteAutomationRuleCommandHandlerTest extends ContainerTestCase
 
         $rules = $this->repository->findAll();
         $this->assertCount(1, $rules);
-        $this->assertSame('automationRule-2', (string) $rules->getFirst()->getId());
+        $rule = $rules->getFirst();
+        $this->assertNotNull($rule);
+        $this->assertSame('automationRule-2', (string) $rule->getId());
     }
 
     public function testDeletingAnUnknownRuleIsANoOp(): void

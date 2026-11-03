@@ -48,7 +48,9 @@ class ApplyAutomationRulesTest extends ContainerTestCase
 
         $context = $this->applyAutomationRules->process($context);
 
-        $this->assertSame('Automated', $context->getActivity()->getName());
+        $activity = $context->getActivity();
+        $this->assertNotNull($activity);
+        $this->assertSame('Automated', $activity->getName());
     }
 
     public function testProcessThrowsWhenNoActivityOnContext(): void

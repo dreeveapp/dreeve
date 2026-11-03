@@ -119,9 +119,9 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
             [FileImportStatus::SUCCESS, FileImportStatus::SKIPPED,  FileImportStatus::SKIPPED],
             array_map(
                 static fn (array $file): FileImportStatus => FileImportStatus::from($file['status']),
-                array_values($this->getConnection()
+                $this->getConnection()
                     ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
-                    ->fetchAllAssociative())
+                    ->fetchAllAssociative()
             )
         );
         $this->assertSame(
@@ -146,9 +146,9 @@ class ImportActivityFilesCommandHandlerTest extends ContainerTestCase
         $output = new SpyOutput();
         $this->handler->handle(new ImportActivityFiles($output, ImportedActivities::empty()));
 
-        $fileImports = array_values($this->getConnection()
+        $fileImports = $this->getConnection()
             ->executeQuery('SELECT * FROM FileImport ORDER BY importedOn ASC')
-            ->fetchAllAssociative());
+            ->fetchAllAssociative();
         $this->assertCount(2, $fileImports);
         $this->assertSame(FileImportStatus::SUCCESS->value, $fileImports[0]['status']);
         $this->assertSame(ImportSource::GPX_FILE->value, $fileImports[0]['source']);

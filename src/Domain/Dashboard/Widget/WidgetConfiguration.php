@@ -18,7 +18,7 @@ final class WidgetConfiguration
     }
 
     /**
-     * @param int|string|float|bool|array<int, int|string|mixed>|null $value
+     * @param int|string|float|bool|array<mixed>|null $value
      */
     public function add(string $key, int|string|float|bool|array|null $value): self
     {
@@ -28,7 +28,7 @@ final class WidgetConfiguration
     }
 
     /**
-     * @return int|string|float|bool|array<int, int|string|mixed>|null $value
+     * @return int|string|float|bool|array<mixed>|null $value
      */
     public function get(string $key, mixed $default = null): int|string|float|bool|array|null
     {

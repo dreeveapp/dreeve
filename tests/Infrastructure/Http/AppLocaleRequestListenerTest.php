@@ -75,5 +75,7 @@ class AppLocaleRequestListenerTest extends ContainerTestCase
     protected function tearDown(): void
     {
         Carbon::setLocale($this->originalLocale);
+
+        parent::tearDown();
     }
 }

@@ -215,7 +215,6 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         parent::setUp();
 
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
-        assert($activityRepository instanceof ActivityRepository);
         $this->activityRepository = $activityRepository;
 
         $this->activityRepository->add(ActivityWithRawData::fromState(

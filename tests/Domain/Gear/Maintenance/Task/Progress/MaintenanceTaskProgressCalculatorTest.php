@@ -77,12 +77,23 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
         $statuses = $this->getContainer()->get(MaintenanceTaskProgressCalculator::class)->calculateStatuses();
 
         $newChainReplace = $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('new-chain-replace'));
+        $this->assertNotNull($newChainReplace);
         $this->assertNull($newChainReplace->getLastPerformedOn());
-        $this->assertSame('40 km', $newChainReplace->getProgress()->getDescription());
-        $this->assertNotNull($statuses->getForTask(MaintenanceTaskId::fromUnprefixed('new-chain-inspect'))->getProgress());
+        $newChainReplaceProgress = $newChainReplace->getProgress();
+        $this->assertNotNull($newChainReplaceProgress);
+        $this->assertSame('40 km', $newChainReplaceProgress->getDescription());
+        $newChainInspect = $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('new-chain-inspect'));
+        $this->assertNotNull($newChainInspect);
+        $this->assertNotNull($newChainInspect->getProgress());
 
-        $this->assertSame('140 km', $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('old-cassette-replace'))->getProgress()->getDescription());
-        $this->assertNull($statuses->getForTask(MaintenanceTaskId::fromUnprefixed('old-cassette-inspect'))->getProgress());
+        $oldCassetteReplace = $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('old-cassette-replace'));
+        $this->assertNotNull($oldCassetteReplace);
+        $oldCassetteReplaceProgress = $oldCassetteReplace->getProgress();
+        $this->assertNotNull($oldCassetteReplaceProgress);
+        $this->assertSame('140 km', $oldCassetteReplaceProgress->getDescription());
+        $oldCassetteInspect = $statuses->getForTask(MaintenanceTaskId::fromUnprefixed('old-cassette-inspect'));
+        $this->assertNotNull($oldCassetteInspect);
+        $this->assertNull($oldCassetteInspect->getProgress());
     }
 
     public function testGetGearIdsThatHaveDueTasks(): void

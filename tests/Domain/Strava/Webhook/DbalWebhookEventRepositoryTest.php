@@ -33,8 +33,10 @@ class DbalWebhookEventRepositoryTest extends ContainerTestCase
 
         $this->webhookEventRepository->add($event);
 
-        $this->assertNotEmpty($this->webhookEventRepository->grab());
-        $this->assertEmpty($this->webhookEventRepository->grab());
+        $grabbedEvents = $this->webhookEventRepository->grab();
+        $this->assertNotEmpty($grabbedEvents);
+        $grabbedEvents = $this->webhookEventRepository->grab();
+        $this->assertEmpty($grabbedEvents);
     }
 
     #[\Override]

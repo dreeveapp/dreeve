@@ -55,7 +55,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(3, $editLinks);
         $this->assertStringContainsString(
             '/admin/activities/'.ActivityId::fromUnprefixed('1').'/edit',
-            $editLinks->first()->attr('href')
+            (string) $editLinks->first()->attr('href')
         );
 
         $form = $crawler->filter('form[method="get"]');
@@ -67,7 +67,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertSame(
             ['peakPowerOutputs' => 'Peak power outputs', 'bestEfforts' => 'Best efforts'],
             array_combine(
-                $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn (Crawler $option) => $option->attr('value')),
+                $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn (Crawler $option) => (string) $option->attr('value')),
                 $form->filter('select[name="filters[excludedFrom]"] option:not([value=""])')->each(fn (Crawler $option) => $option->text()),
             ),
         );
@@ -95,7 +95,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(2, $detailLinks);
         $this->assertStringContainsString(
             '/activities/'.ActivityId::fromUnprefixed('1'),
-            $detailLinks->first()->attr('href')
+            (string) $detailLinks->first()->attr('href')
         );
         $this->assertSame('Activity 1', trim($detailLinks->first()->text()));
     }
@@ -136,7 +136,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $rows->eq(0)->filter('form[data-dispatch-command="enrich-activity"] button[data-has-loading-state]'));
         $this->assertStringContainsString(
             'group-[.is-loading]:animate-spin',
-            $rows->eq(0)->filter('form[data-dispatch-command="enrich-activity"] svg')->attr('class')
+            (string) $rows->eq(0)->filter('form[data-dispatch-command="enrich-activity"] svg')->attr('class')
         );
         $this->assertSame(
             (string) ActivityId::fromUnprefixed('1'),
@@ -257,7 +257,7 @@ class ManageActivityOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(3, $deleteLinks);
         $this->assertStringContainsString(
             '/admin/activities/'.ActivityId::fromUnprefixed('1').'/delete',
-            $deleteLinks->first()->attr('href')
+            (string) $deleteLinks->first()->attr('href')
         );
 
         $this->assertCount(1, $crawler->filter('table.data-table thead input[type="checkbox"][data-checkbox-toggle]'));

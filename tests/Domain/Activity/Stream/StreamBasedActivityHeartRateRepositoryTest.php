@@ -165,6 +165,7 @@ class StreamBasedActivityHeartRateRepositoryTest extends ContainerTestCase
 
         $bins = $this->activityHeartRateRepository->findRelativeHeartRateDistribution()->getBins();
         $innerBins = array_slice(array_filter($bins), 1, -1);
+        $this->assertNotEmpty($innerBins);
 
         $this->assertEqualsWithDelta(41 * 60, array_sum($bins), count($bins));
         $this->assertLessThan(0.2 * max($innerBins), max($innerBins) - min($innerBins));

@@ -89,9 +89,11 @@ class TcxFileParserTest extends ActivityFileParserTestCase
         $this->assertSame('Lap 2', $laps[1]->getName());
         // Trackpoints of the second <Track> in lap 1 must not be dropped.
         $this->assertSame(60.0, $laps[0]->getDistance()->toFloat());
+        $timeStream = $parsed->getStreams()->filterOnType(StreamType::TIME);
+        $this->assertNotNull($timeStream);
         $this->assertSame(
             [0, 10, 20, 30, 40],
-            $parsed->getStreams()->filterOnType(StreamType::TIME)->getData()
+            $timeStream->getData()
         );
         // The Suunto zero-altitude filter leaves these zeros alone because the file has
         // no real altitude data, after which the mapper drops the stream: an altitude
