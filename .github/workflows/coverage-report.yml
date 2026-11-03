@@ -19,6 +19,30 @@ jobs:
       - name: Setup CI environment
         uses: ./.github/actions/setup-docker-env
 
+      - name: Warm up test container for PHPStan
+        run: $PHP bin/console cache:warmup --env=test
+
+      - name: Cache static analysis results
+        uses: actions/cache@v5
+        with:
+          path: |
+            var/cache/phpstan
+            var/cache/rector
+            .php-cs-fixer.cache
+          key: ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php', '.php-cs-fixer.dist.php') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php', '.php-cs-fixer.dist.php') }}-
+            ${{ runner.os }}-static-analysis-
+
+      - name: Run PHPStan
+        run: $PHP vendor/bin/phpstan analyse
+
+      - name: Run Rector
+        run: $PHP vendor/bin/rector --dry-run
+
+      - name: Run PHPcs fixer dry-run
+        run: $PHP vendor/bin/php-cs-fixer fix --dry-run --stop-on-violation --config=.php-cs-fixer.dist.php
+
       - name: Run test suite
         run: $PHP vendor/bin/paratest --order-by=random --fail-on-incomplete --log-junit junit.xml --coverage-clover=clover.xml
 
