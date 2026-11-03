@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Import;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 
-interface FileImportRepository
+interface FileImportRepository extends DeletesActivityData
 {
     public function add(FileImport $fileImport): void;
 
@@ -17,6 +18,4 @@ interface FileImportRepository
     public function hasFileContentsForActivity(ActivityId $activityId): bool;
 
     public function delete(FileImport $fileImport): void;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 }

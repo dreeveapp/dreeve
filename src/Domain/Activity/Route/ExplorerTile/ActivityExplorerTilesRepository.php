@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Route\ExplorerTile;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 use App\Domain\Geography\ExplorerTile\ExplorerTiles;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-interface ActivityExplorerTilesRepository
+interface ActivityExplorerTilesRepository extends DeletesActivityData
 {
     public function add(ActivityExplorerTiles $activityExplorerTiles): void;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 
     /**
      * @return array<string, list<int>>

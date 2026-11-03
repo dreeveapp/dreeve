@@ -6,12 +6,11 @@ namespace App\Domain\Activity\Stream;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 
-interface ActivityStreamRepository
+interface ActivityStreamRepository extends DeletesActivityData
 {
     public function add(ActivityStream $stream): void;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 
     public function hasOneForActivityAndStreamType(ActivityId $activityId, StreamType $streamType): bool;
 

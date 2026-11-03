@@ -6,9 +6,10 @@ namespace App\Domain\Activity\Split;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\DeleteActivities\DeletesActivityData;
 use App\Infrastructure\Measurement\UnitSystem;
 
-interface ActivitySplitRepository
+interface ActivitySplitRepository extends DeletesActivityData
 {
     public function findBy(ActivityId $activityId, UnitSystem $unitSystem): ActivitySplits;
 
@@ -21,6 +22,4 @@ interface ActivitySplitRepository
     public function findActivityIdsThatNeedSplitCalculation(): ActivityIds;
 
     public function isImportedForActivity(ActivityId $activityId): bool;
-
-    public function deleteForActivity(ActivityId $activityId): void;
 }
