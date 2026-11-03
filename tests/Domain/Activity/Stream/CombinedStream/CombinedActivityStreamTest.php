@@ -14,7 +14,7 @@ class CombinedActivityStreamTest extends TestCase
     public function testGetters(): void
     {
         $stream = CombinedActivityStream::fromState(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             unitSystem: UnitSystem::METRIC,
             streamTypes: CombinedStreamTypes::fromArray([CombinedStreamType::VELOCITY]),
             data: [],
@@ -26,7 +26,7 @@ class CombinedActivityStreamTest extends TestCase
         $this->assertEmpty($stream->getCoordinates());
 
         $stream = CombinedActivityStream::fromState(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             unitSystem: UnitSystem::METRIC,
             streamTypes: CombinedStreamTypes::fromArray([
                 CombinedStreamType::TIME,

@@ -28,35 +28,35 @@ class CalculateNormalizedPowerTest extends ContainerTestCase
         $output = new SpyOutput();
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->withActivityId(ActivityId::fromUnprefixed('4'))
             ->withStreamType(StreamType::WATTS)
             ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->withActivityId(ActivityId::fromUnprefixed('4'))
             ->withStreamType(StreamType::TIME)
             ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->withStreamType(StreamType::WATTS)
             ->withData([])
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(5))
+            ->withActivityId(ActivityId::fromUnprefixed('5'))
             ->withStreamType(StreamType::WATTS)
             ->withData([])
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
-            activityId: ActivityId::fromUnprefixed(5),
+            activityId: ActivityId::fromUnprefixed('5'),
             streamType: StreamType::WATTS,
             metricType: ActivityStreamMetricType::NORMALIZED_POWER,
             data: [10],

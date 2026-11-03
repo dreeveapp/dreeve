@@ -170,7 +170,7 @@ class MilestoneCollectorTest extends ContainerTestCase
     ): void {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed($id))
+                ->withActivityId(ActivityId::fromUnprefixed((string) $id))
                 ->withStartDateTime(SerializableDateTime::fromString($date))
                 ->withSportType($sportType)
                 ->withDistance(Kilometer::from($distanceKm))
@@ -185,7 +185,7 @@ class MilestoneCollectorTest extends ContainerTestCase
     {
         $this->getContainer()->get(ActivityBestEffortRepository::class)->add(
             ActivityBestEffort::create(
-                activityId: ActivityId::fromUnprefixed($activityId),
+                activityId: ActivityId::fromUnprefixed((string) $activityId),
                 distanceInMeter: Meter::from($distanceInMeter),
                 sportType: $sportType,
                 timeInSeconds: $timeInSeconds,

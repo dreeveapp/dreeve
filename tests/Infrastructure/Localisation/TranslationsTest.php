@@ -32,7 +32,7 @@ class TranslationsTest extends ContainerTestCase
                     $this->fail(sprintf('Not all translations for locale %s have been exported. Please run "make translation-extract"', $locale->value));
                 }
 
-                $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath)) ?? [];
+                $parsedTranslations = Yaml::parse((string) file_get_contents($translationFilePath)) ?? [];
 
                 $missingTranslationKeys = array_diff($translatableKeys, array_keys($parsedTranslations));
                 $extraTranslationKeys = array_diff(array_keys($parsedTranslations), $translatableKeys);
@@ -65,7 +65,7 @@ class TranslationsTest extends ContainerTestCase
                     continue;
                 }
 
-                $parsedTranslations = Yaml::parse(file_get_contents($translationFilePath)) ?? [];
+                $parsedTranslations = Yaml::parse((string) file_get_contents($translationFilePath)) ?? [];
                 foreach ($parsedTranslations as $key => $translation) {
                     if (!preg_match_all('/[\s\S]*\{(?<matches>[\S]*)\}[\s\S]*/U', (string) $key, $translationPlaceholdersInKeys)) {
                         continue;

@@ -38,7 +38,7 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/activities/route?activityId='.urlencode('Morning Run / Commute (activity-1)'));
 
         $this->assertResponseIsSuccessful();
-        $route = Json::decode($this->client->getResponse()->getContent());
+        $route = Json::decode((string) $this->client->getResponse()->getContent());
         $this->assertEquals(
             [
                 'points' => [[51.0, 4.0], [51.001, 4.0], [51.002, 4.0]],
@@ -70,7 +70,7 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/activities/route?activityId=activity-1');
 
         $this->assertResponseIsSuccessful();
-        $route = Json::decode($this->client->getResponse()->getContent());
+        $route = Json::decode((string) $this->client->getResponse()->getContent());
         $this->assertSame([], $route['altitude']);
         $this->assertNull($route['chart']);
     }

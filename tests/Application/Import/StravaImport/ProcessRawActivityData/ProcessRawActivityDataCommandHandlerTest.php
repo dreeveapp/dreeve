@@ -98,7 +98,7 @@ class ProcessRawActivityDataCommandHandlerTest extends ContainerTestCase
         // Activities for segments.
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(1))
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withName('Test activity 1')
                 ->withDeviceName('Zwift')
                 ->withStartDateTime(SerializableDateTime::fromString('2025-01-01'))
@@ -123,7 +123,7 @@ class ProcessRawActivityDataCommandHandlerTest extends ContainerTestCase
         ));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(2))
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withName('Test activity 2')
                 ->withStartDateTime(SerializableDateTime::fromString('2024-01-01'))
                 ->build(),
@@ -145,14 +145,14 @@ class ProcessRawActivityDataCommandHandlerTest extends ContainerTestCase
         ));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(3))
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withName('Test activity 3')
                 ->build(),
             []
         ));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(4))
+                ->withActivityId(ActivityId::fromUnprefixed('4'))
                 ->withName('Test activity 4')
                 ->withStartDateTime(SerializableDateTime::fromString('2024-01-01'))
                 ->build(),
@@ -175,9 +175,9 @@ class ProcessRawActivityDataCommandHandlerTest extends ContainerTestCase
         ));
         $this->getContainer()->get(SegmentEffortRepository::class)->add(
             SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('2'))
                 ->withSegmentId(SegmentId::fromUnprefixed('1'))
-                ->withActivityId(ActivityId::fromUnprefixed(9542782314))
+                ->withActivityId(ActivityId::fromUnprefixed('9542782314'))
                 ->withElapsedTimeInSeconds(9.3)
                 ->withAverageWatts(200)
                 ->withDistance(Kilometer::from(0.1))
@@ -185,9 +185,9 @@ class ProcessRawActivityDataCommandHandlerTest extends ContainerTestCase
         );
         $this->getContainer()->get(SegmentEffortRepository::class)->add(
             SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('3'))
                 ->withSegmentId(SegmentId::fromUnprefixed('2'))
-                ->withActivityId(ActivityId::fromUnprefixed(9542782314))
+                ->withActivityId(ActivityId::fromUnprefixed('9542782314'))
                 ->withElapsedTimeInSeconds(9.3)
                 ->withAverageWatts(200)
                 ->withDistance(Kilometer::from(0.1))

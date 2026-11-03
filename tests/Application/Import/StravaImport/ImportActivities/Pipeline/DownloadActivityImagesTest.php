@@ -25,7 +25,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
     public function testProcessWhenImagesShouldNotBeDownloaded(): void
     {
         $context = ActivityImportContext::create(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             rawStravaData: ['total_photo_count' => 3],
             isNewActivity: false,
         )
@@ -46,7 +46,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
         $this->settingsRepository->saveGroup(SettingsGroup::IMPORT, ['skipImageDownloadDuringImport' => true]);
 
         $context = ActivityImportContext::create(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             rawStravaData: ['total_photo_count' => 3],
             isNewActivity: true,
         )
@@ -68,7 +68,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
         $this->settingsRepository->saveGroup(SettingsGroup::IMPORT, ['skipImageDownloadDuringImport' => true]);
 
         $context = ActivityImportContext::create(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             rawStravaData: ['total_photo_count' => 3],
             isNewActivity: false,
         )
@@ -91,7 +91,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
         $this->strava->triggerExceptionOnNextCall();
 
         $context = ActivityImportContext::create(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             rawStravaData: ['total_photo_count' => 3],
             isNewActivity: true,
         )

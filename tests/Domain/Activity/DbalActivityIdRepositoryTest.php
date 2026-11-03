@@ -24,7 +24,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
     public function testFindAllAndCount(): void
     {
         $activityOne = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 14:00:34'))
             ->build();
         $this->activityRepository->add(ActivityWithRawData::fromState(
@@ -32,7 +32,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
             ['raw' => 'data']
         ));
         $activityTwo = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(2))
+            ->withActivityId(ActivityId::fromUnprefixed('2'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 13:00:34'))
             ->build();
         $this->activityRepository->add(ActivityWithRawData::fromState(
@@ -40,7 +40,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
             ['raw' => 'data']
         ));
         $activityThree = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(3))
+            ->withActivityId(ActivityId::fromUnprefixed('3'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-09 14:00:34'))
             ->build();
         $this->activityRepository->add(ActivityWithRawData::fromState(
@@ -62,7 +62,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
     public function testFindAllImportedFromStravaApi(): void
     {
         $activityOne = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 14:00:34'))
             ->withImportSource(ImportSource::STRAVA_API)
             ->build();
@@ -71,7 +71,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
             ['raw' => 'data']
         ));
         $activityTwo = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(2))
+            ->withActivityId(ActivityId::fromUnprefixed('2'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 13:00:34'))
             ->withImportSource(ImportSource::FIT_FILE)
             ->build();
@@ -80,7 +80,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
             ['raw' => 'data']
         ));
         $activityThree = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(3))
+            ->withActivityId(ActivityId::fromUnprefixed('3'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-09 14:00:34'))
             ->withImportSource(ImportSource::STRAVA_API)
             ->build();
@@ -101,7 +101,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
 
         $this->activityRepository->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(1))
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withImportSource(ImportSource::FIT_FILE)
                 ->build(),
             ['raw' => 'data']
@@ -111,7 +111,7 @@ class DbalActivityIdRepositoryTest extends ContainerTestCase
 
         $this->activityRepository->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(2))
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withImportSource(ImportSource::STRAVA_API)
                 ->build(),
             ['raw' => 'data']

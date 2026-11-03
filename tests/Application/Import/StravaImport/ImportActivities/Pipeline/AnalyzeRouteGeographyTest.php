@@ -26,7 +26,7 @@ class AnalyzeRouteGeographyTest extends ContainerTestCase
     public function testProcessWhenUnableToReverseGeocode(): void
     {
         $context = ActivityImportContext::create(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             rawStravaData: [],
             isNewActivity: false,
         )->withActivity(
@@ -53,7 +53,7 @@ class AnalyzeRouteGeographyTest extends ContainerTestCase
     public function testProcessZwiftActivity(): void
     {
         $context = ActivityImportContext::create(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             rawStravaData: [],
             isNewActivity: false,
         )->withActivity(

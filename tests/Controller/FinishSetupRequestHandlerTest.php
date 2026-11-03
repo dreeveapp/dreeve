@@ -21,7 +21,7 @@ class FinishSetupRequestHandlerTest extends ContainerTestCase
 
     public function testHandleWhenNotReady(): void
     {
-        $this->assertMatchesHtmlSnapshot($this->finishSetupRequestHandler->handle()->getContent());
+        $this->assertMatchesHtmlSnapshot((string) $this->finishSetupRequestHandler->handle()->getContent());
     }
 
     public function testHandleRedirectsWhenTheAppIsReady(): void

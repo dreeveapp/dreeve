@@ -150,7 +150,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         }
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(100))
+                ->withActivityId(ActivityId::fromUnprefixed('100'))
                 ->withStartDateTime(SerializableDateTime::fromString('2024-01-03'))
                 ->build(), []
         ));

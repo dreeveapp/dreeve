@@ -17,7 +17,7 @@ class ImportStatusRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/import-status');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame(['pending' => true], Json::decode($this->client->getResponse()->getContent()));
+        $this->assertSame(['pending' => true], Json::decode((string) $this->client->getResponse()->getContent()));
     }
 
     public function testItIsNotPendingWhenTheWatchDirectoryIsEmpty(): void
@@ -27,7 +27,7 @@ class ImportStatusRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/import-status');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame(['pending' => false], Json::decode($this->client->getResponse()->getContent()));
+        $this->assertSame(['pending' => false], Json::decode((string) $this->client->getResponse()->getContent()));
     }
 
     public function testItRendersTheBadgeWhenTheWatchDirectoryHoldsAProcessableFile(): void
