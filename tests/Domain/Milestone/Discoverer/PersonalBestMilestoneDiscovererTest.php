@@ -64,7 +64,7 @@ class PersonalBestMilestoneDiscovererTest extends ContainerTestCase
         // An excluded activity never becomes a personal best, even when it's faster.
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(3))
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withStartDateTime(SerializableDateTime::fromString('2024-01-03'))
                 ->withSportType(SportType::RUN)
                 ->withExcludedFrom(ActivityExclusion::BEST_EFFORTS)
@@ -183,7 +183,7 @@ class PersonalBestMilestoneDiscovererTest extends ContainerTestCase
     {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed($id))
+                ->withActivityId(ActivityId::fromUnprefixed((string) $id))
                 ->withStartDateTime(SerializableDateTime::fromString($date))
                 ->withSportType($sportType)
                 ->build(), []
@@ -194,7 +194,7 @@ class PersonalBestMilestoneDiscovererTest extends ContainerTestCase
     {
         $this->getContainer()->get(ActivityBestEffortRepository::class)->add(
             ActivityBestEffort::create(
-                activityId: ActivityId::fromUnprefixed($activityId),
+                activityId: ActivityId::fromUnprefixed((string) $activityId),
                 distanceInMeter: Meter::from($distanceInMeter),
                 sportType: $sportType,
                 timeInSeconds: $timeInSeconds,

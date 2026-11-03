@@ -25,23 +25,23 @@ class DbalGearIdRepositoryTest extends ContainerTestCase
         $gearRepository = $this->getContainer()->get(GearRepository::class);
         $gearRepository->add(
             GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed(1))
+                ->withGearId(GearId::fromUnprefixed('1'))
                 ->withIsRetired(false)
                 ->build()
         );
         $gearRepository->add(
             GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed(2))
+                ->withGearId(GearId::fromUnprefixed('2'))
                 ->withIsRetired(true)
                 ->build()
         );
 
         $this->assertEquals(
-            [GearId::fromUnprefixed(1), GearId::fromUnprefixed(2)],
+            [GearId::fromUnprefixed('1'), GearId::fromUnprefixed('2')],
             $this->gearIdRepository->findAll()->toArray()
         );
         $this->assertEquals(
-            [GearId::fromUnprefixed(2)],
+            [GearId::fromUnprefixed('2')],
             $this->gearIdRepository->findRetired()->toArray()
         );
     }

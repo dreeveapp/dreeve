@@ -138,7 +138,7 @@ class ActivityMovingTimeMilestoneDiscovererTest extends ContainerTestCase
     {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed($id))
+                ->withActivityId(ActivityId::fromUnprefixed((string) $id))
                 ->withStartDateTime(SerializableDateTime::fromString($date))
                 ->withSportType($sportType)
                 ->withMovingTimeInSeconds($movingTimeInSeconds)

@@ -38,7 +38,7 @@ class StravaWebhookRequestHandlerTest extends ContainerTestCase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertEquals(
             ['hub.challenge' => 'test-challenge-123'],
-            Json::decode($response->getContent())
+            Json::decode((string) $response->getContent())
         );
         $this->assertEmpty($this->commandBus->getDispatchedCommands());
     }

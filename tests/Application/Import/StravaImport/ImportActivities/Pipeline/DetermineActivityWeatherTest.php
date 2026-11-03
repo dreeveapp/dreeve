@@ -23,7 +23,7 @@ class DetermineActivityWeatherTest extends ContainerTestCase
     public function testProcessWithoutActivityStartingCoordinate(): void
     {
         $context = ActivityImportContext::create(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             rawStravaData: [],
             isNewActivity: true,
         )
@@ -43,7 +43,7 @@ class DetermineActivityWeatherTest extends ContainerTestCase
     public function testProcessWhenApiCallHasFailed(): void
     {
         $context = ActivityImportContext::create(
-            activityId: ActivityId::fromUnprefixed(1),
+            activityId: ActivityId::fromUnprefixed('1'),
             rawStravaData: [],
             isNewActivity: true,
         )

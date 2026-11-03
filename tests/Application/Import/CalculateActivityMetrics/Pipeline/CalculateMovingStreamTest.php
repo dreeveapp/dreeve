@@ -26,7 +26,7 @@ class CalculateMovingStreamTest extends ContainerTestCase
         foreach ($streams as $streamType => $data) {
             $this->activityStreamRepository->add(
                 ActivityStreamBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed(1))
+                    ->withActivityId(ActivityId::fromUnprefixed('1'))
                     ->withStreamType(StreamType::from($streamType))
                     ->withData($data)
                     ->build()
@@ -36,7 +36,7 @@ class CalculateMovingStreamTest extends ContainerTestCase
         $this->calculateMovingStream->process(new SpyOutput());
 
         $this->assertSame($expectedMovingStream, $this->activityStreamRepository
-            ->findByActivityId(ActivityId::fromUnprefixed(1))
+            ->findByActivityId(ActivityId::fromUnprefixed('1'))
             ->filterOnType(StreamType::MOVING)?->getData());
     }
 

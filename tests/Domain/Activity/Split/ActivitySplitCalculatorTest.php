@@ -57,7 +57,7 @@ class ActivitySplitCalculatorTest extends TestCase
 
     private function buildStreams(string $fixture): ActivityStreams
     {
-        $streamData = Json::decode(file_get_contents(__DIR__.'/fixtures/'.$fixture));
+        $streamData = Json::decode((string) file_get_contents(__DIR__.'/fixtures/'.$fixture));
 
         $streams = ActivityStreams::empty();
         foreach ($streamData as $streamType => $data) {

@@ -27,12 +27,12 @@ class SegmentInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->warmUpRenderCache();
 
         $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->buildAsNewlyCreated());
 
         $this->assertFalse($this->isServedFromCache(RootCacheTag::SEGMENTS));
-        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(1))));
-        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(2))));
+        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('1'))));
+        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('2'))));
     }
 
     public function testItDoesNotInvalidateWhenAnEffortIsMerelyHydratedAndStored(): void
@@ -40,36 +40,36 @@ class SegmentInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->warmUpRenderCache();
 
         $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->build());
 
         $this->assertTrue($this->isServedFromCache(RootCacheTag::SEGMENTS));
-        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(1))));
+        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('1'))));
     }
 
     public function testItInvalidatesEverySegmentTheDeletedEffortsBelongedTo(): void
     {
         foreach ([[1, 1], [2, 2]] as [$effortId, $segmentId]) {
             $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($effortId))
-                ->withSegmentId(SegmentId::fromUnprefixed($segmentId))
-                ->withActivityId(ActivityId::fromUnprefixed(1))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed((string) $effortId))
+                ->withSegmentId(SegmentId::fromUnprefixed((string) $segmentId))
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->build());
         }
         $this->warmUpRenderCache();
 
-        $this->segmentEffortRepository->deleteForActivity(ActivityId::fromUnprefixed(1));
+        $this->segmentEffortRepository->deleteForActivity(ActivityId::fromUnprefixed('1'));
 
         $this->assertFalse($this->isServedFromCache(RootCacheTag::SEGMENTS));
-        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(1))));
-        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(2))));
-        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(3))));
+        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('1'))));
+        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('2'))));
+        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('3'))));
     }
 
     public function testItInvalidatesTheSegmentWhenItWasUpdated(): void
     {
         $segment = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->build();
         $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
         $segmentRepository->add($segment);
@@ -78,14 +78,14 @@ class SegmentInvalidateCacheTagsListenerTest extends ContainerTestCase
         $segmentRepository->update($segment->withName(Name::fromString('New name')));
 
         $this->assertFalse($this->isServedFromCache(RootCacheTag::SEGMENTS));
-        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(1))));
-        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(2))));
+        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('1'))));
+        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('2'))));
     }
 
     public function testItInvalidatesTheSegmentWhenItWasDeleted(): void
     {
         $segment = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->build();
         $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
         $segmentRepository->add($segment);
@@ -95,17 +95,17 @@ class SegmentInvalidateCacheTagsListenerTest extends ContainerTestCase
         $segmentRepository->delete($segment);
 
         $this->assertFalse($this->isServedFromCache(RootCacheTag::SEGMENTS));
-        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(1))));
-        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed(2))));
+        $this->assertFalse($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('1'))));
+        $this->assertTrue($this->isServedFromCache(SegmentCacheTag::for(SegmentId::fromUnprefixed('2'))));
     }
 
     private function warmUpRenderCache(): void
     {
         foreach ([
             RootCacheTag::SEGMENTS,
-            SegmentCacheTag::for(SegmentId::fromUnprefixed(1)),
-            SegmentCacheTag::for(SegmentId::fromUnprefixed(2)),
-            SegmentCacheTag::for(SegmentId::fromUnprefixed(3)),
+            SegmentCacheTag::for(SegmentId::fromUnprefixed('1')),
+            SegmentCacheTag::for(SegmentId::fromUnprefixed('2')),
+            SegmentCacheTag::for(SegmentId::fromUnprefixed('3')),
         ] as $cacheTag) {
             $this->renderCache->get(
                 cacheKey: $cacheTag->toTagString(),

@@ -54,21 +54,21 @@ class CalculateActivityRouteSignaturesTest extends ContainerTestCase
     {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(-1))
+                ->withActivityId(ActivityId::fromUnprefixed('-1'))
                 ->withPolyline((string) EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.02, 3.02]]))
                 ->build(), []
         ));
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(-2))
+                ->withActivityId(ActivityId::fromUnprefixed('-2'))
                 ->withPolyline((string) EncodedPolyline::fromCoordinates([[51.0, 3.0], [51.03, 3.0]]))
                 ->build(), []
         ));
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(-3))
+                ->withActivityId(ActivityId::fromUnprefixed('-3'))
                 ->withPolyline(null)
                 ->build(), []
         ));

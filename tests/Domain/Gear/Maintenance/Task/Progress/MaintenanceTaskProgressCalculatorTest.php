@@ -61,7 +61,7 @@ class MaintenanceTaskProgressCalculatorTest extends ContainerTestCase
 
     public function testCalculateStatusesForTasksThatWereNeverPerformed(): void
     {
-        $this->importGearMaintenanceConfigFromArray(Json::decode(file_get_contents(__DIR__.'/fixtures/never-logged-tasks.json')));
+        $this->importGearMaintenanceConfigFromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/never-logged-tasks.json')));
         foreach ([['before-install', '2024-12-01 10:00:00', 100], ['after-install', '2025-02-01 10:00:00', 40]] as [$activityId, $startDateTime, $distance]) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()

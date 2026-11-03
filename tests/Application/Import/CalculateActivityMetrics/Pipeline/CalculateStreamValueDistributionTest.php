@@ -40,7 +40,7 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(4))
+                ->withActivityId(ActivityId::fromUnprefixed('4'))
                 ->withSportType(SportType::RUN)
                 ->withStartDateTime(SerializableDateTime::fromString('2021-03-01'))
                 ->build(),
@@ -48,7 +48,7 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
         ));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(3))
+                ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withSportType(SportType::RIDE)
                 ->withStartDateTime(SerializableDateTime::fromString('2021-03-01'))
                 ->build(),
@@ -56,7 +56,7 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
         ));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(1))
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withSportType(SportType::POOL_SWIM)
                 ->withStartDateTime(SerializableDateTime::fromString('2021-03-01'))
                 ->build(),
@@ -64,63 +64,63 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
         ));
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->withActivityId(ActivityId::fromUnprefixed('4'))
             ->withStreamType(StreamType::WATTS)
             ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->withActivityId(ActivityId::fromUnprefixed('4'))
             ->withStreamType(StreamType::TIME)
             ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->withActivityId(ActivityId::fromUnprefixed('4'))
             ->withStreamType(StreamType::HEART_RATE)
             ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->withActivityId(ActivityId::fromUnprefixed('4'))
             ->withStreamType(StreamType::VELOCITY)
             ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->withActivityId(ActivityId::fromUnprefixed('4'))
             ->withStreamType(StreamType::CADENCE)
             ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(3))
+            ->withActivityId(ActivityId::fromUnprefixed('3'))
             ->withStreamType(StreamType::VELOCITY)
             ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->withStreamType(StreamType::WATTS)
             ->withData([])
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(5))
+            ->withActivityId(ActivityId::fromUnprefixed('5'))
             ->withStreamType(StreamType::WATTS)
             ->withData([])
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
-            activityId: ActivityId::fromUnprefixed(5),
+            activityId: ActivityId::fromUnprefixed('5'),
             streamType: StreamType::WATTS,
             metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
             data: [4 => 3, 2 => 3],

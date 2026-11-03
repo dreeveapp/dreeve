@@ -93,7 +93,7 @@ class FirstActivityInCountryMilestoneDiscovererTest extends ContainerTestCase
     private function insertActivity(int $id, string $date, SportType $sportType, string $name, ?string $countryCode): void
     {
         $builder = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed($id))
+            ->withActivityId(ActivityId::fromUnprefixed((string) $id))
             ->withStartDateTime(SerializableDateTime::fromString($date))
             ->withSportType($sportType)
             ->withName($name);

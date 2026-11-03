@@ -28,7 +28,7 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     public function testFindAndSave(): void
     {
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withName(Name::fromString('Segment One'))
             ->build());
         $segmentEffort = SegmentEffortBuilder::fromDefaults()
@@ -45,32 +45,32 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     public function testItShouldThrowWhenNotFound(): void
     {
         $this->expectExceptionObject(new EntityNotFound('segmentEffort "segmentEffort-1" not found'));
-        $this->segmentEffortRepository->find(SegmentEffortId::fromUnprefixed(1));
+        $this->segmentEffortRepository->find(SegmentEffortId::fromUnprefixed('1'));
     }
 
     public function testFindTopXBySegmentId(): void
     {
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withName(Name::fromString('Segment One'))
             ->build());
         $segmentEffortOne = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('1'))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withRank(1)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortOne);
 
         $segmentEffortTwo = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('2'))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withRank(2)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortTwo);
 
         $segmentEffortThree = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('3'))
+            ->withSegmentId(SegmentId::fromUnprefixed('2'))
             ->withRank(null)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortThree);
@@ -84,28 +84,28 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     public function testFindAndCountBySegmentId(): void
     {
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withName(Name::fromString('Segment One'))
             ->build());
         $segmentEffortOne = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('1'))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withStartDateTime(SerializableDateTime::fromString('2026-02-02 00:00:00'))
             ->withRank(1)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortOne);
 
         $segmentEffortTwo = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('2'))
             ->withStartDateTime(SerializableDateTime::fromString('2026-02-01 00:00:00'))
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withRank(2)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortTwo);
 
         $segmentEffortThree = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('3'))
+            ->withSegmentId(SegmentId::fromUnprefixed('2'))
             ->withRank(null)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortThree);
@@ -119,26 +119,26 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     public function testFindByActivityId(): void
     {
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withName(Name::fromString('Segment One'))
             ->build());
         $segmentEffortOne = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('1'))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->withRank(1)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortOne);
 
         $segmentEffortTwo = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('2'))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->withRank(2)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortTwo);
 
         $segmentEffortThree = SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
-            ->withActivityId(ActivityId::fromUnprefixed(2))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('3'))
+            ->withActivityId(ActivityId::fromUnprefixed('2'))
             ->withRank(null)
             ->build();
         $this->segmentEffortRepository->add($segmentEffortThree);
@@ -152,39 +152,39 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     public function testItRanksAnEffortAgainstEveryOtherEffortOnTheSameSegment(): void
     {
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withName(Name::fromString('Segment One'))
             ->build());
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
+            ->withSegmentId(SegmentId::fromUnprefixed('2'))
             ->withName(Name::fromString('Segment One'))
             ->build());
         // Two segments, ridden by three activities, so ranks only come out right when efforts
         // of other activities are taken into account.
         foreach ([[1, 1, 1, 300], [2, 1, 2, 100], [3, 1, 3, 200], [4, 2, 1, 60], [5, 2, 2, 30]] as [$effortId, $segmentId, $activityId, $elapsedTime]) {
             $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($effortId))
-                ->withSegmentId(SegmentId::fromUnprefixed($segmentId))
-                ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed((string) $effortId))
+                ->withSegmentId(SegmentId::fromUnprefixed((string) $segmentId))
+                ->withActivityId(ActivityId::fromUnprefixed((string) $activityId))
                 ->withElapsedTimeInSeconds($elapsedTime)
                 ->build());
         }
 
         $this->assertEquals(
             [3, 2],
-            $this->segmentEffortRepository->findByActivityId(ActivityId::fromUnprefixed(1))
+            $this->segmentEffortRepository->findByActivityId(ActivityId::fromUnprefixed('1'))
                 ->map(fn ($segmentEffort): ?int => $segmentEffort->getRank())
         );
 
         $this->assertEquals(
             [1, 2, 3],
-            $this->segmentEffortRepository->findTopXBySegmentId(SegmentId::fromUnprefixed(1), 10)
+            $this->segmentEffortRepository->findTopXBySegmentId(SegmentId::fromUnprefixed('1'), 10)
                 ->map(fn ($segmentEffort): ?int => $segmentEffort->getRank())
         );
 
         $this->assertEquals(
             3,
-            $this->segmentEffortRepository->find(SegmentEffortId::fromUnprefixed(1))->getRank()
+            $this->segmentEffortRepository->find(SegmentEffortId::fromUnprefixed('1'))->getRank()
         );
     }
 
@@ -213,48 +213,48 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     public function testItReadsTheNameFromTheSegment(): void
     {
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withName(Name::fromString('Kwaremont'))
             ->build());
         $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('1'))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->build());
 
-        $this->assertSame('Kwaremont', $this->segmentEffortRepository->find(SegmentEffortId::fromUnprefixed(1))->getName());
-        $this->assertSame('Kwaremont', $this->segmentEffortRepository->findBySegmentId(SegmentId::fromUnprefixed(1))->getFirst()?->getName());
-        $this->assertSame('Kwaremont', $this->segmentEffortRepository->findTopXBySegmentId(SegmentId::fromUnprefixed(1), 1)->getFirst()?->getName());
-        $this->assertSame('Kwaremont', $this->segmentEffortRepository->findByActivityId(ActivityId::fromUnprefixed(1))->getFirst()?->getName());
+        $this->assertSame('Kwaremont', $this->segmentEffortRepository->find(SegmentEffortId::fromUnprefixed('1'))->getName());
+        $this->assertSame('Kwaremont', $this->segmentEffortRepository->findBySegmentId(SegmentId::fromUnprefixed('1'))->getFirst()?->getName());
+        $this->assertSame('Kwaremont', $this->segmentEffortRepository->findTopXBySegmentId(SegmentId::fromUnprefixed('1'), 1)->getFirst()?->getName());
+        $this->assertSame('Kwaremont', $this->segmentEffortRepository->findByActivityId(ActivityId::fromUnprefixed('1'))->getFirst()?->getName());
     }
 
     public function testDeleteForActivityAndSegmentType(): void
     {
         $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
         $segmentRepository->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withType(SegmentType::CUSTOM)
             ->build());
         $segmentRepository->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
+            ->withSegmentId(SegmentId::fromUnprefixed('2'))
             ->withType(SegmentType::IMPORTED)
             ->build());
         foreach ([[1, 1, 1], [2, 2, 1], [3, 1, 2]] as [$effortId, $segmentId, $activityId]) {
             $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($effortId))
-                ->withSegmentId(SegmentId::fromUnprefixed($segmentId))
-                ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed((string) $effortId))
+                ->withSegmentId(SegmentId::fromUnprefixed((string) $segmentId))
+                ->withActivityId(ActivityId::fromUnprefixed((string) $activityId))
                 ->build());
         }
 
-        $this->segmentEffortRepository->deleteForActivityAndSegmentType(ActivityId::fromUnprefixed(1), SegmentType::CUSTOM);
+        $this->segmentEffortRepository->deleteForActivityAndSegmentType(ActivityId::fromUnprefixed('1'), SegmentType::CUSTOM);
 
         $this->assertEquals(
             ['segmentEffort-2', 'segmentEffort-3'],
             $this->getConnection()->executeQuery('SELECT segmentEffortId FROM SegmentEffort ORDER BY segmentEffortId')->fetchFirstColumn()
         );
         $this->assertEquals(
-            [new SegmentEffortsWereDeleted(SegmentIds::fromArray([SegmentId::fromUnprefixed(1)]))],
+            [new SegmentEffortsWereDeleted(SegmentIds::fromArray([SegmentId::fromUnprefixed('1')]))],
             $this->eventBus->getPublishedEvents()
         );
     }
@@ -262,15 +262,15 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     public function testItDoesNotPublishWhenTheActivityHadNoEffortsOnSegmentsOfThatType(): void
     {
         $this->getContainer()->get(SegmentRepository::class)->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withType(SegmentType::IMPORTED)
             ->build());
         $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->build());
 
-        $this->segmentEffortRepository->deleteForActivityAndSegmentType(ActivityId::fromUnprefixed(1), SegmentType::CUSTOM);
+        $this->segmentEffortRepository->deleteForActivityAndSegmentType(ActivityId::fromUnprefixed('1'), SegmentType::CUSTOM);
 
         $this->assertEquals(
             1,
@@ -283,26 +283,26 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     {
         foreach ([[1, 1], [2, 2], [3, 1]] as [$effortId, $segmentId]) {
             $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($effortId))
-                ->withSegmentId(SegmentId::fromUnprefixed($segmentId))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed((string) $effortId))
+                ->withSegmentId(SegmentId::fromUnprefixed((string) $segmentId))
                 ->build());
         }
 
-        $this->segmentEffortRepository->deleteForSegment(SegmentId::fromUnprefixed(1));
+        $this->segmentEffortRepository->deleteForSegment(SegmentId::fromUnprefixed('1'));
 
         $this->assertEquals(
             ['segmentEffort-2'],
             $this->getConnection()->executeQuery('SELECT segmentEffortId FROM SegmentEffort')->fetchFirstColumn()
         );
         $this->assertEquals(
-            [new SegmentEffortsWereDeleted(SegmentIds::fromArray([SegmentId::fromUnprefixed(1)]))],
+            [new SegmentEffortsWereDeleted(SegmentIds::fromArray([SegmentId::fromUnprefixed('1')]))],
             $this->eventBus->getPublishedEvents()
         );
     }
 
     public function testItDoesNotPublishWhenTheSegmentHadNoEfforts(): void
     {
-        $this->segmentEffortRepository->deleteForSegment(SegmentId::fromUnprefixed(1));
+        $this->segmentEffortRepository->deleteForSegment(SegmentId::fromUnprefixed('1'));
 
         $this->assertEmpty($this->eventBus->getPublishedEvents());
     }
@@ -310,11 +310,11 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     public function testItPublishesTheSegmentThatWasRiddenWhenAnEffortIsAdded(): void
     {
         $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(7))
+            ->withSegmentId(SegmentId::fromUnprefixed('7'))
             ->buildAsNewlyCreated());
 
         $this->assertEquals(
-            [new SegmentEffortWasAdded(SegmentId::fromUnprefixed(7))],
+            [new SegmentEffortWasAdded(SegmentId::fromUnprefixed('7'))],
             $this->eventBus->getPublishedEvents()
         );
     }
@@ -330,18 +330,18 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
     {
         foreach ([[1, 1], [2, 2], [3, 1]] as [$effortId, $segmentId]) {
             $this->segmentEffortRepository->add(SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed($effortId))
-                ->withSegmentId(SegmentId::fromUnprefixed($segmentId))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed((string) $effortId))
+                ->withSegmentId(SegmentId::fromUnprefixed((string) $segmentId))
                 ->build());
         }
         $this->eventBus->getPublishedEvents();
 
-        $this->segmentEffortRepository->deleteForActivity(ActivityId::fromUnprefixed(1));
+        $this->segmentEffortRepository->deleteForActivity(ActivityId::fromUnprefixed('1'));
 
         $this->assertEquals(
             [new SegmentEffortsWereDeleted(SegmentIds::fromArray([
-                SegmentId::fromUnprefixed(1),
-                SegmentId::fromUnprefixed(2),
+                SegmentId::fromUnprefixed('1'),
+                SegmentId::fromUnprefixed('2'),
             ]))],
             $this->eventBus->getPublishedEvents()
         );
@@ -349,7 +349,7 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
 
     public function testItDoesNotPublishWhenTheActivityHadNoEfforts(): void
     {
-        $this->segmentEffortRepository->deleteForActivity(ActivityId::fromUnprefixed(1));
+        $this->segmentEffortRepository->deleteForActivity(ActivityId::fromUnprefixed('1'));
 
         $this->assertEmpty($this->eventBus->getPublishedEvents());
     }

@@ -181,7 +181,7 @@ class CumulativeElevationMilestoneDiscovererTest extends ContainerTestCase
     ): void {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed($id))
+                ->withActivityId(ActivityId::fromUnprefixed((string) $id))
                 ->withStartDateTime(SerializableDateTime::fromString($date))
                 ->withElevation(Meter::from($elevationM))
                 ->withSportType($sportType)

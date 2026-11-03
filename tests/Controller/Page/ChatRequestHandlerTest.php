@@ -167,7 +167,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
 
         ob_start();
         $response->sendContent();
-        $content = ob_get_clean();
+        $content = (string) ob_get_clean();
 
         $this->assertStringContainsString('event: fullMessage', $content);
         $this->assertStringContainsString('event: removeThinking', $content);
@@ -213,7 +213,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
 
         ob_start();
         $response->sendContent();
-        $content = ob_get_clean();
+        $content = (string) ob_get_clean();
 
         $this->assertStringContainsString('event: fullMessage', $content);
         $this->assertStringContainsString('event: removeThinking', $content);

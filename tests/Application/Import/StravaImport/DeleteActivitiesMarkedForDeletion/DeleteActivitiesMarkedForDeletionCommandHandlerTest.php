@@ -44,84 +44,84 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(4))
+                ->withActivityId(ActivityId::fromUnprefixed('4'))
                 ->build(),
             []
         ));
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(1000))
+                ->withActivityId(ActivityId::fromUnprefixed('1000'))
                 ->withName('Delete this one')
                 ->build(),
             []
         ));
 
         $segmentEffortOne = SegmentEffortBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1000))
+            ->withActivityId(ActivityId::fromUnprefixed('1000'))
             ->build();
         $this->getContainer()->get(SegmentEffortRepository::class)->add($segmentEffortOne);
 
         $stream = ActivityStreamBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1000))
+            ->withActivityId(ActivityId::fromUnprefixed('1000'))
             ->build();
         $this->getContainer()->get(ActivityStreamRepository::class)->add($stream);
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withName('Delete this one as well')
-                ->withActivityId(ActivityId::fromUnprefixed(1001))
+                ->withActivityId(ActivityId::fromUnprefixed('1001'))
                 ->build(),
             []
         ));
         $this->getContainer()->get(SegmentEffortRepository::class)->add(
             SegmentEffortBuilder::fromDefaults()
-                ->withSegmentId(SegmentId::fromUnprefixed(1000))
+                ->withSegmentId(SegmentId::fromUnprefixed('1000'))
                 ->withSegmentEffortId(SegmentEffortId::random())
-                ->withActivityId(ActivityId::fromUnprefixed(1001))
+                ->withActivityId(ActivityId::fromUnprefixed('1001'))
                 ->build()
         );
         $this->getContainer()->get(SegmentRepository::class)->add(
             SegmentBuilder::fromDefaults()
-                ->withSegmentId(SegmentId::fromUnprefixed(1000))
+                ->withSegmentId(SegmentId::fromUnprefixed('1000'))
                 ->build()
         );
         $this->getContainer()->get(ActivityStreamRepository::class)->add(
             ActivityStreamBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed(1001))
+                ->withActivityId(ActivityId::fromUnprefixed('1001'))
                 ->build()
         );
         $this->getContainer()->get(ActivitySplitRepository::class)->add(ActivitySplitBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1001))
+            ->withActivityId(ActivityId::fromUnprefixed('1001'))
             ->withUnitSystem(UnitSystem::IMPERIAL)
             ->withSplitNumber(3)
             ->build());
 
         $this->getContainer()->get(ActivityLapRepository::class)->add(ActivityLapBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1001))
+            ->withActivityId(ActivityId::fromUnprefixed('1001'))
             ->build());
 
         $this->getContainer()->get(ActivityBestEffortRepository::class)->add(ActivityBestEffortBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1001))
+            ->withActivityId(ActivityId::fromUnprefixed('1001'))
             ->build());
 
         $this->getContainer()->get(ActivityScanRepository::class)->add(
-            ActivityScan::create(activityId: ActivityId::fromUnprefixed(1001), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom')
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed('1001'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom')
         );
         $this->getContainer()->get(ActivityScanRepository::class)->add(
-            ActivityScan::create(activityId: ActivityId::fromUnprefixed(4), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom')
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed('4'), type: ActivityScanType::CUSTOM_SEGMENT, subjectId: 'segment-custom')
         );
 
         $this->getContainer()->get(ActivityExplorerTilesRepository::class)->add(ActivityExplorerTilesBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1001))
+            ->withActivityId(ActivityId::fromUnprefixed('1001'))
             ->build());
         $this->getContainer()->get(ActivityExplorerTilesRepository::class)->add(ActivityExplorerTilesBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(4))
+            ->withActivityId(ActivityId::fromUnprefixed('4'))
             ->build());
 
         $this->getContainer()->get(ActivityRepository::class)->markActivitiesForDeletion(ActivityIds::fromArray([
-            ActivityId::fromUnprefixed(1000),
-            ActivityId::fromUnprefixed(1001),
+            ActivityId::fromUnprefixed('1000'),
+            ActivityId::fromUnprefixed('1001'),
         ]));
 
         $this->commandBus->dispatch(new DeleteActivitiesMarkedForDeletion($output));
@@ -138,7 +138,7 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
         );
         $this->assertCount(
             0,
-            $this->getContainer()->get(SegmentEffortRepository::class)->findByActivityId(ActivityId::fromUnprefixed(1001))
+            $this->getContainer()->get(SegmentEffortRepository::class)->findByActivityId(ActivityId::fromUnprefixed('1001'))
         );
         $this->assertCount(
             0,
@@ -146,19 +146,19 @@ class DeleteActivitiesMarkedForDeletionCommandHandlerTest extends ContainerTestC
         );
         $this->assertCount(
             0,
-            $this->getContainer()->get(ActivityStreamRepository::class)->findByActivityId(ActivityId::fromUnprefixed(1001))
+            $this->getContainer()->get(ActivityStreamRepository::class)->findByActivityId(ActivityId::fromUnprefixed('1001'))
         );
         $this->assertCount(
             0,
             $this->getContainer()->get(ActivitySplitRepository::class)->findBy(
-                ActivityId::fromUnprefixed(1001),
+                ActivityId::fromUnprefixed('1001'),
                 UnitSystem::IMPERIAL
             )
         );
         $this->assertCount(
             0,
             $this->getContainer()->get(ActivityLapRepository::class)->findBy(
-                ActivityId::fromUnprefixed(1001),
+                ActivityId::fromUnprefixed('1001'),
             )
         );
         $this->assertEquals(

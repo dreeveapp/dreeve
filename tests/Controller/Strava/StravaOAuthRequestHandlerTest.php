@@ -69,7 +69,7 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
             ])
             ->willReturn(new Response(200, [], Json::encode(['refresh_token' => 'the-token'])));
 
-        $this->assertMatchesHtmlSnapshot($this->stravaOAuthRequestHandler->handle(new Request(query: ['code' => 'the-code']))->getContent());
+        $this->assertMatchesHtmlSnapshot((string) $this->stravaOAuthRequestHandler->handle(new Request(query: ['code' => 'the-code']))->getContent());
     }
 
     public function testHandleWithCodeButAnError(): void
@@ -105,7 +105,7 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
             ->expects($this->never())
             ->method('post');
 
-        $this->assertMatchesHtmlSnapshot($this->stravaOAuthRequestHandler->handle(new Request())->getContent());
+        $this->assertMatchesHtmlSnapshot((string) $this->stravaOAuthRequestHandler->handle(new Request())->getContent());
     }
 
     public function testHandleWhenTheAccessTokenHasInsufficientScopes(): void

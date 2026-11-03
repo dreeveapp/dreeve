@@ -174,25 +174,25 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
     public function testFindSegmentsIdsMissingDetails(): void
     {
         $segmentOne = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withDetailsHaveBeenImported(true)
             ->withName(Name::fromString('A name'))
             ->build();
         $this->segmentRepository->add($segmentOne);
         $segmentTwo = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
+            ->withSegmentId(SegmentId::fromUnprefixed('2'))
             ->withDetailsHaveBeenImported(false)
             ->withName(Name::fromString('C name'))
             ->build();
         $this->segmentRepository->add($segmentTwo);
         $segmentThree = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(3))
+            ->withSegmentId(SegmentId::fromUnprefixed('3'))
             ->withDetailsHaveBeenImported(false)
             ->withName(Name::fromString('B name'))
             ->build();
         $this->segmentRepository->add($segmentThree);
         $this->segmentRepository->add(SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(4))
+            ->withSegmentId(SegmentId::fromUnprefixed('4'))
             ->withDetailsHaveBeenImported(false)
             ->withType(SegmentType::CUSTOM)
             ->build());
@@ -207,7 +207,7 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
     {
         [$segmentOne, , $segmentThree] = $this->seedSegmentsWithEfforts();
         $customSegmentWithoutEfforts = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(4))
+            ->withSegmentId(SegmentId::fromUnprefixed('4'))
             ->withType(SegmentType::CUSTOM)
             ->build();
         $this->segmentRepository->add($customSegmentWithoutEfforts);
@@ -223,35 +223,35 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
     private function seedSegmentsWithEfforts(): array
     {
         $segmentOne = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(1))
+            ->withSegmentId(SegmentId::fromUnprefixed('1'))
             ->withName(Name::fromString('A name'))
             ->build();
         $this->segmentRepository->add($segmentOne);
         $this->getContainer()->get(SegmentEffortRepository::class)->add(
             SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(1))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('1'))
                 ->withSegmentId($segmentOne->getId())
                 ->build()
         );
         $this->getContainer()->get(SegmentEffortRepository::class)->add(
             SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(2))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('2'))
                 ->withSegmentId($segmentOne->getId())
                 ->build()
         );
         $segmentTwo = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(2))
+            ->withSegmentId(SegmentId::fromUnprefixed('2'))
             ->withName(Name::fromString('C name'))
             ->build();
         $this->segmentRepository->add($segmentTwo);
         $segmentThree = SegmentBuilder::fromDefaults()
-            ->withSegmentId(SegmentId::fromUnprefixed(3))
+            ->withSegmentId(SegmentId::fromUnprefixed('3'))
             ->withName(Name::fromString('B name'))
             ->build();
         $this->segmentRepository->add($segmentThree);
         $this->getContainer()->get(SegmentEffortRepository::class)->add(
             SegmentEffortBuilder::fromDefaults()
-                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed(3))
+                ->withSegmentEffortId(SegmentEffortId::fromUnprefixed('3'))
                 ->withSegmentId($segmentThree->getId())
                 ->build()
         );

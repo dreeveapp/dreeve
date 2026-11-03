@@ -19,24 +19,24 @@ class CollectionTest extends TestCase
     public function testHas(): void
     {
         $collection = ATestCollection::empty()
-            ->add(Name::fromString(10));
+            ->add(Name::fromString('10'));
 
         $this->assertTrue(
-            $collection->has(Name::fromString(10))
+            $collection->has(Name::fromString('10'))
         );
         $this->assertFalse(
-            $collection->has(Name::fromString(20))
+            $collection->has(Name::fromString('20'))
         );
     }
 
     public function testMergeWith(): void
     {
         $collection = ATestCollection::empty()
-            ->add(Name::fromString(10))
-            ->mergeWith(ATestCollection::fromArray([Name::fromString(20)]));
+            ->add(Name::fromString('10'))
+            ->mergeWith(ATestCollection::fromArray([Name::fromString('20')]));
 
         $this->assertEquals(
-            ATestCollection::fromArray([Name::fromString(10), Name::fromString(20)]),
+            ATestCollection::fromArray([Name::fromString('10'), Name::fromString('20')]),
             $collection
         );
     }
@@ -51,41 +51,41 @@ class CollectionTest extends TestCase
     public function testUnique(): void
     {
         $this->assertEquals(
-            ATestCollection::fromArray([Name::fromString(10)]),
-            ATestCollection::fromArray([Name::fromString(10), Name::fromString(10)])->unique()
+            ATestCollection::fromArray([Name::fromString('10')]),
+            ATestCollection::fromArray([Name::fromString('10'), Name::fromString('10')])->unique()
         );
     }
 
     public function testReplace(): void
     {
         $collection = ATestCollection::fromArray([
-            Name::fromString(10),
-            Name::fromString(20),
+            Name::fromString('10'),
+            Name::fromString('20'),
         ]);
 
         $this->assertEquals(
             ATestCollection::fromArray([
-                Name::fromString(30),
-                Name::fromString(20),
+                Name::fromString('30'),
+                Name::fromString('20'),
             ]),
-            $collection->replace(Name::fromString(10), Name::fromString(30))
+            $collection->replace(Name::fromString('10'), Name::fromString('30'))
         );
     }
 
     public function testWithout(): void
     {
         $collection = ATestCollection::fromArray([
-            Name::fromString(10),
-            Name::fromString(20),
+            Name::fromString('10'),
+            Name::fromString('20'),
         ]);
 
         $this->assertEquals(
-            ATestCollection::fromArray([Name::fromString(20)]),
-            $collection->without(Name::fromString(10))
+            ATestCollection::fromArray([Name::fromString('20')]),
+            $collection->without(Name::fromString('10'))
         );
         $this->assertEquals(
             $collection,
-            $collection->without(Name::fromString(30))
+            $collection->without(Name::fromString('30'))
         );
         $this->assertCount(2, $collection);
     }
@@ -93,9 +93,9 @@ class CollectionTest extends TestCase
     public function testSumItShouldCountNullAsZero(): void
     {
         $collection = ATestCollection::fromArray([
-            Name::fromString(10),
-            Name::fromString(20),
-            Name::fromString(30),
+            Name::fromString('10'),
+            Name::fromString('20'),
+            Name::fromString('30'),
         ]);
 
         $this->assertEquals(
@@ -109,10 +109,10 @@ class CollectionTest extends TestCase
         $this->expectExceptionObject(new \InvalidArgumentException('Could not replace item, item not found in collection'));
 
         $collection = ATestCollection::fromArray([
-            Name::fromString(10),
-            Name::fromString(20),
+            Name::fromString('10'),
+            Name::fromString('20'),
         ]);
 
-        $collection->replace(Name::fromString(30), Name::fromString(40));
+        $collection->replace(Name::fromString('30'), Name::fromString('40'));
     }
 }

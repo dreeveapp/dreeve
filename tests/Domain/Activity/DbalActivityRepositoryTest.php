@@ -36,7 +36,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
     public function testFind(): void
     {
         $activityOne = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 14:00:34'))
             ->build();
         $this->activityRepository->add(ActivityWithRawData::fromState(
@@ -50,7 +50,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         );
 
         $activityTwo = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(2))
+            ->withActivityId(ActivityId::fromUnprefixed('2'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 14:00:34'))
             ->build();
         $this->activityRepository->add(ActivityWithRawData::fromState(
@@ -67,7 +67,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
     public function testFindWithEmptyNameItShouldFallBackToGeneratedName(): void
     {
         $activity = ActivityBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed(1))
+            ->withActivityId(ActivityId::fromUnprefixed('1'))
             ->withStartDateTime(SerializableDateTime::fromString('2023-10-10 14:00:34'))
             ->withSportType(SportType::RIDE)
             ->build();
@@ -103,13 +103,13 @@ class DbalActivityRepositoryTest extends ContainerTestCase
     public function testItShouldThrowWhenNotFound(): void
     {
         $this->expectExceptionObject(new EntityNotFound('Activity "activity-1" not found'));
-        $this->activityRepository->find(ActivityId::fromUnprefixed(1));
+        $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
     }
 
     public function testFindWithRawDataItShouldThrowWhenNotFound(): void
     {
         $this->expectExceptionObject(new EntityNotFound('Activity "activity-1" not found'));
-        $this->activityRepository->findWithRawData(ActivityId::fromUnprefixed(1));
+        $this->activityRepository->findWithRawData(ActivityId::fromUnprefixed('1'));
     }
 
     public function testAddAndFindWithRawData(): void
@@ -306,7 +306,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         ] as $activityId => $startDateTime) {
             $this->activityRepository->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $activityId))
                     ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
                     ->build(),
                 ['raw' => 'data']
@@ -320,9 +320,9 @@ class DbalActivityRepositoryTest extends ContainerTestCase
 
         $this->assertEquals(
             [
-                ActivityId::fromUnprefixed(4),
-                ActivityId::fromUnprefixed(3),
-                ActivityId::fromUnprefixed(2),
+                ActivityId::fromUnprefixed('4'),
+                ActivityId::fromUnprefixed('3'),
+                ActivityId::fromUnprefixed('2'),
             ],
             $activities->map(fn (Activity $activity): ActivityId => $activity->getId())
         );
@@ -352,7 +352,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         ] as $activityId => $startDateTime) {
             $this->activityRepository->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $activityId))
                     ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
                     ->build(),
                 ['raw' => 'data']
@@ -361,8 +361,8 @@ class DbalActivityRepositoryTest extends ContainerTestCase
 
         $this->assertEquals(
             [
-                ActivityId::fromUnprefixed(3),
-                ActivityId::fromUnprefixed(2),
+                ActivityId::fromUnprefixed('3'),
+                ActivityId::fromUnprefixed('2'),
             ],
             $this->activityRepository->findMostRecent(2)->map(fn (Activity $activity): ActivityId => $activity->getId())
         );
@@ -377,7 +377,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         ] as $activityId => $sportType) {
             $this->activityRepository->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $activityId))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2023-10-0%d 00:00:00', $activityId)))
                     ->withSportType($sportType)
                     ->build(),
@@ -386,7 +386,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         }
 
         $this->assertEquals(
-            [ActivityId::fromUnprefixed(2)],
+            [ActivityId::fromUnprefixed('2')],
             $this->activityRepository->findMostRecent(
                 limit: 5,
                 restrictToSportTypes: SportTypes::fromArray([SportType::RUN]),
@@ -404,7 +404,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         ] as $activityId => $polyline) {
             $this->activityRepository->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $activityId))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2023-10-0%d 00:00:00', $activityId)))
                     ->withPolyline($polyline)
                     ->build(),
@@ -414,8 +414,8 @@ class DbalActivityRepositoryTest extends ContainerTestCase
 
         $this->assertEquals(
             [
-                ActivityId::fromUnprefixed(4),
-                ActivityId::fromUnprefixed(1),
+                ActivityId::fromUnprefixed('4'),
+                ActivityId::fromUnprefixed('1'),
             ],
             $this->activityRepository->findMostRecent(
                 limit: 10,

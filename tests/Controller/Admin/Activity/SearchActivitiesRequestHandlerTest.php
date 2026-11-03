@@ -20,11 +20,11 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request('GET', '/admin/activities/search');
         $this->assertResponseIsSuccessful();
-        $this->assertSame([], Json::decode($this->client->getResponse()->getContent()));
+        $this->assertSame([], Json::decode((string) $this->client->getResponse()->getContent()));
 
         $this->client->request('GET', '/admin/activities/search?q=%20%20');
         $this->assertResponseIsSuccessful();
-        $this->assertSame([], Json::decode($this->client->getResponse()->getContent()));
+        $this->assertSame([], Json::decode((string) $this->client->getResponse()->getContent()));
     }
 
     public function testItFindsActivitiesByName(): void
@@ -43,7 +43,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
                 'label' => 'Morning commute',
                 'sublabel' => '2025-06-01 08:00 · Ride',
             ],
-        ], Json::decode($this->client->getResponse()->getContent()));
+        ], Json::decode((string) $this->client->getResponse()->getContent()));
     }
 
     public function testItFindsActivitiesByActivityId(): void
@@ -54,7 +54,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/activities/search?q=34567');
 
         $this->assertResponseIsSuccessful();
-        $results = Json::decode($this->client->getResponse()->getContent());
+        $results = Json::decode((string) $this->client->getResponse()->getContent());
         $this->assertCount(1, $results);
         $this->assertSame('activity-12345678', $results[0]['value']);
     }
@@ -71,7 +71,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             ['activity-2', 'activity-1'],
-            array_column(Json::decode($this->client->getResponse()->getContent()), 'value')
+            array_column(Json::decode((string) $this->client->getResponse()->getContent()), 'value')
         );
     }
 
@@ -94,7 +94,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
                 'label' => 'Morning Run',
                 'sublabel' => '2025-06-01 08:00 · Run',
             ],
-        ], Json::decode($this->client->getResponse()->getContent()));
+        ], Json::decode((string) $this->client->getResponse()->getContent()));
     }
 
     public function testItRequiresAllTokensToMatch(): void
@@ -106,13 +106,13 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/activities/search?q=morning%202025');
 
         $this->assertResponseIsSuccessful();
-        $results = Json::decode($this->client->getResponse()->getContent());
+        $results = Json::decode((string) $this->client->getResponse()->getContent());
         $this->assertCount(1, $results);
         $this->assertSame('activity-1', $results[0]['value']);
 
         $this->client->request('GET', '/admin/activities/search?q='.urlencode('Morning commute (activity-1)'));
 
-        $results = Json::decode($this->client->getResponse()->getContent());
+        $results = Json::decode((string) $this->client->getResponse()->getContent());
         $this->assertCount(1, $results);
         $this->assertSame('activity-1', $results[0]['value']);
     }
@@ -127,7 +127,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/activities/search?q=lunch');
 
         $this->assertResponseIsSuccessful();
-        $this->assertCount(10, Json::decode($this->client->getResponse()->getContent()));
+        $this->assertCount(10, Json::decode((string) $this->client->getResponse()->getContent()));
     }
 
     private function addActivity(string $id, string $name, string $start, SportType $sportType): void

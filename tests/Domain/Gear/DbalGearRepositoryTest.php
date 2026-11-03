@@ -32,7 +32,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
 
         // The stored column value (1230) must be ignored: distance is derived from activities.
         $gear = GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed(1))
+            ->withGearId(GearId::fromUnprefixed('1'))
             ->withDistanceInMeter(Meter::from(1230))
             ->build();
         $this->gearRepository->add($gear);
@@ -40,7 +40,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $activityRepository->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withGearId(GearId::fromUnprefixed(1))
+                ->withGearId(GearId::fromUnprefixed('1'))
                 ->withDistance(Kilometer::from(5))
                 ->withElevation(Meter::from(50))
                 ->withMovingTimeInSeconds(1800)
@@ -51,7 +51,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $activityRepository->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
-                ->withGearId(GearId::fromUnprefixed(1))
+                ->withGearId(GearId::fromUnprefixed('1'))
                 ->withDistance(Kilometer::from(15))
                 ->withElevation(Meter::from(150))
                 ->withMovingTimeInSeconds(3600)
@@ -62,7 +62,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
 
         $this->assertEquals(
             GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed(1))
+                ->withGearId(GearId::fromUnprefixed('1'))
                 ->withDistanceInMeter(Meter::from(20000))
                 ->withMovingTime(Seconds::from(5400))
                 ->withElevation(Meter::from(200))
@@ -77,7 +77,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
     public function testItShouldPersistAndReadPurchasePrice(): void
     {
         $gear = GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed(1))
+            ->withGearId(GearId::fromUnprefixed('1'))
             ->withPurchasePrice(Money::EUR(150000))
             ->build();
         $this->gearRepository->add($gear);
@@ -111,12 +111,12 @@ class DbalGearRepositoryTest extends ContainerTestCase
     {
         $this->gearRepository->add(
             GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed(1))
+                ->withGearId(GearId::fromUnprefixed('1'))
                 ->build()
         );
         $this->gearRepository->add(
             GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed(2))
+                ->withGearId(GearId::fromUnprefixed('2'))
                 ->withGearType(GearType::CUSTOM)
                 ->build()
         );
@@ -151,7 +151,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
     public function testUpdate(): void
     {
         $gear = GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed(1))
+            ->withGearId(GearId::fromUnprefixed('1'))
             ->withPurchasePrice(Money::EUR(150000))
             ->build();
         $this->gearRepository->add($gear);
@@ -183,23 +183,23 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
 
         $gearOne = GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed(1))
+            ->withGearId(GearId::fromUnprefixed('1'))
             ->withDistanceInMeter(Meter::from(1230))
             ->build();
         $this->gearRepository->add($gearOne);
         $gearTwo = GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed(2))
+            ->withGearId(GearId::fromUnprefixed('2'))
             ->withGearType(GearType::CUSTOM)
             ->withDistanceInMeter(Meter::from(10230))
             ->build();
         $this->gearRepository->add($gearTwo);
         $gearThree = GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed(3))
+            ->withGearId(GearId::fromUnprefixed('3'))
             ->withDistanceInMeter(Meter::from(230))
             ->build();
         $this->gearRepository->add($gearThree);
         $gearFour = GearBuilder::fromDefaults()
-            ->withGearId(GearId::fromUnprefixed(4))
+            ->withGearId(GearId::fromUnprefixed('4'))
             ->withGearType(GearType::CUSTOM)
             ->withDistanceInMeter(Meter::from(100230))
             ->withIsRetired(true)
@@ -209,7 +209,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $activityRepository->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withGearId(GearId::fromUnprefixed(1))
+                ->withGearId(GearId::fromUnprefixed('1'))
                 ->withDistance(Kilometer::from(10))
                 ->withElevation(Meter::from(100))
                 ->withMovingTimeInSeconds(3600)
@@ -219,7 +219,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $activityRepository->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
-                ->withGearId(GearId::fromUnprefixed(1))
+                ->withGearId(GearId::fromUnprefixed('1'))
                 ->withDistance(Kilometer::from(20))
                 ->withElevation(Meter::from(200))
                 ->withMovingTimeInSeconds(7200)
@@ -229,7 +229,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $activityRepository->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('3'))
-                ->withGearId(GearId::fromUnprefixed(2))
+                ->withGearId(GearId::fromUnprefixed('2'))
                 ->withDistance(Kilometer::from(5))
                 ->withElevation(Meter::from(50))
                 ->withMovingTimeInSeconds(1800)
@@ -240,7 +240,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             Gears::fromArray([
                 GearBuilder::fromDefaults()
-                    ->withGearId(GearId::fromUnprefixed(1))
+                    ->withGearId(GearId::fromUnprefixed('1'))
                     ->withDistanceInMeter(Meter::from(30000))
                     ->withMovingTime(Seconds::from(10800))
                     ->withElevation(Meter::from(300))
@@ -248,7 +248,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     ->build()
                     ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE])),
                 GearBuilder::fromDefaults()
-                    ->withGearId(GearId::fromUnprefixed(2))
+                    ->withGearId(GearId::fromUnprefixed('2'))
                     ->withGearType(GearType::CUSTOM)
                     ->withDistanceInMeter(Meter::from(5000))
                     ->withMovingTime(Seconds::from(1800))
@@ -257,11 +257,11 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     ->build()
                     ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE])),
                 GearBuilder::fromDefaults()
-                    ->withGearId(GearId::fromUnprefixed(3))
+                    ->withGearId(GearId::fromUnprefixed('3'))
                     ->withDistanceInMeter(Meter::zero())
                     ->build(),
                 GearBuilder::fromDefaults()
-                    ->withGearId(GearId::fromUnprefixed(4))
+                    ->withGearId(GearId::fromUnprefixed('4'))
                     ->withGearType(GearType::CUSTOM)
                     ->withDistanceInMeter(Meter::zero())
                     ->withIsRetired(true)
@@ -278,7 +278,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $this->getContainer()->get(ActivityRepository::class)->add(
             ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withGearId(GearId::fromUnprefixed(4))
+                    ->withGearId(GearId::fromUnprefixed('4'))
                     ->build(),
                 []
             ),
@@ -286,7 +286,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
 
         $this->gearRepository->add(
             GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed(4))
+                ->withGearId(GearId::fromUnprefixed('4'))
                 ->withDistanceInMeter(Meter::from(100230))
                 ->withIsRetired(true)
                 ->build()
