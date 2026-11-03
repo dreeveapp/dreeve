@@ -13,6 +13,7 @@ use App\Domain\Activity\Collection\DbalActivityCollectionRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use App\Tests\Infrastructure\Eventing\SpyEventBus;
 
 class DbalActivityCollectionRepositoryTest extends ContainerTestCase
 {
@@ -152,6 +153,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('2'))
             ->build());
 
+        $activityCollection->delete();
         $this->repository->delete($activityCollection);
 
         $this->assertSame(
@@ -165,6 +167,9 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->repository = new DbalActivityCollectionRepository($this->getConnection());
+        $this->repository = new DbalActivityCollectionRepository(
+            $this->getConnection(),
+            new SpyEventBus(),
+        );
     }
 }
