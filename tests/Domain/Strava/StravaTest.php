@@ -597,7 +597,7 @@ class StravaTest extends TestCase
         ];
 
         yield 'activity' => [
-            static fn (Strava $strava) => $strava->getActivity(ActivityId::fromUnprefixed('3')),
+            static fn (Strava $strava): array => $strava->getActivity(ActivityId::fromUnprefixed('3')),
             'api/v3/activities/3',
             [
                 'base_uri' => 'https://www.strava.com/',
@@ -606,7 +606,7 @@ class StravaTest extends TestCase
         ];
 
         yield 'activity streams' => [
-            static fn (Strava $strava) => $strava->getAllActivityStreams(ActivityId::fromUnprefixed('3')),
+            static fn (Strava $strava): array => $strava->getAllActivityStreams(ActivityId::fromUnprefixed('3')),
             'api/v3/activities/3/streams',
             [
                 'base_uri' => 'https://www.strava.com/',
@@ -618,7 +618,7 @@ class StravaTest extends TestCase
         ];
 
         yield 'activity photos' => [
-            static fn (Strava $strava) => $strava->getActivityPhotos(ActivityId::fromUnprefixed('3')),
+            static fn (Strava $strava): array => $strava->getActivityPhotos(ActivityId::fromUnprefixed('3')),
             'api/v3/activities/3/photos',
             [
                 'base_uri' => 'https://www.strava.com/',
@@ -628,7 +628,7 @@ class StravaTest extends TestCase
         ];
 
         yield 'gear' => [
-            static fn (Strava $strava) => $strava->getGear(GearId::fromUnprefixed('3')),
+            static fn (Strava $strava): array => $strava->getGear(GearId::fromUnprefixed('3')),
             'api/v3/gear/3',
             [
                 'base_uri' => 'https://www.strava.com/',
@@ -637,7 +637,7 @@ class StravaTest extends TestCase
         ];
 
         yield 'segment' => [
-            static fn (Strava $strava) => $strava->getSegment(SegmentId::fromUnprefixed('3')),
+            static fn (Strava $strava): array => $strava->getSegment(SegmentId::fromUnprefixed('3')),
             'api/v3/segments/3',
             [
                 'base_uri' => 'https://www.strava.com/',

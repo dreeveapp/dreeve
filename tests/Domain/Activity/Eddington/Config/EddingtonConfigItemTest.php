@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Activity\Eddington\Config;
 
 use App\Domain\Activity\Eddington\Config\EddingtonConfigItem;

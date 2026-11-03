@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Gear\Maintenance\Task;
 
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgress;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Activity\Stream\Metric;
 
 use App\Domain\Activity\ActivityId;

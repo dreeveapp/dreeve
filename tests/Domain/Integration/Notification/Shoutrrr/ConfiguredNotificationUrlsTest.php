@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Integration\Notification\Shoutrrr;
 
 use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;

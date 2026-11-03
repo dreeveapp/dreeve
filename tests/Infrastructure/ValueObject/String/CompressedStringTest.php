@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\ValueObject\String;
 
 use App\Infrastructure\Exception\CorruptedData;

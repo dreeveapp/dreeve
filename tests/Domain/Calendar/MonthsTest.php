@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Calendar;
 
 use App\Domain\Calendar\Month;

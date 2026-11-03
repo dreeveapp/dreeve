@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Application\Import\StravaImport\ImportActivities;
 
 use App\Application\Import\StravaImport\ImportActivities\ActivitiesToSkipDuringImport;

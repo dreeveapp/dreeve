@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\Time\Clock;
 
 use App\Infrastructure\Time\Clock\SystemClock;

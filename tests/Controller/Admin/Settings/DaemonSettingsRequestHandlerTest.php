@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Admin\Settings;
 
 use App\Domain\Import\ImportMode;

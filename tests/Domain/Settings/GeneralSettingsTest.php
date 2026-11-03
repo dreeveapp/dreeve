@@ -15,7 +15,7 @@ class GeneralSettingsTest extends TestCase
     /**
      * @return array<string, mixed>
      */
-    private static function validData(): array
+    private function validData(): array
     {
         return [
             'profilePictureUrl' => 'https://example.com/me.png',
@@ -29,7 +29,7 @@ class GeneralSettingsTest extends TestCase
 
     public function testItBuildsTheAthleteFromTheSettings(): void
     {
-        $athlete = GeneralSettings::fromArray(self::validData())->getAthlete();
+        $athlete = GeneralSettings::fromArray($this->validData())->getAthlete();
 
         $this->assertSame('Robin Ingelbrecht', (string) $athlete->getName());
         $this->assertSame('R', $athlete->getFirstLetterOfFirstName());
@@ -41,8 +41,8 @@ class GeneralSettingsTest extends TestCase
 
     public function testTheAthleteIdIsDeterministic(): void
     {
-        $first = GeneralSettings::fromArray(self::validData())->getAthlete()->getAthleteId();
-        $second = GeneralSettings::fromArray(self::validData())->getAthlete()->getAthleteId();
+        $first = GeneralSettings::fromArray($this->validData())->getAthlete()->getAthleteId();
+        $second = GeneralSettings::fromArray($this->validData())->getAthlete()->getAthleteId();
 
         $this->assertNotEmpty($first);
         $this->assertSame($first, $second);
@@ -50,7 +50,7 @@ class GeneralSettingsTest extends TestCase
 
     public function testItExposesTheOtherSettings(): void
     {
-        $settings = GeneralSettings::fromArray(self::validData());
+        $settings = GeneralSettings::fromArray($this->validData());
 
         $this->assertSame('https://example.com/me.png', (string) $settings->getProfilePictureUrl());
     }
@@ -74,7 +74,7 @@ class GeneralSettingsTest extends TestCase
     {
         $this->expectExceptionObject(new AthleteHasNotBeenConfigured(sprintf('A "%s" is required for the athlete in the general settings', $key)));
 
-        $data = self::validData();
+        $data = $this->validData();
         $data[$key] = $value;
 
         GeneralSettings::fromArray($data);
@@ -95,7 +95,7 @@ class GeneralSettingsTest extends TestCase
 
     public function testItTrimsTheName(): void
     {
-        $data = self::validData();
+        $data = $this->validData();
         $data['firstName'] = '  Robin  ';
         $data['lastName'] = "\tIngelbrecht\n";
 

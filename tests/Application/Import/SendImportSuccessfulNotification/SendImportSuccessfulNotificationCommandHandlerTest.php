@@ -84,7 +84,7 @@ class SendImportSuccessfulNotificationCommandHandlerTest extends ContainerTestCa
         );
 
         $handler->handle(new SendImportSuccessfulNotification(ImportedActivities::fromArray(array_map(
-            static fn (int $number) => ActivityBuilder::fromDefaults()
+            static fn (int $number): \App\Domain\Activity\Activity => ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed((string) $number))
                 ->build(),
             range(1, 3),

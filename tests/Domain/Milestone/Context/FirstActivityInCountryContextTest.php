@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Milestone\Context;
 
 use App\Domain\Milestone\Context\FirstActivityInCountryContext;

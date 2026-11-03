@@ -59,7 +59,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
     public function testFromPayloadWithEmptyOptionalFields(): void
     {
         $command = UpdateManuallyAddedActivity::fromPayload([
-            ...self::validPayload(),
+            ...$this->validPayload(),
             'description' => '   ',
             'gearId' => '',
             'elevation' => '',
@@ -83,7 +83,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
     public function testFromPayloadParsesNewAndRemovedImages(): void
     {
         $command = UpdateManuallyAddedActivity::fromPayload([
-            ...self::validPayload(),
+            ...$this->validPayload(),
             'images' => json_encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => base64_encode('binary-content')],
                 ['status' => 'removed', 'path' => '/files/activities/existing.png'],
@@ -108,7 +108,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
 
-        UpdateManuallyAddedActivity::fromPayload([...self::validPayload(), ...$payload]);
+        UpdateManuallyAddedActivity::fromPayload([...$this->validPayload(), ...$payload]);
     }
 
     /**
@@ -132,7 +132,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
     /**
      * @return array<string, mixed>
      */
-    private static function validPayload(): array
+    private function validPayload(): array
     {
         return [
             'activityId' => 'activity-1',

@@ -613,7 +613,7 @@ class CalculateGapTest extends ContainerTestCase
                 $segments,
             ),
             ActivitySplits::fromArray(array_map(
-                fn (int $index, array $split) => ActivitySplitBuilder::fromDefaults()
+                fn (int $index, array $split): \App\Domain\Activity\Split\ActivitySplit => ActivitySplitBuilder::fromDefaults()
                     ->withSplitNumber($index + 1)
                     ->withDistanceInMeter($split[0])
                     ->withAverageSpeed(MetersPerSecond::from($split[1]))

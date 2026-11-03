@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\Daemon\Cron;
 
 use App\Infrastructure\Daemon\Cron\ConfiguredCronActions;

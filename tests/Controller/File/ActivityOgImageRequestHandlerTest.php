@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\File;
 
 use App\Application\PageMetadata\OpenGraphImageCanvas;

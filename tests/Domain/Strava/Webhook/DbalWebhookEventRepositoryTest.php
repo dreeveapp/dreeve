@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Strava\Webhook;
 
 use App\Domain\Strava\Webhook\DbalWebhookEventRepository;

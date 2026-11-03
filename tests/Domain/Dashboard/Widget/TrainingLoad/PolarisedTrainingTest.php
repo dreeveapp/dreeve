@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Dashboard\Widget\TrainingLoad;
 
 use App\Domain\Athlete\HeartRateZone\TimeInHeartRateZones;

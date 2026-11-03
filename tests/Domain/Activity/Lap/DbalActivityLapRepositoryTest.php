@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Domain\Activity\Lap;
 
 use App\Domain\Activity\ActivityId;

@@ -20,10 +20,10 @@ class GearTest extends TestCase
     public function testGetMovingTimeFormatted(?Meter $distanceInMeter, ?Seconds $movingTime, string $expectedResult): void
     {
         $builder = GearBuilder::fromDefaults();
-        if (null !== $distanceInMeter) {
+        if ($distanceInMeter instanceof Meter) {
             $builder = $builder->withDistanceInMeter($distanceInMeter);
         }
-        if (null !== $movingTime) {
+        if ($movingTime instanceof Seconds) {
             $builder = $builder->withMovingTime($movingTime);
         }
 
@@ -74,7 +74,7 @@ class GearTest extends TestCase
     public function testGetAverageSpeed(Meter $distanceInMeter, ?Seconds $movingTime, KmPerHour $expectedResult): void
     {
         $builder = GearBuilder::fromDefaults()->withDistanceInMeter($distanceInMeter);
-        if (null !== $movingTime) {
+        if ($movingTime instanceof Seconds) {
             $builder = $builder->withMovingTime($movingTime);
         }
 
@@ -85,12 +85,12 @@ class GearTest extends TestCase
     public function testGetRelativeCostPerHour(?Seconds $movingTime, ?Money $purchasePrice, ?Money $expectedResult): void
     {
         $builder = GearBuilder::fromDefaults()->withPurchasePrice($purchasePrice);
-        if (null !== $movingTime) {
+        if ($movingTime instanceof Seconds) {
             $builder = $builder->withMovingTime($movingTime);
         }
         $gear = $builder->build();
 
-        if (null === $expectedResult) {
+        if (!$expectedResult instanceof Money) {
             $this->assertNull($gear->getRelativeCostPerHour());
 
             return;
@@ -108,7 +108,7 @@ class GearTest extends TestCase
         }
         $gear = $builder->build();
 
-        if (null === $expectedResult) {
+        if (!$expectedResult instanceof Money) {
             $this->assertNull($gear->getRelativeCostPerWorkout());
 
             return;

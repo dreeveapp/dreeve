@@ -34,7 +34,7 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
         $this->addActivityWithRouteCells('other-activity-type', $route, sportType: SportType::RUN);
         $this->addActivityWithRouteCells('other-world-type', $route, worldType: WorldType::ZWIFT);
         $this->addActivityWithRouteCells('too-far', $route, distance: Kilometer::from(20));
-        $this->addActivityWithRouteCells('reversed', $route, waypoints: self::reversedWaypoints());
+        $this->addActivityWithRouteCells('reversed', $route, waypoints: $this->reversedWaypoints());
         $this->addActivityWithRouteCells('without-signature', null);
 
         $routeMatches = $this->queryBus->ask(new FindRouteMatches(ActivityId::fromUnprefixed('subject')))->getRouteMatches();
@@ -153,7 +153,7 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
         );
     }
 
-    private static function reversedWaypoints(): RouteWaypoints
+    private function reversedWaypoints(): RouteWaypoints
     {
         $forward = ActivityRouteSignatureBuilder::fromDefaults()->build()->getWaypoints()->toArray();
         $reversed = [];

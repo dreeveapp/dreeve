@@ -23,7 +23,7 @@ final class SegmentBuilder
     private string $deviceName = 'Polar';
     private readonly string $countryCode;
     private bool $detailsHaveBeenImported = false;
-    private ?EncodedPolyline $polyline;
+    private ?EncodedPolyline $polyline = null;
     private ?float $averageGradient = 2.7;
     private SegmentType $type = SegmentType::IMPORTED;
 
@@ -33,7 +33,6 @@ final class SegmentBuilder
         $this->name = Name::fromString('Segment');
         $this->distance = Kilometer::from(1);
         $this->countryCode = 'BE';
-        $this->polyline = null;
     }
 
     public static function fromDefaults(): self

@@ -20,14 +20,14 @@ final class MigrationRunnerStub implements MigrationRunner
 
     public function run(OutputInterface $output): void
     {
-        if ($this->runException) {
+        if ($this->runException instanceof \Throwable) {
             throw $this->runException;
         }
     }
 
     public function isAtLatestVersion(): bool
     {
-        if (0 === $this->numberOfChecks++ && $this->firstCheckException) {
+        if (0 === $this->numberOfChecks++ && $this->firstCheckException instanceof \Throwable) {
             throw $this->firstCheckException;
         }
 

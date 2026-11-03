@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Infrastructure\CQRS\Command\Bus\RunAnOperation;
 
 use App\Infrastructure\CQRS\Command\DomainCommand;
 
 final readonly class RunAnOperation extends DomainCommand
 {
-    private readonly string $notInitialized; // @phpstan-ignore property.uninitializedReadonly, property.unused
+    private string $notInitialized; // @phpstan-ignore property.uninitializedReadonly, property.unused
 
     public function __construct(
         private ?string $value,
