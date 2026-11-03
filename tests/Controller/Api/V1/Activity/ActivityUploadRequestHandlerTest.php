@@ -217,7 +217,7 @@ class ActivityUploadRequestHandlerTest extends ControllerWebTestCase
     }
 
     /**
-     * @return list<string>
+     * @return array<string>
      */
     private function watchDirectoryContents(): array
     {

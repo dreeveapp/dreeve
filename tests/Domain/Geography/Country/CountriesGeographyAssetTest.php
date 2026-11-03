@@ -36,13 +36,17 @@ class CountriesGeographyAssetTest extends TestCase
 
             $exteriorRing = $polygons[$entry['polygonIndex']][0] ?? null;
             $this->assertNotNull($exteriorRing);
+            $longitudes = array_column($exteriorRing, 0);
+            $latitudes = array_column($exteriorRing, 1);
+            $this->assertNotEmpty($longitudes);
+            $this->assertNotEmpty($latitudes);
 
             $this->assertEquals(
                 [
-                    min(array_column($exteriorRing, 0)),
-                    min(array_column($exteriorRing, 1)),
-                    max(array_column($exteriorRing, 0)),
-                    max(array_column($exteriorRing, 1)),
+                    min($longitudes),
+                    min($latitudes),
+                    max($longitudes),
+                    max($latitudes),
                 ],
                 $entry['boundingBox']
             );

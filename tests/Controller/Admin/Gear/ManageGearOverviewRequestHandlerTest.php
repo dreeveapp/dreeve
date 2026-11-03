@@ -53,7 +53,7 @@ class ManageGearOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(3, $editLinks);
         $this->assertStringContainsString(
             '/admin/gear/'.GearId::fromUnprefixed('1').'/edit',
-            $editLinks->first()->attr('href')
+            (string) $editLinks->first()->attr('href')
         );
     }
 

@@ -25,6 +25,6 @@ class ConfiguredActionTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        ConfiguredActions::fromArray(['not-an-action']);
+        ConfiguredActions::fromArray(['not-an-action']); // @phpstan-ignore argument.type
     }
 }

@@ -31,6 +31,7 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
         $this->errorResponseExceptionListener->onKernelException($event);
 
         $response = $event->getResponse();
+        self::assertNotNull($response);
         self::assertTrue($event->isAllowingCustomResponseCode());
         self::assertEquals($expectedStatusCode->value, $response->getStatusCode());
         self::assertEquals('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
@@ -54,7 +55,11 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
 
         $this->errorResponseExceptionListener->onKernelException($event);
 
-        self::assertStringContainsString('wandered off the map', (string) $event->getResponse()->getContent());
+        $response = $event->getResponse();
+
+        self::assertNotNull($response);
+
+        self::assertStringContainsString('wandered off the map', (string) $response->getContent());
     }
 
     public function testItDoesNotLeakTheExceptionMessage(): void
@@ -63,7 +68,11 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
 
         $this->errorResponseExceptionListener->onKernelException($event);
 
-        self::assertStringNotContainsString('bogus', (string) $event->getResponse()->getContent());
+        $response = $event->getResponse();
+
+        self::assertNotNull($response);
+
+        self::assertStringNotContainsString('bogus', (string) $response->getContent());
     }
 
     public function testItRendersAndLogsAReferenceForAServerError(): void
@@ -84,7 +93,11 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
 
         $listener->onKernelException($event);
 
-        self::assertStringContainsString('0025176c', (string) $event->getResponse()->getContent());
+        $response = $event->getResponse();
+
+        self::assertNotNull($response);
+
+        self::assertStringContainsString('0025176c', (string) $response->getContent());
     }
 
     public function testItDoesNotRenderAReferenceForA404(): void
@@ -93,7 +106,11 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
 
         $this->errorResponseExceptionListener->onKernelException($event);
 
-        self::assertStringNotContainsString('Reference:', (string) $event->getResponse()->getContent());
+        $response = $event->getResponse();
+
+        self::assertNotNull($response);
+
+        self::assertStringNotContainsString('Reference:', (string) $response->getContent());
     }
 
     public function testItStepsAsideInDevSoSymfonyRendersItsOwnErrorPage(): void
@@ -122,8 +139,10 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
 
         $this->errorResponseExceptionListener->onKernelException($event);
 
-        self::assertEquals(404, $event->getResponse()->getStatusCode());
-        self::assertEquals('', $event->getResponse()->getContent());
+        $response = $event->getResponse();
+        self::assertNotNull($response);
+        self::assertEquals(404, $response->getStatusCode());
+        self::assertEquals('', $response->getContent());
     }
 
     /**

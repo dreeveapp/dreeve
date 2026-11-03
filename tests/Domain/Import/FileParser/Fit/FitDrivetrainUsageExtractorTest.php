@@ -106,7 +106,7 @@ class FitDrivetrainUsageExtractorTest extends TestCase
     }
 
     /**
-     * @return list<string>
+     * @return array<mixed>
      */
     private function describe(ActivityDrivetrainUsages $drivetrainUsages): array
     {

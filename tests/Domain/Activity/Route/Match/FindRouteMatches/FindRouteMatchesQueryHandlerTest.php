@@ -107,7 +107,7 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
         $detoured[6] += 3600;
 
         $this->addActivityWithRouteCells('subject', $route);
-        $this->addActivityWithRouteCells('detoured', $route, waypoints: RouteWaypoints::fromArray($detoured));
+        $this->addActivityWithRouteCells('detoured', $route, waypoints: RouteWaypoints::fromArray(array_values($detoured)));
 
         $routeMatches = $this->queryBus->ask(new FindRouteMatches(ActivityId::fromUnprefixed('subject')))->getRouteMatches();
 

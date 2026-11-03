@@ -29,6 +29,7 @@ class AddGearMaintenanceLogCommandHandlerTest extends ContainerTestCase
         $this->assertCount(1, $logs);
 
         $log = $logs->getFirst();
+        $this->assertNotNull($log);
         $this->assertEquals(GearId::fromUnprefixed('b1'), $log->getGearId());
         $this->assertEquals(MaintenanceTaskId::fromUnprefixed('chain-lubed'), $log->getMaintenanceTaskId());
         $this->assertEquals(SerializableDateTime::fromString('2025-01-01 00:00:00'), $log->getPerformedOn());

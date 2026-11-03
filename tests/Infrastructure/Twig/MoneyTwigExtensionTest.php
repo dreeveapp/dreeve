@@ -50,6 +50,8 @@ class MoneyTwigExtensionTest extends ContainerTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->moneyTwigExtension = $this->getContainer()->get(MoneyTwigExtension::class);
     }
 }

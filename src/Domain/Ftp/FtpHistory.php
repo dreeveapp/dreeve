@@ -106,7 +106,7 @@ final class FtpHistory implements SupportsAITooling
     }
 
     /**
-     * @param array<string, mixed> $values
+     * @param array<mixed> $values
      */
     public static function fromArray(array $values): self
     {

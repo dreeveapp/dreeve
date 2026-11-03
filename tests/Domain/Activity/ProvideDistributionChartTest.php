@@ -18,7 +18,7 @@ class ProvideDistributionChartTest extends TestCase
                 private int $min,
                 private int $max,
                 private int $step,
-                private int $target)
+                private int|float $target)
             {
             }
 

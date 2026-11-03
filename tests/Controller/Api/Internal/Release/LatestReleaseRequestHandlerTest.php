@@ -26,6 +26,7 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
                     ['path' => '.github/workflows/ci.yml'],
                     ['path' => '.github/workflows/docker-image.yml'],
                 ]])),
+                default => throw new \LogicException(sprintf('Unexpected request to "%s"', $uri)),
             });
 
         $handler = new LatestReleaseRequestHandler(
@@ -72,6 +73,7 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
                 'https://api.github.com/repos/dreeveapp/dreeve/actions/runs' => new Response(200, body: Json::encode(['workflow_runs' => [
                     ['path' => '.github/workflows/ci.yml'],
                 ]])),
+                default => throw new \LogicException(sprintf('Unexpected request to "%s"', $uri)),
             });
 
         $handler = new LatestReleaseRequestHandler(

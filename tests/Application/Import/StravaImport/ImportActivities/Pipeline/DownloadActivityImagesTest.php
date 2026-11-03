@@ -57,6 +57,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
             );
 
         $activity = $this->downloadActivityImages->process($context)->getActivity();
+        $this->assertNotNull($activity);
 
         $this->assertSame(0, $activity->getTotalImageCount());
         $this->assertSame([], $activity->getLocalImagePaths());

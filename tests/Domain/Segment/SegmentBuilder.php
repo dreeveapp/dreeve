@@ -9,7 +9,6 @@ use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Measurement\Length\Kilometer;
-use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\Name;
 
@@ -21,12 +20,10 @@ final class SegmentBuilder
     private Kilometer $distance;
     private float $maxGradient = 5.3;
     private bool $isFavourite = false;
-    private ?string $deviceName = 'Polar';
-    private readonly ?int $climbCategory;
-    private readonly ?string $countryCode;
+    private string $deviceName = 'Polar';
+    private readonly string $countryCode;
     private bool $detailsHaveBeenImported = false;
     private ?EncodedPolyline $polyline;
-    private readonly ?Coordinate $startingCoordinate;
     private ?float $averageGradient = 2.7;
     private SegmentType $type = SegmentType::IMPORTED;
 
@@ -35,10 +32,8 @@ final class SegmentBuilder
         $this->segmentId = SegmentId::fromUnprefixed('1');
         $this->name = Name::fromString('Segment');
         $this->distance = Kilometer::from(1);
-        $this->climbCategory = null;
         $this->countryCode = 'BE';
         $this->polyline = null;
-        $this->startingCoordinate = null;
     }
 
     public static function fromDefaults(): self
@@ -55,12 +50,12 @@ final class SegmentBuilder
             distance: $this->distance,
             maxGradient: $this->maxGradient,
             isFavourite: $this->isFavourite,
-            climbCategory: $this->climbCategory,
+            climbCategory: null,
             deviceName: $this->deviceName,
             countryCode: $this->countryCode,
             detailsHaveBeenImported: $this->detailsHaveBeenImported,
             polyline: $this->polyline,
-            startingCoordinate: $this->startingCoordinate,
+            startingCoordinate: null,
             averageGradient: $this->averageGradient,
             type: $this->type,
         );

@@ -14,6 +14,7 @@ use App\Domain\Activity\BestEffort\ActivityBestEffort;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEfforts;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEffortsQueryHandler;
+use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEffortsResponse;
 use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -88,6 +89,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
         );
 
         $response = $this->queryHandler->handle(new FindBestEfforts());
+        $this->assertInstanceOf(FindBestEffortsResponse::class, $response);
 
         $this->assertEquals(
             [
@@ -110,6 +112,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
         );
 
         $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::RIDE, Kilometer::from(20)));
+        $this->assertInstanceOf(FindBestEffortsResponse::class, $response);
         $this->assertEquals(
             [['activity-1', 3600]],
             $response->getBestEfforts()->map(fn (ActivityBestEffort $bestEffort): array => [
@@ -119,12 +122,14 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
         );
 
         $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::RIDE, Kilometer::from(10)));
+        $this->assertInstanceOf(FindBestEffortsResponse::class, $response);
         $this->assertEquals(
             ['activity-2', 'activity-1'],
             $response->getBestEfforts()->map(fn (ActivityBestEffort $bestEffort): string => (string) $bestEffort->getActivityId())
         );
 
         $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::WALK, Kilometer::from(10)));
+        $this->assertInstanceOf(FindBestEffortsResponse::class, $response);
         $this->assertTrue($response->getBestEfforts()->isEmpty());
     }
 
@@ -164,6 +169,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
         );
 
         $response = $this->queryHandler->handle(new FindBestEfforts());
+        $this->assertInstanceOf(FindBestEffortsResponse::class, $response);
 
         $this->assertEquals(
             ['activity-2', 'activity-1'],
@@ -175,6 +181,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
             []
         ));
         $response = $this->queryHandler->handle(new FindBestEfforts());
+        $this->assertInstanceOf(FindBestEffortsResponse::class, $response);
 
         $this->assertEquals(
             ['activity-1'],
@@ -189,6 +196,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
     public function testHandleWithoutBestEfforts(): void
     {
         $response = $this->queryHandler->handle(new FindBestEfforts());
+        $this->assertInstanceOf(FindBestEffortsResponse::class, $response);
 
         $this->assertTrue($response->getBestEfforts()->isEmpty());
         $this->assertEquals([], $response->getStartDateTimePerActivity());

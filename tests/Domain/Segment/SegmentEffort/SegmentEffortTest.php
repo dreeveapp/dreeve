@@ -3,8 +3,6 @@
 namespace App\Tests\Domain\Segment\SegmentEffort;
 
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
-use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
-use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use PHPUnit\Framework\TestCase;
 
 class SegmentEffortTest extends TestCase
@@ -27,13 +25,7 @@ class SegmentEffortTest extends TestCase
             ->withElapsedTimeInSeconds(1000)
             ->build();
 
-        $this->assertInstanceOf(
-            SecPerKm::class,
-            $segmentEffort->getPaceInSecPerKm()
-        );
-        $this->assertInstanceOf(
-            SecPer100Meter::class,
-            $segmentEffort->getPaceInSecPer100Meter()
-        );
+        $this->assertEqualsWithDelta(10000, $segmentEffort->getPaceInSecPerKm()->toFloat(), 0.01);
+        $this->assertEqualsWithDelta(1000, $segmentEffort->getPaceInSecPer100Meter()->toFloat(), 0.01);
     }
 }

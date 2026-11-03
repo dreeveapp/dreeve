@@ -20,7 +20,7 @@ class SportTypesSortingOrderTest extends TestCase
             if (in_array($sportType, [
                 SportType::POOL_SWIM,
                 SportType::RUN,
-            ])) {
+            ], true)) {
                 continue;
             }
 

@@ -67,6 +67,8 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
             ],
             array_map(get_class(...), $dispatchedCommands),
         );
+        $this->assertInstanceOf(ImportActivities::class, $dispatchedCommands[0]);
+        $this->assertInstanceOf(ImportGear::class, $dispatchedCommands[1]);
         foreach ([$dispatchedCommands[0], $dispatchedCommands[1]] as $dispatchedCommand) {
             $this->assertSame(
                 $expectedRestrictToActivityIds,

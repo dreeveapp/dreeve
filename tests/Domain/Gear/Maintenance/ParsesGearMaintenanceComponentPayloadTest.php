@@ -10,10 +10,8 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
-use App\Domain\Gear\Maintenance\ParsesGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
-use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -22,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 class ParsesGearMaintenanceComponentPayloadTest extends TestCase
 {
-    private object $parser;
+    private ParsesGearMaintenanceComponentPayloadStub $parser;
 
     public function testParseLabel(): void
     {
@@ -219,6 +217,7 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
 
         $this->assertCount(1, $tasks);
         $task = $tasks->getFirst();
+        $this->assertNotNull($task);
         $this->assertEquals(Name::fromString('Lube'), $task->getLabel());
         $this->assertSame(500, $task->getIntervalValue());
         $this->assertSame(IntervalUnit::EVERY_X_KILOMETERS_USED, $task->getIntervalUnit());
@@ -232,10 +231,12 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
                 ['id' => ' maintenanceTask-chain-lubed ', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
             ],
         ], generateMissingIds: false);
+        $task = $tasks->getFirst();
+        $this->assertNotNull($task);
 
         $this->assertEquals(
             MaintenanceTaskId::fromUnprefixed('chain-lubed'),
-            $tasks->getFirst()->getId(),
+            $task->getId(),
         );
     }
 
@@ -352,40 +353,6 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
     {
         parent::setUp();
 
-        $this->parser = new class {
-            use ParsesGearMaintenanceComponentPayload;
-
-            /**
-             * @param array<string, mixed> $payload
-             */
-            public function doParseLabel(array $payload): Name
-            {
-                return self::parseLabel($payload);
-            }
-
-            /**
-             * @param array<string, mixed> $payload
-             */
-            public function doParseNotes(array $payload): ?string
-            {
-                return self::parseNotes($payload);
-            }
-
-            /**
-             * @param array<string, mixed> $payload
-             */
-            public function doParseInstallations(array $payload): GearComponentInstallations
-            {
-                return self::parseInstallations($payload);
-            }
-
-            /**
-             * @param array<string, mixed> $payload
-             */
-            public function doParseMaintenanceTasks(array $payload, bool $generateMissingIds): MaintenanceTasks
-            {
-                return self::parseMaintenanceTasks($payload, $generateMissingIds);
-            }
-        };
+        $this->parser = new ParsesGearMaintenanceComponentPayloadStub();
     }
 }

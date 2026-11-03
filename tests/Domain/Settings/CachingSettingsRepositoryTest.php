@@ -24,6 +24,9 @@ use PHPUnit\Framework\TestCase;
 
 class CachingSettingsRepositoryTest extends TestCase
 {
+    /**
+     * @param non-empty-string $method
+     */
     #[DataProvider('cachedAccessorProvider')]
     public function testAccessorIsReadFromInnerOnlyOnce(string $method, object $value, callable $act): void
     {
@@ -38,7 +41,7 @@ class CachingSettingsRepositoryTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, object, callable}>
+     * @return iterable<string, array{non-empty-string, object, callable}>
      */
     public static function cachedAccessorProvider(): iterable
     {

@@ -35,7 +35,7 @@ class EddingtonMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 1; $i <= 5; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $i))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i)))
                     ->withSportType(SportType::RIDE)
                     ->withDistance(Kilometer::from(10.0))
@@ -103,7 +103,7 @@ class EddingtonMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 1; $i <= 10; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $i))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i)))
                     ->withSportType(SportType::RIDE)
                     ->withDistance(Kilometer::from(15.0))

@@ -27,7 +27,6 @@ use Symfony\AI\Platform\Result\Stream\Delta\TextDelta;
 use Symfony\AI\Platform\Result\StreamResult;
 use Symfony\AI\Platform\Test\InMemoryPlatform;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
@@ -162,8 +161,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
 
         $request = new Request(query: ['message' => 'What is my FTP?']);
         $response = $requestHandler->chatSse($request);
-
-        $this->assertInstanceOf(EventStreamResponse::class, $response);
 
         ob_start();
         $response->sendContent();

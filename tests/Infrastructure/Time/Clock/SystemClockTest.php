@@ -3,7 +3,6 @@
 namespace App\Tests\Infrastructure\Time\Clock;
 
 use App\Infrastructure\Time\Clock\SystemClock;
-use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\SerializableTimezone;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +23,6 @@ class SystemClockTest extends TestCase
 
         $now = $clock->now();
 
-        $this->assertInstanceOf(SerializableDateTime::class, $now);
         $this->assertEquals($expectedDateTime, $now->format('Y-m-d H:i:s.u e'));
     }
 }

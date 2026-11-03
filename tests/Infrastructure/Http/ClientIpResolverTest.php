@@ -11,6 +11,7 @@ class ClientIpResolverTest extends TestCase
 {
     /** @var string[] */
     private array $originalTrustedProxies;
+    /** @var int-mask-of<Request::HEADER_*> */
     private int $originalTrustedHeaderSet;
 
     /**
@@ -47,7 +48,9 @@ class ClientIpResolverTest extends TestCase
         parent::setUp();
 
         $this->originalTrustedProxies = Request::getTrustedProxies();
-        $this->originalTrustedHeaderSet = Request::getTrustedHeaderSet();
+        /** @var int-mask-of<Request::HEADER_*> $originalTrustedHeaderSet */
+        $originalTrustedHeaderSet = Request::getTrustedHeaderSet();
+        $this->originalTrustedHeaderSet = $originalTrustedHeaderSet;
     }
 
     #[\Override]

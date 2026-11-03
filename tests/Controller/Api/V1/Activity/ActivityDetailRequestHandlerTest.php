@@ -40,7 +40,6 @@ class ActivityDetailRequestHandlerTest extends ControllerWebTestCase
     public function testItReportsAnActivityWithoutGpsAsHavingNoGpx(): void
     {
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
-        assert($activityRepository instanceof ActivityRepository);
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -49,7 +48,6 @@ class ActivityDetailRequestHandlerTest extends ControllerWebTestCase
             rawData: [],
         ));
         $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
-        assert($activityStreamRepository instanceof ActivityStreamRepository);
         foreach ([StreamType::TIME, StreamType::HEART_RATE, StreamType::CADENCE] as $streamType) {
             $activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))

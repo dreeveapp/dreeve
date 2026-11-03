@@ -31,10 +31,14 @@ class RollingWindowsTest extends TestCase
             windowInDays: 3,
         );
 
-        $this->assertEquals('2024-12-30', $rollingWindows->getFirst()->getFrom()->format('Y-m-d'));
-        $this->assertEquals('2025-01-01', $rollingWindows->getFirst()->getTo()->format('Y-m-d'));
-        $this->assertEquals('2025-01-03', $rollingWindows->getLast()->getFrom()->format('Y-m-d'));
-        $this->assertEquals('2025-01-05', $rollingWindows->getLast()->getTo()->format('Y-m-d'));
+        $firstWindow = $rollingWindows->getFirst();
+        $this->assertNotNull($firstWindow);
+        $lastWindow = $rollingWindows->getLast();
+        $this->assertNotNull($lastWindow);
+        $this->assertEquals('2024-12-30', $firstWindow->getFrom()->format('Y-m-d'));
+        $this->assertEquals('2025-01-01', $firstWindow->getTo()->format('Y-m-d'));
+        $this->assertEquals('2025-01-03', $lastWindow->getFrom()->format('Y-m-d'));
+        $this->assertEquals('2025-01-05', $lastWindow->getTo()->format('Y-m-d'));
     }
 
     public function testASevenDayWindowEndingOnASundayCoversThatCalendarWeek(): void
@@ -45,7 +49,9 @@ class RollingWindowsTest extends TestCase
             windowInDays: 7,
         );
 
-        $this->assertEquals('2025-01-06', $rollingWindows->getFirst()->getFrom()->format('Y-m-d'));
-        $this->assertEquals('2025-01-12', $rollingWindows->getFirst()->getTo()->format('Y-m-d'));
+        $firstWindow = $rollingWindows->getFirst();
+        $this->assertNotNull($firstWindow);
+        $this->assertEquals('2025-01-06', $firstWindow->getFrom()->format('Y-m-d'));
+        $this->assertEquals('2025-01-12', $firstWindow->getTo()->format('Y-m-d'));
     }
 }

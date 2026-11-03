@@ -24,7 +24,6 @@ class AdminUserProviderTest extends TestCase
 
         $user = $provider->loadUserByIdentifier('admin');
 
-        $this->assertInstanceOf(InMemoryUser::class, $user);
         $this->assertEquals('admin', $user->getUserIdentifier());
         $this->assertEquals('hashed-password', $user->getPassword());
         $this->assertEquals(['ROLE_ADMIN'], $user->getRoles());
@@ -80,7 +79,6 @@ class AdminUserProviderTest extends TestCase
 
         $user = $provider->refreshUser(new InMemoryUser('admin', 'hashed-password', ['ROLE_ADMIN']));
 
-        $this->assertInstanceOf(InMemoryUser::class, $user);
         $this->assertEquals('admin', $user->getUserIdentifier());
         $this->assertEquals('hashed-password', $user->getPassword());
         $this->assertEquals(['ROLE_ADMIN'], $user->getRoles());

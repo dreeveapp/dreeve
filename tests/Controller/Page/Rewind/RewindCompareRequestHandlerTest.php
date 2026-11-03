@@ -31,6 +31,9 @@ class RewindCompareRequestHandlerTest extends ControllerWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    /**
+     * @param non-empty-string|null $expectedCacheKey
+     */
     #[DataProvider('provideUrls')]
     public function testItResolvesBothRewindOptions(string $url, ?string $expectedCacheKey): void
     {

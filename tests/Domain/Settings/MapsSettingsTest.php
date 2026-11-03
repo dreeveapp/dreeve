@@ -45,8 +45,10 @@ class MapsSettingsTest extends TestCase
         $this->assertCount(2, $settings->getLeafletConfig()->getTileLayerUrls());
         $this->assertFalse($settings->getLeafletConfig()->enableGreyScale());
         $this->assertFalse($settings->getLeafletConfig()->requireCtrlToZoom());
-        $this->assertSame(51.0, $settings->getHeatmapConfig()->getInitialCenter()?->getLatitude()->toFloat());
-        $this->assertSame(3.7, $settings->getHeatmapConfig()->getInitialCenter()?->getLongitude()->toFloat());
+        $initialCenter = $settings->getHeatmapConfig()->getInitialCenter();
+        $this->assertNotNull($initialCenter);
+        $this->assertSame(51.0, $initialCenter->getLatitude()->toFloat());
+        $this->assertSame(3.7, $initialCenter->getLongitude()->toFloat());
         $this->assertSame(8, $settings->getHeatmapConfig()->getInitialZoom()?->getValue());
     }
 
@@ -108,8 +110,10 @@ class MapsSettingsTest extends TestCase
     {
         $settings = MapsSettings::fromArray(['heatmap' => ['initialCenter' => ['51.05', '3.72'], 'initialZoom' => '14']]);
 
-        $this->assertSame(51.05, $settings->getHeatmapConfig()->getInitialCenter()?->getLatitude()->toFloat());
-        $this->assertSame(3.72, $settings->getHeatmapConfig()->getInitialCenter()?->getLongitude()->toFloat());
+        $initialCenter = $settings->getHeatmapConfig()->getInitialCenter();
+        $this->assertNotNull($initialCenter);
+        $this->assertSame(51.05, $initialCenter->getLatitude()->toFloat());
+        $this->assertSame(3.72, $initialCenter->getLongitude()->toFloat());
         $this->assertSame(14, $settings->getHeatmapConfig()->getInitialZoom()?->getValue());
     }
 

@@ -6,6 +6,7 @@ use App\Tests\ContainerTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\HelperSet;
 
 abstract class ConsoleCommandTestCase extends ContainerTestCase
 {
@@ -26,9 +27,11 @@ abstract class ConsoleCommandTestCase extends ContainerTestCase
     {
         $this->application->addCommand($this->getConsoleCommand());
         $command = $this->application->find($name);
+        $helperSet = $command->getHelperSet();
+        assert($helperSet instanceof HelperSet);
 
         foreach ($helpers as $alias => $helper) {
-            $command->getHelperSet()->set($helper, $alias);
+            $helperSet->set($helper, $alias);
         }
 
         return $command;

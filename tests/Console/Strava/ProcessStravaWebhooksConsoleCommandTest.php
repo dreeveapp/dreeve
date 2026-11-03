@@ -58,7 +58,9 @@ class ProcessStravaWebhooksConsoleCommandTest extends ConsoleCommandTestCase
         }
 
         $command = $this->getCommandInApplication('app:strava:webhooks-process');
-        $command->getApplication()->addCommand($this->buildStravaImportCommand($spyCommandBus = new SpyCommandBus()));
+        $application = $command->getApplication();
+        $this->assertNotNull($application);
+        $application->addCommand($this->buildStravaImportCommand($spyCommandBus = new SpyCommandBus()));
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);

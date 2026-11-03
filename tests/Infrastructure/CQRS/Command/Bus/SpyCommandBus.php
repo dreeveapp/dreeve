@@ -9,7 +9,7 @@ use App\Infrastructure\CQRS\Command\Command;
 
 class SpyCommandBus implements CommandBus
 {
-    /** @var \App\Infrastructure\CQRS\Command\DomainCommand[] */
+    /** @var list<Command> */
     private array $commandsToDispatch = [];
 
     public function dispatch(Command $command): void
@@ -18,7 +18,7 @@ class SpyCommandBus implements CommandBus
     }
 
     /**
-     * @return \App\Infrastructure\CQRS\Command\DomainCommand[]
+     * @return list<Command>
      */
     public function getDispatchedCommands(): array
     {

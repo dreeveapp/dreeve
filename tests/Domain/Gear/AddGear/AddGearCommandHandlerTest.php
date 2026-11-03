@@ -32,6 +32,7 @@ class AddGearCommandHandlerTest extends ContainerTestCase
         $this->assertCount(1, $gears);
 
         $gear = $gears->getFirst();
+        $this->assertNotNull($gear);
         $this->assertSame('My custom gear', $gear->getOriginalName());
         $this->assertSame(GearType::CUSTOM, $gear->getType());
         $this->assertTrue($gear->isRetired());
@@ -49,6 +50,7 @@ class AddGearCommandHandlerTest extends ContainerTestCase
         ]));
 
         $gear = $this->gearRepository->findAll()->getFirst();
+        $this->assertNotNull($gear);
         $this->assertSame('My custom gear', $gear->getOriginalName());
         $this->assertSame(GearType::CUSTOM, $gear->getType());
         $this->assertFalse($gear->isRetired());
@@ -65,6 +67,7 @@ class AddGearCommandHandlerTest extends ContainerTestCase
         ]));
 
         $gear = $this->gearRepository->findAll()->getFirst();
+        $this->assertNotNull($gear);
         $this->assertSame('/files/gear/0025176c-5652-11ee-923d-02424dd627d5.jpg', $gear->getLocalImagePath());
         $this->assertTrue($this->fileStorage->fileExists('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertSame('image-content', $this->fileStorage->read('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));

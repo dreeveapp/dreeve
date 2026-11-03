@@ -17,6 +17,7 @@ class CoordinateTest extends TestCase
             latitude: Latitude::fromString('3'),
             longitude: Longitude::fromString('2'),
         );
+        $this->assertNotNull($coordinate);
 
         $this->assertEquals(
             Latitude::fromString('3'),

@@ -51,7 +51,9 @@ class GateRequestListenerTest extends TestCase
 
         // The third gate is never reached once the second one intercepts.
         $this->assertSame(['first', 'second'], $calls->getArrayCopy());
-        $this->assertSame('/gated', $event->getResponse()?->getTargetUrl());
+        $response = $event->getResponse();
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('/gated', $response->getTargetUrl());
     }
 
     public function testItStopsAtAGateThatAllowsTheRequest(): void

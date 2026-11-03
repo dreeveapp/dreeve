@@ -16,11 +16,7 @@ trait provideAssertFileSystem
 
     protected function assertFileSystemWritesAreEmpty(FilesystemOperator $fileSystem): void
     {
-        foreach ($fileSystem->listContents('/', true) as $item) {
-            Assert::fail('fileSystem is ot empty');
-        }
-
-        Assert::assertTrue(true, 'fileSystem is empty');
+        Assert::assertSame([], $fileSystem->listContents('/', true)->toArray(), 'fileSystem is not empty');
     }
 
     protected function assertFileSystemWrites(FilesystemOperator $fileSystem, bool $contentIsCompressed = false): void

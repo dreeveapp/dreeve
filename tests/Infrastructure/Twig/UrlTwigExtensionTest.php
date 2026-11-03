@@ -124,6 +124,8 @@ class UrlTwigExtensionTest extends ContainerTestCase
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->stringTwigExtension = new StringTwigExtension();
         $this->svgsTwigExtension = new SvgsTwigExtension($this->getContainer()->get(KernelProjectDir::class));
         $this->urlGenerator = $this->getContainer()->get(UrlGeneratorInterface::class);

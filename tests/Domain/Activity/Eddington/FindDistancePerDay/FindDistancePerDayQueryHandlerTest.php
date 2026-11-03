@@ -7,6 +7,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Eddington\FindDistancePerDay\FindDistancePerDay;
 use App\Domain\Activity\Eddington\FindDistancePerDay\FindDistancePerDayQueryHandler;
+use App\Domain\Activity\Eddington\FindDistancePerDay\FindDistancePerDayResponse;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\Measurement\Length\Kilometer;
@@ -33,6 +34,7 @@ class FindDistancePerDayQueryHandlerTest extends ContainerTestCase
             SportType::RIDE,
             SportType::MOUNTAIN_BIKE_RIDE,
         ])));
+        $this->assertInstanceOf(FindDistancePerDayResponse::class, $response);
 
         $this->assertEquals(
             [
@@ -48,6 +50,7 @@ class FindDistancePerDayQueryHandlerTest extends ContainerTestCase
         $this->addActivity('1', '2023-01-01 10:00:00', SportType::RUN, 10);
 
         $response = $this->queryHandler->handle(new FindDistancePerDay(SportTypes::fromArray([SportType::RIDE])));
+        $this->assertInstanceOf(FindDistancePerDayResponse::class, $response);
 
         $this->assertEquals([], $response->getDistancePerDay());
     }

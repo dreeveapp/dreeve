@@ -68,6 +68,8 @@ abstract class ContainerTestCase extends KernelTestCase
 
     protected function getConnection(): Connection
     {
+        assert(self::$ourDbalConnection instanceof Connection);
+
         return self::$ourDbalConnection;
     }
 }

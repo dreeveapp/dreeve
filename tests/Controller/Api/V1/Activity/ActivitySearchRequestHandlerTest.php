@@ -95,7 +95,6 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
     {
         $this->provideFullTestSet();
         $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
-        assert($activityStreamRepository instanceof ActivityStreamRepository);
         $activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
             ->withActivityId(ActivityId::fromUnprefixed('9756441741'))
             ->withStreamType(StreamType::LAT_LNG)

@@ -14,7 +14,6 @@ use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\Algorithm\ES256;
 use Jose\Component\Signature\JWSBuilder;
 use Jose\Component\Signature\Serializer\CompactSerializer;
-use Monolog\Handler\TestHandler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -125,6 +124,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $this->assertNotNull($this->client->getCookieJar()->get('REMEMBERME'));
 
         $tokenRequest = array_first(array_filter($this->requests, fn (array $request): bool => self::TOKEN_ENDPOINT === $request['url']));
+        $this->assertNotNull($tokenRequest);
         $this->assertSame('POST', $tokenRequest['method']);
         $this->assertSame('/certs/ca.pem', $tokenRequest['options']['cafile']);
         $this->assertContains('Authorization: Basic '.base64_encode('dreeve:secret'), $tokenRequest['options']['normalized_headers']['authorization']);
@@ -197,7 +197,6 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
 
         $errorLog = static::getContainer()->get('monolog.handler.errors');
-        $this->assertInstanceOf(TestHandler::class, $errorLog);
         $this->assertFalse($errorLog->hasErrorRecords());
 
         $crawler = $this->client->followRedirect();
@@ -313,7 +312,6 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseRedirects('/admin/login');
 
         $errorLog = static::getContainer()->get('monolog.handler.errors');
-        $this->assertInstanceOf(TestHandler::class, $errorLog);
         $this->assertTrue($errorLog->hasErrorThatContains('OIDC login failed'));
 
         $crawler = $this->client->followRedirect();

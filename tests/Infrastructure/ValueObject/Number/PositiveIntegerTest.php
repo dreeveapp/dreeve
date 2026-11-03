@@ -29,11 +29,11 @@ class PositiveIntegerTest extends TestCase
         PositiveInteger::fromInt(-10);
     }
 
-    #[TestWith([0, 0])]
-    #[TestWith([33, 33])]
+    #[TestWith(['0', 0])]
+    #[TestWith(['33', 33])]
     #[TestWith([null, null])]
     #[TestWith(['', null])]
-    public function testFromOptionalString(string|int|null $value, ?int $expectedValue): void
+    public function testFromOptionalString(?string $value, ?int $expectedValue): void
     {
         $this->assertEquals($expectedValue, PositiveInteger::fromOptionalString($value)?->getValue());
     }

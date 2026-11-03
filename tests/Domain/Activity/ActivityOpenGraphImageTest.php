@@ -159,7 +159,10 @@ class ActivityOpenGraphImageTest extends ContainerTestCase
         $image = imagecreatefromstring($png);
         $this->assertInstanceOf(\GdImage::class, $image);
 
-        return imagecolorsforindex($image, imagecolorat($image, 128, 90));
+        $color = imagecolorat($image, 128, 90);
+        $this->assertIsInt($color);
+
+        return imagecolorsforindex($image, $color);
     }
 
     #[\Override]

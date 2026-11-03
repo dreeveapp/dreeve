@@ -33,7 +33,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 0; $i < 7; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) ($i + 1)))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
                     ->build(), []
             ));
@@ -59,7 +59,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 0; $i < 14; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) ($i + 1)))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
                     ->build(), []
             ));
@@ -94,7 +94,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 0; $i < 5; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) ($i + 1)))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
                     ->build(), []
             ));
@@ -109,7 +109,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 0; $i < 5; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) ($i + 1)))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
                     ->build(), []
             ));
@@ -118,7 +118,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 0; $i < 7; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i + 10))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) ($i + 10)))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 7)))
                     ->build(), []
             ));
@@ -143,7 +143,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 0; $i < 7; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) ($i + 1)))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
                     ->build(), []
             ));
@@ -174,7 +174,7 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
         for ($i = 0; $i < 21; ++$i) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($i + 1))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) ($i + 1)))
                     ->withStartDateTime(SerializableDateTime::fromString(sprintf('2024-01-%02d', $i + 1)))
                     ->build(), []
             ));
@@ -184,7 +184,9 @@ class StreakMilestoneDiscovererTest extends ContainerTestCase
 
         $twentyOneDayMilestone = null;
         foreach ($milestones->toArray() as $milestone) {
-            if (21 === $milestone->getContext()->getDays()) {
+            $context = $milestone->getContext();
+            $this->assertInstanceOf(StreakContext::class, $context);
+            if (21 === $context->getDays()) {
                 $twentyOneDayMilestone = $milestone;
             }
         }

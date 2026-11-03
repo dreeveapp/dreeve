@@ -205,6 +205,9 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         );
     }
 
+    /**
+     * @param non-empty-string $expectedCacheKeySuffix
+     */
     #[DataProvider('provideStartTimeVisibility')]
     public function testItOnlyShowsTheStartTimeToTrustedVisitors(bool $demoModeIsEnabled, bool $loggedIn, bool $expectStartTime, string $expectedCacheKeySuffix): void
     {

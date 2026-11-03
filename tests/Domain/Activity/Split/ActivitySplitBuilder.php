@@ -25,7 +25,6 @@ final class ActivitySplitBuilder
     private MetersPerSecond $maxAverageSpeed;
     private readonly int $paceZone;
     private ?SecPerKm $gapPaceInSecondsPerKm = null;
-    private ?int $averageHeartRate = null;
 
     private function __construct()
     {
@@ -129,13 +128,6 @@ final class ActivitySplitBuilder
     public function withGapPace(SecPerKm $gapPace): self
     {
         $this->gapPaceInSecondsPerKm = $gapPace;
-
-        return $this;
-    }
-
-    public function withAverageHeartRate(int $averageHeartRate): self
-    {
-        $this->averageHeartRate = $averageHeartRate;
 
         return $this;
     }

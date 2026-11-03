@@ -68,9 +68,11 @@ class CalculateGapTest extends ContainerTestCase
         $this->calculateGap->process($output);
 
         $metricSplits = $this->activitySplitRepository->findBy($activityId, UnitSystem::METRIC);
+        $gapPace = $metricSplits->toArray()[0]->getGapPaceInSecondsPerKm();
+        $this->assertNotNull($gapPace);
         $this->assertEqualsWithDelta(
             999.0,
-            $metricSplits->toArray()[0]->getGapPaceInSecondsPerKm()->toFloat(),
+            $gapPace->toFloat(),
             0.01,
         );
     }
@@ -298,6 +300,7 @@ class CalculateGapTest extends ContainerTestCase
             ->toArray()[0]->getGapPaceInSecondsPerKm();
 
         $this->assertNotNull($gapAfterFirstRun);
+        $this->assertNotNull($gapAfterSecondRun);
         $this->assertEqualsWithDelta($gapAfterFirstRun->toFloat(), $gapAfterSecondRun->toFloat(), 0.01);
     }
 
@@ -968,7 +971,7 @@ class CalculateGapTest extends ContainerTestCase
     }
 
     /**
-     * @param list<array{latLng: array<int, array{float, float}>, altitude: list<float>, time: list<int>}> $trackPoints
+     * @param array{latLng: list<array{float, float}>, altitude: list<float>, time: list<int>} $trackPoints
      */
     private function addStreams(ActivityId $activityId, array $trackPoints): void
     {

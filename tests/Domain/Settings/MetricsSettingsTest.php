@@ -34,6 +34,7 @@ class MetricsSettingsTest extends TestCase
         $eddingtonConfiguration = $settings->getEddingtonConfiguration();
         $this->assertCount(1, $eddingtonConfiguration);
         $item = $eddingtonConfiguration->getFirst();
+        $this->assertNotNull($item);
         $this->assertSame('Ride', $item->getLabel());
         $this->assertFalse($item->showInDashboardWidget());
         $this->assertTrue($item->getSportTypesToInclude()->has(SportType::RIDE));
@@ -54,6 +55,7 @@ class MetricsSettingsTest extends TestCase
         ]);
 
         $item = $settings->getEddingtonConfiguration()->getFirst();
+        $this->assertNotNull($item);
         $this->assertTrue($item->showInDashboardWidget());
     }
 
