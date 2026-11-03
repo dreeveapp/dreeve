@@ -25,7 +25,7 @@ final readonly class SearchActivitiesRequestHandler
     #[Route(path: '/admin/activities/search', name: 'admin_activity_search', methods: ['GET'], priority: 10)]
     public function handle(Request $request): JsonResponse
     {
-        $query = trim((string) $request->query->get('q', ''));
+        $query = trim(str_replace(['(', ')'], ' ', (string) $request->query->get('q', '')));
         if ('' === $query) {
             return new JsonResponse([]);
         }
@@ -34,10 +34,10 @@ final readonly class SearchActivitiesRequestHandler
             static fn (ActivityOverviewItem $item): array => [
                 'value' => (string) $item->getActivityId(),
                 'reference' => ActivityReference::format(
-                    name: (string) $item->getName(),
+                    name: $item->getName(),
                     activityId: $item->getActivityId(),
                 ),
-                'label' => (string) $item->getName(),
+                'label' => $item->getName(),
                 'sublabel' => sprintf(
                     '%s · %s',
                     $item->getStartDate()->format('Y-m-d H:i'),

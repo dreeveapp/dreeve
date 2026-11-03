@@ -29,7 +29,7 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
 
     public function testItFindsActivitiesByName(): void
     {
-        $this->addActivity(id: '1', name: 'Morning commute', start: '2025-06-01 08:00:00', sportType: SportType::RIDE);
+        $this->addActivity(id: '1', name: 'Zwift - Morning commute #sfs-chain-lubed', start: '2025-06-01 08:00:00', sportType: SportType::RIDE);
         $this->addActivity(id: '2', name: 'Evening run', start: '2025-06-02 18:00:00', sportType: SportType::RUN);
 
         $this->client->loginUser($this->adminUser());
@@ -106,6 +106,12 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/activities/search?q=morning%202025');
 
         $this->assertResponseIsSuccessful();
+        $results = Json::decode($this->client->getResponse()->getContent());
+        $this->assertCount(1, $results);
+        $this->assertSame('activity-1', $results[0]['value']);
+
+        $this->client->request('GET', '/admin/activities/search?q='.urlencode('Morning commute (activity-1)'));
+
         $results = Json::decode($this->client->getResponse()->getContent());
         $this->assertCount(1, $results);
         $this->assertSame('activity-1', $results[0]['value']);

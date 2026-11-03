@@ -18,6 +18,14 @@ final readonly class ActivityName extends NonEmptyStringLiteral
         return self::fromString(sprintf('%s %s', self::getTimeOfDay($date), implode(' ', $words)));
     }
 
+    public static function forDisplay(string $name): string
+    {
+        $name = str_replace('Zwift - ', '', $name);
+        $name = (string) preg_replace('/\s*#sfs-\S+/', '', $name);
+
+        return trim($name);
+    }
+
     private static function getTimeOfDay(SerializableDateTime $date): string
     {
         $hour = $date->getHourWithoutLeadingZero();

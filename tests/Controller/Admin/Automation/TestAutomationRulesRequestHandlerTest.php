@@ -75,7 +75,7 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withName('Morning Ride')
+                ->withName('Zwift - Morning Ride')
                 ->withSportType(SportType::RIDE)
                 ->build(),
             [],
