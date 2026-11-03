@@ -8,6 +8,10 @@ interface ActivityCollectionRepository
 {
     public function add(ActivityCollection $activityCollection): void;
 
+    public function update(ActivityCollection $activityCollection): void;
+
+    public function delete(ActivityCollection $activityCollection): void;
+
     public function find(ActivityCollectionId $activityCollectionId): ActivityCollection;
 
     public function findAll(): ActivityCollections;

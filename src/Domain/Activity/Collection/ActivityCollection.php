@@ -74,14 +74,35 @@ final class ActivityCollection
         return $this->name;
     }
 
+    public function withName(string $name): self
+    {
+        return clone ($this, [
+            'name' => $name,
+        ]);
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    public function withDescription(?string $description): self
+    {
+        return clone ($this, [
+            'description' => $description,
+        ]);
+    }
+
     public function getType(): ActivityCollectionType
     {
         return $this->type;
+    }
+
+    public function withType(ActivityCollectionType $type): self
+    {
+        return clone ($this, [
+            'type' => $type,
+        ]);
     }
 
     public function getActivityIds(): ActivityIds

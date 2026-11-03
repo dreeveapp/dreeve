@@ -28,6 +28,32 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
         ]);
     }
 
+    public function update(ActivityCollection $activityCollection): void
+    {
+        $sql = 'UPDATE ActivityCollection SET
+                    name = :name,
+                    description = :description,
+                    type = :type,
+                    activityIds = :activityIds
+                WHERE activityCollectionId = :activityCollectionId';
+
+        $this->connection->executeStatement($sql, [
+            'activityCollectionId' => $activityCollection->getId(),
+            'name' => $activityCollection->getName(),
+            'description' => $activityCollection->getDescription(),
+            'type' => $activityCollection->getType()->value,
+            'activityIds' => Json::encode($activityCollection->getActivityIds()),
+        ]);
+    }
+
+    public function delete(ActivityCollection $activityCollection): void
+    {
+        $this->connection->executeStatement(
+            'DELETE FROM ActivityCollection WHERE activityCollectionId = :activityCollectionId',
+            ['activityCollectionId' => $activityCollection->getId()],
+        );
+    }
+
     public function find(ActivityCollectionId $activityCollectionId): ActivityCollection
     {
         $result = $this->connection->executeQuery(
