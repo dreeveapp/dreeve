@@ -66,7 +66,7 @@ class GeneralSettingsTest extends TestCase
         $this->assertGreaterThan(0, $settings->getAthlete()->getRestingHeartRate(SerializableDateTime::fromString('2024-01-01')));
     }
 
-    #[DataProvider(methodName: 'provideUnconfiguredNames')]
+    #[DataProvider('provideUnconfiguredNames')]
     public function testItThrowsWhenTheNameIsNotConfigured(string $key, mixed $value): void
     {
         $this->expectExceptionObject(new AthleteHasNotBeenConfigured(sprintf('A "%s" is required for the athlete in the general settings', $key)));

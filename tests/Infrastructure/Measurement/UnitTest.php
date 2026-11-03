@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 
 class UnitTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideConversions')]
+    #[DataProvider('provideConversions')]
     public function testConversions(Unit $a, Unit $b): void
     {
         $this->assertEquals(
@@ -94,7 +94,7 @@ class UnitTest extends TestCase
         ];
     }
 
-    #[DataProvider(methodName: 'provideNauticalMeasurements')]
+    #[DataProvider('provideNauticalMeasurements')]
     public function testNauticalUnitsAreNeverConverted(NauticalMile|Knot $measurement): void
     {
         foreach (UnitSystem::cases() as $unitSystem) {
@@ -113,7 +113,7 @@ class UnitTest extends TestCase
         ];
     }
 
-    #[DataProvider(methodName: 'provideMeasurements')]
+    #[DataProvider('provideMeasurements')]
     public function testRepresentation(Unit $measurement, string $expectedSymbol, string $expectedValue): void
     {
         $this->assertSame($expectedSymbol, $measurement->getSymbol());

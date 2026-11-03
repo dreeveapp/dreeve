@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class FormatDateAndTimeTwigExtensionTest extends ContainerTestCase
 {
-    #[DataProvider(methodName: 'provideDates')]
+    #[DataProvider('provideDates')]
     public function testFormatDate(string $expectedFormattedDateString, SerializableDateTime $date, string $formatType, string $shortDateFormat, string $normalDateFormat): void
     {
         $extension = $this->extensionFor($shortDateFormat, $normalDateFormat, TimeFormat::AM_PM);
@@ -31,7 +31,7 @@ class FormatDateAndTimeTwigExtensionTest extends ContainerTestCase
         $extension->formatDate(SerializableDateTime::fromString('2025-01-01'), 'invalid');
     }
 
-    #[DataProvider(methodName: 'provideTimes')]
+    #[DataProvider('provideTimes')]
     public function testFormatTime(string $expectedFormattedTimeString, SerializableDateTime $date, TimeFormat $timeFormat): void
     {
         $extension = $this->extensionFor('d-m-y', 'd-m-Y', $timeFormat);

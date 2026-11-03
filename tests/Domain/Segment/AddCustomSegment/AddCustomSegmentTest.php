@@ -42,7 +42,7 @@ class AddCustomSegmentTest extends TestCase
         $this->assertFalse($command->isFavourite());
     }
 
-    #[DataProvider(methodName: 'provideInvalidPayloads')]
+    #[DataProvider('provideInvalidPayloads')]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedReason): void
     {
         $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedReason));

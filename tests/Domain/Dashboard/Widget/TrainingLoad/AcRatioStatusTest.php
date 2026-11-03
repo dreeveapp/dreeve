@@ -9,7 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AcRatioStatusTest extends ContainerTestCase
 {
-    #[DataProvider(methodName: 'fromFloatProvider')]
+    #[DataProvider('fromFloatProvider')]
     public function testFromFloat(float $value, AcRatioStatus $expected): void
     {
         self::assertSame($expected, AcRatioStatus::fromFloat($value));
@@ -43,7 +43,7 @@ class AcRatioStatusTest extends ContainerTestCase
         );
     }
 
-    #[DataProvider(methodName: 'presentationProvider')]
+    #[DataProvider('presentationProvider')]
     public function testPresentation(AcRatioStatus $status, string $expectedRange, string $expectedTextColor, string $expectedPillColors): void
     {
         self::assertSame($expectedRange, $status->getRange());

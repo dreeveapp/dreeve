@@ -110,7 +110,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
     /**
      * @param array<string, mixed> $claims
      */
-    #[DataProvider(methodName: 'provideAllowedClaims')]
+    #[DataProvider('provideAllowedClaims')]
     public function testCallbackLogsInTheAdmin(array $claims): void
     {
         $crawler = $this->client->request('GET', '/admin/login');
@@ -153,7 +153,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
     /**
      * @param array<string, mixed> $claims
      */
-    #[DataProvider(methodName: 'provideRejectedClaims')]
+    #[DataProvider('provideRejectedClaims')]
     public function testCallbackRejectsTheClaims(array $claims): void
     {
         $this->client->request('GET', '/admin/login/oidc');
@@ -184,7 +184,7 @@ class OidcLoginRequestHandlerTest extends AdminWebTestCase
     /**
      * @param array<string, mixed> $claims
      */
-    #[DataProvider(methodName: 'provideNotAllowedClaims')]
+    #[DataProvider('provideNotAllowedClaims')]
     public function testCallbackRefusesAUserThatIsNotAllowed(array $claims): void
     {
         $this->client->request('GET', '/admin/login/oidc');

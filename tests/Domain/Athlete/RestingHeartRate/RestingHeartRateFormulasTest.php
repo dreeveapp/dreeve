@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class RestingHeartRateFormulasTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideDetermineFormulaData')]
+    #[DataProvider('provideDetermineFormulaData')]
     public function testDetermineFormula(RestingHeartRateFormula $expectedFormula, string|array|int $formula): void
     {
         $this->assertEquals(

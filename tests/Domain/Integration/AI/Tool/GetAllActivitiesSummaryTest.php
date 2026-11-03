@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class GetAllActivitiesSummaryTest extends ContainerTestCase
 {
-    #[DataProvider(methodName: 'provideSummaries')]
+    #[DataProvider('provideSummaries')]
     public function testItSummarizes(?int $limit, ?string $from, ?string $to, array $expectedIds): void
     {
         foreach (['1' => '2025-01-01 08:00:00', '2' => '2025-01-15 08:00:00', '3' => '2025-02-01 23:30:00', '4' => '2025-03-01 08:00:00'] as $id => $startDateTime) {

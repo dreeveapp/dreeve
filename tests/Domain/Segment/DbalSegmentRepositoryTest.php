@@ -27,7 +27,7 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
     use MatchesSnapshots;
     private SegmentRepository $segmentRepository;
 
-    #[DataProvider(methodName: 'provideSegmentTypes')]
+    #[DataProvider('provideSegmentTypes')]
     public function testFindAndSave(SegmentType $type): void
     {
         $segment = SegmentBuilder::fromDefaults()

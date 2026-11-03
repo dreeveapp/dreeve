@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class GearComponentInstallationTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideIsActiveOn')]
+    #[DataProvider('provideIsActiveOn')]
     public function testIsActiveOn(?string $from, ?string $until, string $on, bool $expectedIsActive): void
     {
         $installation = GearComponentInstallation::create(
@@ -39,7 +39,7 @@ class GearComponentInstallationTest extends TestCase
         yield 'after window' => ['2026-01-01', '2026-03-01', '2026-03-02 08:00:00', false];
     }
 
-    #[DataProvider(methodName: 'provideInvalidWindows')]
+    #[DataProvider('provideInvalidWindows')]
     public function testItShouldThrowWhenUntilIsNotAfterFrom(string $from, string $until): void
     {
         $this->expectExceptionObject(new \InvalidArgumentException('An installation must end after it starts'));

@@ -32,7 +32,7 @@ class SegmentOverviewFiltersTest extends TestCase
         $this->assertFalse($filters->isEmpty());
     }
 
-    #[DataProvider(methodName: 'provideIgnoredValues')]
+    #[DataProvider('provideIgnoredValues')]
     public function testItIgnoresBlankOrUnknownValues(array $query): void
     {
         $filters = SegmentOverviewFilters::fromRequest(new Request(query: ['filters' => $query]));

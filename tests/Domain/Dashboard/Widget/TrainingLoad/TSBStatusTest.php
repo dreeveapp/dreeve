@@ -9,7 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TSBStatusTest extends ContainerTestCase
 {
-    #[DataProvider(methodName: 'fromFloatProvider')]
+    #[DataProvider('fromFloatProvider')]
     public function testFromFloat(float $value, TSBStatus $expected): void
     {
         self::assertSame($expected, TSBStatus::fromFloat($value));
@@ -53,7 +53,7 @@ class TSBStatusTest extends ContainerTestCase
         );
     }
 
-    #[DataProvider(methodName: 'presentationProvider')]
+    #[DataProvider('presentationProvider')]
     public function testPresentation(TSBStatus $status, string $expectedRange, string $expectedTextColor, string $expectedPillColors): void
     {
         self::assertSame($expectedRange, $status->getRange());

@@ -43,7 +43,7 @@ class HeartRateZoneConfigurationTest extends TestCase
                 zone5: {from: 83, to: null}
         YML;
 
-    #[DataProvider(methodName: 'provideValidConfig')]
+    #[DataProvider('provideValidConfig')]
     public function testGetHeartRateZonesFor(SportType $sportType, SerializableDateTime $on, int $expectedZone4To): void
     {
         $config = HeartRateZoneConfiguration::fromArray([
@@ -112,7 +112,7 @@ class HeartRateZoneConfigurationTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testFromArrayItShouldThrow(array $config, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidHeartZoneConfiguration($expectedException));

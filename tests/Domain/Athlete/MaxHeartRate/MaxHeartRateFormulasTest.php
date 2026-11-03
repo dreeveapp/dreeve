@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class MaxHeartRateFormulasTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideDetermineFormulaData')]
+    #[DataProvider('provideDetermineFormulaData')]
     public function testDetermineFormula(MaxHeartRateFormula $expectedFormula, string|array $formula): void
     {
         $this->assertEquals(

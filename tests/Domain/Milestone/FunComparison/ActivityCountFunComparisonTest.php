@@ -23,7 +23,7 @@ class ActivityCountFunComparisonTest extends TestCase
         $this->assertNull(ActivityCountFunComparison::resolve(9));
     }
 
-    #[DataProvider(methodName: 'resolveProvider')]
+    #[DataProvider('resolveProvider')]
     public function testResolve(int $count, ActivityCountFunComparison $expected): void
     {
         $this->assertEquals($expected, ActivityCountFunComparison::resolve($count));

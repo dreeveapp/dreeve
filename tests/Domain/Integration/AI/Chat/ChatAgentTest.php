@@ -22,7 +22,7 @@ class ChatAgentTest extends TestCase
      * @param array<string, mixed> $config
      * @param array<string, mixed> $expectedRequest
      */
-    #[DataProvider(methodName: 'provideProviders')]
+    #[DataProvider('provideProviders')]
     public function testItCallsTheConfiguredProvider(array $config, array $expectedRequest): void
     {
         $requests = [];

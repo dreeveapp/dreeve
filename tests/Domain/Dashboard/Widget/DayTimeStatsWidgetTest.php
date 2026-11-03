@@ -18,7 +18,7 @@ class DayTimeStatsWidgetTest extends ContainerTestCase
         $this->widget->guardValidConfiguration(WidgetConfiguration::empty()->add('morningStartHour', 4)->add('afternoonStartHour', 11)->add('eveningStartHour', 17)->add('nightStartHour', 1));
     }
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testGuardValidConfigurationItShouldThrow(WidgetConfiguration $config, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidDashboardLayout($expectedException));

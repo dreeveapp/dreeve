@@ -33,7 +33,7 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
 
     private CalculateStreamValueDistribution $calculateStreamValueDistribution;
 
-    #[DataProvider(methodName: 'provideUnitSystems')]
+    #[DataProvider('provideUnitSystems')]
     public function testProcess(UnitSystem $unitSystem): void
     {
         $output = new SpyOutput();

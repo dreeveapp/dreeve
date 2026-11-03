@@ -25,7 +25,7 @@ class ConsistencyChallengeTest extends TestCase
         ConsistencyChallenge::createUnitFromScalars(0, 'gram');
     }
 
-    #[DataProvider(methodName: 'provideDataForUnitConversion')]
+    #[DataProvider('provideDataForUnitConversion')]
     public function testConvertKilometerToUnit(ConsistencyChallenge $challenge, Unit $expectedConversion): void
     {
         $this->assertEquals(
@@ -46,7 +46,7 @@ class ConsistencyChallengeTest extends TestCase
         )->convertKilometerToGoalUnit(Kilometer::zero());
     }
 
-    #[DataProvider(methodName: 'provideDataForUnitConversion')]
+    #[DataProvider('provideDataForUnitConversion')]
     public function testConvertMeterToUnit(ConsistencyChallenge $challenge, Unit $expectedConversion): void
     {
         $this->assertEquals(
@@ -67,7 +67,7 @@ class ConsistencyChallengeTest extends TestCase
         )->convertMeterToGoalUnit(Meter::zero());
     }
 
-    #[DataProvider(methodName: 'provideDataForSecondsToUnitConversion')]
+    #[DataProvider('provideDataForSecondsToUnitConversion')]
     public function testConvertSecondsToUnit(ConsistencyChallenge $challenge, Unit $expectedConversion): void
     {
         $this->assertEquals(

@@ -26,9 +26,9 @@ class SetNameActionTest extends TestCase
         );
     }
 
-    #[TestWith(data: ['Morning Ride'])]
-    #[TestWith(data: ['[activity:name] on [activity:start-date:d-m-Y]'])]
-    #[TestWith(data: ['[5x400m] [note: hello] [foo:bar]'])]
+    #[TestWith(['Morning Ride'])]
+    #[TestWith(['[activity:name] on [activity:start-date:d-m-Y]'])]
+    #[TestWith(['[5x400m] [note: hello] [foo:bar]'])]
     public function testGuardPassesForValidConfiguration(string $name): void
     {
         $this->expectNotToPerformAssertions();
@@ -36,8 +36,8 @@ class SetNameActionTest extends TestCase
         $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => $name]));
     }
 
-    #[TestWith(data: ['   ', 'A "name" is required.'])]
-    #[TestWith(data: ['[activity:pizza] with [gear:name:foo]', 'Unknown token(s): [activity:pizza], [gear:name:foo].'])]
+    #[TestWith(['   ', 'A "name" is required.'])]
+    #[TestWith(['[activity:pizza] with [gear:name:foo]', 'Unknown token(s): [activity:pizza], [gear:name:foo].'])]
     public function testGuardThrowsOnInvalidConfiguration(string $name, string $expectedMessage): void
     {
         $this->expectExceptionObject(new InvalidAutomationRule($expectedMessage));
@@ -45,9 +45,9 @@ class SetNameActionTest extends TestCase
         $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['name' => $name]));
     }
 
-    #[TestWith(data: ['Morning Ride', 'Morning Ride'])]
-    #[TestWith(data: ['Commute: [activity:name]', 'Commute: Morning Ride'])]
-    #[TestWith(data: ['Ridden with [gear:name]', 'Ridden with [gear:name]'])]
+    #[TestWith(['Morning Ride', 'Morning Ride'])]
+    #[TestWith(['Commute: [activity:name]', 'Commute: Morning Ride'])]
+    #[TestWith(['Ridden with [gear:name]', 'Ridden with [gear:name]'])]
     public function testApplyToSetsTheNameReplacingResolvableTokens(string $configuredName, string $expectedName): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();

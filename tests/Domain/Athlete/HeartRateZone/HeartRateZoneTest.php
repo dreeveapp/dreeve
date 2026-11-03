@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class HeartRateZoneTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideTestRangeInBpmData')]
+    #[DataProvider('provideTestRangeInBpmData')]
     public function testGetRangeInBpm(int $from, ?int $to, int $athleteMaxHeartRate, HeartRateZoneMode $mode, array $expectedRange): void
     {
         $this->assertEquals(
@@ -23,7 +23,7 @@ class HeartRateZoneTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideTestColorData')]
+    #[DataProvider('provideTestColorData')]
     public function testGetColor(string $name, string $expectedColor): void
     {
         $this->assertEquals(

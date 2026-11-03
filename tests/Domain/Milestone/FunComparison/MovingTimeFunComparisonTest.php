@@ -10,7 +10,7 @@ use Symfony\Component\Translation\IdentityTranslator;
 
 class MovingTimeFunComparisonTest extends TestCase
 {
-    #[DataProvider(methodName: 'resolveProvider')]
+    #[DataProvider('resolveProvider')]
     public function testResolve(float $hours, MovingTimeFunComparison $expected): void
     {
         $this->assertEquals($expected, MovingTimeFunComparison::resolve(Hour::from($hours)));

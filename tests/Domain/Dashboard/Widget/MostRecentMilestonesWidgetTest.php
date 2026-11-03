@@ -14,7 +14,7 @@ class MostRecentMilestonesWidgetTest extends ContainerTestCase
 {
     private MostRecentMilestonesWidget $widget;
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testGuardValidConfigurationItShouldThrow(WidgetConfiguration $config, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidDashboardLayout($expectedException));

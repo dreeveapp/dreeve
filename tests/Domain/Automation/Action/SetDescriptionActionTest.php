@@ -26,9 +26,9 @@ class SetDescriptionActionTest extends TestCase
         );
     }
 
-    #[TestWith(data: [''])]
-    #[TestWith(data: ['[activity:name] on [activity:start-date:d-m-Y]'])]
-    #[TestWith(data: ['[5x400m] [note: hello] [foo:bar]'])]
+    #[TestWith([''])]
+    #[TestWith(['[activity:name] on [activity:start-date:d-m-Y]'])]
+    #[TestWith(['[5x400m] [note: hello] [foo:bar]'])]
     public function testGuardPassesForValidConfiguration(string $description): void
     {
         $this->expectNotToPerformAssertions();
@@ -51,9 +51,9 @@ class SetDescriptionActionTest extends TestCase
         $this->action->guardValidConfiguration(RuleConfiguration::fromConfig(['description' => 'Intervals: [activity:pizza]']));
     }
 
-    #[TestWith(data: ['Felt great today', 'Felt great today'])]
-    #[TestWith(data: ['Started on [activity:start-date]', 'Started on default-format'])]
-    #[TestWith(data: ['Ridden with [gear:name]', 'Ridden with [gear:name]'])]
+    #[TestWith(['Felt great today', 'Felt great today'])]
+    #[TestWith(['Started on [activity:start-date]', 'Started on default-format'])]
+    #[TestWith(['Ridden with [gear:name]', 'Ridden with [gear:name]'])]
     public function testApplyToSetsTheDescriptionReplacingResolvableTokens(string $configuredDescription, string $expectedDescription): void
     {
         $activity = ActivityBuilder::fromDefaults()->build();

@@ -169,7 +169,7 @@ class ConsistencyChallengesTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testFromConfigurationItShouldThrow(array $config, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidDashboardLayout($expectedException));

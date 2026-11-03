@@ -9,7 +9,7 @@ use Symfony\Component\Translation\IdentityTranslator;
 
 class StreakFunComparisonTest extends TestCase
 {
-    #[DataProvider(methodName: 'resolveProvider')]
+    #[DataProvider('resolveProvider')]
     public function testResolve(int $days, StreakFunComparison $expected): void
     {
         $this->assertEquals($expected, StreakFunComparison::resolve($days));

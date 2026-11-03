@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ActivitySplitTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideRelativePacePercentages')]
+    #[DataProvider('provideRelativePacePercentages')]
     public function testGetRelativePacePercentage(
         ActivitySplit $activitySplit,
         float $expectedPercentage): void

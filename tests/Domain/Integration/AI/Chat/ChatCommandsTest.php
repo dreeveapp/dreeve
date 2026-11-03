@@ -24,7 +24,7 @@ class ChatCommandsTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testFromYmlStringItShouldThrow(array $yml, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidChatCommandsConfig($expectedException));

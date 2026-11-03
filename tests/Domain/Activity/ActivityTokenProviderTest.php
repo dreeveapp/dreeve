@@ -33,7 +33,7 @@ class ActivityTokenProviderTest extends TestCase
         }
     }
 
-    #[DataProvider(methodName: 'provideMetricTokens')]
+    #[DataProvider('provideMetricTokens')]
     public function testResolve(string $key, string $expectedValue): void
     {
         $this->assertSame(
@@ -50,7 +50,7 @@ class ActivityTokenProviderTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideImperialTokens')]
+    #[DataProvider('provideImperialTokens')]
     public function testResolveWithImperialUnitSystem(string $key, string $expectedValue): void
     {
         $this->assertSame(
@@ -91,7 +91,7 @@ class ActivityTokenProviderTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideNullableTokens')]
+    #[DataProvider('provideNullableTokens')]
     public function testResolveReturnsNullForUnsetFields(string $key): void
     {
         $context = TokenizerContext::empty()->with(ActivityBuilder::fromDefaults()->build());

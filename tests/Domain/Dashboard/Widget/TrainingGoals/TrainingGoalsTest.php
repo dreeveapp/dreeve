@@ -125,7 +125,7 @@ class TrainingGoalsTest extends TestCase
         $this->assertTrue($goal->isActiveOn(SerializableDateTime::fromString('2099-12-31')));
     }
 
-    #[DataProvider(methodName: 'provideInvalidConfig')]
+    #[DataProvider('provideInvalidConfig')]
     public function testFromConfigurationItShouldThrow(array $config, string $expectedException): void
     {
         $this->expectExceptionObject(new InvalidDashboardLayout($expectedException));

@@ -40,12 +40,12 @@ class StreamMathTest extends TestCase
         ];
     }
 
-    #[TestWith(data: [[], 0])]
-    #[TestWith(data: [[null, null], 0])]
-    #[TestWith(data: [[0, 1, 2, 3], 3])]
-    #[TestWith(data: [[0, null, 2, null, 3], 3])]
-    #[TestWith(data: [[0, 10, 200, 210], 20])]
-    #[TestWith(data: [[10, 5, 6], 1])]
+    #[TestWith([[], 0])]
+    #[TestWith([[null, null], 0])]
+    #[TestWith([[0, 1, 2, 3], 3])]
+    #[TestWith([[0, null, 2, null, 3], 3])]
+    #[TestWith([[0, 10, 200, 210], 20])]
+    #[TestWith([[10, 5, 6], 1])]
     public function testActiveSeconds(array $timestamps, int $expectedResult): void
     {
         $this->assertSame(
@@ -54,11 +54,11 @@ class StreamMathTest extends TestCase
         );
     }
 
-    #[TestWith(data: [[], [], []])]
-    #[TestWith(data: [[0.0, 5.0, 15.0], [0, 1, 2], [null, 5.0, 10.0]])]
-    #[TestWith(data: [[0.0, null, 15.0], [0, 1, 2], [null, null, 7.5]])]
-    #[TestWith(data: [[0.0, 5.0], [0, null], [null, null]])]
-    #[TestWith(data: [[0.0, 5.0], [5, 5], [null, null]])]
+    #[TestWith([[], [], []])]
+    #[TestWith([[0.0, 5.0, 15.0], [0, 1, 2], [null, 5.0, 10.0]])]
+    #[TestWith([[0.0, null, 15.0], [0, 1, 2], [null, null, 7.5]])]
+    #[TestWith([[0.0, 5.0], [0, null], [null, null]])]
+    #[TestWith([[0.0, 5.0], [5, 5], [null, null]])]
     public function testDeriveVelocityStream(array $distances, array $times, array $expectedResult): void
     {
         $this->assertSame(

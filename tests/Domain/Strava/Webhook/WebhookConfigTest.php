@@ -46,9 +46,9 @@ class WebhookConfigTest extends TestCase
         ]);
     }
 
-    #[TestWith(data: ['lol'], name: 'not an integer')]
-    #[TestWith(data: [0], name: 'lower than one')]
-    #[TestWith(data: [61], name: 'higher than sixty')]
+    #[TestWith(['lol'], 'not an integer')]
+    #[TestWith([0], 'lower than one')]
+    #[TestWith([61], 'higher than sixty')]
     public function testItShouldThrowWhenCheckIntervalIsInvalid(string|int $checkIntervalInMinutes): void
     {
         $this->expectExceptionObject(new InvalidWebhookConfig('"checkIntervalInMinutes" property must be valid integer between 1 and 60.'));

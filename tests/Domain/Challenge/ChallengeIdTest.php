@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ChallengeIdTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideData')]
+    #[DataProvider('provideData')]
     public function testFromDateAndName(SerializableDateTime $date, string $name, ChallengeId $expectedChallengeId): void
     {
         $this->assertEquals(
@@ -18,7 +18,7 @@ class ChallengeIdTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideDataOldVersion')]
+    #[DataProvider('provideDataOldVersion')]
     public function testToOldVersion(SerializableDateTime $date, string $name, ChallengeId $expectedChallengeId): void
     {
         $this->assertEquals(

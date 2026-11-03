@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class AthleteTest extends TestCase
 {
-    #[DataProvider(methodName: 'provideDataAthleteAgeData')]
+    #[DataProvider('provideDataAthleteAgeData')]
     public function testGetAthleteAge(
         SerializableDateTime $on,
         SerializableDateTime $athleteBirthday,
@@ -33,7 +33,7 @@ class AthleteTest extends TestCase
         );
     }
 
-    #[DataProvider(methodName: 'provideBlankNameData')]
+    #[DataProvider('provideBlankNameData')]
     public function testItFallsBackToAPlaceholderName(
         ?string $firstName,
         ?string $lastName,
