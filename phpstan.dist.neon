@@ -1,5 +1,7 @@
 includes:
     - vendor/tomasvotruba/type-coverage/config/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon
 parameters:
     level: 8
     paths:
@@ -12,3 +14,5 @@ parameters:
         param: 100
         property: 100
         constant: 100
+    symfony:
+        containerXmlPath: var/cache/test/App_KernelTestDebugContainer.xml

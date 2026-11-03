@@ -15,7 +15,6 @@ final class RegisterDeserializableCommandsPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $srcDir = $container->getParameter('kernel.project_dir');
-        \assert(is_string($srcDir));
         $srcDir .= '/src';
         if (!is_dir($srcDir)) {
             return;

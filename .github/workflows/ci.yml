@@ -26,6 +26,9 @@ jobs:
       - name: Validate PSR-4 compliance
         run: $PHP composer dump-autoload --dev --optimize --strict-psr
 
+      - name: Warm up test container for PHPStan
+        run: $PHP bin/console cache:warmup --env=test
+
       - name: Run PHPStan
         run: $PHP vendor/bin/phpstan analyse
 
