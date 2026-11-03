@@ -36,6 +36,9 @@ class BoundingBoxTest extends TestCase
         $this->assertEquals($bounds, BoundingBox::fromArray($bounds)->jsonSerialize());
     }
 
+    /**
+     * @param array{float, float, float, float} $other
+     */
     #[TestWith([[11.0, 0.0, 20.0, 10.0], false, 'entirely east'])]
     #[TestWith([[-20.0, 0.0, -11.0, 10.0], false, 'entirely west'])]
     #[TestWith([[0.0, 11.0, 10.0, 20.0], false, 'entirely north'])]
@@ -53,6 +56,9 @@ class BoundingBoxTest extends TestCase
         $this->assertEquals($expected, BoundingBox::fromArray($other)->overlaps($box), $description.' (reversed)');
     }
 
+    /**
+     * @param array{float, float, float, float} $other
+     */
     #[TestWith([[10.0, 0.0, 20.0, 10.0], 'touching on the east edge'])]
     #[TestWith([[-10.0, 0.0, 0.0, 10.0], 'touching on the west edge'])]
     #[TestWith([[0.0, 10.0, 10.0, 20.0], 'touching on the north edge'])]
@@ -84,6 +90,9 @@ class BoundingBoxTest extends TestCase
         );
     }
 
+    /**
+     * @param array{float, float, float, float} $bounds
+     */
     #[TestWith([[-90.0, 0.0, 90.0, 10.0], 'a span of exactly 180 degrees'])]
     #[TestWith([[4.0, 50.0, 5.0, 51.0], 'an ordinary box'])]
     public function testWidenedLeavesOtherBoxesAlone(array $bounds, string $description): void

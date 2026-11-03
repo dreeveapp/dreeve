@@ -34,6 +34,9 @@ class ProvideMeasurementFormatsTest extends TestCase
         );
     }
 
+    /**
+     * @return list<array{?float, int, string}>
+     */
     public static function provideNumbers(): array
     {
         return [
@@ -46,6 +49,9 @@ class ProvideMeasurementFormatsTest extends TestCase
         ];
     }
 
+    /**
+     * @return list<array{Unit, int, string}>
+     */
     public static function provideUnits(): array
     {
         return [

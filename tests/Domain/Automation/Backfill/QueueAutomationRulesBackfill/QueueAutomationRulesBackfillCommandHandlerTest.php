@@ -58,6 +58,9 @@ class QueueAutomationRulesBackfillCommandHandlerTest extends ContainerTestCase
         QueueAutomationRulesBackfill::fromPayload($payload);
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
     public static function provideInvalidPayloads(): iterable
     {
         yield 'no rules' => [

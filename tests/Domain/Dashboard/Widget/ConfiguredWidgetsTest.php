@@ -5,6 +5,7 @@ namespace App\Tests\Domain\Dashboard\Widget;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\Widget\ConfiguredWidget;
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
+use App\Domain\Dashboard\Widget\Widget;
 use App\Domain\Dashboard\Widget\WidgetName;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
@@ -179,7 +180,7 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         $this->assertArrayHasKey('eddington', $availableWidgets);
         $this->assertArrayHasKey('gearStats', $availableWidgets);
 
-        $labels = array_map(static fn ($widget): string => $widget->getAdminLabel(), $availableWidgets);
+        $labels = array_map(static fn (Widget $widget): string => $widget->getAdminLabel(), $availableWidgets);
         $sorted = $labels;
         uasort($sorted, strcasecmp(...));
         $this->assertSame(array_values($sorted), array_values($labels));
@@ -207,6 +208,9 @@ class ConfiguredWidgetsTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @param list<array<string, mixed>> $layout
+     */
     private function saveLayout(array $layout): void
     {
         /** @var KeyValueStore $keyValueStore */

@@ -14,6 +14,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class GetAllActivitiesSummaryTest extends ContainerTestCase
 {
+    /**
+     * @param list<string> $expectedIds
+     */
     #[DataProvider('provideSummaries')]
     public function testItSummarizes(?int $limit, ?string $from, ?string $to, array $expectedIds): void
     {
@@ -37,6 +40,9 @@ class GetAllActivitiesSummaryTest extends ContainerTestCase
         $this->assertSame(4, $summary['totalActivityCount']);
     }
 
+    /**
+     * @return iterable<string, array{?int, ?string, ?string, list<string>}>
+     */
     public static function provideSummaries(): iterable
     {
         yield 'defaults' => [null, null, null, ['4', '3', '2', '1']];

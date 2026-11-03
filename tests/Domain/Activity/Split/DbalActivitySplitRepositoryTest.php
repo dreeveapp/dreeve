@@ -252,6 +252,10 @@ class DbalActivitySplitRepositoryTest extends ContainerTestCase
         ));
     }
 
+    /**
+     * @param list<int>|null   $time
+     * @param list<float>|null $distance
+     */
     private function addStreams(string $id, ?array $time, ?array $distance): void
     {
         foreach ([StreamType::TIME->value => $time, StreamType::DISTANCE->value => $distance] as $streamType => $data) {

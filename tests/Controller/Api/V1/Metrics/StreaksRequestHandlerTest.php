@@ -28,6 +28,9 @@ class StreaksRequestHandlerTest extends ControllerWebTestCase
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideQueryStrings(): iterable
     {
         yield 'all sport types' => [''];

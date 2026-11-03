@@ -246,6 +246,9 @@ class ManageAutomationRuleFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('[]', $crawler->filter('[data-repeater-list]')->eq(1)->attr('data-repeater-initial'));
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideInvalidRuleToCopy(): iterable
     {
         yield 'unknown rule' => ['automationRule-does-not-exist'];

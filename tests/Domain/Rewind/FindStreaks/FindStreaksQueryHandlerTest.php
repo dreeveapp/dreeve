@@ -26,7 +26,7 @@ class FindStreaksQueryHandlerTest extends ContainerTestCase
         foreach ($this->getSampleDates() as $index => $date) {
             $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
                 ActivityBuilder::fromDefaults()
-                    ->withActivityId(ActivityId::fromUnprefixed($index))
+                    ->withActivityId(ActivityId::fromUnprefixed((string) $index))
                     ->withStartDateTime(SerializableDateTime::fromString($date))
                     ->withSportType(SportType::RIDE)
                     ->build(), []
@@ -110,6 +110,9 @@ class FindStreaksQueryHandlerTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return list<string>
+     */
     private function getSampleDates(): array
     {
         return [

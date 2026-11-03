@@ -35,6 +35,9 @@ class FileImportSearchRequestHandlerTest extends ControllerWebTestCase
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    /**
+     * @param list<string> $expectedFilenames
+     */
     #[DataProvider('provideFilterScenarios')]
     public function testItAppliesFilters(string $queryString, array $expectedFilenames): void
     {
@@ -47,6 +50,9 @@ class FileImportSearchRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame(count($expectedFilenames), $response['pagination']['total']);
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
     public static function provideFilterScenarios(): iterable
     {
         yield 'a filename' => ['?filters[filename]=ride.fit', ['ride.fit', 'ride.fit']];
@@ -61,6 +67,9 @@ class FileImportSearchRequestHandlerTest extends ControllerWebTestCase
         yield 'filters combine' => ['?filters[filename]=ride.fit&filters[status]=success', ['ride.fit']];
     }
 
+    /**
+     * @param list<string> $expectedFilenames
+     */
     #[DataProvider('providePaginationScenarios')]
     public function testItPaginatesAcrossQueuedFilesAndImports(string $queryString, array $expectedFilenames): void
     {
@@ -73,6 +82,9 @@ class FileImportSearchRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame(4, $response['pagination']['total']);
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
     public static function providePaginationScenarios(): iterable
     {
         yield 'a page starting with the queued file' => ['?pagination[page]=1&pagination[size]=2', ['queued.gpx', 'ride.fit']];
@@ -91,6 +103,9 @@ class FileImportSearchRequestHandlerTest extends ControllerWebTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideInvalidQueryParameters(): iterable
     {
         yield 'an unknown status' => ['?filters[status]=done'];

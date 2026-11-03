@@ -42,6 +42,9 @@ class BackfillAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
+    /**
+     * @return iterable<string, array{ImportMode, bool, string}>
+     */
     public static function provideNotFoundScenarios(): iterable
     {
         $page = '/admin/automation-rules/backfill';

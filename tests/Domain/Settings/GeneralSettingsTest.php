@@ -12,6 +12,9 @@ use PHPUnit\Framework\TestCase;
 
 class GeneralSettingsTest extends TestCase
 {
+    /**
+     * @return array<string, mixed>
+     */
     private static function validData(): array
     {
         return [
@@ -77,6 +80,9 @@ class GeneralSettingsTest extends TestCase
         GeneralSettings::fromArray($data);
     }
 
+    /**
+     * @return iterable<string, array{string, mixed}>
+     */
     public static function provideUnconfiguredNames(): iterable
     {
         foreach (['firstName', 'lastName'] as $key) {

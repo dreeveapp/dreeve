@@ -14,6 +14,7 @@ final class ActivityStreamBuilder
     private ActivityId $activityId;
     private StreamType $streamType = StreamType::WATTS;
     private SerializableDateTime $createdOn;
+    /** @var array<int, mixed> */
     private array $data = [];
 
     private function __construct()
@@ -58,6 +59,9 @@ final class ActivityStreamBuilder
         return $this;
     }
 
+    /**
+     * @param array<int, mixed> $data
+     */
     public function withData(array $data): self
     {
         $this->data = $data;

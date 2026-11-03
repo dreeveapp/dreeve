@@ -70,6 +70,9 @@ class HeartRateZoneConfigurationTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{SportType, SerializableDateTime, int}>
+     */
     public static function provideValidConfig(): iterable
     {
         yield 'sport type + matching date' => [SportType::GRAVEL_RIDE, SerializableDateTime::fromString('2025-06-01'), 82];
@@ -112,6 +115,9 @@ class HeartRateZoneConfigurationTest extends TestCase
         );
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     #[DataProvider('provideInvalidConfig')]
     public function testFromArrayItShouldThrow(array $config, string $expectedException): void
     {
@@ -119,6 +125,9 @@ class HeartRateZoneConfigurationTest extends TestCase
         HeartRateZoneConfiguration::fromArray($config);
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         $validZones = [

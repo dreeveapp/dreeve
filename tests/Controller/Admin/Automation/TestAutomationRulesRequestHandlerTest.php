@@ -20,6 +20,7 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\DomCrawler\Crawler;
 
 class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
 {
@@ -107,7 +108,7 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Automated ride name', $body);
 
         $matchedConditionPills = $crawler->filter('.rounded-full.pill--success')->reduce(
-            fn ($node): bool => str_contains($node->text(), 'is one of Ride'),
+            fn (Crawler $node): bool => str_contains($node->text(), 'is one of Ride'),
         );
         $this->assertCount(1, $matchedConditionPills);
         $this->assertStringContainsString('Sport type', $matchedConditionPills->text());
@@ -130,6 +131,9 @@ class TestAutomationRulesRequestHandlerTest extends AdminWebTestCase
         $this->assertSame($activityId, $crawler->filter('input[name="activityId"]')->attr('value'));
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideUnknownActivityIds(): iterable
     {
         yield 'an unknown activity' => ['activity-does-not-exist'];

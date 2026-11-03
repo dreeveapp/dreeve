@@ -68,6 +68,9 @@ class ImportGearCommandHandlerTest extends ContainerTestCase
         $this->assertSame(implode("\n", $expectedOutput), (string) $output);
     }
 
+    /**
+     * @return iterable<string, array{int, list<string>|null, list<string>}>
+     */
     public static function provideImports(): iterable
     {
         yield 'all gear' => [10000, null, [

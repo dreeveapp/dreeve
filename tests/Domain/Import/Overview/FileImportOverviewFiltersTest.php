@@ -71,6 +71,9 @@ class FileImportOverviewFiltersTest extends TestCase
         $this->assertEquals(ActivityId::fromUnprefixed('123'), $filters->getActivityId());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideActivityIds(): iterable
     {
         yield 'a prefixed id, as filled in by the autocomplete' => ['activity-123'];
@@ -97,6 +100,9 @@ class FileImportOverviewFiltersTest extends TestCase
         $this->assertEquals($status, $filters->getStatus());
     }
 
+    /**
+     * @return iterable<string, array{FileImportStatus}>
+     */
     public static function provideStatuses(): iterable
     {
         foreach (FileImportStatus::cases() as $status) {
@@ -114,6 +120,9 @@ class FileImportOverviewFiltersTest extends TestCase
         $this->assertEquals($source, $filters->getSource());
     }
 
+    /**
+     * @return iterable<string, array{ImportSource}>
+     */
     public static function provideSources(): iterable
     {
         foreach (ImportSource::cases() as $source) {
@@ -121,6 +130,9 @@ class FileImportOverviewFiltersTest extends TestCase
         }
     }
 
+    /**
+     * @param array<string, mixed> $query
+     */
     #[DataProvider('provideIgnoredFilterValues')]
     public function testItSilentlyIgnoresUnusableValues(array $query): void
     {
@@ -133,6 +145,9 @@ class FileImportOverviewFiltersTest extends TestCase
         $this->assertTrue($filters->isEmpty());
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>}>
+     */
     public static function provideIgnoredFilterValues(): iterable
     {
         yield 'values that are not backed enum values' => [

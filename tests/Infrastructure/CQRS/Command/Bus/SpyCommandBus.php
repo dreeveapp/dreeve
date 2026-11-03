@@ -28,6 +28,9 @@ class SpyCommandBus implements CommandBus
         return $commandsToDispatch;
     }
 
+    /**
+     * @return list<class-string<Command>>
+     */
     public function getAvailableCommands(): array
     {
         return [];

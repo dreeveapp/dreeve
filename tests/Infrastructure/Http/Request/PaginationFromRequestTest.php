@@ -40,6 +40,9 @@ class PaginationFromRequestTest extends TestCase
         );
     }
 
+    /**
+     * @param array<string, mixed> $query
+     */
     #[DataProvider('provideInvalidPagination')]
     public function testItThrows(array $query, \InvalidArgumentException $expectedException): void
     {
@@ -48,6 +51,9 @@ class PaginationFromRequestTest extends TestCase
         $this->resolvePagination(new Request(query: $query));
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, \InvalidArgumentException}>
+     */
     public static function provideInvalidPagination(): iterable
     {
         yield 'page is not an integer' => [

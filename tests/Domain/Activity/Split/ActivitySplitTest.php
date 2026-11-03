@@ -17,6 +17,9 @@ class ActivitySplitTest extends TestCase
         $this->assertEquals($expectedPercentage, $activitySplit->getRelativePacePercentage());
     }
 
+    /**
+     * @return list<array{ActivitySplit, float}>
+     */
     public static function provideRelativePacePercentages(): array
     {
         return [

@@ -17,6 +17,9 @@ class GpxSportTypeTest extends TestCase
         $this->assertSame($expectedSportType, GpxSportType::resolve($gpxType));
     }
 
+    /**
+     * @return array<string, array{string, SportType}>
+     */
     public static function provideSportMappings(): array
     {
         return [

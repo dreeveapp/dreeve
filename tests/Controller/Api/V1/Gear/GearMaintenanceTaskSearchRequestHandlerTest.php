@@ -95,6 +95,9 @@ class GearMaintenanceTaskSearchRequestHandlerTest extends ControllerWebTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
     public static function provideGearFilters(): iterable
     {
         yield 'a bike with its own and shared components' => ['gear-bike-a', [

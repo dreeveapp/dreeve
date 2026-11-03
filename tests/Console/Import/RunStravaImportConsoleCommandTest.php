@@ -79,6 +79,9 @@ class RunStravaImportConsoleCommandTest extends ConsoleCommandTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{array<string, string>, list<string>}>
+     */
     public static function provideRuns(): iterable
     {
         yield 'every activity' => [[], []];

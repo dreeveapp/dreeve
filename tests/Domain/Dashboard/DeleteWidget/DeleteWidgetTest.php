@@ -20,6 +20,9 @@ class DeleteWidgetTest extends TestCase
         $this->assertSame('dashboardWidget-eddington', (string) $command->getDashboardWidgetId());
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([[]])]
     #[TestWith([['dashboardWidgetId' => '   ']])]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload): void

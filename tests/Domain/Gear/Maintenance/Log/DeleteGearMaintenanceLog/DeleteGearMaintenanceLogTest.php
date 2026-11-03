@@ -24,6 +24,9 @@ class DeleteGearMaintenanceLogTest extends TestCase
         );
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([[]])]
     #[TestWith([['gearMaintenanceLogId' => ['nope']]])]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload): void

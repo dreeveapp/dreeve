@@ -80,6 +80,9 @@ class TrainingGoalsWidgetTest extends ContainerTestCase
         $this->assertNull($render);
     }
 
+    /**
+     * @return iterable<string, array{WidgetConfiguration}>
+     */
     public static function provideConfigurationsWithoutGoalsToRender(): iterable
     {
         yield 'no goals configured' => [WidgetConfiguration::empty()];

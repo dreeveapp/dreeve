@@ -33,6 +33,9 @@ class ActivitySplitCalculatorTest extends TestCase
         $this->assertMatchesJsonSnapshot($this->toSnapshot($splits));
     }
 
+    /**
+     * @return iterable<string, array{string, UnitSystem}>
+     */
     public static function provideScenarios(): iterable
     {
         yield 'clean run' => ['clean-run.json', UnitSystem::METRIC];

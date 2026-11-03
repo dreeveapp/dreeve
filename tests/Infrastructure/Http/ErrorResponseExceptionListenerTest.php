@@ -37,6 +37,9 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
         self::assertStringContainsString((string) $expectedStatusCode->value, (string) $response->getContent());
     }
 
+    /**
+     * @return iterable<string, array{\Throwable, HttpStatusCode}>
+     */
     public static function provideExceptions(): iterable
     {
         yield 'not found' => [new NotFoundHttpException('Unknown settings group "bogus"'), HttpStatusCode::NOT_FOUND];
@@ -123,6 +126,9 @@ class ErrorResponseExceptionListenerTest extends ContainerTestCase
         self::assertEquals('', $event->getResponse()->getContent());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function providePathsAnsweredWithAnEmptyBody(): iterable
     {
         yield 'the internal api' => ['/api/internal/activities/activity-1/polylines'];

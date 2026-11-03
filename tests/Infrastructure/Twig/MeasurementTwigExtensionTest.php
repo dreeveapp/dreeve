@@ -125,6 +125,9 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         return new MeasurementTwigExtension($settingsRepository);
     }
 
+    /**
+     * @return list<array{Unit, UnitSystem, Unit}>
+     */
     public static function provideConversions(): array
     {
         return [
@@ -135,6 +138,9 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         ];
     }
 
+    /**
+     * @return list<array{string, string, string, UnitSystem, Velocity}>
+     */
     public static function provideVelocities(): array
     {
         return [
@@ -148,6 +154,9 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         ];
     }
 
+    /**
+     * @return list<array{string, UnitSystem, Unit}>
+     */
     public static function provideMeasurementSymbols(): array
     {
         return [
@@ -163,6 +172,9 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         ];
     }
 
+    /**
+     * @return list<array{float, UnitSystem}>
+     */
     public static function provideProximityToMeterFactors(): array
     {
         return [
@@ -171,6 +183,9 @@ class MeasurementTwigExtensionTest extends ContainerTestCase
         ];
     }
 
+    /**
+     * @return list<array{string, UnitSystem, string}>
+     */
     public static function provideUnitSymbols(): array
     {
         return [

@@ -9,6 +9,7 @@ use App\Domain\Segment\SegmentType;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Segment\SegmentBuilder;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ManageSegmentOverviewRequestHandlerTest extends AdminWebTestCase
 {
@@ -51,7 +52,7 @@ class ManageSegmentOverviewRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(['Kwaremont'], $crawler->filter('table.data-table tbody tr td:first-child')->each(
-            static fn ($cell): string => trim($cell->text()),
+            static fn (Crawler $cell): string => trim($cell->text()),
         ));
         $this->assertSame('/segments/segment-1', $crawler->filter('table.data-table tbody td:first-child a')->attr('href'));
         $this->assertCount(1, $crawler->filter('#filter-name'));
@@ -82,7 +83,7 @@ class ManageSegmentOverviewRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSame([['Kwaremont', 'Imported from Strava']], $crawler->filter('table.data-table tbody tr')->each(
-            static fn ($row): array => [trim($row->filter('td')->eq(0)->text()), trim($row->filter('td')->eq(1)->text())],
+            static fn (Crawler $row): array => [trim($row->filter('td')->eq(0)->text()), trim($row->filter('td')->eq(1)->text())],
         ));
         $this->assertSame('imported', $crawler->filter('#filter-type option[selected]')->attr('value'));
         $this->assertCount(0, $crawler->filter('table.data-table tbody a[title="Edit"]'));

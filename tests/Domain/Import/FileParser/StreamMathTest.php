@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class StreamMathTest extends TestCase
 {
+    /**
+     * @param list<?float> $altitudes
+     */
     #[DataProvider('provideElevationGain')]
     public function testElevationGain(array $altitudes, float $expectedResult): void
     {
@@ -20,6 +23,9 @@ class StreamMathTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{list<?float>, float}>
+     */
     public static function provideElevationGain(): iterable
     {
         yield 'empty' => [[], 0.0];
@@ -40,6 +46,9 @@ class StreamMathTest extends TestCase
         ];
     }
 
+    /**
+     * @param list<?int> $timestamps
+     */
     #[TestWith([[], 0])]
     #[TestWith([[null, null], 0])]
     #[TestWith([[0, 1, 2, 3], 3])]
@@ -54,6 +63,11 @@ class StreamMathTest extends TestCase
         );
     }
 
+    /**
+     * @param list<?float> $distances
+     * @param list<?int>   $times
+     * @param list<?float> $expectedResult
+     */
     #[TestWith([[], [], []])]
     #[TestWith([[0.0, 5.0, 15.0], [0, 1, 2], [null, 5.0, 10.0]])]
     #[TestWith([[0.0, null, 15.0], [0, 1, 2], [null, null, 7.5]])]

@@ -64,6 +64,9 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[DataProvider('provideNotes')]
     public function testParseNotes(array $payload, ?string $expectedNotes): void
     {
@@ -352,21 +355,33 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
         $this->parser = new class {
             use ParsesGearMaintenanceComponentPayload;
 
+            /**
+             * @param array<string, mixed> $payload
+             */
             public function doParseLabel(array $payload): Name
             {
                 return self::parseLabel($payload);
             }
 
+            /**
+             * @param array<string, mixed> $payload
+             */
             public function doParseNotes(array $payload): ?string
             {
                 return self::parseNotes($payload);
             }
 
+            /**
+             * @param array<string, mixed> $payload
+             */
             public function doParseInstallations(array $payload): GearComponentInstallations
             {
                 return self::parseInstallations($payload);
             }
 
+            /**
+             * @param array<string, mixed> $payload
+             */
             public function doParseMaintenanceTasks(array $payload, bool $generateMissingIds): MaintenanceTasks
             {
                 return self::parseMaintenanceTasks($payload, $generateMissingIds);

@@ -54,12 +54,18 @@ class MovingTimeConditionTest extends TestCase
         $this->assertTrue($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'gt', 'value' => 90])));
     }
 
+    /**
+     * @return iterable<string, array{string, int, string}>
+     */
     public static function provideInvalidConfigurations(): iterable
     {
         yield 'invalid operator' => ['nope', 90, 'Invalid moving time operator "nope".'];
         yield 'negative value' => ['gte', -1, 'A "value" of at least 0 is required.'];
     }
 
+    /**
+     * @return iterable<string, array{string, int, bool}>
+     */
     public static function provideMatchExpectations(): iterable
     {
         yield 'gte a smaller value' => ['gte', 89, true];

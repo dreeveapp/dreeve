@@ -22,6 +22,9 @@ class McpServerTest extends ControllerWebTestCase
 
     private McpToken $token;
 
+    /**
+     * @param array<string, string> $server
+     */
     #[DataProvider('provideRequestsWithoutAValidToken')]
     public function testItRejectsARequestWithoutAValidToken(array $server): void
     {
@@ -37,6 +40,9 @@ class McpServerTest extends ControllerWebTestCase
         $this->assertSame('invalid_token', Json::decode((string) $response->getContent())['error']);
     }
 
+    /**
+     * @return iterable<string, array{array<string, string>}>
+     */
     public static function provideRequestsWithoutAValidToken(): iterable
     {
         yield 'no Authorization header' => [[]];
@@ -105,6 +111,9 @@ class McpServerTest extends ControllerWebTestCase
         $this->assertMatchesJsonSnapshot((string) $response->getContent());
     }
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     #[DataProvider('provideToolCalls')]
     public function testItCallsATool(string $name, array $arguments): void
     {
@@ -121,6 +130,9 @@ class McpServerTest extends ControllerWebTestCase
         $this->assertMatchesJsonSnapshot((string) $response->getContent());
     }
 
+    /**
+     * @return iterable<string, array{string, array<string, mixed>}>
+     */
     public static function provideToolCalls(): iterable
     {
         yield 'get_athlete_details' => ['get_athlete_details', []];
@@ -154,6 +166,9 @@ class McpServerTest extends ControllerWebTestCase
         return (string) $response->headers->get('Mcp-Session-Id');
     }
 
+    /**
+     * @param array<string, mixed> $message
+     */
     private function postToMcp(array $message, ?string $sessionId = null): Response
     {
         $server = [

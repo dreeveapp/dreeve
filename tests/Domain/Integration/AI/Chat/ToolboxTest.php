@@ -50,18 +50,27 @@ class ToolboxTest extends ContainerTestCase
     use MatchesSnapshots;
     use ProvideGearMaintenanceConfig;
 
+    /**
+     * @param array<string, mixed> $inputs
+     */
     #[DataProvider('provideTools')]
     public function testTools(string $name, array $inputs): void
     {
         $this->assertMatchesJsonSnapshot($this->executeTool($name, $inputs));
     }
 
+    /**
+     * @param array<string, mixed> $inputs
+     */
     #[DataProvider('provideToolErrors')]
     public function testItReturnsAToolError(string $name, array $inputs, string $message): void
     {
         $this->assertSame($message, $this->executeTool($name, $inputs));
     }
 
+    /**
+     * @return iterable<string, array{string, array<string, mixed>, string}>
+     */
     public static function provideToolErrors(): iterable
     {
         yield 'get_activity_by_id for an unknown activity' => ['get_activity_by_id', ['activityId' => '1'], 'Activity "activity-1" does not exist.'];
@@ -96,6 +105,9 @@ class ToolboxTest extends ContainerTestCase
         )));
     }
 
+    /**
+     * @return iterable<string, array{string, array<string, mixed>}>
+     */
     public static function provideTools(): iterable
     {
         yield 'GetActivity Tool' => ['get_activity_by_id', ['activityId' => '123456789']];

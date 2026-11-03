@@ -146,6 +146,9 @@ class ActivitySearchRequestHandlerTest extends ControllerWebTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideInvalidQueryParameters(): iterable
     {
         yield 'a non existing date' => ['?filters[from]=2026-02-29'];

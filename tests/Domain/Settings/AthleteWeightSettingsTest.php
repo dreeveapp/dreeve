@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
+use App\Domain\Athlete\Weight\AthleteWeight;
 use App\Domain\Settings\AthleteWeightSettings;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
@@ -29,7 +30,7 @@ class AthleteWeightSettingsTest extends TestCase
 
         $this->assertSame(
             [['on' => '2024-02-01', 'weight' => 69.5], ['on' => '2024-01-01', 'weight' => 70.0]],
-            array_values(array_map(fn ($weight) => $weight->jsonSerialize(), $weights)),
+            array_values(array_map(fn (AthleteWeight $weight) => $weight->jsonSerialize(), $weights)),
         );
     }
 

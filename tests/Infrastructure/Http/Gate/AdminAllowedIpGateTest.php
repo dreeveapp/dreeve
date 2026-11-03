@@ -23,6 +23,9 @@ class AdminAllowedIpGateTest extends TestCase
         $this->assertFalse($gate->handle($request)->hasBeenApplied());
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideAllowedClients(): iterable
     {
         yield 'an allowed ip' => ['192.168.1.1', '192.168.1.1'];
@@ -42,6 +45,9 @@ class AdminAllowedIpGateTest extends TestCase
         $gate->handle($request);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideDeniedClients(): iterable
     {
         yield 'a disallowed ip' => ['192.168.1.1', '10.0.0.1'];
@@ -59,6 +65,9 @@ class AdminAllowedIpGateTest extends TestCase
         $this->assertFalse($gate->handle($request)->hasBeenApplied());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideNonAdminPaths(): iterable
     {
         yield 'home' => ['/'];

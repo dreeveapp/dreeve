@@ -115,6 +115,9 @@ class DescriptionConditionTest extends TestCase
         ])));
     }
 
+    /**
+     * @return iterable<string, array{string, string, string}>
+     */
     public static function provideInvalidConfigurations(): iterable
     {
         yield 'invalid operator' => ['is', 'commute', 'Invalid description operator "is".'];

@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class HeartRateZoneTest extends TestCase
 {
+    /**
+     * @param list<int> $expectedRange
+     */
     #[DataProvider('provideTestRangeInBpmData')]
     public function testGetRangeInBpm(int $from, ?int $to, int $athleteMaxHeartRate, HeartRateZoneMode $mode, array $expectedRange): void
     {
@@ -93,6 +96,9 @@ class HeartRateZoneTest extends TestCase
         );
     }
 
+    /**
+     * @return list<array{string, string}>
+     */
     public static function provideTestColorData(): array
     {
         return [
@@ -104,6 +110,9 @@ class HeartRateZoneTest extends TestCase
         ];
     }
 
+    /**
+     * @return list<array{int, ?int, int, HeartRateZoneMode, list<int>}>
+     */
     public static function provideTestRangeInBpmData(): array
     {
         return [

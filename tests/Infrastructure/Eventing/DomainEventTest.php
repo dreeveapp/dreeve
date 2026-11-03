@@ -14,6 +14,9 @@ class DomainEventTest extends TestCase
         $this->assertSame($expected, $event->equals($other));
     }
 
+    /**
+     * @return iterable<string, array{DomainEvent, DomainEvent, bool}>
+     */
     public static function provideEvents(): iterable
     {
         yield 'same class and payload' => [new ADomainEventWithAPayload('one'), new ADomainEventWithAPayload('one'), true];

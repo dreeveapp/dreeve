@@ -39,6 +39,9 @@ class ProvideDistributionChartTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{int, int, int, int|float, int}>
+     */
     public static function provideTestData(): iterable
     {
         yield [0, 100, 3, 2, 3];

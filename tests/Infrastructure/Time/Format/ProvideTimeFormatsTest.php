@@ -37,6 +37,9 @@ class ProvideTimeFormatsTest extends TestCase
         );
     }
 
+    /**
+     * @return list<array{int, string}>
+     */
     public static function provideTimeFormatsForHumans(): array
     {
         return [
@@ -47,6 +50,9 @@ class ProvideTimeFormatsTest extends TestCase
         ];
     }
 
+    /**
+     * @return list<array{int, string}>
+     */
     public static function provideTimeFormatsForHumansForChartLabel(): array
     {
         return [
@@ -57,6 +63,9 @@ class ProvideTimeFormatsTest extends TestCase
         ];
     }
 
+    /**
+     * @return list<array{int, string}>
+     */
     public static function provideTimeFormatsForHumansWithoutTrimming(): array
     {
         return [

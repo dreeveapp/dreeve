@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Automation;
 use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredAction;
 use App\Domain\Automation\Action\ConfiguredAction\ConfiguredActions;
+use App\Domain\Automation\AutomationRule;
 use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
@@ -93,7 +94,7 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
 
         $this->assertSame(
             ['automationRule-b', 'automationRule-c', 'automationRule-a'],
-            $this->repository->findAll()->map(static fn ($rule): string => (string) $rule->getId())
+            $this->repository->findAll()->map(static fn (AutomationRule $rule): string => (string) $rule->getId())
         );
     }
 
@@ -149,7 +150,7 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
 
         $this->assertSame(
             ['automationRule-c', 'automationRule-a', 'automationRule-b'],
-            $this->repository->findAll()->map(static fn ($rule): string => (string) $rule->getId())
+            $this->repository->findAll()->map(static fn (AutomationRule $rule): string => (string) $rule->getId())
         );
     }
 

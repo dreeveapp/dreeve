@@ -36,6 +36,9 @@ class ConnectedSensorsConditionTest extends TestCase
         $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => 'isOneOf', 'sensorTypes' => ['powerMeter']]));
     }
 
+    /**
+     * @param list<string> $sensorTypes
+     */
     #[DataProvider('provideInvalidConfigurations')]
     public function testGuardThrowsOnInvalidConfiguration(string $operator, array $sensorTypes, string $expectedMessage): void
     {
@@ -44,6 +47,9 @@ class ConnectedSensorsConditionTest extends TestCase
         $this->condition->guardValidConfiguration(RuleConfiguration::fromConfig(['operator' => $operator, 'sensorTypes' => $sensorTypes]));
     }
 
+    /**
+     * @param list<string> $sensorTypes
+     */
     #[DataProvider('provideMatchExpectations')]
     public function testMatches(string $operator, array $sensorTypes, bool $expectedToMatch): void
     {
@@ -81,6 +87,9 @@ class ConnectedSensorsConditionTest extends TestCase
         ]))->isAvailable());
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>, string}>
+     */
     public static function provideInvalidConfigurations(): iterable
     {
         yield 'invalid operator' => ['nope', ['powerMeter'], 'Invalid connected sensors operator "nope".'];
@@ -89,6 +98,9 @@ class ConnectedSensorsConditionTest extends TestCase
         yield 'unknown sensor' => ['isOneOf', ['nope'], 'Invalid sensor "nope".'];
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>, bool}>
+     */
     public static function provideMatchExpectations(): iterable
     {
         yield 'is one of a connected sensor' => ['isOneOf', ['heartRateMonitor'], true];
@@ -98,6 +110,9 @@ class ConnectedSensorsConditionTest extends TestCase
         yield 'is none of a connected sensor' => ['isNoneOf', ['bikeLight'], false];
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideSetOperators(): iterable
     {
         yield 'isOneOf' => ['isOneOf'];

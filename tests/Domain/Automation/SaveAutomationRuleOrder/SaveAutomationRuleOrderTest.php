@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Automation\SaveAutomationRuleOrder;
 
+use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\SaveAutomationRuleOrder\SaveAutomationRuleOrder;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -19,7 +20,7 @@ class SaveAutomationRuleOrderTest extends TestCase
 
         $this->assertSame(
             ['automationRule-2', 'automationRule-1', 'automationRule-3'],
-            array_map(static fn ($id): string => (string) $id, $command->getOrderedIds())
+            array_map(static fn (AutomationRuleId $id): string => (string) $id, $command->getOrderedIds())
         );
     }
 

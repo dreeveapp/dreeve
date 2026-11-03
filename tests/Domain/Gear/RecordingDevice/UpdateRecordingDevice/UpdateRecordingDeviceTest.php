@@ -43,6 +43,9 @@ class UpdateRecordingDeviceTest extends TestCase
         $this->assertSame('Garmin Edge 530', $command->getName());
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([['purchasePriceAmount' => '299.50'], 'A "name" is required.'])]
     #[TestWith([['name' => '   '], 'The name cannot be empty.'])]
     public function testFromPayloadThrowsOnInvalidName(array $payload, string $expectedMessage): void

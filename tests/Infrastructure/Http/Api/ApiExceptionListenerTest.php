@@ -41,6 +41,9 @@ class ApiExceptionListenerTest extends TestCase
         $this->assertNull($event->getResponse());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function providePathsOutsideTheApi(): iterable
     {
         yield 'an app page' => ['/dashboard'];

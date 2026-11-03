@@ -20,6 +20,9 @@ class DeleteGearTest extends TestCase
         $this->assertSame('gear-1', (string) $command->getGearId());
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([[]])]
     #[TestWith([['gearId' => '   ']])]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload): void

@@ -143,6 +143,9 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{?ConnectedSensors}>
+     */
     public static function provideConnectedSensors(): iterable
     {
         yield 'unknown' => [null];

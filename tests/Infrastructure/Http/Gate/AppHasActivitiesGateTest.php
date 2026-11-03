@@ -84,6 +84,9 @@ class AppHasActivitiesGateTest extends ContainerTestCase
         $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideExemptAdminPaths(): iterable
     {
         yield 'admin root' => ['/admin'];

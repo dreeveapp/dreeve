@@ -160,6 +160,9 @@ class CalculateGapTest extends ContainerTestCase
         $this->assertStringContainsString('Calculated GAP for 1 activities', (string) $output);
     }
 
+    /**
+     * @return iterable<string, array{list<mixed>, list<float>, list<int>, list<bool>}>
+     */
     public static function provideRawStreamsWithGap(): iterable
     {
         yield 'malformed coordinate items are skipped' => [['invalid', [50.0], [50.0, 4.0], [50.009, 4.0]], [100.0, 100.0, 100.0, 100.0], [0, 5, 10, 20], []];
@@ -196,6 +199,9 @@ class CalculateGapTest extends ContainerTestCase
         $this->assertSame('', (string) $output);
     }
 
+    /**
+     * @return iterable<string, array{list<mixed>, list<float>, list<int>, list<bool>}>
+     */
     public static function provideRawStreamsWithoutGap(): iterable
     {
         yield 'missing moving entries count as not moving' => [[[50.0, 4.0], [50.009, 4.0], [50.018, 4.0]], [100.0, 100.0, 100.0], [0, 10, 20], [true]];
@@ -624,6 +630,9 @@ class CalculateGapTest extends ContainerTestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{list<array{float, int, float}>, list<array{float, float}>, list<?float>}>
+     */
     public static function provideSegmentsToMap(): iterable
     {
         yield 'no splits' => [[[1000.0, 250, 1.0]], [], []];

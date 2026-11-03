@@ -40,6 +40,9 @@ class CalculateMovingStreamTest extends ContainerTestCase
             ->filterOnType(StreamType::MOVING)?->getData());
     }
 
+    /**
+     * @return iterable<string, array{array<string, list<mixed>>, list<bool>|null}>
+     */
     public static function provideStreams(): iterable
     {
         yield 'velocity below 0.5 m/s means stopped' => [

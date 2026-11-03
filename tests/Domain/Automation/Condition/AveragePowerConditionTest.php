@@ -54,12 +54,18 @@ class AveragePowerConditionTest extends TestCase
         $this->assertFalse($this->condition->matches($activity, RuleConfiguration::fromConfig(['operator' => $operator, 'value' => 100])));
     }
 
+    /**
+     * @return iterable<string, array{string, int, string}>
+     */
     public static function provideInvalidConfigurations(): iterable
     {
         yield 'invalid operator' => ['nope', 200, 'Invalid average power operator "nope".'];
         yield 'negative value' => ['gte', -1, 'A "value" of at least 0 is required.'];
     }
 
+    /**
+     * @return iterable<string, array{string, int, bool}>
+     */
     public static function provideMatchExpectations(): iterable
     {
         yield 'gte a smaller value' => ['gte', 200, true];
@@ -71,6 +77,9 @@ class AveragePowerConditionTest extends TestCase
         yield 'eq another value' => ['eq', 200, false];
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideOperators(): iterable
     {
         yield 'lt' => ['lt'];

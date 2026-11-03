@@ -23,6 +23,9 @@ class GenerateTokenRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('.modal-like-form form'));
     }
 
+    /**
+     * @return iterable<string, array{string, string, string, string}>
+     */
     public static function provideKeys(): iterable
     {
         yield 'API key' => ['/admin/settings/token/generate/api', 'Generate an API key', '/^drv_[a-f0-9]{64}$/', 'DREEVE_API_KEY'];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Automation\SaveAutomationRuleOrder;
 
+use App\Domain\Automation\AutomationRule;
 use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\DbalAutomationRuleRepository;
 use App\Domain\Automation\SaveAutomationRuleOrder\SaveAutomationRuleOrder;
@@ -33,7 +34,7 @@ class SaveAutomationRuleOrderCommandHandlerTest extends ContainerTestCase
 
         $this->assertSame(
             ['automationRule-c', 'automationRule-a', 'automationRule-b'],
-            $this->repository->findAll()->map(static fn ($rule): string => (string) $rule->getId())
+            $this->repository->findAll()->map(static fn (AutomationRule $rule): string => (string) $rule->getId())
         );
     }
 

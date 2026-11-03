@@ -18,6 +18,9 @@ class DashboardLayoutTest extends TestCase
         );
     }
 
+    /**
+     * @param array<int, mixed> $yml
+     */
     #[DataProvider('provideInvalidConfig')]
     public function testFromYmlStringItShouldThrow(array $yml, string $expectedException): void
     {
@@ -25,6 +28,9 @@ class DashboardLayoutTest extends TestCase
         DashboardLayout::fromArray($yml);
     }
 
+    /**
+     * @return iterable<string, array{array<int, mixed>, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         $yml = self::getValidYml();
@@ -60,6 +66,9 @@ class DashboardLayoutTest extends TestCase
         yield 'invalid "config" case 2' => [$yml, '"config" property must be an array'];
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private static function getValidYml(): array
     {
         return Yaml::parse(<<<YML

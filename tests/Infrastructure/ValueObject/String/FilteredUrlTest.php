@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 
 class FilteredUrlTest extends TestCase
 {
+    /**
+     * @param array<string, mixed> $filters
+     */
     #[DataProvider('provideFilters')]
     public function testToRelativeUrl(string $expected, array $filters): void
     {
@@ -23,6 +26,9 @@ class FilteredUrlTest extends TestCase
         );
     }
 
+    /**
+     * @return array<string, array{string, array<string, mixed>}>
+     */
     public static function provideFilters(): array
     {
         return [

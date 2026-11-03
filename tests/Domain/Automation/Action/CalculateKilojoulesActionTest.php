@@ -43,6 +43,9 @@ class CalculateKilojoulesActionTest extends TestCase
         );
     }
 
+    /**
+     * @return array<string, array{?int, ?int, int, ?int}>
+     */
     public static function provideActivities(): array
     {
         return [

@@ -24,6 +24,9 @@ class MaxHeartRateFormulaTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{MaxHeartRateFormula, int, int}>
+     */
     public static function provideCalculateData(): iterable
     {
         yield 'Arena, aged 20' => [new Arena(), 20, 195];

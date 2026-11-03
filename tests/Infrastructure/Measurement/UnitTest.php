@@ -52,6 +52,9 @@ class UnitTest extends TestCase
         Kilometer::from(220)->subtract(Mile::from(210));
     }
 
+    /**
+     * @return list<array{Unit, Unit}>
+     */
     public static function provideConversions(): array
     {
         return [
@@ -105,6 +108,9 @@ class UnitTest extends TestCase
         }
     }
 
+    /**
+     * @return list<array{NauticalMile|Knot}>
+     */
     public static function provideNauticalMeasurements(): array
     {
         return [
@@ -122,6 +128,9 @@ class UnitTest extends TestCase
         $this->assertSame($expectedValue, Json::encode($measurement));
     }
 
+    /**
+     * @return iterable<string, array{Unit, string, string}>
+     */
     public static function provideMeasurements(): iterable
     {
         yield 'Foot' => [Foot::from(10), 'ft', '10'];

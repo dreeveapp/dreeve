@@ -18,6 +18,9 @@ class ApiFirewallTest extends ControllerWebTestCase
 {
     private ApiToken $token;
 
+    /**
+     * @param array<string, string> $server
+     */
     #[DataProvider('provideRequestsWithoutAValidToken')]
     public function testItRejectsARequestWithoutAValidToken(array $server): void
     {
@@ -30,6 +33,9 @@ class ApiFirewallTest extends ControllerWebTestCase
         $this->assertSame('invalid_token', Json::decode((string) $response->getContent())['error']);
     }
 
+    /**
+     * @return iterable<string, array{array<string, string>}>
+     */
     public static function provideRequestsWithoutAValidToken(): iterable
     {
         yield 'no Authorization header' => [[]];
@@ -53,6 +59,9 @@ class ApiFirewallTest extends ControllerWebTestCase
         ], Json::decode((string) $response->getContent()));
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideUnroutedPaths(): iterable
     {
         yield 'the prefix itself' => ['/api/v1'];

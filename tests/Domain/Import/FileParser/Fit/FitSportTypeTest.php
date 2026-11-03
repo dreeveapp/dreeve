@@ -28,6 +28,9 @@ class FitSportTypeTest extends TestCase
         $this->assertSame(SportType::RIDE, FitSportType::resolve(2, null, 'Padel'));
     }
 
+    /**
+     * @return array<string, array{string, SportType}>
+     */
     public static function provideSportProfileNameMappings(): array
     {
         return [
@@ -40,6 +43,9 @@ class FitSportTypeTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{?int, ?int, ?SportType}>
+     */
     public static function provideSportMappings(): array
     {
         return [

@@ -9,6 +9,7 @@ use App\Domain\Import\ImportMode;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ManageGearOverviewRequestHandlerTest extends AdminWebTestCase
 {
@@ -81,7 +82,7 @@ class ManageGearOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSame(
             ['/admin/gear/gear-2/delete'],
-            $crawler->filter('table.data-table tbody a[title="Delete"]')->each(fn ($link): ?string => $link->attr('href')),
+            $crawler->filter('table.data-table tbody a[title="Delete"]')->each(fn (Crawler $link): ?string => $link->attr('href')),
         );
     }
 
@@ -136,7 +137,7 @@ class ManageGearOverviewRequestHandlerTest extends AdminWebTestCase
         $images = $crawler->filter('table.data-table tbody tr td:first-child img');
         $this->assertCount(2, $images);
 
-        $sources = $images->each(fn ($img): ?string => $img->attr('src'));
+        $sources = $images->each(fn (Crawler $img): ?string => $img->attr('src'));
         $this->assertContains('/files/gear/image.jpg', $sources);
         $placeholderSources = array_filter($sources, fn (?string $src): bool => str_contains((string) $src, 'placeholder'));
         $this->assertCount(1, $placeholderSources);

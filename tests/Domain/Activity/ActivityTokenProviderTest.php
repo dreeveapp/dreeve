@@ -136,6 +136,9 @@ class ActivityTokenProviderTest extends TestCase
         );
     }
 
+    /**
+     * @return list<array{string, string}>
+     */
     public static function provideMetricTokens(): array
     {
         return [
@@ -159,6 +162,9 @@ class ActivityTokenProviderTest extends TestCase
         ];
     }
 
+    /**
+     * @return list<array{string, string}>
+     */
     public static function provideImperialTokens(): array
     {
         return [
@@ -169,6 +175,9 @@ class ActivityTokenProviderTest extends TestCase
         ];
     }
 
+    /**
+     * @return list<array{string}>
+     */
     public static function provideNullableTokens(): array
     {
         return [

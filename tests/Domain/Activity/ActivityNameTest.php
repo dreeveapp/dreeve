@@ -24,6 +24,9 @@ class ActivityNameTest extends TestCase
         );
     }
 
+    /**
+     * @return array<string, array{string, string, SportType}>
+     */
     public static function provideActivityTitles(): array
     {
         return [

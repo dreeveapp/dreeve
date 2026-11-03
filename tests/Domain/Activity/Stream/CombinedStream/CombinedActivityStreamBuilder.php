@@ -16,6 +16,7 @@ final class CombinedActivityStreamBuilder
     private ActivityId $activityId;
     private UnitSystem $unitSystem = UnitSystem::METRIC;
     private CombinedStreamTypes $streamTypes;
+    /** @var array<mixed> */
     private array $data;
     private readonly int $maxYAxisValue;
 
@@ -64,6 +65,9 @@ final class CombinedActivityStreamBuilder
         return $this;
     }
 
+    /**
+     * @param array<mixed> $data
+     */
     public function withData(array $data): self
     {
         $this->data = $data;

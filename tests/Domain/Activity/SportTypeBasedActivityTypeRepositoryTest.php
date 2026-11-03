@@ -66,6 +66,9 @@ class SportTypeBasedActivityTypeRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @param list<SportType> $sportTypesSortingOrder
+     */
     private function sportTypeRepositoryFor(array $sportTypesSortingOrder): DbalSportTypeRepository
     {
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);

@@ -57,6 +57,9 @@ class AthleteTest extends TestCase
         $this->assertSame($expectedIsMale, $athlete->isMale());
     }
 
+    /**
+     * @return array<string, array{?string, ?string, ?string, string, string, bool}>
+     */
     public static function provideBlankNameData(): array
     {
         return [
@@ -70,6 +73,9 @@ class AthleteTest extends TestCase
         ];
     }
 
+    /**
+     * @return list<array{SerializableDateTime, SerializableDateTime, int}>
+     */
     public static function provideDataAthleteAgeData(): array
     {
         return [

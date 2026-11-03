@@ -88,6 +88,9 @@ class ConsistencyChallengeTest extends TestCase
         )->convertSecondsToGoalUnit(Seconds::zero());
     }
 
+    /**
+     * @return iterable<string, array{ConsistencyChallenge, Unit}>
+     */
     public static function provideDataForUnitConversion(): iterable
     {
         yield 'kilometer' => [
@@ -132,6 +135,9 @@ class ConsistencyChallengeTest extends TestCase
         ];
     }
 
+    /**
+     * @return iterable<string, array{ConsistencyChallenge, Unit}>
+     */
     public static function provideDataForSecondsToUnitConversion(): iterable
     {
         yield 'hour' => [

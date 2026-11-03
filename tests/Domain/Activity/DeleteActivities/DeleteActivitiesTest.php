@@ -25,6 +25,9 @@ class DeleteActivitiesTest extends TestCase
         );
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[DataProvider('provideInvalidPayloads')]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedMessage): void
     {
@@ -33,6 +36,9 @@ class DeleteActivitiesTest extends TestCase
         DeleteActivities::fromPayload($payload);
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
     public static function provideInvalidPayloads(): iterable
     {
         yield 'missing' => [[], 'A non-empty "activityIds" list is required.'];

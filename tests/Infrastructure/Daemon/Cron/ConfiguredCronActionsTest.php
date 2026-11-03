@@ -56,6 +56,9 @@ class ConfiguredCronActionsTest extends TestCase
         ]);
     }
 
+    /**
+     * @param list<mixed> $config
+     */
     #[DataProvider('provideInvalidConfig')]
     public function testFromConfigItShouldThrow(array $config, string $expectedException): void
     {
@@ -63,6 +66,9 @@ class ConfiguredCronActionsTest extends TestCase
         ConfiguredCronActions::fromConfig($config);
     }
 
+    /**
+     * @return iterable<string, array{list<mixed>, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         yield 'config is not an array' => [['lol'], 'each configured cron item needs to be an array'];
@@ -96,6 +102,9 @@ class ConfiguredCronActionsTest extends TestCase
         yield 'invalid enabled value' => [$config, 'configuration item "enabled" must be a boolean'];
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private static function getValidConfig(): array
     {
         return [

@@ -307,6 +307,9 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{?GearType, string, bool, ?string}>
+     */
     public static function provideGearAssignments(): iterable
     {
         yield 'custom gear is kept when strava has no gear' => [GearType::CUSTOM, 'custom-one', false, 'custom-one'];
@@ -420,6 +423,9 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
         $this->assertStringEndsWith('  => [4/7] Imported activity: "Night Ride5 - 11-09-2023"', (string) $output);
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, SportType}>
+     */
     public static function provideImportSettingsThatSkipTheVirtualRide(): iterable
     {
         yield 'recorded before the cutoff date' => [['skipActivitiesRecordedBefore' => '2023-09-01'], SportType::RIDE];

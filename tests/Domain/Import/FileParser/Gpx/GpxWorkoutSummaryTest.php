@@ -51,6 +51,9 @@ class GpxWorkoutSummaryTest extends TestCase
         $this->assertNull(GpxWorkoutSummary::tryFromString($value));
     }
 
+    /**
+     * @return array<string, array{string}>
+     */
     public static function provideNonSummaries(): array
     {
         return [
@@ -74,6 +77,9 @@ class GpxWorkoutSummaryTest extends TestCase
         $this->assertNull($summary->{$getter}());
     }
 
+    /**
+     * @return array<string, array{string, string}>
+     */
     public static function provideImplausibleValues(): array
     {
         return [

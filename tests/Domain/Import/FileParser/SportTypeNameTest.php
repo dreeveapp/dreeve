@@ -17,6 +17,9 @@ class SportTypeNameTest extends TestCase
         $this->assertSame($expectedSportType, SportTypeName::tryResolve($name));
     }
 
+    /**
+     * @return array<string, array{string, ?SportType}>
+     */
     public static function provideSportNames(): array
     {
         return [

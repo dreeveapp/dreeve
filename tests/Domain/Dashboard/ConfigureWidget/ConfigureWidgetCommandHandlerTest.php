@@ -238,6 +238,9 @@ class ConfigureWidgetCommandHandlerTest extends ContainerTestCase
         ]));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function storedConfigFor(string $id): array
     {
         $layout = Json::decode((string) $this->keyValueStore->find(Key::DASHBOARD));

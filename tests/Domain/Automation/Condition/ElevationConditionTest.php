@@ -66,12 +66,18 @@ class ElevationConditionTest extends TestCase
         $this->assertFalse($condition->matches($activity, RuleConfiguration::fromConfig(['operator' => 'gte', 'value' => 1100.0])));
     }
 
+    /**
+     * @return iterable<string, array{string, float, string}>
+     */
     public static function provideInvalidConfigurations(): iterable
     {
         yield 'invalid operator' => ['nope', 100.0, 'Invalid elevation operator "nope".'];
         yield 'negative value' => ['gte', -1.0, 'A "value" of at least 0 is required.'];
     }
 
+    /**
+     * @return iterable<string, array{string, float, bool}>
+     */
     public static function provideMatchExpectations(): iterable
     {
         yield 'gte a smaller value' => ['gte', 100.0, true];

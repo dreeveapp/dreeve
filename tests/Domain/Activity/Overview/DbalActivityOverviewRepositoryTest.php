@@ -101,6 +101,9 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->assertSame($expected, $overview->getItems()[0]->canBeEnriched());
     }
 
+    /**
+     * @return iterable<string, array{ActivityBuilder, bool}>
+     */
     public static function provideEnrichableActivities(): iterable
     {
         $withStartingCoordinate = fn (): ActivityBuilder => ActivityBuilder::fromDefaults()
@@ -128,6 +131,9 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         ];
     }
 
+    /**
+     * @param list<string> $expectedNames
+     */
     #[DataProvider('providePaginationScenarios')]
     public function testFindOrdersByStartDateDescAndPaginates(
         Pagination $pagination,
@@ -149,6 +155,9 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals($pagination, $overview->getPagination());
     }
 
+    /**
+     * @return iterable<string, array{Pagination, list<string>, int}>
+     */
     public static function providePaginationScenarios(): iterable
     {
         yield 'first page is ordered most recent first' => [
@@ -219,6 +228,9 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @param list<string> $expectedNames
+     */
     #[DataProvider('provideSearchQueries')]
     public function testSearchMatchesTokensAcrossFields(string $query, array $expectedNames): void
     {
@@ -233,6 +245,9 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
     public static function provideSearchQueries(): iterable
     {
         yield 'matches on name, case-insensitively, most recent first' => [
@@ -301,6 +316,10 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals(0, $overview->getTotal());
     }
 
+    /**
+     * @param array<string, string> $filters
+     * @param list<string>          $expectedNames
+     */
     #[DataProvider('provideFilterScenarios')]
     public function testFindAppliesFilters(
         array $filters,
@@ -325,6 +344,9 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals($expectedTotal, $overview->getTotal());
     }
 
+    /**
+     * @return iterable<string, array{array<string, string>, Pagination, list<string>, int}>
+     */
     public static function provideFilterScenarios(): iterable
     {
         yield 'a sport type filter narrows both the items and the total' => [

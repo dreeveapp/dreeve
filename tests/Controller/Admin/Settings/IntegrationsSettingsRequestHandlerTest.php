@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Admin\Settings;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class IntegrationsSettingsRequestHandlerTest extends AdminWebTestCase
 {
@@ -26,7 +27,7 @@ class IntegrationsSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('section[data-dependent-on="aiEnabled"][data-visible-when="checked"] [data-repeater]'));
         $this->assertSame(
             ['', 'anthropic', 'azureOpenAI', 'deepseek', 'gemini', 'grok', 'huggingFace', 'ollama', 'openAI', 'openAILike', 'openAIResponses', 'mistral'],
-            $crawler->filter('select#aiProvider option')->each(static fn ($option): string => (string) $option->attr('value')),
+            $crawler->filter('select#aiProvider option')->each(static fn (Crawler $option): string => (string) $option->attr('value')),
         );
         $this->assertSame(
             'anthropic,azureOpenAI,deepseek,gemini,grok,huggingFace,openAI,openAILike,openAIResponses,mistral',

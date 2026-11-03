@@ -143,6 +143,9 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
         $this->assertSame($expectedError, $page->filter('.text-red-800')->text());
     }
 
+    /**
+     * @return iterable<string, array{\Throwable, string}>
+     */
     public static function provideVerificationErrors(): iterable
     {
         yield 'inactive application' => [

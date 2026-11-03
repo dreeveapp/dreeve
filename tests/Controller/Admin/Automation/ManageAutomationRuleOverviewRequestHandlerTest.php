@@ -24,6 +24,7 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Automation\AutomationRuleBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
 {
@@ -298,7 +299,7 @@ class ManageAutomationRuleOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Added by automation', $secondRule);
 
         $markAsCommutePill = $items->eq(0)->filter('.rounded-full.pill--neutral')->reduce(
-            fn ($node): bool => str_contains($node->text(), 'Mark as commute'),
+            fn (Crawler $node): bool => str_contains($node->text(), 'Mark as commute'),
         );
         $this->assertCount(1, $markAsCommutePill);
         $this->assertCount(1, $markAsCommutePill->children());

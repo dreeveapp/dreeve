@@ -14,6 +14,9 @@ class AdminAllowedIpAddressesTest extends TestCase
         $this->assertSame($expectedResult, AdminAllowedIpAddresses::fromString($string)->contains($ipAddress));
     }
 
+    /**
+     * @return iterable<string, array{string, ?string, bool}>
+     */
     public static function provideContainsExpectations(): iterable
     {
         yield 'contains first listed ip address' => ['192.168.1.1,10.0.0.1', '192.168.1.1', true];
@@ -63,6 +66,9 @@ class AdminAllowedIpAddressesTest extends TestCase
         $this->assertFalse($allowed->contains(null));
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideEmptyStrings(): iterable
     {
         yield 'empty string' => [''];
@@ -79,6 +85,9 @@ class AdminAllowedIpAddressesTest extends TestCase
         AdminAllowedIpAddresses::fromString($string);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideInvalidIpAddresses(): iterable
     {
         yield 'not an ip' => ['not-an-ip', 'not-an-ip'];

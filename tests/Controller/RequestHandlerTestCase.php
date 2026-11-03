@@ -11,6 +11,9 @@ abstract class RequestHandlerTestCase extends ContainerTestCase
 {
     use MatchesSnapshots;
 
+    /**
+     * @param array<string, mixed> $params
+     */
     protected function buildRequest(array $params = [], ?string $content = null): Request
     {
         return new Request(

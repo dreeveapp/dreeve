@@ -11,12 +11,18 @@ use PHPUnit\Framework\TestCase;
 
 class FitDeviceTypeTest extends TestCase
 {
+    /**
+     * @param array<string, ?int> $deviceInfoFields
+     */
     #[DataProvider('provideDeviceInfoFields')]
     public function testResolveSensorType(array $deviceInfoFields, ?SensorType $expectedSensorType): void
     {
         $this->assertSame($expectedSensorType, FitDeviceType::resolveSensorType($deviceInfoFields));
     }
 
+    /**
+     * @return iterable<string, array{array<string, ?int>, ?SensorType}>
+     */
     public static function provideDeviceInfoFields(): iterable
     {
         yield 'ant+ heart rate' => [['source_type' => 1, 'device_type' => 120], SensorType::HEART_RATE_MONITOR];

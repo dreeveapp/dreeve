@@ -24,6 +24,9 @@ class DuplicateActivityScannerTest extends ContainerTestCase
     private DuplicateActivityScanner $duplicateActivityScanner;
     private ActivityRepository $activityRepository;
 
+    /**
+     * @param array<string, string> $storedRawData
+     */
     #[DataProvider('provideExistingActivityScenarios')]
     public function testItDetectsDuplicatesAgainstAnExistingActivity(
         ImportSource $storedImportSource,
@@ -53,6 +56,9 @@ class DuplicateActivityScannerTest extends ContainerTestCase
         ));
     }
 
+    /**
+     * @return iterable<string, array{ImportSource, string, SportType, SerializableDateTime, array<string, string>, string, SportType, SerializableDateTime, bool}>
+     */
     public static function provideExistingActivityScenarios(): iterable
     {
         yield 'strava activity with same filename and same UTC start instant' => [

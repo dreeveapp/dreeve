@@ -15,6 +15,9 @@ class CronActionIdTest extends TestCase
         $this->assertSame($expectedCommand, $id->command());
     }
 
+    /**
+     * @return iterable<int, array{CronActionId, string}>
+     */
     public static function provideCommands(): iterable
     {
         yield [CronActionId::RUN_STRAVA_IMPORT, 'bin/console app:import:strava'];
@@ -28,6 +31,9 @@ class CronActionIdTest extends TestCase
         $this->assertSame($expected, $id->defaultCronExpression());
     }
 
+    /**
+     * @return iterable<int, array{CronActionId, string}>
+     */
     public static function provideDefaultCronExpressions(): iterable
     {
         yield [CronActionId::RUN_STRAVA_IMPORT, '30 2 * * *'];
@@ -41,6 +47,9 @@ class CronActionIdTest extends TestCase
         $this->assertSame($expected, $id->supportsImportMode($importMode));
     }
 
+    /**
+     * @return iterable<string, array{CronActionId, ImportMode, bool}>
+     */
     public static function provideImportModeSupport(): iterable
     {
         yield 'strava import not supported in file mode' => [CronActionId::RUN_STRAVA_IMPORT, ImportMode::FILES, false];

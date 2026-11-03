@@ -62,6 +62,9 @@ class ValidAppSettingsGateTest extends ContainerTestCase
         $this->assertNull($decision->getResponse());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideExemptPaths(): iterable
     {
         yield 'the redirect target itself' => ['/admin/settings/athlete'];
@@ -85,6 +88,9 @@ class ValidAppSettingsGateTest extends ContainerTestCase
         $this->assertSame('/admin/settings/athlete', $response->getTargetUrl());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideGuardedAdminPaths(): iterable
     {
         yield 'the settings index' => ['/admin/settings'];

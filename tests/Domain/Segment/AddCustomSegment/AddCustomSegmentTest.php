@@ -42,6 +42,9 @@ class AddCustomSegmentTest extends TestCase
         $this->assertFalse($command->isFavourite());
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[DataProvider('provideInvalidPayloads')]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedReason): void
     {
@@ -50,6 +53,9 @@ class AddCustomSegmentTest extends TestCase
         AddCustomSegment::fromPayload($payload);
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
     public static function provideInvalidPayloads(): iterable
     {
         $valid = ['activityId' => 'activity-1', 'startIndex' => 0, 'endIndex' => 10, 'name' => 'Kwaremont'];

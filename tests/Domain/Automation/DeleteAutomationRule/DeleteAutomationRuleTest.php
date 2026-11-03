@@ -18,6 +18,9 @@ class DeleteAutomationRuleTest extends TestCase
         $this->assertSame('automationRule-42', (string) $command->getAutomationRuleId());
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([[]])]
     #[TestWith([['automationRuleId' => '   ']])]
     public function testThrowsOnInvalidPayload(array $payload): void

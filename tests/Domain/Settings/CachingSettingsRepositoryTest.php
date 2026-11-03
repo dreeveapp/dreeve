@@ -37,6 +37,9 @@ class CachingSettingsRepositoryTest extends TestCase
         $this->assertSame($act($repository), $act($repository));
     }
 
+    /**
+     * @return iterable<string, array{string, object, callable}>
+     */
     public static function cachedAccessorProvider(): iterable
     {
         yield 'general' => ['general', GeneralSettings::fromArray(['birthday' => '1989-08-14', 'firstName' => 'Robin', 'lastName' => 'Ingelbrecht', 'maxHeartRateFormula' => 'fox']), fn (SettingsRepository $r) => $r->general()];

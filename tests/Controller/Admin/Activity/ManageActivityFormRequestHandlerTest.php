@@ -22,6 +22,7 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 {
@@ -69,10 +70,10 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         $this->assertSame(
             ['None', 'Race', 'Workout', 'Long run'],
-            $crawler->filter('select#activity-workout-type option')->each(fn ($option) => $option->text()),
+            $crawler->filter('select#activity-workout-type option')->each(fn (Crawler $option) => $option->text()),
         );
 
-        $sportTypeOptions = $crawler->filter('select#activity-sport-type option')->each(fn ($option) => $option->attr('value'));
+        $sportTypeOptions = $crawler->filter('select#activity-sport-type option')->each(fn (Crawler $option) => $option->attr('value'));
         $this->assertCount(count(SportType::cases()), $sportTypeOptions);
         $this->assertSame(
             [SportType::WALK->value, SportType::HIKE->value, SportType::RUN->value],
@@ -85,7 +86,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         $this->assertSame(
             ['None', 'My Custom Gear'],
-            $crawler->filter('select#activity-gear option')->each(fn ($option) => $option->text()),
+            $crawler->filter('select#activity-gear option')->each(fn (Crawler $option) => $option->text()),
         );
 
         // Images can be attached right away.
@@ -363,7 +364,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         // Only custom gears are selectable, Strava gears would be reverted on the next import.
         $this->assertSame(
             ['None', 'My Custom Gear', 'Second Custom Gear'],
-            $crawler->filter('select#activity-gear option')->each(fn ($option) => $option->text()),
+            $crawler->filter('select#activity-gear option')->each(fn (Crawler $option) => $option->text()),
         );
         $this->assertNotNull($crawler->filter('select#activity-gear option[value="gear-custom-gear"]')->attr('selected'));
     }
@@ -454,7 +455,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="workoutType"]'));
         $this->assertSame(
             ['None', 'Race', 'Workout', 'Long run'],
-            $crawler->filter('select#activity-workout-type option')->each(fn ($option) => $option->text()),
+            $crawler->filter('select#activity-workout-type option')->each(fn (Crawler $option) => $option->text()),
         );
         $this->assertNotNull($crawler->filter('select#activity-workout-type option[value="race"]')->attr('selected'));
         $this->assertCount(0, $crawler->filter('input[type="hidden"][name="gearId"]'));
@@ -466,7 +467,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         // In files mode all gears are selectable, imported or custom.
         $this->assertSame(
             ['None', 'Strava Bike', 'My Custom Gear'],
-            $crawler->filter('select#activity-gear option')->each(fn ($option) => $option->text()),
+            $crawler->filter('select#activity-gear option')->each(fn (Crawler $option) => $option->text()),
         );
 
         // The image upload is available.
@@ -534,7 +535,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form);
         $this->assertSame(
             ['activity-1', 'activity-2'],
-            $form->filter('input[name="activityIds[]"]')->each(fn ($input): ?string => $input->attr('value')),
+            $form->filter('input[name="activityIds[]"]')->each(fn (Crawler $input): ?string => $input->attr('value')),
         );
 
         $listedActivities = $crawler->filter('[data-activities-to-delete] li');

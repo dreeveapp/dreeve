@@ -39,6 +39,9 @@ class GearTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{GearType, ImportMode, bool}>
+     */
     public static function provideIsDeletableIn(): iterable
     {
         yield 'custom gear in Strava API mode' => [GearType::CUSTOM, ImportMode::STRAVA_API, true];
@@ -114,18 +117,27 @@ class GearTest extends TestCase
         $this->assertEquals($expectedResult, $gear->getRelativeCostPerWorkout());
     }
 
+    /**
+     * @return iterable<string, array{?Meter, ?Seconds, string}>
+     */
     public static function provideMovingTimeFormatted(): iterable
     {
         yield 'with moving time' => [Meter::from(10000), Seconds::from(3661), '1h 1m'];
         yield 'with zero moving time' => [null, null, '0m'];
     }
 
+    /**
+     * @return iterable<string, array{Meter, ?int, Kilometer}>
+     */
     public static function provideAverageDistance(): iterable
     {
         yield 'with activities' => [Meter::from(30000), 3, Kilometer::from(10)];
         yield 'with zero activities' => [Meter::from(30000), null, Kilometer::zero()];
     }
 
+    /**
+     * @return iterable<string, array{Meter, ?Seconds, KmPerHour}>
+     */
     public static function provideAverageSpeed(): iterable
     {
         yield 'with moving time' => [Meter::from(10000), Seconds::from(3600), KmPerHour::from(10)];
@@ -175,6 +187,9 @@ class GearTest extends TestCase
         $this->assertEmpty($gear->withActivityTypes(ActivityTypes::empty())->getRecordedEvents());
     }
 
+    /**
+     * @return iterable<string, array{\Closure}>
+     */
     public static function provideUnchangedMutations(): iterable
     {
         yield 'name' => [fn (Gear $gear): Gear => $gear->withName('Existing gear')];
@@ -186,6 +201,9 @@ class GearTest extends TestCase
             ->withIsRetired(false), ];
     }
 
+    /**
+     * @return iterable<string, array{\Closure}>
+     */
     public static function provideChangedMutations(): iterable
     {
         yield 'name' => [fn (Gear $gear): Gear => $gear->withName('Renamed gear')];
@@ -196,6 +214,9 @@ class GearTest extends TestCase
         yield 'purchasePrice currency' => [fn (Gear $gear): Gear => $gear->withPurchasePrice(Money::USD(10000))];
     }
 
+    /**
+     * @return iterable<string, array{?Seconds, ?Money, ?Money}>
+     */
     public static function provideRelativeCostPerHour(): iterable
     {
         yield 'with moving time' => [Seconds::from(7200), Money::EUR(10000), Money::EUR(5000)];
@@ -203,6 +224,9 @@ class GearTest extends TestCase
         yield 'without purchase price' => [Seconds::from(7200), null, null];
     }
 
+    /**
+     * @return iterable<string, array{?int, ?Money, ?Money}>
+     */
     public static function provideRelativeCostPerWorkout(): iterable
     {
         yield 'with activities' => [5, Money::EUR(10000), Money::EUR(2000)];
