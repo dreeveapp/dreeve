@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Segment\AddCustomSegment;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityReference;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -32,6 +33,12 @@ final readonly class AddCustomSegment extends DomainCommand implements Deseriali
             throw CouldNotDeserializeCommand::invalidPayload('An "activityId" is required.');
         }
 
+        try {
+            $activityId = ActivityReference::parse($payload['activityId']);
+        } catch (\InvalidArgumentException) {
+            throw CouldNotDeserializeCommand::invalidPayload('The "activityId" does not contain a valid activity id.');
+        }
+
         if (!isset($payload['name']) || !is_string($payload['name']) || '' === trim($payload['name'])) {
             throw CouldNotDeserializeCommand::invalidPayload('A "name" is required.');
         }
@@ -48,7 +55,7 @@ final readonly class AddCustomSegment extends DomainCommand implements Deseriali
         }
 
         return new self(
-            activityId: ActivityId::fromString($payload['activityId']),
+            activityId: $activityId,
             startIndex: (int) $payload['startIndex'],
             endIndex: (int) $payload['endIndex'],
             name: Name::fromString(trim($payload['name'])),

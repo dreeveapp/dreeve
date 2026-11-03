@@ -16,7 +16,7 @@ class AddCustomSegmentTest extends TestCase
     public function testFromPayload(): void
     {
         $command = AddCustomSegment::fromPayload([
-            'activityId' => 'activity-1',
+            'activityId' => 'Morning Run (activity-1)',
             'startIndex' => '10',
             'endIndex' => 120,
             'name' => '  Kwaremont  ',
@@ -55,6 +55,7 @@ class AddCustomSegmentTest extends TestCase
         $valid = ['activityId' => 'activity-1', 'startIndex' => 0, 'endIndex' => 10, 'name' => 'Kwaremont'];
 
         yield 'missing activity' => [array_diff_key($valid, ['activityId' => true]), 'An "activityId" is required.'];
+        yield 'activity without an id' => [[...$valid, 'activityId' => 'Morning Run'], 'The "activityId" does not contain a valid activity id.'];
         yield 'missing name' => [array_diff_key($valid, ['name' => true]), 'A "name" is required.'];
         yield 'blank name' => [[...$valid, 'name' => '   '], 'A "name" is required.'];
         yield 'missing start' => [array_diff_key($valid, ['startIndex' => true]), 'The "startIndex" must be a positive whole number.'];
