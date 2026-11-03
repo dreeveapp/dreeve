@@ -15,6 +15,7 @@
                        placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
                        autocomplete="off" spellcheck="false"
                        data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}"
+                       data-autocomplete-show-label
                        required>
             </div>
             <button type="submit" class="btn--add">
