@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Segment;
 
-use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
@@ -12,6 +12,7 @@ use App\Domain\Import\ImportMode;
 use App\Domain\Segment\AddCustomSegment\AddSegmentElevationChart;
 use App\Domain\Settings\SettingsRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,14 +28,18 @@ final readonly class ActivityRouteRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/activities/{activityId}/route', name: 'admin_activity_route', requirements: ['activityId' => 'activity-[^/]+'], methods: ['GET'], priority: 10)]
-    public function handle(string $activityId): JsonResponse
+    #[Route(path: '/admin/activities/route', name: 'admin_activity_route', methods: ['GET'], priority: 10)]
+    public function handle(Request $request): JsonResponse
     {
         if (!$this->importMode->isFiles()) {
             throw new NotFoundHttpException('Page not found');
         }
 
-        $activityId = ActivityId::fromString($activityId);
+        try {
+            $activityId = ActivityReference::parse((string) $request->query->get('activityId', ''));
+        } catch (\InvalidArgumentException) {
+            throw new NotFoundHttpException('Activity not found');
+        }
         if (!$this->activityRepository->exists($activityId)) {
             throw new NotFoundHttpException('Activity not found');
         }

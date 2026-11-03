@@ -35,7 +35,7 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
         }
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/activities/activity-1/route');
+        $this->client->request('GET', '/admin/activities/route?activityId='.urlencode('Morning Run / Commute (activity-1)'));
 
         $this->assertResponseIsSuccessful();
         $route = Json::decode($this->client->getResponse()->getContent());
@@ -67,7 +67,7 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
         }
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/activities/activity-1/route');
+        $this->client->request('GET', '/admin/activities/route?activityId=activity-1');
 
         $this->assertResponseIsSuccessful();
         $route = Json::decode($this->client->getResponse()->getContent());
@@ -89,7 +89,7 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
             ->build());
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/activities/activity-1/route');
+        $this->client->request('GET', '/admin/activities/route?activityId=activity-1');
 
         $this->assertResponseStatusCodeSame(404);
     }
@@ -99,8 +99,10 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::FILES);
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/activities/activity-1/route');
+        $this->client->request('GET', '/admin/activities/route?activityId=activity-1');
+        $this->assertResponseStatusCodeSame(404);
 
+        $this->client->request('GET', '/admin/activities/route?activityId='.urlencode('Morning Run'));
         $this->assertResponseStatusCodeSame(404);
     }
 
@@ -109,7 +111,7 @@ class ActivityRouteRequestHandlerTest extends AdminWebTestCase
         $this->withImportMode(ImportMode::STRAVA_API);
         $this->client->loginUser($this->adminUser());
 
-        $this->client->request('GET', '/admin/activities/activity-1/route');
+        $this->client->request('GET', '/admin/activities/route?activityId=activity-1');
 
         $this->assertResponseStatusCodeSame(404);
     }

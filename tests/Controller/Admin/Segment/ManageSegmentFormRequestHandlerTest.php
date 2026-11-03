@@ -37,8 +37,8 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
         $picker = $form->filter('[data-route-range-picker]');
         $this->assertSame('empty', $picker->attr('data-state'));
         $options = Json::decode((string) $picker->attr('data-route-range-picker'));
-        $this->assertStringEndsWith('/admin/activities/activity-__ID__/route', $options['url']);
-        $this->assertSame('activity-__ID__', $options['placeholder']);
+        $this->assertStringEndsWith('/admin/activities/route?activityId=__ID__', $options['url']);
+        $this->assertSame('__ID__', $options['placeholder']);
         $this->assertSame('#segment-activity', $options['source']);
         $this->assertEquals(1000, $options['distanceInMetersPerUnit']);
         $this->assertEquals(1, $options['elevationInMetersPerUnit']);
