@@ -55,7 +55,10 @@ final readonly class TestAutomationRulesRequestHandler
             try {
                 $activity = $this->activityRepository->find(ActivityReference::parse($activityId));
                 $dryRun = $this->dryRunner->run($activity);
-                $activitySearch = ActivityReference::format($activity->getName(), $activity->getId());
+                $activitySearch = ActivityReference::format(
+                    name: $activity->getName(),
+                    activityId: $activity->getId(),
+                );
             } catch (EntityNotFound|\InvalidArgumentException) {
                 $notFound = true;
             }

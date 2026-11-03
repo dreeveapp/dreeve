@@ -33,7 +33,10 @@ final readonly class SearchActivitiesRequestHandler
         return new JsonResponse(array_map(
             static fn (ActivityOverviewItem $item): array => [
                 'value' => (string) $item->getActivityId(),
-                'reference' => ActivityReference::format((string) $item->getName(), $item->getActivityId()),
+                'reference' => ActivityReference::format(
+                    name: (string) $item->getName(),
+                    activityId: $item->getActivityId(),
+                ),
                 'label' => (string) $item->getName(),
                 'sublabel' => sprintf(
                     '%s · %s',
