@@ -6,13 +6,22 @@ namespace App\Domain\Activity\Collection;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalActivityCollectionRepository extends DbalRepository implements ActivityCollectionRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function add(ActivityCollection $activityCollection): void
     {
         $sql = 'INSERT INTO ActivityCollection (activityCollectionId, name, description, type, activityIds, createdOn)
@@ -26,6 +35,8 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
             'activityIds' => Json::encode($activityCollection->getActivityIds()),
             'createdOn' => $activityCollection->getCreatedOn(),
         ]);
+
+        $this->eventBus->publishEvents($activityCollection->getRecordedEvents());
     }
 
     public function update(ActivityCollection $activityCollection): void
@@ -44,6 +55,8 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
             'type' => $activityCollection->getType()->value,
             'activityIds' => Json::encode($activityCollection->getActivityIds()),
         ]);
+
+        $this->eventBus->publishEvents($activityCollection->getRecordedEvents());
     }
 
     public function delete(ActivityCollection $activityCollection): void
@@ -52,6 +65,8 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
             'DELETE FROM ActivityCollection WHERE activityCollectionId = :activityCollectionId',
             ['activityCollectionId' => $activityCollection->getId()],
         );
+
+        $this->eventBus->publishEvents($activityCollection->getRecordedEvents());
     }
 
     public function find(ActivityCollectionId $activityCollectionId): ActivityCollection

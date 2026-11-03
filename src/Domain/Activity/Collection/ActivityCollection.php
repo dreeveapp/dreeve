@@ -6,6 +6,7 @@ namespace App\Domain\Activity\Collection;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'ActivityCollection')]
 final class ActivityCollection
 {
+    use RecordsEvents;
+
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
         private readonly ActivityCollectionId $activityCollectionId,
@@ -37,7 +40,7 @@ final class ActivityCollection
         ActivityIds $activityIds,
         SerializableDateTime $createdOn,
     ): self {
-        return new self(
+        $activityCollection = new self(
             activityCollectionId: $activityCollectionId,
             name: $name,
             description: $description,
@@ -45,6 +48,9 @@ final class ActivityCollection
             activityIds: $activityIds,
             createdOn: $createdOn,
         );
+        $activityCollection->recordThat(new ActivityCollectionWasAdded());
+
+        return $activityCollection;
     }
 
     public static function fromState(
@@ -77,9 +83,16 @@ final class ActivityCollection
 
     public function withName(string $name): self
     {
-        return clone ($this, [
+        if ($name === $this->name) {
+            return $this;
+        }
+
+        $activityCollection = clone ($this, [
             'name' => $name,
         ]);
+        $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
+
+        return $activityCollection;
     }
 
     public function getDescription(): ?string
@@ -89,9 +102,16 @@ final class ActivityCollection
 
     public function withDescription(?string $description): self
     {
-        return clone ($this, [
+        if ($description === $this->description) {
+            return $this;
+        }
+
+        $activityCollection = clone ($this, [
             'description' => $description,
         ]);
+        $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
+
+        return $activityCollection;
     }
 
     public function getType(): ActivityCollectionType
@@ -101,9 +121,16 @@ final class ActivityCollection
 
     public function withType(ActivityCollectionType $type): self
     {
-        return clone ($this, [
+        if ($type === $this->type) {
+            return $this;
+        }
+
+        $activityCollection = clone ($this, [
             'type' => $type,
         ]);
+        $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
+
+        return $activityCollection;
     }
 
     public function getActivityIds(): ActivityIds
@@ -117,16 +144,31 @@ final class ActivityCollection
             return $this;
         }
 
-        return clone ($this, [
+        $activityCollection = clone ($this, [
             'activityIds' => ActivityIds::fromArray([...$this->activityIds, $activityId]),
         ]);
+        $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
+
+        return $activityCollection;
     }
 
     public function removeActivity(ActivityId $activityId): self
     {
-        return clone ($this, [
+        if (!$this->activityIds->has($activityId)) {
+            return $this;
+        }
+
+        $activityCollection = clone ($this, [
             'activityIds' => $this->activityIds->without($activityId),
         ]);
+        $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
+
+        return $activityCollection;
+    }
+
+    public function delete(): void
+    {
+        $this->recordThat(new ActivityCollectionWasDeleted($this->activityCollectionId));
     }
 
     public function getCreatedOn(): SerializableDateTime
