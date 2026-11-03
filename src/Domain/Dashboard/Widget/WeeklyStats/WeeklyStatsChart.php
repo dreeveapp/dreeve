@@ -68,7 +68,7 @@ final readonly class WeeklyStatsChart
         $xAxisLabels = [];
         /** @var Week $week */
         foreach ($weeks as $week) {
-            if ($week == $weeks->getFirst() || in_array($week->getLabel(), $xAxisLabels)) {
+            if ($week == $weeks->getFirst() || in_array($week->getLabel(), $xAxisLabels, true)) {
                 $xAxisLabels[] = '';
                 continue;
             }

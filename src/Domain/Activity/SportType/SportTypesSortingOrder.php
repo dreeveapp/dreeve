@@ -34,7 +34,7 @@ class SportTypesSortingOrder extends Collection
         }
 
         foreach ($allSportTypes as $type) {
-            if (in_array($type, $sortedSportTypes)) {
+            if (in_array($type, $sortedSportTypes, true)) {
                 continue;
             }
 

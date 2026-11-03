@@ -27,7 +27,7 @@ final readonly class CadenceDistributionChart
         return new self(
             cadenceData: $cadenceData,
             averageCadence: $averageCadence,
-            labelMultiplier: in_array($activityType, [ActivityType::RUN, ActivityType::WALK]) ? 2 : 1,
+            labelMultiplier: in_array($activityType, [ActivityType::RUN, ActivityType::WALK], true) ? 2 : 1,
         );
     }
 
@@ -51,7 +51,7 @@ final readonly class CadenceDistributionChart
             max: $maxCadence,
             step: $step,
             target: $this->averageCadence,
-        ), $xAxisValues);
+        ), $xAxisValues, true);
 
         return $this->buildDistributionChart(
             xAxisValues: array_map(fn (int $value): int => $value * $this->labelMultiplier, $xAxisValues),

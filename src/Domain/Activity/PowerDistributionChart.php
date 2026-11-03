@@ -60,7 +60,7 @@ final readonly class PowerDistributionChart
             max: $maxPower,
             step: $step,
             target: $this->averagePower,
-        ), $xAxisValues);
+        ), $xAxisValues, true);
 
         $markAreas = null;
         // Calculate the mark areas to display the zones.

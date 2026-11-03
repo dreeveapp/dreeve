@@ -97,7 +97,7 @@ enum SportType: string implements TranslatableInterface
             self::SAIL,
             self::WIND_SURF,
             self::KITE_SURF,
-        ]);
+        ], true);
     }
 
     public function getVelocityDisplayPreference(): Velocity
@@ -360,19 +360,19 @@ enum SportType: string implements TranslatableInterface
             self::RUN,
             self::TRAIL_RUN,
             self::VIRTUAL_RUN,
-        ]);
+        ], true);
     }
 
     public function supportsSplits(): bool
     {
-        if (in_array($this->getActivityType(), [ActivityType::RUN, ActivityType::WALK])) {
+        if (in_array($this->getActivityType(), [ActivityType::RUN, ActivityType::WALK], true)) {
             return true;
         }
 
         return in_array($this, [
             self::POOL_SWIM,
             self::OPEN_WATER_SWIM,
-        ]);
+        ], true);
     }
 
     public function supportsShiftingStats(): bool
@@ -384,7 +384,7 @@ enum SportType: string implements TranslatableInterface
             self::E_BIKE_RIDE,
             self::E_MOUNTAIN_BIKE_RIDE,
             self::VELO_MOBILE,
-        ]);
+        ], true);
     }
 
     public function supportsReverseGeocoding(): bool
@@ -414,7 +414,7 @@ enum SportType: string implements TranslatableInterface
             self::BOXING,
             self::PADEL,
             self::PHYSICAL_THERAPY,
-        ]);
+        ], true);
     }
 
     public function supportsWeather(): bool
@@ -443,7 +443,7 @@ enum SportType: string implements TranslatableInterface
             self::BOXING,
             self::PADEL,
             self::PHYSICAL_THERAPY,
-        ]);
+        ], true);
     }
 
     public function isVirtualRide(): bool

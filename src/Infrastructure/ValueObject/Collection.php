@@ -44,7 +44,7 @@ abstract class Collection implements \Countable, \IteratorAggregate, \JsonSerial
     {
         $this->guardItemIsInstanceOfItemClassName($item);
 
-        return \in_array($item, $this->items);
+        return array_any($this->items, static fn (mixed $existingItem): bool => $existingItem == $item);
     }
 
     /**
@@ -99,8 +99,8 @@ abstract class Collection implements \Countable, \IteratorAggregate, \JsonSerial
     {
         $this->guardItemIsInstanceOfItemClassName($itemTobeReplacedWith);
 
-        $index = array_search($itemToReplace, $this->items);
-        if (false === $index) {
+        $index = array_find_key($this->items, static fn (mixed $existingItem): bool => $existingItem == $itemToReplace);
+        if (null === $index) {
             throw new \InvalidArgumentException('Could not replace item, item not found in collection');
         }
 

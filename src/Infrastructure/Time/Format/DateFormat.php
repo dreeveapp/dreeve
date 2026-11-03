@@ -23,7 +23,7 @@ final readonly class DateFormat implements \Stringable
             throw new \InvalidArgumentException('Invalid date format provided. Format cannot be empty');
         }
 
-        if ($invalidChars = array_filter($matches[1], fn (string $char): bool => !in_array($char, $validChars) && ctype_alpha($char))) {
+        if ($invalidChars = array_filter($matches[1], fn (string $char): bool => !in_array($char, $validChars, true) && ctype_alpha($char))) {
             throw new \InvalidArgumentException(sprintf('Invalid date format provided "%s", invalid format characters found: %s', $dateFormatString, implode(', ', array_unique($invalidChars))));
         }
 

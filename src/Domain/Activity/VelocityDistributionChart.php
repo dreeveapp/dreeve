@@ -74,7 +74,7 @@ final readonly class VelocityDistributionChart
             max: $maxVelocity,
             step: $step,
             target: $steppedTarget
-        ), $xAxisValues);
+        ), $xAxisValues, true);
 
         $convertedAverageVelocity = match (true) {
             $velocityUnitPreference instanceof SecPerKm => $this->formatDurationAsClock((int) round($steppedTarget)),

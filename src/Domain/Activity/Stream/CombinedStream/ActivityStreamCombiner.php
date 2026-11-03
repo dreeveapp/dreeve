@@ -83,7 +83,7 @@ final readonly class ActivityStreamCombiner
                 // Smoothen the power stream to remove noise and have a smooth line.
                 $stream = $stream->applySimpleMovingAverage(3);
             }
-            if (in_array($activity->getSportType()->getActivityType(), [ActivityType::RUN, ActivityType::WALK])
+            if (in_array($activity->getSportType()->getActivityType(), [ActivityType::RUN, ActivityType::WALK], true)
                 && StreamType::VELOCITY === $stream->getStreamType()) {
                 // Smoothen the velocity stream to remove peaks in velocity due to GPS issues.
                 $stream = $stream->applySimpleMovingAverage(15);

@@ -14,3 +14,5 @@ parameters:
         constant: 100
     symfony:
         containerXmlPath: var/cache/test/App_KernelTestDebugContainer.xml
+rules:
+    - PHPStan\Rules\StrictCalls\StrictFunctionCallsRule

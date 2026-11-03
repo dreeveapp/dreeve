@@ -111,7 +111,7 @@ final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
 
             $activityType = ActivityType::from($activityType);
             foreach (StatsContext::cases() as $yearlyStatsContext) {
-                if (in_array($yearlyStatsContext, [StatsContext::DISTANCE, StatsContext::ELEVATION]) && !$activityType->supportsDistanceAndElevation()) {
+                if (in_array($yearlyStatsContext, [StatsContext::DISTANCE, StatsContext::ELEVATION], true) && !$activityType->supportsDistanceAndElevation()) {
                     continue;
                 }
 
