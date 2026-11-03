@@ -17,6 +17,9 @@ final readonly class FindAthleteProfileMetricsQueryHandler implements QueryHandl
     ) {
     }
 
+    /**
+     * @param Query<Response> $query
+     */
     public function handle(Query $query): Response
     {
         assert($query instanceof FindAthleteProfileMetrics);

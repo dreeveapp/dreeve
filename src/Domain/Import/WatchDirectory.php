@@ -37,6 +37,9 @@ final readonly class WatchDirectory
         return false;
     }
 
+    /**
+     * @return DirectoryListing<StorageAttributes>
+     */
     public function listFilesThatCanBeProcessed(): DirectoryListing
     {
         return $this->listFiles()
@@ -46,6 +49,9 @@ final readonly class WatchDirectory
             ->sortByPath();
     }
 
+    /**
+     * @return DirectoryListing<StorageAttributes>
+     */
     public function listFiles(): DirectoryListing
     {
         return $this->defaultStorage->listContents(self::FOLDER_NAME, false)

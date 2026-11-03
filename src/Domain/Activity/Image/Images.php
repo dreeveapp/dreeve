@@ -8,6 +8,9 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Infrastructure\ValueObject\Collection;
 
+/**
+ * @extends Collection<Image>
+ */
 final class Images extends Collection
 {
     public function getActivityIds(): ActivityIds

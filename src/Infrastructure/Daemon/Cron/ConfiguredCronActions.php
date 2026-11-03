@@ -6,6 +6,9 @@ namespace App\Infrastructure\Daemon\Cron;
 
 use Cron\CronExpression;
 
+/**
+ * @implements \IteratorAggregate<int, CronAction>
+ */
 readonly class ConfiguredCronActions implements \IteratorAggregate
 {
     private function __construct(

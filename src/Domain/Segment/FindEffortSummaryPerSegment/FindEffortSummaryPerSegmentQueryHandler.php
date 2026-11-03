@@ -22,6 +22,9 @@ final readonly class FindEffortSummaryPerSegmentQueryHandler implements QueryHan
     ) {
     }
 
+    /**
+     * @param Query<Response> $query
+     */
     public function handle(Query $query): Response
     {
         assert($query instanceof FindEffortSummaryPerSegment);

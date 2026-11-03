@@ -7,8 +7,6 @@ parameters:
     paths:
         - migrations/
         - src/
-    ignoreErrors:
-        - identifier: missingType.generics
     type_coverage:
         return: 100
         param: 100

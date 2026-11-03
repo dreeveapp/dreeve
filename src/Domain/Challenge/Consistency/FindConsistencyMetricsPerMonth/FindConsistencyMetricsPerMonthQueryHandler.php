@@ -22,6 +22,9 @@ final readonly class FindConsistencyMetricsPerMonthQueryHandler implements Query
     ) {
     }
 
+    /**
+     * @param Query<Response> $query
+     */
     public function handle(Query $query): Response
     {
         assert($query instanceof FindConsistencyMetricsPerMonth);

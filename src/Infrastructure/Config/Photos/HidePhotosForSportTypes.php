@@ -7,6 +7,9 @@ namespace App\Infrastructure\Config\Photos;
 use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\ValueObject\Collection;
 
+/**
+ * @extends Collection<SportType>
+ */
 final class HidePhotosForSportTypes extends Collection
 {
     public function getItemClassName(): string

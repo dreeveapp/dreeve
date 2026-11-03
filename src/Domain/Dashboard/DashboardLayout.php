@@ -6,10 +6,13 @@ namespace App\Domain\Dashboard;
 
 use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 
+/**
+ * @implements \IteratorAggregate<int, array{id: string, widget: string, width: int, config?: array<string, mixed>}>
+ */
 final readonly class DashboardLayout implements \IteratorAggregate
 {
     private function __construct(
-        /** @var list<array{id: string, widget: string, width: int}> */
+        /** @var list<array{id: string, widget: string, width: int, config?: array<string, mixed>}> */
         private array $config,
     ) {
     }
@@ -20,7 +23,7 @@ final readonly class DashboardLayout implements \IteratorAggregate
     }
 
     /**
-     * @return list<array{id: string, widget: string, width: int}>
+     * @return list<array{id: string, widget: string, width: int, config?: array<string, mixed>}>
      */
     public static function default(): array
     {

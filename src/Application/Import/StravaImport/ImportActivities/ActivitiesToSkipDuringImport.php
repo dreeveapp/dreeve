@@ -7,6 +7,9 @@ namespace App\Application\Import\StravaImport\ImportActivities;
 use App\Domain\Activity\ActivityId;
 use App\Infrastructure\ValueObject\Collection;
 
+/**
+ * @extends Collection<ActivityId>
+ */
 final class ActivitiesToSkipDuringImport extends Collection
 {
     public function getItemClassName(): string

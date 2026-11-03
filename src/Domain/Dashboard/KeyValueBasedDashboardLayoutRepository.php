@@ -49,7 +49,7 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
     {
         $layout = array_values(array_filter(
             iterator_to_array($this->find()),
-            static fn (array $item): bool => ($item['id'] ?? null) !== (string) $dashboardWidgetId,
+            static fn (array $item): bool => $item['id'] !== (string) $dashboardWidgetId,
         ));
 
         $this->save($layout);
@@ -94,7 +94,7 @@ final readonly class KeyValueBasedDashboardLayoutRepository implements Dashboard
     {
         $layout = array_map(
             static function (array $item) use ($dashboardWidgetId, $configuration): array {
-                if (($item['id'] ?? null) === (string) $dashboardWidgetId) {
+                if ($item['id'] === (string) $dashboardWidgetId) {
                     $item['config'] = $configuration;
                 }
 
