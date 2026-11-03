@@ -64,6 +64,9 @@ class CalculateActivitySplitsTest extends ContainerTestCase
         $this->assertSame('', (string) $output);
     }
 
+    /**
+     * @return iterable<string, array{SportType, ImportSource, ?int}>
+     */
     public static function provideActivitiesWithoutSplits(): iterable
     {
         yield 'imported from strava' => [SportType::RUN, ImportSource::STRAVA_API, 2500];

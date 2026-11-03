@@ -169,6 +169,9 @@ class ConsistencyChallengesTest extends TestCase
         );
     }
 
+    /**
+     * @param array<int, mixed> $config
+     */
     #[DataProvider('provideInvalidConfig')]
     public function testFromConfigurationItShouldThrow(array $config, string $expectedException): void
     {
@@ -176,6 +179,9 @@ class ConsistencyChallengesTest extends TestCase
         ConsistencyChallenges::fromConfig($config);
     }
 
+    /**
+     * @return iterable<string, array{array<int, mixed>, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         $yml = self::getValidYml();
@@ -237,6 +243,9 @@ class ConsistencyChallengesTest extends TestCase
         yield 'invalid "type and unit" combo 2' => [$yml, 'The unit "km" is not valid for challenge type "movingTime"'];
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private static function getValidYml(): array
     {
         return [

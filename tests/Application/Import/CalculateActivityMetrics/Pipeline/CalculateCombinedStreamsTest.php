@@ -50,6 +50,9 @@ class CalculateCombinedStreamsTest extends ContainerTestCase
         $this->assertCompressedDatabaseQueryMatchesSnapshot('SELECT * FROM CombinedActivityStream');
     }
 
+    /**
+     * @return iterable<string, array{SportType, bool, UnitSystem}>
+     */
     public static function provideActivities(): iterable
     {
         yield 'ride' => [SportType::RIDE, false, UnitSystem::METRIC];

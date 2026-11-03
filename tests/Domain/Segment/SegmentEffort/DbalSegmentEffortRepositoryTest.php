@@ -4,6 +4,7 @@ namespace App\Tests\Domain\Segment\SegmentEffort;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Segment\SegmentEffort\DbalSegmentEffortRepository;
+use App\Domain\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEfforts;
@@ -173,13 +174,13 @@ class DbalSegmentEffortRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             [3, 2],
             $this->segmentEffortRepository->findByActivityId(ActivityId::fromUnprefixed('1'))
-                ->map(fn ($segmentEffort): ?int => $segmentEffort->getRank())
+                ->map(fn (SegmentEffort $segmentEffort): ?int => $segmentEffort->getRank())
         );
 
         $this->assertEquals(
             [1, 2, 3],
             $this->segmentEffortRepository->findTopXBySegmentId(SegmentId::fromUnprefixed('1'), 10)
-                ->map(fn ($segmentEffort): ?int => $segmentEffort->getRank())
+                ->map(fn (SegmentEffort $segmentEffort): ?int => $segmentEffort->getRank())
         );
 
         $this->assertEquals(

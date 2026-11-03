@@ -146,6 +146,9 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame('Original activity', $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getOriginalName());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideInvalidRequestBodies(): iterable
     {
         yield 'invalid JSON' => ['{'];

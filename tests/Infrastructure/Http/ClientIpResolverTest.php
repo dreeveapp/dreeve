@@ -29,6 +29,9 @@ class ClientIpResolverTest extends TestCase
         $this->assertEquals($expectedIp, new ClientIpResolver()->resolve($request));
     }
 
+    /**
+     * @return iterable<string, array{string[], string, array<string, string>, string}>
+     */
     public static function provideRequests(): iterable
     {
         yield 'untrusted proxy ignores forwarded for' => [[], '172.30.0.1', ['X-Forwarded-For' => '192.168.1.40'], '172.30.0.1'];

@@ -48,6 +48,9 @@ class DateRangeBasedTest extends TestCase
             ->addRange(SerializableDateTime::fromString('2021-01-01'), 120);
     }
 
+    /**
+     * @return list<array{SerializableDateTime, int}>
+     */
     public static function provideCalculateData(): array
     {
         return [

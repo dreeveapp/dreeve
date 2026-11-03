@@ -9,6 +9,7 @@ use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
 use League\Flysystem\FilesystemOperator;
+use League\Flysystem\StorageAttributes;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -221,7 +222,7 @@ class ActivityUploadRequestHandlerTest extends ControllerWebTestCase
     private function watchDirectoryContents(): array
     {
         return $this->filesystem->listContents('watch', true)
-            ->map(static fn ($attributes): string => $attributes->path())
+            ->map(static fn (StorageAttributes $attributes): string => $attributes->path())
             ->toArray();
     }
 

@@ -170,6 +170,9 @@ class MostRecentActivityCardsWidgetTest extends ContainerTestCase
         $this->widget->guardValidConfiguration($config);
     }
 
+    /**
+     * @return iterable<string, array{WidgetConfiguration, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         yield 'missing "numberOfActivitiesToDisplay" key' => [WidgetConfiguration::empty(), 'Configuration item "numberOfActivitiesToDisplay" is required for MostRecentActivityCardsWidget.'];

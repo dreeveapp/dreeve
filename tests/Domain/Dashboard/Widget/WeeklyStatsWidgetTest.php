@@ -19,6 +19,9 @@ class WeeklyStatsWidgetTest extends ContainerTestCase
         $this->widget->guardValidConfiguration($config);
     }
 
+    /**
+     * @return iterable<string, array{WidgetConfiguration, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         $config = WidgetConfiguration::empty();

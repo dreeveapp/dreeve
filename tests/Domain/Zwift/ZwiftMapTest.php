@@ -68,6 +68,9 @@ class ZwiftMapTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string, string, string, string, string}>
+     */
     public static function provideStartingCoordinates(): iterable
     {
         yield 'Bologna' => ['44.5308037', '11.26261748', 'Bologna', '/assets/images/maps/zwift-bologna.webp', '#bbbbb7'];

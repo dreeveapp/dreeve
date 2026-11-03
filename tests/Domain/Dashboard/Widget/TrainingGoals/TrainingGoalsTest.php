@@ -125,6 +125,9 @@ class TrainingGoalsTest extends TestCase
         $this->assertTrue($goal->isActiveOn(SerializableDateTime::fromString('2099-12-31')));
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     #[DataProvider('provideInvalidConfig')]
     public function testFromConfigurationItShouldThrow(array $config, string $expectedException): void
     {
@@ -132,6 +135,9 @@ class TrainingGoalsTest extends TestCase
         TrainingGoals::fromConfig($config);
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         $yml = self::getValidYml();
@@ -213,6 +219,9 @@ class TrainingGoalsTest extends TestCase
         yield '"from" after "to" in "restrictToDateRange"' => [$yml, '"restrictToDateRange.from" must be before or equal to "restrictToDateRange.to"'];
     }
 
+    /**
+     * @return array<string, list<array<string, mixed>>>
+     */
     private static function getValidYml(): array
     {
         return [

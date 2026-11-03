@@ -345,6 +345,12 @@ class FitFileParserTest extends ActivityFileParserTestCase
         $this->parser->parse($rawActivityFile);
     }
 
+    /**
+     * @param list<array{name: string, value: int|string}> $fileIdFields
+     * @param list<array{name: string, value: int|string}> $sessionFields
+     *
+     * @return array<string, mixed>
+     */
     private function minimalFitDocument(array $fileIdFields = [], array $sessionFields = []): array
     {
         return [

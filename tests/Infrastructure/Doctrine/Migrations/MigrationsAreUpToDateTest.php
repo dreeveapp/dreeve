@@ -90,6 +90,12 @@ final class MigrationsAreUpToDateTest extends KernelTestCase
         );
     }
 
+    /**
+     * @param array{notnull: bool, default: mixed} $migrated
+     * @param array{notnull: bool, default: mixed} $mapped
+     *
+     * @return list<string>
+     */
     private function compareColumn(string $table, string $name, array $migrated, array $mapped): array
     {
         $differences = [];
@@ -119,6 +125,9 @@ final class MigrationsAreUpToDateTest extends KernelTestCase
         return $differences;
     }
 
+    /**
+     * @return array<string, array<string, array{notnull: bool, default: mixed}>>
+     */
     private function columnsPerTable(Schema $schema): array
     {
         $result = [];

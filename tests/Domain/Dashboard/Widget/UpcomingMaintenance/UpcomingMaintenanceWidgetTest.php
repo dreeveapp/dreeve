@@ -124,6 +124,9 @@ class UpcomingMaintenanceWidgetTest extends ContainerTestCase
         $this->widget->guardValidConfiguration($config);
     }
 
+    /**
+     * @return iterable<string, array{WidgetConfiguration, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         yield 'missing "numberOfTasksToDisplay" key' => [WidgetConfiguration::empty(), 'Configuration item "numberOfTasksToDisplay" is required for UpcomingMaintenanceWidget.'];

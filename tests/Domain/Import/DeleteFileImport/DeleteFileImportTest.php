@@ -24,6 +24,9 @@ class DeleteFileImportTest extends TestCase
         );
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([[]])]
     #[TestWith([['fileImportId' => ['nope']]])]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload): void

@@ -32,6 +32,9 @@ class MostRecentMilestonesWidgetTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{WidgetConfiguration, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         yield 'missing "numberOfMilestonesToDisplay" key' => [WidgetConfiguration::empty(), 'Configuration item "numberOfMilestonesToDisplay" is required for MostRecentMilestonesWidget.'];

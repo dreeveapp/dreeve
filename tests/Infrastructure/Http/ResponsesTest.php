@@ -22,6 +22,9 @@ class ResponsesTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{Response, array<string, string>}>
+     */
     public static function provideResponses(): iterable
     {
         yield 'html' => [

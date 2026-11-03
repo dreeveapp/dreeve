@@ -14,6 +14,10 @@ trait ProvideSnapshotAssertion
 
     abstract public function assertMatchesJsonSnapshot(mixed $actual): void;
 
+    /**
+     * @param array<string, mixed> $params
+     * @param list<string>         $compressedColumns
+     */
     protected function assertCompressedDatabaseQueryMatchesSnapshot(
         string $sql,
         array $params = [],

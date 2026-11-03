@@ -44,6 +44,9 @@ class PolarisedTrainingTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{TimeInHeartRateZones, TimeInHeartRateZones, array<int, ZoneDistributionTrend>, array<int, float>}>
+     */
     public static function fromRollingWindowProvider(): iterable
     {
         $steady = [ZoneDistributionTrend::STEADY, ZoneDistributionTrend::STEADY, ZoneDistributionTrend::STEADY];

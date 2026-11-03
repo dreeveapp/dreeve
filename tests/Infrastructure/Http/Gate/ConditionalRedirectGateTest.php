@@ -50,6 +50,9 @@ class ConditionalRedirectGateTest extends TestCase
         $this->assertNull($decision->getResponse());
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideAllowedPaths(): iterable
     {
         yield 'exact allowed path' => ['/allowed'];

@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\BestEffort\ActivityBestEffort;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEfforts;
 use App\Domain\Activity\BestEffort\FindBestEfforts\FindBestEffortsQueryHandler;
@@ -94,7 +95,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
                 ['activity-1', 1800],
                 ['activity-1', 3600],
             ],
-            $response->getBestEfforts()->map(fn ($bestEffort): array => [
+            $response->getBestEfforts()->map(fn (ActivityBestEffort $bestEffort): array => [
                 (string) $bestEffort->getActivityId(),
                 $bestEffort->getTimeInSeconds(),
             ])
@@ -111,7 +112,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
         $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::RIDE, Kilometer::from(20)));
         $this->assertEquals(
             [['activity-1', 3600]],
-            $response->getBestEfforts()->map(fn ($bestEffort): array => [
+            $response->getBestEfforts()->map(fn (ActivityBestEffort $bestEffort): array => [
                 (string) $bestEffort->getActivityId(),
                 $bestEffort->getTimeInSeconds(),
             ])
@@ -120,7 +121,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
         $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::RIDE, Kilometer::from(10)));
         $this->assertEquals(
             ['activity-2', 'activity-1'],
-            $response->getBestEfforts()->map(fn ($bestEffort): string => (string) $bestEffort->getActivityId())
+            $response->getBestEfforts()->map(fn (ActivityBestEffort $bestEffort): string => (string) $bestEffort->getActivityId())
         );
 
         $response = $this->queryHandler->handle(new FindBestEfforts(ActivityType::WALK, Kilometer::from(10)));
@@ -166,7 +167,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
 
         $this->assertEquals(
             ['activity-2', 'activity-1'],
-            $response->getBestEfforts()->map(fn ($bestEffort): string => (string) $bestEffort->getActivityId())
+            $response->getBestEfforts()->map(fn (ActivityBestEffort $bestEffort): string => (string) $bestEffort->getActivityId())
         );
 
         $this->activityRepository->update(ActivityWithRawData::fromState(
@@ -177,7 +178,7 @@ class FindBestEffortsQueryHandlerTest extends ContainerTestCase
 
         $this->assertEquals(
             ['activity-1'],
-            $response->getBestEfforts()->map(fn ($bestEffort): string => (string) $bestEffort->getActivityId())
+            $response->getBestEfforts()->map(fn (ActivityBestEffort $bestEffort): string => (string) $bestEffort->getActivityId())
         );
         $this->assertEquals(
             ['activity-1' => SerializableDateTime::fromString('2023-01-02 10:00:00')],

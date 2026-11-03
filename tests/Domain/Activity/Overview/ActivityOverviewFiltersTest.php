@@ -66,6 +66,9 @@ class ActivityOverviewFiltersTest extends TestCase
         ]))->isEmpty());
     }
 
+    /**
+     * @param array<string, mixed> $query
+     */
     #[DataProvider('provideIgnoredFilterValues')]
     public function testItSilentlyIgnoresUnusableValues(array $query): void
     {
@@ -79,6 +82,9 @@ class ActivityOverviewFiltersTest extends TestCase
         $this->assertTrue($filters->isEmpty());
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>}>
+     */
     public static function provideIgnoredFilterValues(): iterable
     {
         yield 'values that are not backed enum values or valid identifiers' => [

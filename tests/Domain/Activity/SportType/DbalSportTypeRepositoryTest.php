@@ -97,6 +97,10 @@ class DbalSportTypeRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @param list<SportType> $sportTypesSortingOrder
+     * @param list<SportType> $hidePhotosForSportTypes
+     */
     private function sportTypeRepositoryFor(array $sportTypesSortingOrder, array $hidePhotosForSportTypes = []): DbalSportTypeRepository
     {
         $settingsRepository = $this->getContainer()->get(SettingsRepository::class);

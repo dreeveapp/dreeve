@@ -49,6 +49,9 @@ class SideBarTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{RootCacheTag, bool}>
+     */
     public static function provideCacheTags(): iterable
     {
         foreach (RootCacheTag::cases() as $cacheTag) {

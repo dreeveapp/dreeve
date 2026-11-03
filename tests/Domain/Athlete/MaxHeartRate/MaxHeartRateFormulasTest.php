@@ -18,6 +18,9 @@ use PHPUnit\Framework\TestCase;
 
 class MaxHeartRateFormulasTest extends TestCase
 {
+    /**
+     * @param string|array<string, int> $formula
+     */
     #[DataProvider('provideDetermineFormulaData')]
     public function testDetermineFormula(MaxHeartRateFormula $expectedFormula, string|array $formula): void
     {
@@ -51,6 +54,9 @@ class MaxHeartRateFormulasTest extends TestCase
         new MaxHeartRateFormulas()->determineFormula([]);
     }
 
+    /**
+     * @return list<array{MaxHeartRateFormula, string|array<string, int>}>
+     */
     public static function provideDetermineFormulaData(): array
     {
         return [

@@ -27,6 +27,9 @@ class MaintenanceTaskProgressCalculationSupportsTest extends ContainerTestCase
         $this->assertSame($expected, $calculation->supports($intervalUnit));
     }
 
+    /**
+     * @return array<string, array{class-string<MaintenanceTaskProgressCalculation>, IntervalUnit, bool}>
+     */
     public static function provideSupports(): array
     {
         return [

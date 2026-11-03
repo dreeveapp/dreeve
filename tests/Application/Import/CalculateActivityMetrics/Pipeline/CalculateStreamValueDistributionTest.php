@@ -142,6 +142,9 @@ class CalculateStreamValueDistributionTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{UnitSystem}>
+     */
     public static function provideUnitSystems(): iterable
     {
         yield 'metric' => [UnitSystem::METRIC];

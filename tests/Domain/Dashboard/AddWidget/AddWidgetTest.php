@@ -20,6 +20,9 @@ class AddWidgetTest extends TestCase
         $this->assertSame('eddington', (string) $command->getWidgetName());
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([[]])]
     #[TestWith([['widget' => '   ']])]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload): void

@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class NavigationTwigExtensionTest extends TestCase
 {
+    /**
+     * @param array<string, bool> $rules
+     */
     #[DataProvider('provideRules')]
     public function testItShouldDetermineWhetherNavItemIsActive(
         string $currentPath,
@@ -35,6 +38,9 @@ class NavigationTwigExtensionTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string, array<string, bool>, bool}>
+     */
     public static function provideRules(): iterable
     {
         yield 'exact match' => ['/admin', ['/admin' => true], true];
@@ -93,6 +99,9 @@ class NavigationTwigExtensionTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{ImportMode, int, int, bool}>
+     */
     public static function provideSegmentManagementAvailability(): iterable
     {
         yield 'never in Strava API mode' => [ImportMode::STRAVA_API, 1, 1, false];

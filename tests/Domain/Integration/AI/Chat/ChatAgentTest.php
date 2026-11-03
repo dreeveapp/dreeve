@@ -55,6 +55,9 @@ class ChatAgentTest extends TestCase
         $this->assertSame([$expectedRequest], $requests);
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, array<string, mixed>}>
+     */
     public static function provideProviders(): iterable
     {
         yield 'anthropic' => [

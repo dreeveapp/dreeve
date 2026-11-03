@@ -121,6 +121,9 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals(0, $overview->getTotal());
     }
 
+    /**
+     * @param list<string> $expectedDates
+     */
     #[DataProvider('providePaginationScenarios')]
     public function testFindOrdersByPerformedOnDescAndPaginates(
         Pagination $pagination,
@@ -143,6 +146,9 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals($pagination, $overview->getPagination());
     }
 
+    /**
+     * @return iterable<string, array{Pagination, list<string>, int}>
+     */
     public static function providePaginationScenarios(): iterable
     {
         yield 'first page is ordered most recent first' => [

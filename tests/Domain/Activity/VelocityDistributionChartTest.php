@@ -42,6 +42,9 @@ class VelocityDistributionChartTest extends TestCase
         $this->assertEquals(30.0, $chart['series'][0]['markPoint']['data'][0]['value']);
     }
 
+    /**
+     * @return list<array{UnitSystem}>
+     */
     public static function provideUnitSystems(): array
     {
         return [

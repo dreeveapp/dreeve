@@ -104,6 +104,9 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame($expectedRedirect, $crawler->filter('.btn--secondary')->attr('href'));
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideRedirectToQueryParams(): iterable
     {
         yield 'no redirectTo' => ['', '/admin/segments'];
@@ -126,6 +129,9 @@ class ManageSegmentFormRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
+    /**
+     * @return iterable<string, array{ImportMode, SegmentType, string}>
+     */
     public static function provideUnavailablePages(): iterable
     {
         yield 'editing a Strava segment' => [ImportMode::FILES, SegmentType::IMPORTED, '/admin/segments/segment-1/edit'];

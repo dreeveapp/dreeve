@@ -83,6 +83,9 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals(1, $overview->getTotal());
     }
 
+    /**
+     * @param list<string> $expectedFilenames
+     */
     #[DataProvider('providePaginationScenarios')]
     public function testFindOrdersByImportedOnDescAndPaginates(
         Pagination $pagination,
@@ -104,6 +107,9 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals($pagination, $overview->getPagination());
     }
 
+    /**
+     * @return iterable<string, array{Pagination, list<string>, int}>
+     */
     public static function providePaginationScenarios(): iterable
     {
         yield 'first page is ordered most recent first' => [
@@ -156,6 +162,9 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{?string, bool}>
+     */
     public static function provideFileContentsScenarios(): iterable
     {
         yield 'an import that kept its original file' => ['raw fit bytes', true];
@@ -174,6 +183,10 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals(0, $overview->getTotal());
     }
 
+    /**
+     * @param array<string, string> $filters
+     * @param list<string>          $expectedFilenames
+     */
     #[DataProvider('provideFilterScenarios')]
     public function testFindAppliesFilters(
         array $filters,
@@ -198,6 +211,9 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals($expectedTotal, $overview->getTotal());
     }
 
+    /**
+     * @return iterable<string, array{array<string, string>, Pagination, list<string>, int}>
+     */
     public static function provideFilterScenarios(): iterable
     {
         yield 'a status filter narrows both the items and the total' => [
@@ -271,6 +287,9 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         ];
     }
 
+    /**
+     * @param list<string> $expectedFilenames
+     */
     #[DataProvider('provideQueuedPaginationScenarios')]
     public function testFindListsQueuedFilesBeforeImportedOnes(
         Pagination $pagination,
@@ -292,6 +311,9 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals(5, $overview->getTotal());
     }
 
+    /**
+     * @return iterable<string, array{Pagination, list<string>}>
+     */
     public static function provideQueuedPaginationScenarios(): iterable
     {
         yield 'a page holding only queued files' => [
@@ -323,6 +345,10 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @param array<string, string> $filters
+     * @param list<string>          $expectedFilenames
+     */
     #[DataProvider('provideQueuedFilterScenarios')]
     public function testFindFiltersQueuedFiles(
         array $filters,
@@ -348,6 +374,9 @@ class DbalFileImportOverviewRepositoryTest extends ContainerTestCase
         $this->assertEquals($expectedTotal, $overview->getTotal());
     }
 
+    /**
+     * @return iterable<string, array{array<string, string>, list<string>, int}>
+     */
     public static function provideQueuedFilterScenarios(): iterable
     {
         yield 'status and source filters do not apply to queued files' => [

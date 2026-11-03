@@ -25,6 +25,9 @@ class DayTimeStatsWidgetTest extends ContainerTestCase
         $this->widget->guardValidConfiguration($config);
     }
 
+    /**
+     * @return iterable<string, array{WidgetConfiguration, string}>
+     */
     public static function provideInvalidConfig(): iterable
     {
         yield 'missing "morningStartHour" key' => [WidgetConfiguration::empty(), 'Configuration item "morningStartHour" is required for DayTimeStatsWidget.'];

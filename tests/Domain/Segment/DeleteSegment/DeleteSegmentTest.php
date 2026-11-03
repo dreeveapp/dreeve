@@ -21,6 +21,9 @@ class DeleteSegmentTest extends TestCase
         $this->assertEquals(SegmentId::fromUnprefixed('1'), $command->getSegmentId());
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([[]])]
     #[TestWith([['segmentId' => 1]])]
     #[TestWith([['segmentId' => '  ']])]

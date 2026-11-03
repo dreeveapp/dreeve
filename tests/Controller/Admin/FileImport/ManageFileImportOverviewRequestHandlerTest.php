@@ -172,6 +172,9 @@ class ManageFileImportOverviewRequestHandlerTest extends AdminWebTestCase
         $this->assertSame($expectedActivityValue, $crawler->filter('input[name="filters[activity]"]')->attr('value'));
     }
 
+    /**
+     * @return iterable<string, array{string, string, string}>
+     */
     public static function provideTextFilterScenarios(): iterable
     {
         yield 'a filename filter keeps its value' => [

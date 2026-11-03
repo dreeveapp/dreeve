@@ -71,12 +71,18 @@ class DeviceConditionTest extends TestCase
         $this->assertTrue($this->condition->matches($noDevice, RuleConfiguration::fromConfig(['operator' => 'isNot', 'deviceName' => 'Garmin Edge 130'])));
     }
 
+    /**
+     * @return iterable<string, array{string, string, string}>
+     */
     public static function provideInvalidConfigurations(): iterable
     {
         yield 'invalid operator' => ['nope', 'Garmin Edge 130', 'Invalid device operator "nope".'];
         yield 'missing device name' => ['is', '  ', 'A "deviceName" is required.'];
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideMatchingDeviceNames(): iterable
     {
         yield 'exact name' => ['Garmin Edge 130'];

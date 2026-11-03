@@ -56,6 +56,9 @@ class FormatDateAndTimeTwigExtensionTest extends ContainerTestCase
         return new FormatDateAndTimeTwigExtension($settingsRepository);
     }
 
+    /**
+     * @return list<array{string, SerializableDateTime, string, string, string}>
+     */
     public static function provideDates(): array
     {
         return [
@@ -67,6 +70,9 @@ class FormatDateAndTimeTwigExtensionTest extends ContainerTestCase
         ];
     }
 
+    /**
+     * @return list<array{string, SerializableDateTime, TimeFormat}>
+     */
     public static function provideTimes(): array
     {
         return [

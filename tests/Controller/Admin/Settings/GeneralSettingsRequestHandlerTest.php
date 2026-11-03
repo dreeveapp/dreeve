@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Admin\Settings;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
 {
@@ -22,7 +23,7 @@ class GeneralSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[name="data[lastName]"][required]'));
         $this->assertSame(
             ['Athlete profile', 'Max heart rate', 'Resting heart rate', 'Heart rate zones'],
-            $crawler->filter('section h3')->each(fn ($heading): string => $heading->text()),
+            $crawler->filter('section h3')->each(fn (Crawler $heading): string => $heading->text()),
         );
         $this->assertCount(1, $crawler->filter('select[name="data[maxHeartRateFormula]"]'));
         $this->assertCount(1, $crawler->filter('select[name="data[restingHeartRateFormula]"]'));

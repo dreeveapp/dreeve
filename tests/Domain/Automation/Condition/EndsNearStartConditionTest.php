@@ -45,6 +45,9 @@ class EndsNearStartConditionTest extends ContainerTestCase
         ]));
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     #[DataProvider('provideInvalidConfigurations')]
     public function testGuardThrowsOnInvalidConfiguration(array $config, string $expectedMessage): void
     {
@@ -149,6 +152,9 @@ class EndsNearStartConditionTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
     public static function provideInvalidConfigurations(): iterable
     {
         yield 'invalid operator' => [['operator' => 'nope', 'radius' => 1.0], 'Invalid proximity operator "nope".'];

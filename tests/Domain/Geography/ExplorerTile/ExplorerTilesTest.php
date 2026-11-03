@@ -34,6 +34,9 @@ class ExplorerTilesTest extends TestCase
         $this->assertEquals($expectedMaxSquare, $tiles->maxSquare());
     }
 
+    /**
+     * @return iterable<string, array{list<string>, int, int, int, list<array{int, int}>, ?ExplorerTileSquare}>
+     */
     public static function provideGrids(): iterable
     {
         yield 'separate clusters' => [

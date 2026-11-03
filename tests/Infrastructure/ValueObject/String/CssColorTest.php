@@ -24,6 +24,9 @@ class CssColorTest extends TestCase
         CssColor::fromString('LOL');
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideValidCssColors(): iterable
     {
         yield 'named color' => ['red'];

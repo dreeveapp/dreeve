@@ -9,6 +9,7 @@ use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
 
 class SpyShoutrrr implements Shoutrrr
 {
+    /** @var list<array{url: ShoutrrrUrl, message: string, title: string}> */
     private array $notifications = [];
 
     public function send(ShoutrrrUrl $shoutrrrUrl, string $message, string $title): void
@@ -20,6 +21,9 @@ class SpyShoutrrr implements Shoutrrr
         ];
     }
 
+    /**
+     * @return list<array{url: ShoutrrrUrl, message: string, title: string}>
+     */
     public function getNotifications(): array
     {
         return $this->notifications;

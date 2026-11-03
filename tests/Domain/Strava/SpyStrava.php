@@ -31,6 +31,7 @@ class SpyStrava extends Strava
 {
     private int $numberOfCallsExecuted = 0;
     private int $maxNumberOfCallsBeforeTriggering429 = 0;
+    /** @var array<string, array<string, mixed>> */
     private array $activities;
     private bool $triggerExceptionOnNextCall = false;
     private bool $triggerExceptionOnNextActivityCall = false;

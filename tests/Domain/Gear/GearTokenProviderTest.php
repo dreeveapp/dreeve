@@ -172,6 +172,9 @@ class GearTokenProviderTest extends TestCase
         )));
     }
 
+    /**
+     * @return list<array{string, string}>
+     */
     public static function provideTokens(): array
     {
         return [

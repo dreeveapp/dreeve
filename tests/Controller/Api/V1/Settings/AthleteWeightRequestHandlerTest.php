@@ -108,6 +108,9 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame('bad_request', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[DataProvider('provideInvalidPayloads')]
     public function testItRejectsInvalidPayloads(array $payload): void
     {
@@ -122,6 +125,9 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame('bad_request', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
+    /**
+     * @return iterable<string, array{array<string, mixed>}>
+     */
     public static function provideInvalidPayloads(): iterable
     {
         yield 'missing weight' => [[]];
@@ -145,6 +151,9 @@ class AthleteWeightRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame('bad_request', Json::decode((string) $this->client->getResponse()->getContent())['error']);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideInvalidRequestBodies(): iterable
     {
         yield 'invalid JSON' => ['{'];

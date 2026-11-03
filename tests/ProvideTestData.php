@@ -798,6 +798,9 @@ trait ProvideTestData
         );
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     public function buildThemeConfig(): array
     {
         return [

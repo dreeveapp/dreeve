@@ -96,6 +96,9 @@ class AutomationTwigExtensionTest extends ContainerTestCase
         $this->assertTrue($this->extension->hasEnabledAutomationRules());
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideStartDateOperators(): iterable
     {
         yield 'before' => ['lt', 'before 2024-01-01'];

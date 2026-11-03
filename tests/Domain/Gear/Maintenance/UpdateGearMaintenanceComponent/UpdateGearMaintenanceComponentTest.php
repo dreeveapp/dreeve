@@ -27,6 +27,9 @@ class UpdateGearMaintenanceComponentTest extends TestCase
         $this->assertCount(1, $command->getMaintenanceTasks());
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     #[TestWith([['label' => 'Updated chain', 'installations' => [['parent' => 'gear:gear-b1']], 'maintenanceTasks' => [['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']]]]])]
     #[TestWith([['gearComponentId' => '   ', 'label' => 'Updated chain', 'installations' => [['parent' => 'gear:gear-b1']], 'maintenanceTasks' => [['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']]]]])]
     public function testFromPayloadThrowsOnInvalidPayload(array $payload): void

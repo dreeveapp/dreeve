@@ -62,6 +62,9 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{SegmentType}>
+     */
     public static function provideSegmentTypes(): iterable
     {
         yield 'imported' => [SegmentType::IMPORTED];
@@ -220,6 +223,9 @@ class DbalSegmentRepositoryTest extends ContainerTestCase
         );
     }
 
+    /**
+     * @return array{Segment, Segment, Segment}
+     */
     private function seedSegmentsWithEfforts(): array
     {
         $segmentOne = SegmentBuilder::fromDefaults()

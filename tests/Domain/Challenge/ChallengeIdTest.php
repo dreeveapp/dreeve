@@ -41,6 +41,9 @@ class ChallengeIdTest extends TestCase
         );
     }
 
+    /**
+     * @return list<array{SerializableDateTime, string, ChallengeId}>
+     */
     public static function provideData(): array
     {
         return [
@@ -67,6 +70,9 @@ class ChallengeIdTest extends TestCase
         ];
     }
 
+    /**
+     * @return list<array{SerializableDateTime, string, ChallengeId}>
+     */
     public static function provideDataOldVersion(): array
     {
         return [

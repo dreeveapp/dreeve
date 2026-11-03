@@ -53,6 +53,9 @@ class ServerErrorLoggerTest extends TestCase
         ));
     }
 
+    /**
+     * @return iterable<string, array{int}>
+     */
     public static function provideNonServerErrorStatusCodes(): iterable
     {
         yield 'not found' => [Response::HTTP_NOT_FOUND];
