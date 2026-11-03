@@ -66,6 +66,7 @@ phpunit-html-coverage:
 	@make paratest arg="--coverage-html var/coverage"
 
 phpstan:
+	@make dcr cmd="bin/console cache:warmup --env=test"
 	@make dcr cmd="vendor/bin/phpstan --memory-limit=1G $(arg)"
 
 csfix:
