@@ -29,15 +29,16 @@ jobs:
       - name: Warm up test container for PHPStan
         run: $PHP bin/console cache:warmup --env=test
 
-      - name: Cache PHPStan and Rector results
+      - name: Cache static analysis results
         uses: actions/cache@v5
         with:
           path: |
             var/cache/phpstan
             var/cache/rector
-          key: ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php') }}-${{ github.sha }}
+            .php-cs-fixer.cache
+          key: ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php', '.php-cs-fixer.dist.php') }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php') }}-
+            ${{ runner.os }}-static-analysis-${{ hashFiles('composer.lock', 'phpstan.dist.neon', 'rector.php', '.php-cs-fixer.dist.php') }}-
             ${{ runner.os }}-static-analysis-
 
       - name: Run PHPStan
