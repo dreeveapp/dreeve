@@ -66,7 +66,7 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            [['Transalp 2025', 'Event', '0', 'Edit'], ['Mallorca', 'Trip', '2', 'Edit']],
+            [['Transalp 2025', 'Event', '0', 'Edit Delete'], ['Mallorca', 'Trip', '2', 'Edit Delete']],
             $crawler->filter('table.data-table tbody tr')->each(
                 static fn (Crawler $row): array => $row->filter('td')->each(static fn (Crawler $cell): string => trim($cell->text())),
             ),
@@ -74,6 +74,10 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
         $this->assertSame(
             ['/admin/collections/activityCollection-2/edit', '/admin/collections/activityCollection-1/edit'],
             $crawler->filter('table.data-table tbody a[title="Edit"]')->extract(['href']),
+        );
+        $this->assertSame(
+            ['/admin/collections/activityCollection-2/delete', '/admin/collections/activityCollection-1/delete'],
+            $crawler->filter('table.data-table tbody a[title="Delete"]')->extract(['href']),
         );
     }
 
