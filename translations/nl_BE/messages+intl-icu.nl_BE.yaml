@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Activiteiten
 Activity: Activiteit
+'Activity collections': 'Activity collections'
 'Activity count': 'Aantal activiteiten'
 'Activity heatmap': Activiteitenheatmap
 'Activity locations': Activiteitslocaties
@@ -144,6 +145,7 @@ Energy: Energie
 'Energy burned across your activities': 'Verbruikte energie over je activiteiten'
 'Enter fullscreen mode': 'Volledig scherm'
 Evening: Avond
+Event: Event
 'Excludes commutes': 'Zonder woon-werkritten'
 'Excludes group activities': 'Zonder groepsactiviteiten'
 'Explorer tiles': Explorer-tegels
@@ -567,6 +569,7 @@ Title: Titel
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Training Stress Balance (Vorm) – Het verschil tussen fitheid (CTL) en vermoeidheid (ATL). Geeft aan hoe klaar je bent om te presteren.'
 'Training goals': Trainingsdoelen
 'Training load is accumulating, recovery days are important': 'De trainingsbelasting stapelt zich op, hersteldagen zijn belangrijk'
+Trip: Trip
 Tue: Di
 Tue.: Di.
 'Unchanged compared to yesterday': 'Onveranderd ten opzichte van gisteren'

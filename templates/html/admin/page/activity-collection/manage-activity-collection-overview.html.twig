@@ -1,0 +1,73 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">
+                {{ "Activity collection management"|trans({}, 'admin') }}
+            </h3>
+        </div>
+        <div class="relative overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-left">
+                        {{ "Name"|trans }}
+                    </th>
+                    <th scope="col" class="text-left">
+                        {{ "Type"|trans({}, 'admin') }}
+                    </th>
+                    <th scope="col">
+                        {{ "Activities"|trans }}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for activityCollection in activityCollections %}
+                    <tr class="group/row">
+                        <td class="whitespace-nowrap text-left">
+                            <span class="block max-w-100 truncate font-medium" title="{{ activityCollection.getName() }}">
+                                {{ activityCollection.getName() }}
+                            </span>
+                        </td>
+                        <td class="whitespace-nowrap text-left">
+                            {{ activityCollection.getType()|trans }}
+                        </td>
+                        <td class="whitespace-nowrap">
+                            {{ activityCollection.getActivityIds()|length }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% if activityCollections.isEmpty() %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
+                                <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
+                                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 8H4m0-2v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-5.032a1 1 0 0 1-.768-.36l-1.9-2.28a1 1 0 0 0-.768-.36H5a1 1 0 0 0-1 1Z"/>
+                                    </svg>
+                                </span>
+                                {% if hasActivities %}
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-medium text-gray-800">{{ "No collections added yet."|trans({}, 'admin') }}</span>
+                                        <span class="text-xs text-gray-500">{{ "Group activities into trips and events, and they will appear here."|trans({}, 'admin') }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-medium text-gray-800">{{ "No activities imported yet."|trans({}, 'admin') }}</span>
+                                        <span class="text-xs text-gray-500">{{ "Import your activities first, then group them into collections."|trans({}, 'admin') }}</span>
+                                    </div>
+                                    <a href="{{ relativeUrl(path('admin_file_upload')) }}" class="btn--primary mt-1">
+                                        {{ "Import activities"|trans({}, 'admin') }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endblock main %}

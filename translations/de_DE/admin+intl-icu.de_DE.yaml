@@ -14,6 +14,7 @@ Active: Aktiv
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
 Activity: Aktivität
 'Activity ID': Aktivitäts-ID
+'Activity collection management': 'Activity collection management'
 'Activity description': Aktivitätsbeschreibung
 'Activity management': Aktivitätenverwaltung
 'Activity name': Aktivitätsname
@@ -209,6 +210,7 @@ General: Allgemein
 'Go to last page': 'Zur letzten Seite'
 'Go to next page': 'Zur nächsten Seite'
 'Go to previous page': 'Zur vorherigen Seite'
+'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': Gruppenaktivität
 Heatmap: Heatmap
 'Hide photos for sport types': 'Fotos für Sportarten ausblenden'
@@ -232,6 +234,7 @@ Import: Import
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
 'Import source': Importquelle
+'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
 'Imported files will appear here once you upload them.': 'Importierte Dateien werden hier angezeigt, sobald du sie hochlädst.'
 'Imported from Strava': 'Von Strava importiert'
 'Imports new Strava activities.': 'Importiert neue Strava-Aktivitäten'
@@ -293,6 +296,7 @@ Monday: Montag
 'No activities match the current filters.': 'Keine Aktivitäten entsprechen den aktuellen Filtern.'
 'No activity found for that ID.': 'Keine Aktivität für diese ID gefunden.'
 'No automation rules yet.': 'Keine Automatisierungsregel bisher.'
+'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Noch keine Komponenten vorhanden'
 'No file imports match the current filters.': 'Keine Dateiimporte entsprechen den aktuellen Filtern.'
 'No files imported yet.': 'Noch keine Dateien importiert'

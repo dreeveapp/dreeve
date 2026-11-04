@@ -14,6 +14,7 @@ Active: Actief
 'Activities will appear here once they are imported.': 'Activiteiten verschijnen hier zodra ze geïmporteerd zijn.'
 Activity: Activiteit
 'Activity ID': Activiteits-ID
+'Activity collection management': 'Activity collection management'
 'Activity description': 'Beschrijving activiteit'
 'Activity management': Activiteitenbeheer
 'Activity name': 'Naam activiteit'
@@ -209,6 +210,7 @@ General: Algemeen
 'Go to last page': 'Naar laatste pagina'
 'Go to next page': 'Naar volgende pagina'
 'Go to previous page': 'Naar vorige pagina'
+'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': Groepsactiviteit
 Heatmap: Heatmap
 'Hide photos for sport types': "Foto's verbergen voor sporttypes"
@@ -232,6 +234,7 @@ Import: Importeren
 'Import segment details': 'Segmentdetails importeren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Importeer segmentdetails zodat segmentkaarten getoond kunnen worden. Dit vraagt een extra Strava API-call per segment en verlengt de importtijd aanzienlijk.'
 'Import source': Importbron
+'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
 'Imported files will appear here once you upload them.': 'Geïmporteerde bestanden verschijnen hier zodra je ze uploadt.'
 'Imported from Strava': 'Geïmporteerd van Strava'
 'Imports new Strava activities.': 'Importeert nieuwe Strava-activiteiten.'
@@ -293,6 +296,7 @@ Monday: Maandag
 'No activities match the current filters.': 'Geen activiteiten die overeenkomen met de huidige filters.'
 'No activity found for that ID.': 'Geen activiteit gevonden voor dat ID.'
 'No automation rules yet.': 'Nog geen automatiseringsregels.'
+'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Nog geen onderdelen.'
 'No file imports match the current filters.': 'Geen bestandsimports die overeenkomen met de huidige filters.'
 'No files imported yet.': 'Nog geen bestanden geïmporteerd.'

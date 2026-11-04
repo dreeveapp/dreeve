@@ -14,6 +14,7 @@ Active: Active
 'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
 Activity: Activity
 'Activity ID': 'Activity ID'
+'Activity collection management': 'Activity collection management'
 'Activity description': 'Activity description'
 'Activity management': 'Activity management'
 'Activity name': 'Activity name'
@@ -209,6 +210,7 @@ General: General
 'Go to last page': 'Go to last page'
 'Go to next page': 'Go to next page'
 'Go to previous page': 'Go to previous page'
+'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': 'Group activity'
 Heatmap: Heatmap
 'Hide photos for sport types': 'Hide photos for sport types'
@@ -232,6 +234,7 @@ Import: Import
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Import source': 'Import source'
+'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
 'Imports new Strava activities.': 'Imports new Strava activities.'
@@ -293,6 +296,7 @@ Monday: Monday
 'No activities match the current filters.': 'No activities match the current filters.'
 'No activity found for that ID.': 'No activity found for that ID.'
 'No automation rules yet.': 'No automation rules yet.'
+'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'No components yet.'
 'No file imports match the current filters.': 'No file imports match the current filters.'
 'No files imported yet.': 'No files imported yet.'

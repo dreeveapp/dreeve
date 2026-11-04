@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Activities
 Activity: Activity
+'Activity collections': 'Activity collections'
 'Activity count': 'Activity count'
 'Activity heatmap': 'Activity heatmap'
 'Activity locations': 'Activity locations'
@@ -144,6 +145,7 @@ Energy: Energy
 'Energy burned across your activities': 'Energy burned across your activities'
 'Enter fullscreen mode': 'Enter fullscreen mode'
 Evening: Evening
+Event: Event
 'Excludes commutes': 'Excludes commutes'
 'Excludes group activities': 'Excludes group activities'
 'Explorer tiles': 'Explorer tiles'
@@ -567,6 +569,7 @@ Title: Title
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.'
 'Training goals': 'Training goals'
 'Training load is accumulating, recovery days are important': 'Training load is accumulating, recovery days are important'
+Trip: Trip
 Tue: Tue
 Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
