@@ -77,6 +77,7 @@ Apply: Aplicar
 'Are you sure you want to delete {name}?': '¿Estás seguro de que quieres eliminar {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': '¿Estás seguro de que quieres eliminar la tarea {task} en el componente {component} para el equipamiento {gear}, realizada el {date}?'
 'Are you sure you want to remove the {widget} widget?': '¿Estás seguro de que quieres quitar el widget {widget}?'
+'Are you sure you want to remove {activity} from {activityCollection}?': 'Are you sure you want to remove {activity} from {activityCollection}?'
 'Assign gear': 'Asignar equipamiento'
 Athlete: Athlete
 'Athlete settings': 'Ajustes del atleta'
@@ -377,6 +378,7 @@ Radius: Radio
 Remove: Quitar
 'Remove Eddington': 'Quitar Eddington'
 'Remove action': 'Quitar acción'
+'Remove activity': 'Remove activity'
 'Remove challenge': 'Quitar reto'
 'Remove command': 'Quitar comando'
 'Remove condition': 'Quitar condición'
@@ -496,6 +498,7 @@ Tasks: Tareas
 'Test automation rules': 'Probar reglas de automatización'
 'Test rules': 'Probar reglas'
 'The URL the app is hosted on.': 'La URL donde está alojada la aplicación.'
+'The activity itself is not deleted.': 'The activity itself is not deleted.'
 'The activity started': 'La actividad empezó'
 'The activity will be marked as a commute.': 'La actividad se marcará como desplazamiento.'
 'The activity will be marked as a group activity.': 'La actividad se marcará como actividad en grupo.'

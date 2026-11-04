@@ -85,10 +85,14 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('/admin/collections/activityCollection-1/activities/add', $form->filter('a.btn--secondary[href$="/activities/add"]')->attr('href'));
         $this->assertCount(1, $crawler->filter('.modal-like-form .btn--primary'));
         $this->assertSame(
-            [['Stage 1', 'Rides', '22-06-25'], ['Stage 2', 'Gravel Rides', '23-06-25']],
+            [['Stage 1', 'Rides', '22-06-25', 'Remove'], ['Stage 2', 'Gravel Rides', '23-06-25', 'Remove']],
             $form->filter('table.data-table tbody tr')->each(
                 static fn (Crawler $row): array => $row->filter('td')->each(static fn (Crawler $cell): string => trim($cell->text())),
             ),
+        );
+        $this->assertSame(
+            ['/admin/collections/activityCollection-1/activities/activity-2/remove', '/admin/collections/activityCollection-1/activities/activity-3/remove'],
+            $form->filter('table.data-table tbody a[title="Remove"]')->extract(['href']),
         );
 
         $this->client->request('GET', '/admin/collections/activityCollection-unknown/edit');
@@ -138,6 +142,39 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('/admin/collections/activityCollection-1/edit', $form->filter('a.btn--secondary')->attr('href'));
 
         $this->client->request('GET', '/admin/collections/activityCollection-unknown/activities/add');
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testRendersTheRemoveActivityConfirmation(): void
+    {
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(ActivityBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('2'))
+            ->withName('Sa Calobra')
+            ->build(), []));
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->withName('Mallorca')
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('2')]))
+            ->build());
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/collections/activityCollection-1/activities/activity-2/remove');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('Remove activity', $crawler->filter('h3')->text());
+
+        $form = $crawler->filter('form[data-dispatch-command="remove-activity-from-collection"]');
+        $this->assertSame('/admin/collections/activityCollection-1/edit', $form->attr('data-redirect'));
+        $this->assertSame('activityCollection-1', $form->filter('input[type="hidden"][name="activityCollectionId"]')->attr('value'));
+        $this->assertSame('activity-2', $form->filter('input[type="hidden"][name="activityId"]')->attr('value'));
+        $this->assertSame('/admin/collections/activityCollection-1/edit', $form->filter('a.btn--secondary')->attr('href'));
+        $this->assertStringContainsString('Are you sure you want to remove Sa Calobra from Mallorca?', $form->text());
+        $this->assertSame('Remove', trim($form->filter('button[type="submit"].btn--danger .label')->text()));
+
+        $this->client->request('GET', '/admin/collections/activityCollection-1/activities/'.ActivityId::fromUnprefixed('903645').'/remove');
+        $this->assertResponseStatusCodeSame(404);
+
+        $this->client->request('GET', '/admin/collections/activityCollection-unknown/activities/activity-2/remove');
         $this->assertResponseStatusCodeSame(404);
     }
 }
