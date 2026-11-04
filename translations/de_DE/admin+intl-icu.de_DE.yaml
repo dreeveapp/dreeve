@@ -134,6 +134,7 @@ Delete: Löschen
 'Delete activities': 'Aktivitäten löschen'
 'Delete activity': 'Aktivität löschen'
 'Delete automation rule': 'Automatisierungsregel löschen'
+'Delete collection': 'Delete collection'
 'Delete component': 'Komponente löschen'
 'Delete file import': 'Dateiimport löschen'
 'Delete gear': 'Ausrüstung löschen'
@@ -248,6 +249,7 @@ Integrations: Integrationen
 'Intro text': Einleitungstext
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
 'Issuer URL': 'Issuer URL'
+'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Bezeichnung
 'Last name': Nachname
 Latitude: Breitengrad

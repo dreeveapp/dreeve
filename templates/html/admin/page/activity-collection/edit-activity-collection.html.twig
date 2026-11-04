@@ -27,6 +27,9 @@
                     <textarea id="activity-collection-description" name="description" rows="3">{{ activityCollection ? activityCollection.getDescription() }}</textarea>
                 </div>
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    {% if activityCollection %}
+                        <a href="{{ relativeUrl(path('admin_delete_activity_collection', {activityCollectionId: activityCollectionId})) }}" type="button" class="btn--danger me-auto">{{ "Delete"|trans({}, 'admin') }}</a>
+                    {% endif %}
                     <a href="{{ relativeUrl(path('admin_manage_activity_collection_overview')) }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
                     <button type="submit" data-has-loading-state class="group btn--primary">
                         <span class="label">{{ "Save"|trans({}, 'admin') }}</span>

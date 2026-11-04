@@ -8,6 +8,7 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
+use App\Domain\Activity\Collection\DeleteActivityCollection\DeleteActivityCollection;
 use App\Domain\Activity\Collection\UpdateActivityCollection\UpdateActivityCollection;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -42,6 +43,15 @@ final readonly class ManageActivityCollectionFormRequestHandler
             'dispatchCommand' => UpdateActivityCollection::getCommandName(),
             'activityCollection' => $activityCollection,
             'types' => ActivityCollectionType::cases(),
+        ]));
+    }
+
+    #[Route(path: '/admin/collections/{activityCollectionId}/delete', name: 'admin_delete_activity_collection', methods: ['GET'], priority: 10)]
+    public function handleDelete(string $activityCollectionId): HtmlResponse
+    {
+        return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/delete-activity-collection.html.twig', [
+            'dispatchCommand' => DeleteActivityCollection::getCommandName(),
+            'activityCollection' => $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId)),
         ]));
     }
 }

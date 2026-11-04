@@ -134,6 +134,7 @@ Delete: Törlés
 'Delete activities': 'Delete activities'
 'Delete activity': 'Tevékenység törlése'
 'Delete automation rule': 'Automatizálási szabály törlése'
+'Delete collection': 'Delete collection'
 'Delete component': 'Komponens törlése'
 'Delete file import': 'Fájlimport törlése'
 'Delete gear': 'Felszerelés törlése'
@@ -248,6 +249,7 @@ Integrations: Integrációk
 'Intro text': 'Bevezető szöveg'
 'Invalid CSRF token.': 'Érvénytelen CSRF-token.'
 'Issuer URL': 'Issuer URL'
+'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Címke
 'Last name': Vezetéknév
 Latitude: Szélesség

@@ -134,6 +134,7 @@ Delete: Verwijderen
 'Delete activities': 'Delete activities'
 'Delete activity': 'Activiteit verwijderen'
 'Delete automation rule': 'Automatiseringsregel verwijderen'
+'Delete collection': 'Delete collection'
 'Delete component': 'Onderdeel verwijderen'
 'Delete file import': 'Bestandsimport verwijderen'
 'Delete gear': 'Uitrusting verwijderen'
@@ -248,6 +249,7 @@ Integrations: Integraties
 'Intro text': Introtekst
 'Invalid CSRF token.': 'Ongeldig CSRF-token.'
 'Issuer URL': 'Issuer URL'
+'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Label
 'Last name': Achternaam
 Latitude: Breedtegraad
