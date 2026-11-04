@@ -26,6 +26,7 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
         $this->assertStringContainsString('No activities imported yet.', $crawler->filter('body')->text());
         $this->assertStringNotContainsString('No collections added yet.', $crawler->filter('body')->text());
         $this->assertCount(1, $crawler->filter('table.data-table a.btn--primary[href$="/admin/upload"]'));
+        $this->assertCount(0, $crawler->filter('a.btn--add'));
         $this->assertCount(1, $crawler->filter('#drawer-navigation a[href$="/admin/collections"][aria-selected="true"]'));
     }
 
@@ -39,6 +40,7 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
         $this->assertResponseIsSuccessful();
         $this->assertStringContainsString('No collections added yet.', $crawler->filter('body')->text());
         $this->assertStringNotContainsString('No activities imported yet.', $crawler->filter('body')->text());
+        $this->assertSame('/admin/collections/add', $crawler->filter('a.btn--add')->attr('href'));
     }
 
     public function testRendersTheCollectionsNewestFirst(): void
