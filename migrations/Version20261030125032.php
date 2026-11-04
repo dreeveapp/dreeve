@@ -16,6 +16,7 @@ final class Version20261030125032 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql("DELETE FROM Setting WHERE settingsGroup = 'appearance' AND name = 'heatmap'");
         $this->addSql('CREATE TEMPORARY TABLE __temp__Setting AS SELECT name, value FROM Setting');
         $this->addSql('DROP TABLE Setting');
         $this->addSql('CREATE TABLE Setting (name VARCHAR(255) NOT NULL, value CLOB NOT NULL, PRIMARY KEY (name))');
