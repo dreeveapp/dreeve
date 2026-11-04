@@ -4,9 +4,21 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Collection;
 
-enum ActivityCollectionType: string
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+enum ActivityCollectionType: string implements TranslatableInterface
 {
     case OTHER = 'other';
     case TRIP = 'trip';
     case EVENT = 'event';
+
+    public function trans(TranslatorInterface $translator, ?string $locale = null): string
+    {
+        return match ($this) {
+            self::OTHER => $translator->trans('Other', locale: $locale),
+            self::TRIP => $translator->trans('Trip', locale: $locale),
+            self::EVENT => $translator->trans('Event', locale: $locale),
+        };
+    }
 }

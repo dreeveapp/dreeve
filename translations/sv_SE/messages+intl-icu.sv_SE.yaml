@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Aktiviteter
 Activity: Aktivitet
+'Activity collections': 'Activity collections'
 'Activity count': 'Antal aktiviteter'
 'Activity heatmap': Aktivitskarta
 'Activity locations': 'Aktivitet platser'
@@ -147,6 +148,7 @@ Energy: Energy
 'Enjoying Dreeve? Support its development': 'Enjoying Dreeve? Support its development'
 'Enter fullscreen mode': 'Enter fullscreen mode'
 Evening: Kväll
+Event: Event
 'Excludes commutes': 'Uteslut pendling'
 'Excludes group activities': 'Excludes group activities'
 'Explorer tiles': 'Utforskade rutor'
@@ -570,6 +572,7 @@ Title: Title
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Träningsstress Balans (Form) – Skillnaden mellan träningsform (CTL) och utmattning (ATL). Återspeglar hur redo du är att prestera.'
 'Training goals': 'Training goals'
 'Training load is accumulating, recovery days are important': 'Training load is accumulating, recovery days are important'
+Trip: Trip
 Tue: Tis
 Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'

@@ -14,6 +14,7 @@ Active: Actif
 'Activities will appear here once they are imported.': 'Les activités apparaîtront ici une fois importées.'
 Activity: Activité
 'Activity ID': "ID de l'activité"
+'Activity collection management': 'Activity collection management'
 'Activity description': "Description de l'activité"
 'Activity management': 'Gestion des activités'
 'Activity name': "Nom de l'activité"
@@ -209,6 +210,7 @@ General: Géneral
 'Go to last page': 'Aller à la dernière page'
 'Go to next page': 'Aller à la page suivante'
 'Go to previous page': 'Aller à la page précédente'
+'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': 'Activité de groupe'
 Heatmap: 'Carte thermique'
 'Hide photos for sport types': 'Masquer les photos pour les types de sport'
@@ -232,6 +234,7 @@ Import: Import
 'Import segment details': 'Importer les détails des segments'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': "Importe les détails des segments afin de pouvoir afficher leurs cartes. Cela nécessite un appel supplémentaire à l'API Strava par segment et augmente considérablement la durée de l'import."
 'Import source': "Source d'import"
+'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
 'Imported files will appear here once you upload them.': 'Les fichiers importés apparaîtront ici une fois téléversés.'
 'Imported from Strava': 'Importé depuis Strava'
 'Imports new Strava activities.': 'Importe les nouvelles activités Strava.'
@@ -294,6 +297,7 @@ Monday: Lundi
 'No activities match the current filters.': 'Aucune activité ne correspond aux filtres actuels.'
 'No activity found for that ID.': 'Aucune activité trouvée pour cet ID.'
 'No automation rules yet.': "Aucune règle d'automatisation pour le moment."
+'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Aucun composant pour le moment.'
 'No file imports match the current filters.': 'Aucun import de fichier ne correspond aux filtres actuels.'
 'No files imported yet.': 'Aucun fichier importé pour le moment.'

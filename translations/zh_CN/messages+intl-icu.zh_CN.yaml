@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: 活动
 Activity: 活动
+'Activity collections': 'Activity collections'
 'Activity count': 活动量
 'Activity heatmap': 活动热图
 'Activity locations': 活动地点
@@ -147,6 +148,7 @@ Energy: Energy
 'Enjoying Dreeve? Support its development': 'Enjoying Dreeve? Support its development'
 'Enter fullscreen mode': 'Enter fullscreen mode'
 Evening: 晚上
+Event: Event
 'Excludes commutes': 筛除通勤
 'Excludes group activities': 'Excludes group activities'
 'Explorer tiles': 探索方块
@@ -570,6 +572,7 @@ Title: Title
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': '训练压力平衡（状态）- 体能（CTL）与疲劳（ATL）之间的差异，反映您的运动准备程度。'
 'Training goals': 'Training goals'
 'Training load is accumulating, recovery days are important': 'Training load is accumulating, recovery days are important'
+Trip: Trip
 Tue: 周二
 Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'

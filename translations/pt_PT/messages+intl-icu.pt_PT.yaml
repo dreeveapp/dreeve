@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Atividades
 Activity: Activity
+'Activity collections': 'Activity collections'
 'Activity count': 'Número de Actividades'
 'Activity heatmap': 'Activity heatmap'
 'Activity locations': 'Locais de actividade'
@@ -147,6 +148,7 @@ Energy: Energy
 'Enjoying Dreeve? Support its development': 'Enjoying Dreeve? Support its development'
 'Enter fullscreen mode': 'Enter fullscreen mode'
 Evening: 'Fim da tarde'
+Event: Event
 'Excludes commutes': 'Exclui viagens escritório'
 'Excludes group activities': 'Excludes group activities'
 'Explorer tiles': 'Quadrados explorados'
@@ -570,6 +572,7 @@ Title: Title
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Balanço de Stress de Treino (Forma) – A diferença entre (CTL) e fadiga (ATL). Reflecte prontidão para treinar ou competir.'
 'Training goals': 'Training goals'
 'Training load is accumulating, recovery days are important': 'Training load is accumulating, recovery days are important'
+Trip: Trip
 Tue: Ter
 Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
