@@ -684,7 +684,6 @@ workouts: edzések
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} minden {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} tevékenység'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} tevékenység {year}-ben'
-'{numberOfActivities} activities on this route': '{numberOfActivities} tevékenység ezen az útvonalon'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} hónap'
 '{numberOfResults} photos': '{numberOfResults} fotó'

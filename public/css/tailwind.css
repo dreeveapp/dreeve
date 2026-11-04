@@ -46,6 +46,7 @@
 @custom-variant fullscreen-enabled (&:where([data-fullscreen-enabled], [data-fullscreen-enabled] *));
 @custom-variant drawer-open (&:where(body:has(#drawer-navigation[aria-modal="true"]) *));
 @custom-variant sorted-by-date ([data-sort-scope]:has([data-sort-option="date"]:checked) &);
+@custom-variant sorted-by-speed ([data-sort-scope]:has([data-sort-option="speed"]:checked) &);
 
 @layer base {
     *,

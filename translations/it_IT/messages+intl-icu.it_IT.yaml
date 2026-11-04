@@ -684,7 +684,6 @@ workouts: allenamenti
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} ogni {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} attività'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} attività nel {year}'
-'{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} mesi'
 '{numberOfResults} photos': '{numberOfResults} photos'
