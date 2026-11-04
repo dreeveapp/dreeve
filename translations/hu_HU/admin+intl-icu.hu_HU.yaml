@@ -14,6 +14,7 @@ Active: Aktív
 'Activities will appear here once they are imported.': 'A tevékenységek itt jelennek meg, miután importáltad őket.'
 Activity: Tevékenység
 'Activity ID': Tevékenység-azonosító
+'Activity collection management': 'Activity collection management'
 'Activity description': 'Tevékenység leírása'
 'Activity management': 'Tevékenységek kezelése'
 'Activity name': 'Tevékenység neve'
@@ -209,6 +210,7 @@ General: Általános
 'Go to last page': 'Ugrás az utolsó oldalra'
 'Go to next page': 'Ugrás a következő oldalra'
 'Go to previous page': 'Ugrás az előző oldalra'
+'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': 'Csoportos tevékenység'
 Heatmap: Hőtérkép
 'Hide photos for sport types': 'Fotók elrejtése sporttípusonként'
@@ -232,6 +234,7 @@ Import: Importálás
 'Import segment details': 'Szegmens-részletek importálása'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Importálja a szegmens-részleteket, hogy a szegmenstérképek megjeleníthetők legyenek. Ehhez szegmensenként egy extra Strava API-hívás szükséges, és jelentősen megnöveli az importálási időt.'
 'Import source': 'Importálási forrás'
+'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
 'Imported files will appear here once you upload them.': 'Az importált fájlok itt jelennek meg, miután feltöltötted őket.'
 'Imported from Strava': 'Stravából importálva'
 'Imports new Strava activities.': 'Importálja az új Strava-tevékenységeket.'
@@ -294,6 +297,7 @@ Monday: Hétfő
 'No activities match the current filters.': 'Egyetlen tevékenység sem felel meg a jelenlegi szűrőknek.'
 'No activity found for that ID.': 'Nem található tevékenység ehhez az azonosítóhoz.'
 'No automation rules yet.': 'Még nincsenek automatizálási szabályok.'
+'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Még nincsenek komponensek.'
 'No file imports match the current filters.': 'Egyetlen fájlimport sem felel meg a jelenlegi szűrőknek.'
 'No files imported yet.': 'Még nincsenek importált fájlok.'

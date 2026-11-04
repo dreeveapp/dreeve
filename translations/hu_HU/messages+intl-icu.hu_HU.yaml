@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Tevékenységek
 Activity: Tevékenység
+'Activity collections': 'Activity collections'
 'Activity count': 'Tevékenységek száma'
 'Activity heatmap': 'Tevékenységek hőtérképe'
 'Activity locations': 'Tevékenységek helyszínei'
@@ -144,6 +145,7 @@ Energy: Energia
 'Energy burned across your activities': 'A tevékenységeid során elégetett energia'
 'Enter fullscreen mode': 'Teljes képernyős mód'
 Evening: Este
+Event: Event
 'Excludes commutes': 'Ingázások nélkül'
 'Excludes group activities': 'A csoportos tevékenységek kivételével'
 'Explorer tiles': 'Felfedezett csempék'
@@ -567,6 +569,7 @@ Title: Cím
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Edzési stressz egyensúly (Forma) – a fitnesz (CTL) és a fáradtság (ATL) különbsége. Megmutatja, mennyire vagy felkészülve a teljesítésre.'
 'Training goals': 'Edzési célok'
 'Training load is accumulating, recovery days are important': 'Az edzésterhelés halmozódik, a regenerációs napok fontosak'
+Trip: Trip
 Tue: K
 Tue.: Kedd
 'Unchanged compared to yesterday': 'Változatlan a tegnapihoz képest'

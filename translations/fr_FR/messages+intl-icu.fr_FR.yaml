@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Activités
 Activity: Activité
+'Activity collections': 'Activity collections'
 'Activity count': "Nombre d'activités"
 'Activity heatmap': "Carte thermique de l'activité"
 'Activity locations': "Lieux d'activité"
@@ -144,6 +145,7 @@ Energy: Energie
 'Energy burned across your activities': 'Energie brulée dans toutes vos activités'
 'Enter fullscreen mode': 'Mode plein-écran'
 Evening: Soirée
+Event: Event
 'Excludes commutes': 'Trajets domicile-travail exclus'
 'Excludes group activities': 'Exclut les activités de groupe'
 'Explorer tiles': 'Tuiles explorées'
@@ -567,6 +569,7 @@ Title: Titre
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': "Balance du Stress d'Entraînement (Forme) – La différence entre la forme (CTL) et la fatigue (ATL). Reflète votre niveau de préparation à performer."
 'Training goals': "Objectifs d'entraînement"
 'Training load is accumulating, recovery days are important': "Charge d'entraînement en accumulation, les jours de récupération sont importants"
+Trip: Trip
 Tue: Mar
 Tue.: Mar.
 'Unchanged compared to yesterday': 'Inchangé par rapport à hier'
