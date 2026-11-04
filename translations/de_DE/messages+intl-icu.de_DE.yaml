@@ -259,6 +259,7 @@ Low: Niedrig
 'Low training load': 'Niedrige Trainingsbelastung'
 Maintenance: Wartung
 'Manage activities': 'Aktivitäten verwalten'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Ausrüstung verwalten'
 'Manage recording devices': 'Aufzeichnungsgeräte verwalten'
 'Manage segments': 'Segmente verwalten'
@@ -687,6 +688,7 @@ workouts: Trainingseinheiten
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} alle {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} Aktivitäten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} Aktivitäten in {year}'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-Tage-Zeitraum'
 '{numberOfMonths} months': '{numberOfMonths} Monate'
 '{numberOfResults} photos': '{numberOfResults} Bilder'

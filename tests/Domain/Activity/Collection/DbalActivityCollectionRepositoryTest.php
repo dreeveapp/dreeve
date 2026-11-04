@@ -6,6 +6,8 @@ namespace App\Tests\Domain\Activity\Collection;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Collection\ActivityCollection;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
@@ -13,6 +15,7 @@ use App\Domain\Activity\Collection\DbalActivityCollectionRepository;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 
 class DbalActivityCollectionRepositoryTest extends ContainerTestCase
@@ -145,6 +148,27 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ['activityCollection-a', 'activityCollection-c'],
             $this->repository->findForActivity(ActivityId::fromUnprefixed('2'))->map(static fn (ActivityCollection $activityCollection): string => (string) $activityCollection->getId())
         );
+    }
+
+    public function testHasActivityCollectionsWithActivities(): void
+    {
+        $this->assertFalse($this->repository->hasActivityCollectionsWithActivities());
+
+        $this->repository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('deleted')]))
+            ->build());
+        $this->assertFalse($this->repository->hasActivityCollectionsWithActivities());
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()->withActivityId(ActivityId::fromUnprefixed('1'))->build(),
+            [],
+        ));
+        $this->repository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('2'))
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]))
+            ->build());
+        $this->assertTrue($this->repository->hasActivityCollectionsWithActivities());
     }
 
     public function testDelete(): void

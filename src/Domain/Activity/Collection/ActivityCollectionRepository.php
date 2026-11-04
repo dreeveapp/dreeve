@@ -19,4 +19,6 @@ interface ActivityCollectionRepository
     public function findAll(): ActivityCollections;
 
     public function findForActivity(ActivityId $activityId): ActivityCollections;
+
+    public function hasActivityCollectionsWithActivities(): bool;
 }
