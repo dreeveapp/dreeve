@@ -66,10 +66,14 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            [['Transalp 2025', 'Event', '0'], ['Mallorca', 'Trip', '2']],
+            [['Transalp 2025', 'Event', '0', 'Edit'], ['Mallorca', 'Trip', '2', 'Edit']],
             $crawler->filter('table.data-table tbody tr')->each(
                 static fn (Crawler $row): array => $row->filter('td')->each(static fn (Crawler $cell): string => trim($cell->text())),
             ),
+        );
+        $this->assertSame(
+            ['/admin/collections/activityCollection-2/edit', '/admin/collections/activityCollection-1/edit'],
+            $crawler->filter('table.data-table tbody a[title="Edit"]')->extract(['href']),
         );
     }
 

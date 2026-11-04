@@ -1,28 +1,30 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
+    {% set activityCollection = activityCollection is defined ? activityCollection : null %}
+    {% set activityCollectionId = activityCollection ? activityCollection.getId() : activityCollectionId %}
     {% embed 'html/admin/component/modal.html.twig' with {closeUrl: relativeUrl(path('admin_manage_activity_collection_overview'))} %}
-        {% block title %}{{ "Add collection"|trans({}, 'admin') }}{% endblock %}
+        {% block title %}{{ activityCollection ? "Edit collection"|trans({}, 'admin') : "Add collection"|trans({}, 'admin') }}{% endblock %}
         {% block body %}
-            {% autoescape false %}
-            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ relativeUrl(path('admin_manage_activity_collection_overview')) }}" class="flex flex-col gap-4">
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ activityCollection ? relativeUrl(path('admin_manage_activity_collection_overview')) : relativeUrl(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId})) }}" class="flex flex-col gap-4">
                 <input type="hidden" name="activityCollectionId" value="{{ activityCollectionId }}">
                 <div data-form-error class="form-error hidden" role="alert"></div>
                 <div>
                     <label for="activity-collection-name">{{ "Name"|trans }}</label>
-                    <input type="text" id="activity-collection-name" name="name" required value="">
+                    <input type="text" id="activity-collection-name" name="name" required value="{{ activityCollection ? activityCollection.getName() }}">
                 </div>
                 <div>
+                    {% set currentType = activityCollection ? activityCollection.getType() : null %}
                     <label for="activity-collection-type">{{ "Type"|trans({}, 'admin') }}</label>
                     <select id="activity-collection-type" name="type">
                         {% for type in types %}
-                            <option value="{{ type.value }}">{{ type|trans }}</option>
+                            <option value="{{ type.value }}" {{ type == currentType ? 'selected' }}>{{ type|trans }}</option>
                         {% endfor %}
                     </select>
                     <p class="description">{{ "The type decides how the collection page is laid out."|trans({}, 'admin') }}</p>
                 </div>
                 <div>
                     <label for="activity-collection-description">{{ "Description"|trans({}, 'admin') }}</label>
-                    <textarea id="activity-collection-description" name="description" rows="3"></textarea>
+                    <textarea id="activity-collection-description" name="description" rows="3">{{ activityCollection ? activityCollection.getDescription() }}</textarea>
                 </div>
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     <a href="{{ relativeUrl(path('admin_manage_activity_collection_overview')) }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
@@ -32,7 +34,6 @@
                     </button>
                 </div>
             </form>
-            {% endautoescape %}
         {% endblock %}
     {% endembed %}
 {% endblock main %}

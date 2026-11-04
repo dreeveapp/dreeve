@@ -9,9 +9,9 @@
             {% autoescape false %}
             <p>
                 {{ "Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?"|trans({
-                    '{task}': '<span class="font-semibold text-gray-900">' ~ taskLabel ~ '</span>',
-                    '{component}': '<span class="font-semibold text-gray-900">' ~ componentLabel ~ '</span>',
-                    '{gear}': '<span class="font-semibold text-gray-900">' ~ gearName ~ '</span>',
+                    '{task}': '<span class="font-semibold text-gray-900">' ~ gearMaintenanceLog.getTaskLabel() ~ '</span>',
+                    '{component}': '<span class="font-semibold text-gray-900">' ~ gearMaintenanceLog.getComponentLabel() ~ '</span>',
+                    '{gear}': '<span class="font-semibold text-gray-900">' ~ gearMaintenanceLog.getGearName() ~ '</span>',
                     '{date}': '<span class="font-semibold text-gray-900">' ~ gearMaintenanceLog.getPerformedOn()|formatDate('normal') ~ '</span>',
                 }, 'admin') }}
             </p>
