@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Route\Match;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Time\Format\ProvideTimeFormats;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
@@ -17,9 +19,12 @@ final readonly class RouteMatch
         private ActivityId $activityId,
         private int $rank,
         private int $recencyRank,
+        private int $speedRank,
         private string $name,
+        private SportType $sportType,
         private Kilometer $distance,
         private int $movingTimeInSeconds,
+        private KmPerHour $averageSpeed,
         private SerializableDateTime $startDateTime,
         private bool $isCurrentActivity,
     ) {
@@ -29,9 +34,12 @@ final readonly class RouteMatch
         ActivityId $activityId,
         int $rank,
         int $recencyRank,
+        int $speedRank,
         string $name,
+        SportType $sportType,
         Kilometer $distance,
         int $movingTimeInSeconds,
+        KmPerHour $averageSpeed,
         SerializableDateTime $startDateTime,
         bool $isCurrentActivity,
     ): self {
@@ -39,9 +47,12 @@ final readonly class RouteMatch
             activityId: $activityId,
             rank: $rank,
             recencyRank: $recencyRank,
+            speedRank: $speedRank,
             name: $name,
+            sportType: $sportType,
             distance: $distance,
             movingTimeInSeconds: $movingTimeInSeconds,
+            averageSpeed: $averageSpeed,
             startDateTime: $startDateTime,
             isCurrentActivity: $isCurrentActivity,
         );
@@ -62,9 +73,19 @@ final readonly class RouteMatch
         return $this->recencyRank;
     }
 
+    public function getSpeedRank(): int
+    {
+        return $this->speedRank;
+    }
+
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getSportType(): SportType
+    {
+        return $this->sportType;
     }
 
     public function getDistance(): Kilometer
@@ -80,6 +101,11 @@ final readonly class RouteMatch
     public function getMovingTimeFormatted(): string
     {
         return $this->formatDurationAsClock($this->movingTimeInSeconds);
+    }
+
+    public function getAverageSpeed(): KmPerHour
+    {
+        return $this->averageSpeed;
     }
 
     public function getStartDateTime(): SerializableDateTime

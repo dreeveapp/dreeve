@@ -7,12 +7,14 @@ namespace App\Domain\Activity\Route\Match\FindRouteMatches;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\Route\Match\RouteMatch;
 use App\Domain\Activity\Route\Match\RouteMatches;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Geography\Grid\RouteGrid;
 use App\Domain\Geography\Grid\RouteWaypoints;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\Connection;
@@ -66,8 +68,10 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
                        ActivityRouteSignature.cells,
                        ActivityRouteSignature.waypoints,
                        Activity.name,
+                       Activity.sportType,
                        Activity.distance,
                        Activity.movingTimeInSeconds,
+                       Activity.averageSpeed,
                        Activity.startDateTime
                 FROM ActivityRouteSignature
                 INNER JOIN Activity ON Activity.activityId = ActivityRouteSignature.activityId
@@ -93,6 +97,7 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
 
         $matches = [];
         $startDateTimes = [];
+        $averageSpeeds = [];
 
         foreach ($candidates as $candidate) {
             $candidateCellCount = (int) $candidate['cellCount'];
@@ -122,12 +127,15 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
             $activityId = (string) $candidate['activityId'];
             $matches[] = $candidate;
             $startDateTimes[$activityId] = SerializableDateTime::fromString((string) $candidate['startDateTime']);
+            $averageSpeeds[$activityId] = (float) $candidate['averageSpeed'];
         }
 
         $timestamps = array_map(fn (SerializableDateTime $startDateTime): int => $startDateTime->getTimestamp(), $startDateTimes);
-        // Sorting a copy keeps $matches in fastest-first order; ties fall back to that same order.
+        // Sorting copies keeps $matches in fastest-first order; ties fall back to that same order.
         arsort($timestamps);
         $recencyRanks = array_flip(array_keys($timestamps));
+        arsort($averageSpeeds);
+        $speedRanks = array_flip(array_keys($averageSpeeds));
 
         $routeMatches = RouteMatches::empty();
         $rank = 0;
@@ -139,9 +147,12 @@ final readonly class FindRouteMatchesQueryHandler implements QueryHandler
                 activityId: ActivityId::fromString($activityId),
                 rank: ++$rank,
                 recencyRank: $recencyRanks[$activityId] + 1,
+                speedRank: $speedRanks[$activityId] + 1,
                 name: (string) $match['name'],
+                sportType: SportType::from((string) $match['sportType']),
                 distance: Meter::from((int) $match['distance'])->toKilometer(),
                 movingTimeInSeconds: (int) $match['movingTimeInSeconds'],
+                averageSpeed: KmPerHour::from((float) $match['averageSpeed']),
                 startDateTime: $startDateTimes[$activityId],
                 isCurrentActivity: $activityId === (string) $query->getActivityId(),
             ));
