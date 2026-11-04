@@ -29,6 +29,7 @@ Activity: Activité
 'Add activity': 'Ajouter une activité'
 'Add automation rule': "Ajouter une règle d'automatisation"
 'Add challenge': 'Ajouter un défi'
+'Add collection': 'Add collection'
 'Add command': 'Ajouter une commande'
 'Add component': 'Ajouter un composant'
 'Add condition': 'Ajouter une condition'
@@ -519,6 +520,7 @@ Tasks: Tâches
 'The start date, optionally with a custom PHP date format': 'La date de début, éventuellement avec un format de date PHP personnalisé'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'Les URL des couches de tuiles utilisées pour afficher les cartes. Ajoutez-en plusieurs pour les superposer, par exemple pour afficher les noms de lieux par-dessus une couche satellite.'
 'The total distance ridden with the gear': 'La distance totale parcourue avec le matériel'
+'The type decides how the collection page is laid out.': 'The type decides how the collection page is laid out.'
 'The unit system used to render distances, elevations, temperatures, etc.': "Le système d'unités utilisé pour afficher les distances, dénivelés, températures, etc."
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': "La vue sur laquelle s'ouvre la carte thermique. Le centre et le niveau de zoom sont tous deux nécessaires ; laissez-les vides pour cadrer automatiquement sur votre zone la plus active."
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': "La largeur de ce widget doit être configurée dans la page des paramètres du tableau de bord. Elle ne s'adapte pas automatiquement au nombre d'activités configuré."

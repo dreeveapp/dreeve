@@ -29,6 +29,7 @@ Activity: Activiteit
 'Add activity': 'Activiteit toevoegen'
 'Add automation rule': 'Automatiseringsregel toevoegen'
 'Add challenge': 'Uitdaging toevoegen'
+'Add collection': 'Add collection'
 'Add command': 'Commando toevoegen'
 'Add component': 'Onderdeel toevoegen'
 'Add condition': 'Voorwaarde toevoegen'
@@ -519,6 +520,7 @@ Tasks: Taken
 'The start date, optionally with a custom PHP date format': 'De startdatum, optioneel met een eigen PHP-datumformaat'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': "De URL's van de tegellagen om de kaarten weer te geven. Voeg er meer dan één toe om ze te stapelen, bijvoorbeeld om plaatsnamen over een satellietlaag te leggen."
 'The total distance ridden with the gear': 'De totale afstand afgelegd met de uitrusting'
+'The type decides how the collection page is laid out.': 'The type decides how the collection page is laid out.'
 'The unit system used to render distances, elevations, temperatures, etc.': 'Het eenhedenstelsel voor afstanden, hoogtes, temperaturen, enz.'
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'Het beeld waarin de heatmap opent. Zowel het middelpunt als het zoomniveau zijn nodig; laat ze leeg om automatisch op je meest actieve gebied in te zoomen.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'De breedte van deze widget moet ingesteld worden op de pagina met dashboardinstellingen. Ze schaalt niet automatisch mee met het aantal activiteiten dat je instelt.'
