@@ -30,6 +30,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
                 ActivityId::fromUnprefixed('2'),
                 ActivityId::fromUnprefixed('1'),
             ]))
+            ->withCoverImagePath('/files/activity-collections/cover.jpg')
             ->build();
         $this->repository->add($activityCollection);
 
@@ -42,6 +43,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
                     'description' => 'Four stages from Austria to Italy.',
                     'type' => 'event',
                     'activityIds' => '["activity-2","activity-1"]',
+                    'coverImagePath' => '/files/activity-collections/cover.jpg',
                     'createdOn' => '2025-04-20 10:00:00',
                 ],
             ],
@@ -84,13 +86,15 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withName('Before')
             ->withDescription('Before')
             ->withType(ActivityCollectionType::TRIP)
+            ->withCoverImagePath('/files/activity-collections/before.jpg')
             ->build();
         $this->repository->add($activityCollection);
 
         $updated = $activityCollection
             ->withName('After')
             ->withDescription(null)
-            ->withType(ActivityCollectionType::EVENT);
+            ->withType(ActivityCollectionType::EVENT)
+            ->withCoverImagePath(null);
         $this->repository->update($updated);
 
         $this->assertEquals($updated, $this->repository->find($activityCollection->getId()));

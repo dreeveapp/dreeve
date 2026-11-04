@@ -26,6 +26,15 @@
                     <label for="activity-collection-description">{{ "Description"|trans({}, 'admin') }}</label>
                     <textarea id="activity-collection-description" name="description" rows="3">{{ activityCollection ? activityCollection.getDescription() }}</textarea>
                 </div>
+                <div>
+                    <label>{{ "Cover image"|trans({}, 'admin') }}</label>
+                    {% set existingImages = [] %}
+                    {% if activityCollection and activityCollection.getCoverImagePath() %}
+                        {% set path = activityCollection.getCoverImagePath() %}
+                        {% set existingImages = [{ url: path, name: path|split('/')|last, path: path }] %}
+                    {% endif %}
+                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'coverImagePath', maxImages: 1, existingImages: existingImages } %}
+                </div>
                 {% if activityCollection %}
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">

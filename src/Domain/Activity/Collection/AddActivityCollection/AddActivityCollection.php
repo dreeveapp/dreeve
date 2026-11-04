@@ -6,6 +6,8 @@ namespace App\Domain\Activity\Collection\AddActivityCollection;
 
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Image\NewImage;
+use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -13,6 +15,7 @@ use App\Infrastructure\CQRS\Command\DomainCommand;
 
 final readonly class AddActivityCollection extends DomainCommand implements DeserializableCommand
 {
+    use ProvideLocalImageFromDropZonePayload;
     use ProvidesCommandName;
 
     private function __construct(
@@ -20,6 +23,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
         private string $name,
         private ?string $description,
         private ActivityCollectionType $type,
+        private ?NewImage $newImage,
     ) {
     }
 
@@ -44,11 +48,14 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
         $description = $payload['description'] ?? null;
         $description = is_string($description) ? trim($description) : '';
 
+        [$newImages] = self::parseImages($payload, 'coverImagePath');
+
         return new self(
             activityCollectionId: ActivityCollectionId::fromString($payload['activityCollectionId']),
             name: $name,
             description: '' === $description ? null : $description,
             type: $activityCollectionType,
+            newImage: $newImages[0] ?? null,
         );
     }
 
@@ -70,5 +77,10 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
     public function getType(): ActivityCollectionType
     {
         return $this->type;
+    }
+
+    public function getNewImage(): ?NewImage
+    {
+        return $this->newImage;
     }
 }
