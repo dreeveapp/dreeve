@@ -48,6 +48,9 @@
                                     <th scope="col" class="text-left">
                                         {{ "Date"|trans }}
                                     </th>
+                                    <th scope="col" class="narrow sticky-actions">
+                                        <span class="sr-only">{{ "Remove"|trans({}, 'admin') }}</span>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -66,10 +69,18 @@
                                         <td class="whitespace-nowrap text-left">
                                             {{ activity.getStartDate()|formatDate() }}
                                         </td>
+                                        <td class="narrow whitespace-nowrap sticky-actions">
+                                            <a href="{{ relativeUrl(path('admin_remove_activity_from_collection', {activityCollectionId: activityCollectionId, activityId: activity.getId()})) }}"
+                                               class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
+                                               title="{{ "Remove"|trans({}, 'admin') }}">
+                                                <span class="sr-only">{{ "Remove"|trans({}, 'admin') }}</span>
+                                                {{ svg('trash') }}
+                                            </a>
+                                        </td>
                                     </tr>
                                 {% else %}
                                     <tr>
-                                        <td colspan="3" class="text-center text-gray-500">
+                                        <td colspan="4" class="text-center text-gray-500">
                                             {{ "No activities added yet."|trans({}, 'admin') }}
                                         </td>
                                     </tr>

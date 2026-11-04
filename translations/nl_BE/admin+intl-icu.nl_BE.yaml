@@ -77,6 +77,7 @@ Apply: Toepassen
 'Are you sure you want to delete {name}?': 'Ben je zeker dat je {name} wil verwijderen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Ben je zeker dat je {task} op {component} voor {gear}, uitgevoerd op {date}, wil verwijderen?'
 'Are you sure you want to remove the {widget} widget?': 'Ben je zeker dat je de widget {widget} wil verwijderen?'
+'Are you sure you want to remove {activity} from {activityCollection}?': 'Are you sure you want to remove {activity} from {activityCollection}?'
 'Assign gear': 'Uitrusting toewijzen'
 Athlete: Athlete
 'Athlete settings': Atleetinstellingen
@@ -374,6 +375,7 @@ Radius: Straal
 Remove: Verwijderen
 'Remove Eddington': 'Eddington verwijderen'
 'Remove action': 'Actie verwijderen'
+'Remove activity': 'Remove activity'
 'Remove challenge': 'Uitdaging verwijderen'
 'Remove command': 'Commando verwijderen'
 'Remove condition': 'Voorwaarde verwijderen'
@@ -492,6 +494,7 @@ Tasks: Taken
 'Test automation rules': 'Automatiseringsregels testen'
 'Test rules': 'Regels testen'
 'The URL the app is hosted on.': 'De URL waarop de app gehost wordt.'
+'The activity itself is not deleted.': 'The activity itself is not deleted.'
 'The activity started': 'De activiteit startte'
 'The activity will be marked as a commute.': 'De activiteit wordt gemarkeerd als woon-werk.'
 'The activity will be marked as a group activity.': 'De activiteit wordt gemarkeerd als groepsactiviteit.'
