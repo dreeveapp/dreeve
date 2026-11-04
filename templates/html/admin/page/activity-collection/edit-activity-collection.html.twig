@@ -2,7 +2,7 @@
 {% block main %}
     {% set activityCollection = activityCollection is defined ? activityCollection : null %}
     {% set activityCollectionId = activityCollection ? activityCollection.getId() : activityCollectionId %}
-    {% embed 'html/admin/component/modal.html.twig' with {closeUrl: relativeUrl(path('admin_manage_activity_collection_overview'))} %}
+    {% embed 'html/admin/component/modal.html.twig' with {closeUrl: relativeUrl(path('admin_manage_activity_collection_overview')), modalSize: activityCollection ? 'max-w-2xl' : 'max-w-lg'} %}
         {% block title %}{{ activityCollection ? "Edit collection"|trans({}, 'admin') : "Add collection"|trans({}, 'admin') }}{% endblock %}
         {% block body %}
             <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ activityCollection ? relativeUrl(path('admin_manage_activity_collection_overview')) : relativeUrl(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId})) }}" class="flex flex-col gap-4">
@@ -26,6 +26,59 @@
                     <label for="activity-collection-description">{{ "Description"|trans({}, 'admin') }}</label>
                     <textarea id="activity-collection-description" name="description" rows="3">{{ activityCollection ? activityCollection.getDescription() }}</textarea>
                 </div>
+                {% if activityCollection %}
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-700">{{ "Activities"|trans }}</span>
+                            <a href="{{ relativeUrl(path('admin_add_activity_to_collection', {activityCollectionId: activityCollectionId})) }}" type="button" class="btn--secondary">
+                                {{ svg('plus') }}
+                                <span>{{ "Add activity"|trans({}, 'admin') }}</span>
+                            </a>
+                        </div>
+                        <div class="relative overflow-x-auto">
+                            <table class="data-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="text-left">
+                                        {{ "Name"|trans }}
+                                    </th>
+                                    <th scope="col" class="text-left">
+                                        {{ "Sport type"|trans({}, 'admin') }}
+                                    </th>
+                                    <th scope="col" class="text-left">
+                                        {{ "Date"|trans }}
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for activity in activities %}
+                                    <tr>
+                                        <td class="whitespace-nowrap text-left">
+                                            <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                                               title="{{ activity.getName() }}"
+                                               href="{{ relativeUrl(path('activity', {'activityId': activity.getId()})) }}">
+                                                {{ activity.getName() }}
+                                            </a>
+                                        </td>
+                                        <td class="whitespace-nowrap text-left">
+                                            {{ activity.getSportType()|trans }}
+                                        </td>
+                                        <td class="whitespace-nowrap text-left">
+                                            {{ activity.getStartDate()|formatDate() }}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3" class="text-center text-gray-500">
+                                            {{ "No activities added yet."|trans({}, 'admin') }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     {% if activityCollection %}
                         <a href="{{ relativeUrl(path('admin_delete_activity_collection', {activityCollectionId: activityCollectionId})) }}" type="button" class="btn--danger me-auto">{{ "Delete"|trans({}, 'admin') }}</a>

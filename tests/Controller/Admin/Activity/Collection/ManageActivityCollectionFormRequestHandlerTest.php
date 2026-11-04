@@ -2,11 +2,19 @@
 
 namespace App\Tests\Controller\Admin\Activity\Collection;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Activity\SportType\SportType;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
+use Symfony\Component\DomCrawler\Crawler;
 
 class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
 {
@@ -29,6 +37,7 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $form->filter('select[name="type"] option[selected]'));
         $this->assertSame('', $form->filter('textarea[name="description"]')->text());
         $this->assertCount(0, $crawler->filter('a.btn--danger'));
+        $this->assertCount(0, $crawler->filter('a[href$="/activities/add"]'));
     }
 
     public function testRendersTheEditFormPrefilledWithTheCollection(): void
@@ -38,7 +47,25 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
             ->withName('Transalp 2025')
             ->withDescription('Four days across the Alps')
             ->withType(ActivityCollectionType::EVENT)
+            ->withActivityIds(ActivityIds::fromArray([
+                ActivityId::fromUnprefixed('3'),
+                ActivityId::fromUnprefixed('2'),
+                ActivityId::fromUnprefixed('deleted'),
+            ]))
             ->build());
+        $activityRepository = $this->getContainer()->get(ActivityRepository::class);
+        $activityRepository->add(ActivityWithRawData::fromState(ActivityBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('2'))
+            ->withName('Stage 1')
+            ->withSportType(SportType::RIDE)
+            ->withStartDateTime(SerializableDateTime::fromString('2025-06-22 08:00:00'))
+            ->build(), []));
+        $activityRepository->add(ActivityWithRawData::fromState(ActivityBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('3'))
+            ->withName('Stage 2')
+            ->withSportType(SportType::GRAVEL_RIDE)
+            ->withStartDateTime(SerializableDateTime::fromString('2025-06-23 08:00:00'))
+            ->build(), []));
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/collections/activityCollection-1/edit');
@@ -54,6 +81,15 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('event', $form->filter('select[name="type"] option[selected]')->attr('value'));
         $this->assertSame('Four days across the Alps', $form->filter('textarea[name="description"]')->text());
         $this->assertSame('/admin/collections/activityCollection-1/delete', $form->filter('a.btn--danger')->attr('href'));
+
+        $this->assertSame('/admin/collections/activityCollection-1/activities/add', $form->filter('a.btn--secondary[href$="/activities/add"]')->attr('href'));
+        $this->assertCount(1, $crawler->filter('.modal-like-form .btn--primary'));
+        $this->assertSame(
+            [['Stage 1', 'Rides', '22-06-25'], ['Stage 2', 'Gravel Rides', '23-06-25']],
+            $form->filter('table.data-table tbody tr')->each(
+                static fn (Crawler $row): array => $row->filter('td')->each(static fn (Crawler $cell): string => trim($cell->text())),
+            ),
+        );
 
         $this->client->request('GET', '/admin/collections/activityCollection-unknown/edit');
         $this->assertResponseStatusCodeSame(404);
@@ -79,6 +115,29 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Are you sure you want to delete Mallorca?', $form->text());
 
         $this->client->request('GET', '/admin/collections/activityCollection-unknown/delete');
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testRendersTheAddActivityForm(): void
+    {
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->withName('Mallorca')
+            ->build());
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/collections/activityCollection-1/activities/add');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('Add activity to Mallorca', trim($crawler->filter('h3')->text()));
+
+        $form = $crawler->filter('form[data-dispatch-command="add-activity-to-collection"]');
+        $this->assertSame('/admin/collections/activityCollection-1/edit', $form->attr('data-redirect'));
+        $this->assertSame('activityCollection-1', $form->filter('input[type="hidden"][name="activityCollectionId"]')->attr('value'));
+        $this->assertSame('/admin/activities/search', $form->filter('input[name="activityId"]')->attr('data-autocomplete-url'));
+        $this->assertSame('/admin/collections/activityCollection-1/edit', $form->filter('a.btn--secondary')->attr('href'));
+
+        $this->client->request('GET', '/admin/collections/activityCollection-unknown/activities/add');
         $this->assertResponseStatusCodeSame(404);
     }
 }
