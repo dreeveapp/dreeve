@@ -47,9 +47,6 @@ final readonly class ManageGearMaintenanceLogFormRequestHandler
         return new HtmlResponse($this->twig->render('html/admin/page/gear/maintenance/edit-gear-maintenance-log.html.twig', [
             'dispatchCommand' => UpdateGearMaintenanceLog::getCommandName(),
             'gearMaintenanceLog' => $gearMaintenanceLog,
-            'componentLabel' => $gearMaintenanceLog->getComponentLabel(),
-            'taskLabel' => $gearMaintenanceLog->getTaskLabel(),
-            'gearName' => $gearMaintenanceLog->getGearName(),
         ]));
     }
 
@@ -63,9 +60,6 @@ final readonly class ManageGearMaintenanceLogFormRequestHandler
         return new HtmlResponse($this->twig->render('html/admin/page/gear/maintenance/delete-gear-maintenance-log.html.twig', [
             'dispatchCommand' => DeleteGearMaintenanceLog::getCommandName(),
             'gearMaintenanceLog' => $gearMaintenanceLog,
-            'componentLabel' => $gearMaintenanceLog->getComponentLabel(),
-            'taskLabel' => $gearMaintenanceLog->getTaskLabel(),
-            'gearName' => $gearMaintenanceLog->getGearName(),
         ]));
     }
 

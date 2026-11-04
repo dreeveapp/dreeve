@@ -15,15 +15,15 @@
                     <div class="grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-3 text-sm">
                         <div>
                             <span class="block text-xs font-medium text-gray-500">{{ "Gear"|trans }}</span>
-                            <span class="font-medium text-gray-800">{{ gearName }}</span>
+                            <span class="font-medium text-gray-800">{{ gearMaintenanceLog.getGearName() }}</span>
                         </div>
                         <div>
                             <span class="block text-xs font-medium text-gray-500">{{ "Component"|trans({}, 'admin') }}</span>
-                            <span class="font-medium text-gray-800">{{ componentLabel }}</span>
+                            <span class="font-medium text-gray-800">{{ gearMaintenanceLog.getComponentLabel() }}</span>
                         </div>
                         <div>
                             <span class="block text-xs font-medium text-gray-500">{{ "Task"|trans({}, 'admin') }}</span>
-                            <span class="font-medium text-gray-800">{{ taskLabel }}</span>
+                            <span class="font-medium text-gray-800">{{ gearMaintenanceLog.getTaskLabel() }}</span>
                         </div>
                     </div>
                     <div>

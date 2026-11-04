@@ -28,6 +28,9 @@
                     <th scope="col">
                         {{ "Activities"|trans }}
                     </th>
+                    <th scope="col" class="narrow sticky-actions">
+                        <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,11 +47,21 @@
                         <td class="whitespace-nowrap">
                             {{ activityCollection.getActivityIds()|length }}
                         </td>
+                        <td class="narrow whitespace-nowrap sticky-actions">
+                            <div class="inline-flex items-center gap-2">
+                                <a href="{{ relativeUrl(path('admin_edit_activity_collection', {activityCollectionId: activityCollection.getId()})) }}"
+                                   class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"
+                                   title="{{ "Edit"|trans({}, 'admin') }}">
+                                    <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
+                                    {{ svg('pencil', 'size-5') }}
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
                 {% if activityCollections.isEmpty() %}
                     <tr>
-                        <td colspan="3">
+                        <td colspan="4">
                             <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
                                 <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
                                     <svg class="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
