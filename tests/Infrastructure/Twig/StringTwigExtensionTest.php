@@ -20,6 +20,11 @@ class StringTwigExtensionTest extends TestCase
             't...',
             $extension->doEllipses('tester', 4)
         );
+
+        $this->assertEquals(
+            'Réunion',
+            $extension->doEllipses('Réunion', 7)
+        );
     }
 
     public function testDoRepeat(): void
