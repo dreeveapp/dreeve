@@ -684,7 +684,6 @@ workouts: trainingen
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} elke {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activiteiten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activiteiten in {year}'
-'{numberOfActivities} activities on this route': '{numberOfActivities} activiteiten op deze route'
 '{numberOfDays}-day rolling window': 'Voortschrijdend venster van {numberOfDays} dagen'
 '{numberOfMonths} months': '{numberOfMonths} maanden'
 '{numberOfResults} photos': "{numberOfResults} foto's"

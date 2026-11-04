@@ -684,7 +684,6 @@ workouts: träningspass
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} varje {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} aktiviteter'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} aktiviteter på {year}'
-'{numberOfActivities} activities on this route': '{numberOfActivities} activities on this route'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} months'
 '{numberOfResults} photos': '{numberOfResults} photos'
