@@ -9,7 +9,7 @@ final readonly class StringTwigExtension
     #[AsTwigFilter('ellipses')]
     public static function doEllipses(string $string, int $maxLength): string
     {
-        if (strlen($string) <= $maxLength) {
+        if (mb_strlen($string, 'UTF-8') <= $maxLength) {
             return $string;
         }
 

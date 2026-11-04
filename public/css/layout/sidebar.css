@@ -20,11 +20,11 @@
                     }
 
                     span:nth-of-type(1) {
-                        @apply sidebar-collapsed:hidden flex-1 whitespace-nowrap;
+                        @apply sidebar-collapsed:hidden flex-1 min-w-0 truncate;
                     }
 
                     span.badge {
-                        @apply sidebar-collapsed:hidden bg-primary/15 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full;
+                        @apply sidebar-collapsed:hidden shrink-0 bg-primary/15 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full;
                     }
                 }
             }
