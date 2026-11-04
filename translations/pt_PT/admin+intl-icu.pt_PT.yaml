@@ -19,6 +19,7 @@ Activity: Activity
 'Activity management': 'Activity management'
 'Activity name': 'Activity name'
 'Activity visibilities to import': 'Activity visibilities to import'
+Add: Add
 'Add Eddington': 'Add Eddington'
 'Add FTP': 'Add FTP'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
@@ -27,6 +28,7 @@ Activity: Activity
 'Add a widget': 'Add a widget'
 'Add action': 'Add action'
 'Add activity': 'Add activity'
+'Add activity to {activityCollection}': 'Add activity to {activityCollection}'
 'Add automation rule': 'Add automation rule'
 'Add challenge': 'Add challenge'
 'Add collection': 'Add collection'
@@ -46,6 +48,7 @@ Activity: Activity
 'Add weight': 'Add weight'
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
+Adding...: Adding...
 Admin: Admin
 'Admin panel': 'Admin panel'
 'Admin username': 'Admin username'
@@ -297,6 +300,7 @@ Monday: Monday
 'Most recent activities (cards)': 'Most recent activities (cards)'
 'Most recent activities (list)': 'Most recent activities (list)'
 'Moving time': 'Moving time'
+'No activities added yet.': 'No activities added yet.'
 'No activities imported yet.': 'No activities imported yet.'
 'No activities match the current filters.': 'No activities match the current filters.'
 'No activity found for that ID.': 'No activity found for that ID.'

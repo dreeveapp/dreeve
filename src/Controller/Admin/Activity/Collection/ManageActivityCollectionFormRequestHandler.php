@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Activity\Collection;
 
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
+use App\Domain\Activity\Collection\AddActivityToCollection\AddActivityToCollection;
 use App\Domain\Activity\Collection\DeleteActivityCollection\DeleteActivityCollection;
 use App\Domain\Activity\Collection\UpdateActivityCollection\UpdateActivityCollection;
 use App\Infrastructure\Http\HtmlResponse;
@@ -21,6 +23,7 @@ final readonly class ManageActivityCollectionFormRequestHandler
     public function __construct(
         private Environment $twig,
         private ActivityCollectionRepository $activityCollectionRepository,
+        private ActivityRepository $activityRepository,
     ) {
     }
 
@@ -43,6 +46,16 @@ final readonly class ManageActivityCollectionFormRequestHandler
             'dispatchCommand' => UpdateActivityCollection::getCommandName(),
             'activityCollection' => $activityCollection,
             'types' => ActivityCollectionType::cases(),
+            'activities' => $this->activityRepository->findByIds($activityCollection->getActivityIds())->reverse(),
+        ]));
+    }
+
+    #[Route(path: '/admin/collections/{activityCollectionId}/activities/add', name: 'admin_add_activity_to_collection', methods: ['GET'], priority: 10)]
+    public function handleAddActivity(string $activityCollectionId): HtmlResponse
+    {
+        return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/add-activity-to-collection.html.twig', [
+            'dispatchCommand' => AddActivityToCollection::getCommandName(),
+            'activityCollection' => $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId)),
         ]));
     }
 
