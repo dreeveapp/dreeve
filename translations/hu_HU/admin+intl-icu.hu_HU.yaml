@@ -77,6 +77,7 @@ Apply: Alkalmaz
 'Are you sure you want to delete {name}?': 'Biztosan törölni szeretnéd: {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Biztosan törölni szeretnéd a(z) {task} feladatot a(z) {component} komponensen a(z) {gear} felszereléshez, amely {date} napon történt?'
 'Are you sure you want to remove the {widget} widget?': 'Biztosan el szeretnéd távolítani a(z) {widget} widgetet?'
+'Are you sure you want to remove {activity} from {activityCollection}?': 'Are you sure you want to remove {activity} from {activityCollection}?'
 'Assign gear': 'Felszerelés hozzárendelése'
 Athlete: Athlete
 'Athlete settings': 'Sportoló beállításai'
@@ -377,6 +378,7 @@ Radius: Sugár
 Remove: Eltávolítás
 'Remove Eddington': 'Eddington eltávolítása'
 'Remove action': 'Művelet eltávolítása'
+'Remove activity': 'Remove activity'
 'Remove challenge': 'Kihívás eltávolítása'
 'Remove command': 'Parancs eltávolítása'
 'Remove condition': 'Feltétel eltávolítása'
@@ -496,6 +498,7 @@ Tasks: Feladatok
 'Test automation rules': 'Automatizálási szabályok tesztelése'
 'Test rules': 'Szabályok tesztelése'
 'The URL the app is hosted on.': 'Az URL, amelyen az alkalmazás elérhető.'
+'The activity itself is not deleted.': 'The activity itself is not deleted.'
 'The activity started': 'A tevékenység elkezdődött'
 'The activity will be marked as a commute.': 'A tevékenység ingázásként lesz megjelölve.'
 'The activity will be marked as a group activity.': 'A tevékenység csoportos tevékenységként lesz megjelölve.'

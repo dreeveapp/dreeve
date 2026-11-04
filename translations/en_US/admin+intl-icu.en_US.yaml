@@ -77,6 +77,7 @@ Apply: Apply
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
 'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
+'Are you sure you want to remove {activity} from {activityCollection}?': 'Are you sure you want to remove {activity} from {activityCollection}?'
 'Assign gear': 'Assign gear'
 Athlete: Athlete
 'Athlete settings': 'Athlete settings'
@@ -377,6 +378,7 @@ Radius: Radius
 Remove: Remove
 'Remove Eddington': 'Remove Eddington'
 'Remove action': 'Remove action'
+'Remove activity': 'Remove activity'
 'Remove challenge': 'Remove challenge'
 'Remove command': 'Remove command'
 'Remove condition': 'Remove condition'
@@ -496,6 +498,7 @@ Tasks: Tasks
 'Test automation rules': 'Test automation rules'
 'Test rules': 'Test rules'
 'The URL the app is hosted on.': 'The URL the app is hosted on.'
+'The activity itself is not deleted.': 'The activity itself is not deleted.'
 'The activity started': 'The activity started'
 'The activity will be marked as a commute.': 'The activity will be marked as a commute.'
 'The activity will be marked as a group activity.': 'The activity will be marked as a group activity.'
