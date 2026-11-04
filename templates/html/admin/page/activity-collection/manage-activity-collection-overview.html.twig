@@ -6,6 +6,14 @@
             <h3 class="text-lg font-semibold">
                 {{ "Activity collection management"|trans({}, 'admin') }}
             </h3>
+            {% if hasActivities %}
+                <a href="{{ relativeUrl(path('admin_add_activity_collection')) }}" type="button" class="btn--add">
+                    {{ svg('plus') }}
+                    <span>
+                        {{ "Add collection"|trans({}, 'admin') }}
+                    </span>
+                </a>
+            {% endif %}
         </div>
         <div class="relative overflow-x-auto">
             <table class="data-table">
