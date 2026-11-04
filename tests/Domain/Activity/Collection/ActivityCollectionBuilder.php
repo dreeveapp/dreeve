@@ -17,6 +17,7 @@ final class ActivityCollectionBuilder
     private ?string $description = null;
     private ActivityCollectionType $type = ActivityCollectionType::TRIP;
     private ActivityIds $activityIds;
+    private ?string $coverImagePath = null;
     private SerializableDateTime $createdOn;
 
     private function __construct()
@@ -39,6 +40,7 @@ final class ActivityCollectionBuilder
             description: $this->description,
             type: $this->type,
             activityIds: $this->activityIds,
+            coverImagePath: $this->coverImagePath,
             createdOn: $this->createdOn,
         );
     }
@@ -74,6 +76,13 @@ final class ActivityCollectionBuilder
     public function withActivityIds(ActivityIds $activityIds): self
     {
         $this->activityIds = $activityIds;
+
+        return $this;
+    }
+
+    public function withCoverImagePath(?string $coverImagePath): self
+    {
+        $this->coverImagePath = $coverImagePath;
 
         return $this;
     }

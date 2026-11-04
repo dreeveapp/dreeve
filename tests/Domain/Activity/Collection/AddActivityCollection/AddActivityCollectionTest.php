@@ -51,5 +51,17 @@ class AddActivityCollectionTest extends TestCase
             ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'training-camp'],
             'The type is invalid.',
         ];
+
+        yield 'unsupported cover image type' => [
+            [
+                'activityCollectionId' => 'activityCollection-1',
+                'name' => 'Mallorca',
+                'type' => 'trip',
+                'coverImagePath' => json_encode([
+                    ['status' => 'new', 'filename' => 'cover.gif', 'content' => base64_encode('image-content')],
+                ]),
+            ],
+            'Unsupported image file type.',
+        ];
     }
 }

@@ -22,6 +22,9 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
             'name' => '  Mallorca  ',
             'type' => 'trip',
             'description' => '  Spring cycling week  ',
+            'coverImagePath' => json_encode([
+                ['status' => 'new', 'filename' => 'cover.jpg', 'content' => base64_encode('image-content')],
+            ]),
         ]));
 
         $activityCollection = $this->getContainer()->get(ActivityCollectionRepository::class)->find(ActivityCollectionId::fromUnprefixed('1'));
@@ -30,6 +33,8 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
         $this->assertSame(ActivityCollectionType::TRIP, $activityCollection->getType());
         $this->assertEquals(ActivityIds::empty(), $activityCollection->getActivityIds());
         $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:04'), $activityCollection->getCreatedOn());
+        $this->assertSame('/files/activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg', $activityCollection->getCoverImagePath());
+        $this->assertSame('image-content', $this->getContainer()->get('file.storage')->read('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
     }
 
     public function testHandleWithoutDescription(): void
@@ -43,6 +48,7 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
 
         $activityCollection = $this->getContainer()->get(ActivityCollectionRepository::class)->find(ActivityCollectionId::fromUnprefixed('1'));
         $this->assertNull($activityCollection->getDescription());
+        $this->assertNull($activityCollection->getCoverImagePath());
         $this->assertSame(ActivityCollectionType::EVENT, $activityCollection->getType());
     }
 }
