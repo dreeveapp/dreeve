@@ -29,6 +29,17 @@ class SideBarTest extends ContainerTestCase
         $this->assertStringContainsString('href="/activities" aria-selected="false"', $render);
     }
 
+    public function testItOnlyLinksToActivityCollectionsWhenThereAreSome(): void
+    {
+        $this->provideFullTestSet();
+        $this->assertStringNotContainsString('href="/collections"', (string) $this->sideBar->render(NavigationSection::ACTIVITIES));
+
+        $this->addActivityCollectionFixtures();
+        $render = (string) $this->sideBar->render(NavigationSection::ACTIVITY_COLLECTIONS);
+
+        $this->assertStringContainsString('href="/collections" aria-selected="true"', $render);
+    }
+
     #[DataProvider('provideCacheTags')]
     public function testItIsCachedUntilItsCacheTagsAreInvalidated(RootCacheTag $cacheTag, bool $expectedToBeInvalidated): void
     {
@@ -58,6 +69,7 @@ class SideBarTest extends ContainerTestCase
             yield $cacheTag->value => [$cacheTag, in_array($cacheTag, [
                 RootCacheTag::ACTIVITIES,
                 RootCacheTag::ACTIVITY_IMAGES,
+                RootCacheTag::ACTIVITY_COLLECTIONS,
                 RootCacheTag::CHALLENGES,
                 RootCacheTag::GEAR,
                 RootCacheTag::SETTINGS_APPEARANCE,
