@@ -1,0 +1,21 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% embed 'html/admin/component/delete-confirm-modal.html.twig' with {closeUrl: relativeUrl(path('admin_manage_activity_collection_overview'))} %}
+        {% block title %}{{ "Delete collection"|trans({}, 'admin') }}{% endblock %}
+        {% block hidden_fields %}
+            <input type="hidden" name="activityCollectionId" value="{{ activityCollection.getId() }}">
+        {% endblock %}
+        {% block message %}
+            {% autoescape false %}
+            <p>
+                {{ "Are you sure you want to delete {name}?"|trans({
+                    '{name}': '<span class="font-semibold text-gray-900">' ~ activityCollection.getName()|e ~ '</span>',
+                }, 'admin') }}
+            </p>
+            <p>
+                {{ "Its activities are not deleted. This action cannot be undone."|trans({}, 'admin') }}
+            </p>
+            {% endautoescape %}
+        {% endblock %}
+    {% endembed %}
+{% endblock main %}

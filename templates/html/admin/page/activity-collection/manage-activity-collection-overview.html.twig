@@ -55,6 +55,12 @@
                                     <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
                                     {{ svg('pencil', 'size-5') }}
                                 </a>
+                                <a href="{{ relativeUrl(path('admin_delete_activity_collection', {activityCollectionId: activityCollection.getId()})) }}"
+                                   class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
+                                   title="{{ "Delete"|trans({}, 'admin') }}">
+                                    <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
+                                    {{ svg('trash') }}
+                                </a>
                             </div>
                         </td>
                     </tr>
