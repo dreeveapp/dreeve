@@ -19,6 +19,7 @@ Activity: Activiteit
 'Activity management': Activiteitenbeheer
 'Activity name': 'Naam activiteit'
 'Activity visibilities to import': 'Te importeren zichtbaarheden van activiteiten'
+Add: Add
 'Add Eddington': 'Eddington toevoegen'
 'Add FTP': 'FTP toevoegen'
 'Add a component to start tracking maintenance.': 'Voeg een onderdeel toe om onderhoud bij te houden.'
@@ -27,6 +28,7 @@ Activity: Activiteit
 'Add a widget': 'Een widget toevoegen'
 'Add action': 'Actie toevoegen'
 'Add activity': 'Activiteit toevoegen'
+'Add activity to {activityCollection}': 'Add activity to {activityCollection}'
 'Add automation rule': 'Automatiseringsregel toevoegen'
 'Add challenge': 'Uitdaging toevoegen'
 'Add collection': 'Add collection'
@@ -46,6 +48,7 @@ Activity: Activiteit
 'Add weight': 'Add weight'
 'Add widget': 'Widget toevoegen'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Voeg {fit}-, {tcx}- of {gpx}-bestanden toe. Ze worden om de paar minuten verwerkt.'
+Adding...: Adding...
 Admin: Beheer
 'Admin panel': Beheerpaneel
 'Admin username': 'Gebruikersnaam beheerder'
@@ -296,6 +299,7 @@ Monday: Maandag
 'Most recent activities (cards)': 'Most recent activities (cards)'
 'Most recent activities (list)': 'Most recent activities (list)'
 'Moving time': Beweegtijd
+'No activities added yet.': 'No activities added yet.'
 'No activities imported yet.': 'Nog geen activiteiten geïmporteerd.'
 'No activities match the current filters.': 'Geen activiteiten die overeenkomen met de huidige filters.'
 'No activity found for that ID.': 'Geen activiteit gevonden voor dat ID.'

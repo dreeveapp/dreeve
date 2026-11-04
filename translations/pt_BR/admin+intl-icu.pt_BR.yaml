@@ -19,6 +19,7 @@ Activity: Atividade
 'Activity management': 'Gerenciamento de atividades'
 'Activity name': 'Nome da atividade'
 'Activity visibilities to import': 'Visibilidades de atividades para importar'
+Add: Add
 'Add Eddington': 'Adicionar Eddington'
 'Add FTP': 'Adicionar FTP'
 'Add a component to start tracking maintenance.': 'Adicione um componente para começar a monitorar a manutenção.'
@@ -27,6 +28,7 @@ Activity: Atividade
 'Add a widget': 'Adicionar um widget'
 'Add action': 'Adicionar ação'
 'Add activity': 'Adicionar atividade'
+'Add activity to {activityCollection}': 'Add activity to {activityCollection}'
 'Add automation rule': 'Adicionar regra de automação'
 'Add challenge': 'Adicionar desafio'
 'Add collection': 'Add collection'
@@ -46,6 +48,7 @@ Activity: Atividade
 'Add weight': 'Add weight'
 'Add widget': 'Adicionar widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Adicione arquivos {fit}, {tcx} ou {gpx}. Eles são processados a cada poucos minutos.'
+Adding...: Adding...
 Admin: Admin
 'Admin panel': 'Painel de administração'
 'Admin username': 'Nome de usuário do admin'
@@ -296,6 +299,7 @@ Monday: Segunda-feira
 'Most recent activities (cards)': 'Atividades mais recentes (cartões)'
 'Most recent activities (list)': 'Atividades mais recentes (lista)'
 'Moving time': 'Tempo em movimento'
+'No activities added yet.': 'No activities added yet.'
 'No activities imported yet.': 'Nenhuma atividade importada ainda.'
 'No activities match the current filters.': 'Nenhuma atividade corresponde aos filtros atuais.'
 'No activity found for that ID.': 'Nenhuma atividade encontrada para esse ID.'

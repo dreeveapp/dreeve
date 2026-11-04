@@ -19,6 +19,7 @@ Activity: Tevékenység
 'Activity management': 'Tevékenységek kezelése'
 'Activity name': 'Tevékenység neve'
 'Activity visibilities to import': 'Importálandó tevékenység-láthatóságok'
+Add: Add
 'Add Eddington': 'Eddington hozzáadása'
 'Add FTP': 'FTP hozzáadása'
 'Add a component to start tracking maintenance.': 'Adj hozzá egy komponenst a karbantartás követésének megkezdéséhez.'
@@ -27,6 +28,7 @@ Activity: Tevékenység
 'Add a widget': 'Widget hozzáadása'
 'Add action': 'Művelet hozzáadása'
 'Add activity': 'Tevékenység hozzáadása'
+'Add activity to {activityCollection}': 'Add activity to {activityCollection}'
 'Add automation rule': 'Automatizálási szabály hozzáadása'
 'Add challenge': 'Kihívás hozzáadása'
 'Add collection': 'Add collection'
@@ -46,6 +48,7 @@ Activity: Tevékenység
 'Add weight': 'Add weight'
 'Add widget': 'Widget hozzáadása'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Adj hozzá {fit}, {tcx} vagy {gpx} fájlokat. Néhány percenként feldolgozásra kerülnek.'
+Adding...: Adding...
 Admin: Admin
 'Admin panel': Adminfelület
 'Admin username': 'Admin felhasználónév'
@@ -296,6 +299,7 @@ Monday: Hétfő
 'Most recent activities (cards)': 'Most recent activities (cards)'
 'Most recent activities (list)': 'Most recent activities (list)'
 'Moving time': Mozgásidő
+'No activities added yet.': 'No activities added yet.'
 'No activities imported yet.': 'Még nincs importált tevékenység.'
 'No activities match the current filters.': 'Egyetlen tevékenység sem felel meg a jelenlegi szűrőknek.'
 'No activity found for that ID.': 'Nem található tevékenység ehhez az azonosítóhoz.'
