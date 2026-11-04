@@ -262,6 +262,7 @@ Low: Laag
 'Low training load': 'Lage trainingsbelasting'
 Maintenance: Onderhoud
 'Manage activities': 'Activiteiten beheren'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Uitrusting beheren'
 'Manage recording devices': 'Registratietoestellen beheren'
 'Manage segments': 'Manage segments'
@@ -690,6 +691,7 @@ workouts: trainingen
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} elke {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activiteiten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activiteiten in {year}'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': 'Voortschrijdend venster van {numberOfDays} dagen'
 '{numberOfMonths} months': '{numberOfMonths} maanden'
 '{numberOfResults} photos': "{numberOfResults} foto's"

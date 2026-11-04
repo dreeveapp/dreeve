@@ -262,6 +262,7 @@ Low: 低
 'Low training load': 'Low training load'
 Maintenance: 维护
 'Manage activities': 'Manage activities'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Manage gear'
 'Manage recording devices': 'Manage recording devices'
 'Manage segments': 'Manage segments'
@@ -690,6 +691,7 @@ workouts: 锻炼
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel}每{interval}'
 '{numberOfActivities} activities': '{numberOfActivities}活动'
 '{numberOfActivities} activities in {year}': '{year}年内，{numberOfActivities}项活动'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} months'
 '{numberOfResults} photos': '{numberOfResults} photos'

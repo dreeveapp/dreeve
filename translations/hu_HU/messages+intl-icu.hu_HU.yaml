@@ -262,6 +262,7 @@ Low: Alacsony
 'Low training load': 'Alacsony edzésterhelés'
 Maintenance: Karbantartás
 'Manage activities': 'Tevékenységek kezelése'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Felszerelések kezelése'
 'Manage recording devices': 'Rögzítő eszközök kezelése'
 'Manage segments': 'Manage segments'
@@ -690,6 +691,7 @@ workouts: edzések
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} minden {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} tevékenység'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} tevékenység {year}-ben'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} hónap'
 '{numberOfResults} photos': '{numberOfResults} fotó'

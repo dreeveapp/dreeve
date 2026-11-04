@@ -262,6 +262,7 @@ Low: Basso
 'Low training load': 'Carico di allenamento basso'
 Maintenance: Manutenzione
 'Manage activities': 'Manage activities'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Manage gear'
 'Manage recording devices': 'Manage recording devices'
 'Manage segments': 'Manage segments'
@@ -690,6 +691,7 @@ workouts: allenamenti
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} ogni {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} attività'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} attività nel {year}'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} mesi'
 '{numberOfResults} photos': '{numberOfResults} photos'

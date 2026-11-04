@@ -105,6 +105,16 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
         );
     }
 
+    public function hasActivityCollectionsWithActivities(): bool
+    {
+        return (bool) $this->connection->executeQuery(
+            'SELECT EXISTS(
+                SELECT 1 FROM ActivityCollection, json_each(ActivityCollection.activityIds) AS member
+                INNER JOIN Activity ON Activity.activityId = member.value
+            )'
+        )->fetchOne();
+    }
+
     /**
      * @param array<string, mixed> $result
      */
