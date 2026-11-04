@@ -17,9 +17,12 @@ class DeleteActivityCollectionCommandHandlerTest extends ContainerTestCase
 {
     public function testHandle(): void
     {
+        $fileStorage = $this->getContainer()->get('file.storage');
+        $fileStorage->write('activity-collections/cover.jpg', 'content');
         $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->withCoverImagePath('/files/activity-collections/cover.jpg')
             ->build());
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('2'))
@@ -33,6 +36,7 @@ class DeleteActivityCollectionCommandHandlerTest extends ContainerTestCase
             [ActivityCollectionId::fromUnprefixed('2')],
             $activityCollectionRepository->findAll()->map(static fn (ActivityCollection $activityCollection): ActivityCollectionId => $activityCollection->getId()),
         );
+        $this->assertFalse($fileStorage->fileExists('activity-collections/cover.jpg'));
     }
 
     public function testHandleThrowsWhenActivityCollectionNotFound(): void

@@ -6,6 +6,9 @@ namespace App\Domain\Activity\Collection\UpdateActivityCollection;
 
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Image\NewImage;
+use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
+use App\Domain\Image\RemovedImage;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -13,6 +16,7 @@ use App\Infrastructure\CQRS\Command\DomainCommand;
 
 final readonly class UpdateActivityCollection extends DomainCommand implements DeserializableCommand
 {
+    use ProvideLocalImageFromDropZonePayload;
     use ProvidesCommandName;
 
     private function __construct(
@@ -20,6 +24,8 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         private string $name,
         private ?string $description,
         private ActivityCollectionType $type,
+        private ?NewImage $newImage,
+        private ?RemovedImage $removedImage,
     ) {
     }
 
@@ -44,11 +50,15 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         $description = $payload['description'] ?? null;
         $description = is_string($description) ? trim($description) : '';
 
+        [$newImages, $removedImages] = self::parseImages($payload, 'coverImagePath');
+
         return new self(
             activityCollectionId: ActivityCollectionId::fromString($payload['activityCollectionId']),
             name: $name,
             description: '' === $description ? null : $description,
             type: $activityCollectionType,
+            newImage: $newImages[0] ?? null,
+            removedImage: $removedImages[0] ?? null,
         );
     }
 
@@ -70,5 +80,15 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
     public function getType(): ActivityCollectionType
     {
         return $this->type;
+    }
+
+    public function getNewImage(): ?NewImage
+    {
+        return $this->newImage;
+    }
+
+    public function getRemovedImage(): ?RemovedImage
+    {
+        return $this->removedImage;
     }
 }

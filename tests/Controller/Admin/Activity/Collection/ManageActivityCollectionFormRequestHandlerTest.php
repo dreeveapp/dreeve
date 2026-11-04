@@ -38,6 +38,8 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('', $form->filter('textarea[name="description"]')->text());
         $this->assertCount(0, $crawler->filter('a.btn--danger'));
         $this->assertCount(0, $crawler->filter('a[href$="/activities/add"]'));
+        $this->assertSame('[]', $form->filter('[data-image-dropzone]')->attr('data-existing-images'));
+        $this->assertCount(1, $form->filter('input[data-images-field][name="coverImagePath"]'));
     }
 
     public function testRendersTheEditFormPrefilledWithTheCollection(): void
@@ -46,6 +48,7 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
             ->withName('Transalp 2025')
             ->withDescription('Four days across the Alps')
+            ->withCoverImagePath('/files/activity-collections/cover.jpg')
             ->withType(ActivityCollectionType::EVENT)
             ->withActivityIds(ActivityIds::fromArray([
                 ActivityId::fromUnprefixed('3'),
@@ -80,6 +83,10 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('Transalp 2025', $form->filter('input[name="name"]')->attr('value'));
         $this->assertSame('event', $form->filter('select[name="type"] option[selected]')->attr('value'));
         $this->assertSame('Four days across the Alps', $form->filter('textarea[name="description"]')->text());
+        $this->assertSame(
+            [['url' => '/files/activity-collections/cover.jpg', 'name' => 'cover.jpg', 'path' => '/files/activity-collections/cover.jpg']],
+            json_decode((string) $form->filter('[data-image-dropzone]')->attr('data-existing-images'), true),
+        );
         $this->assertSame('/admin/collections/activityCollection-1/delete', $form->filter('a.btn--danger')->attr('href'));
 
         $this->assertSame('/admin/collections/activityCollection-1/activities/add', $form->filter('a.btn--secondary[href$="/activities/add"]')->attr('href'));

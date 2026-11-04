@@ -9,4 +9,5 @@ enum ImageDirectory: string
     case GEAR = 'gear';
     case GEAR_MAINTENANCE = 'gear-maintenance';
     case ACTIVITIES = 'activities';
+    case ACTIVITY_COLLECTIONS = 'activity-collections';
 }

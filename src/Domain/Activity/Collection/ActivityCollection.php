@@ -27,6 +27,8 @@ final class ActivityCollection
         private readonly ActivityCollectionType $type,
         #[ORM\Column(type: 'json')]
         private readonly ActivityIds $activityIds,
+        #[ORM\Column(type: 'string', nullable: true)]
+        private readonly ?string $coverImagePath,
         #[ORM\Column(type: 'datetime_immutable')]
         private readonly SerializableDateTime $createdOn,
     ) {
@@ -38,6 +40,7 @@ final class ActivityCollection
         ?string $description,
         ActivityCollectionType $type,
         ActivityIds $activityIds,
+        ?string $coverImagePath,
         SerializableDateTime $createdOn,
     ): self {
         $activityCollection = new self(
@@ -46,6 +49,7 @@ final class ActivityCollection
             description: $description,
             type: $type,
             activityIds: $activityIds,
+            coverImagePath: $coverImagePath,
             createdOn: $createdOn,
         );
         $activityCollection->recordThat(new ActivityCollectionWasAdded());
@@ -59,6 +63,7 @@ final class ActivityCollection
         ?string $description,
         ActivityCollectionType $type,
         ActivityIds $activityIds,
+        ?string $coverImagePath,
         SerializableDateTime $createdOn,
     ): self {
         return new self(
@@ -67,6 +72,7 @@ final class ActivityCollection
             description: $description,
             type: $type,
             activityIds: $activityIds,
+            coverImagePath: $coverImagePath,
             createdOn: $createdOn,
         );
     }
@@ -160,6 +166,29 @@ final class ActivityCollection
 
         $activityCollection = clone ($this, [
             'activityIds' => $this->activityIds->without($activityId),
+        ]);
+        $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
+
+        return $activityCollection;
+    }
+
+    public function getCoverImagePath(): ?string
+    {
+        if (null === $this->coverImagePath) {
+            return null;
+        }
+
+        return str_starts_with($this->coverImagePath, '/') ? $this->coverImagePath : '/'.$this->coverImagePath;
+    }
+
+    public function withCoverImagePath(?string $coverImagePath): self
+    {
+        if ($coverImagePath === $this->coverImagePath) {
+            return $this;
+        }
+
+        $activityCollection = clone ($this, [
+            'coverImagePath' => $coverImagePath,
         ]);
         $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
 

@@ -24,8 +24,8 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
 
     public function add(ActivityCollection $activityCollection): void
     {
-        $sql = 'INSERT INTO ActivityCollection (activityCollectionId, name, description, type, activityIds, createdOn)
-                VALUES (:activityCollectionId, :name, :description, :type, :activityIds, :createdOn)';
+        $sql = 'INSERT INTO ActivityCollection (activityCollectionId, name, description, type, activityIds, coverImagePath, createdOn)
+                VALUES (:activityCollectionId, :name, :description, :type, :activityIds, :coverImagePath, :createdOn)';
 
         $this->connection->executeStatement($sql, [
             'activityCollectionId' => $activityCollection->getId(),
@@ -33,6 +33,7 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
             'description' => $activityCollection->getDescription(),
             'type' => $activityCollection->getType()->value,
             'activityIds' => Json::encode($activityCollection->getActivityIds()),
+            'coverImagePath' => $activityCollection->getCoverImagePath(),
             'createdOn' => $activityCollection->getCreatedOn(),
         ]);
 
@@ -45,7 +46,8 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
                     name = :name,
                     description = :description,
                     type = :type,
-                    activityIds = :activityIds
+                    activityIds = :activityIds,
+                    coverImagePath = :coverImagePath
                 WHERE activityCollectionId = :activityCollectionId';
 
         $this->connection->executeStatement($sql, [
@@ -54,6 +56,7 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
             'description' => $activityCollection->getDescription(),
             'type' => $activityCollection->getType()->value,
             'activityIds' => Json::encode($activityCollection->getActivityIds()),
+            'coverImagePath' => $activityCollection->getCoverImagePath(),
         ]);
 
         $this->eventBus->publishEvents($activityCollection->getRecordedEvents());
@@ -116,6 +119,7 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
                 ActivityId::fromString(...),
                 Json::decode($result['activityIds']),
             )),
+            coverImagePath: $result['coverImagePath'],
             createdOn: SerializableDateTime::fromString($result['createdOn']),
         );
     }

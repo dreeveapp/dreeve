@@ -19,6 +19,8 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
 {
     public function testHandle(): void
     {
+        $fileStorage = $this->getContainer()->get('file.storage');
+        $fileStorage->write('activity-collections/old.jpg', 'old-content');
         $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
@@ -26,6 +28,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             ->withDescription('Spring cycling week')
             ->withType(ActivityCollectionType::TRIP)
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]))
+            ->withCoverImagePath('/files/activity-collections/old.jpg')
             ->build());
 
         $this->getContainer()->get(CommandBus::class)->dispatch(UpdateActivityCollection::fromPayload([
@@ -33,6 +36,9 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'name' => '  Transalp 2025  ',
             'type' => 'event',
             'description' => '   ',
+            'coverImagePath' => json_encode([
+                ['status' => 'removed', 'path' => '/files/activity-collections/old.jpg'],
+            ]),
         ]));
 
         $activityCollection = $activityCollectionRepository->find(ActivityCollectionId::fromUnprefixed('1'));
@@ -40,6 +46,36 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activityCollection->getDescription());
         $this->assertSame(ActivityCollectionType::EVENT, $activityCollection->getType());
         $this->assertEquals(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]), $activityCollection->getActivityIds());
+        $this->assertNull($activityCollection->getCoverImagePath());
+        $this->assertFalse($fileStorage->fileExists('activity-collections/old.jpg'));
+    }
+
+    public function testHandleReplacesTheCoverImage(): void
+    {
+        $fileStorage = $this->getContainer()->get('file.storage');
+        $fileStorage->write('activity-collections/old.jpg', 'old-content');
+        $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
+        $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->withCoverImagePath('/files/activity-collections/old.jpg')
+            ->build());
+
+        $this->getContainer()->get(CommandBus::class)->dispatch(UpdateActivityCollection::fromPayload([
+            'activityCollectionId' => 'activityCollection-1',
+            'name' => 'Mallorca',
+            'type' => 'trip',
+            'coverImagePath' => json_encode([
+                ['status' => 'removed', 'path' => '/files/activity-collections/old.jpg'],
+                ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
+            ]),
+        ]));
+
+        $this->assertSame(
+            '/files/activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg',
+            $activityCollectionRepository->find(ActivityCollectionId::fromUnprefixed('1'))->getCoverImagePath(),
+        );
+        $this->assertFalse($fileStorage->fileExists('activity-collections/old.jpg'));
+        $this->assertSame('new-content', $fileStorage->read('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
     }
 
     public function testHandleThrowsWhenActivityCollectionNotFound(): void
