@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Page\Activity\Collection;
 
+use App\Application\Navigation\NavigationSection;
 use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
@@ -49,7 +50,7 @@ final readonly class ActivityCollectionsRequestHandler
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
             render: fn (): string => $this->renderFor(),
-            navigationSection: null,
+            navigationSection: NavigationSection::ACTIVITY_COLLECTIONS,
             metadata: new PageMetadata(
                 title: new TranslatableMessage('Activity collections'),
             ),
