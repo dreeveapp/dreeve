@@ -14,6 +14,7 @@ use App\Domain\Geography\Grid\RouteCells;
 use App\Domain\Geography\Grid\RouteWaypoints;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -57,27 +58,28 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
         );
     }
 
-    public function testHandleRanksRecencyIndependentlyFromSpeed(): void
+    public function testHandleRanksRecencyAndSpeedIndependentlyFromTime(): void
     {
         $route = range(1, 20);
 
-        $this->addActivityWithRouteCells('subject', $route, startDateTime: SerializableDateTime::fromString('2023-10-10'));
-        $this->addActivityWithRouteCells('faster', $route, movingTimeInSeconds: 3000, startDateTime: SerializableDateTime::fromString('2023-09-01'));
-        $this->addActivityWithRouteCells('slower', $route, movingTimeInSeconds: 4200, startDateTime: SerializableDateTime::fromString('2023-11-20'));
+        $this->addActivityWithRouteCells('subject', $route, averageSpeed: KmPerHour::from(30), startDateTime: SerializableDateTime::fromString('2023-10-10'));
+        $this->addActivityWithRouteCells('faster', $route, movingTimeInSeconds: 3000, averageSpeed: KmPerHour::from(25), startDateTime: SerializableDateTime::fromString('2023-09-01'));
+        $this->addActivityWithRouteCells('slower', $route, movingTimeInSeconds: 4200, averageSpeed: KmPerHour::from(28), startDateTime: SerializableDateTime::fromString('2023-11-20'));
 
         $routeMatches = $this->queryBus->ask(new FindRouteMatches(ActivityId::fromUnprefixed('subject')))->getRouteMatches();
 
         $this->assertEquals(
             [
-                ['activity-faster', 1, 3],
-                ['activity-subject', 2, 2],
-                ['activity-slower', 3, 1],
+                ['activity-faster', 1, 3, 3],
+                ['activity-subject', 2, 2, 1],
+                ['activity-slower', 3, 1, 2],
             ],
             array_map(
                 fn (RouteMatch $routeMatch): array => [
                     (string) $routeMatch->getActivityId(),
                     $routeMatch->getRank(),
                     $routeMatch->getRecencyRank(),
+                    $routeMatch->getSpeedRank(),
                 ],
                 $routeMatches->toArray()
             )
@@ -172,6 +174,7 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
         string $activityId,
         ?array $cells,
         int $movingTimeInSeconds = 3600,
+        ?KmPerHour $averageSpeed = null,
         SportType $sportType = SportType::RIDE,
         WorldType $worldType = WorldType::REAL_WORLD,
         ?Kilometer $distance = null,
@@ -184,6 +187,7 @@ class FindRouteMatchesQueryHandlerTest extends ContainerTestCase
                 ->withName($activityId)
                 ->withStartDateTime($startDateTime ?? SerializableDateTime::fromString('2023-10-10'))
                 ->withMovingTimeInSeconds($movingTimeInSeconds)
+                ->withAverageSpeed($averageSpeed ?? KmPerHour::zero())
                 ->withSportType($sportType)
                 ->withWorldType($worldType)
                 ->withDistance($distance ?? Kilometer::from(10))
