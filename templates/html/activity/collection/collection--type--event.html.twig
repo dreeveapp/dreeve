@@ -1,0 +1,72 @@
+{% extends "html/activity/collection/collection--type--generic.html.twig" %}
+
+{% set showRouteMarkers = true %}
+
+{% block movingTimeStat %}
+    {% autoescape false %}
+        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Total time"|trans }}</div>
+            <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getElapsedTime()|formatSeconds }}</span>
+        </div>
+    {% endautoescape %}
+{% endblock %}
+
+{% block activitiesStat %}
+    {% autoescape false %}
+        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Stages"|trans }}</div>
+            <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getActivities()|length }}</span>
+        </div>
+    {% endautoescape %}
+{% endblock %}
+
+{% block activities %}
+    {% autoescape false %}
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <h3 class="text-lg font-semibold mb-4">{{ "Stages"|trans }}</h3>
+            <div class="relative overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="narrow">{{ "Stage"|trans }}</th>
+                        <th scope="col" class="narrow">{{ "Date"|trans }}</th>
+                        <th scope="col" class="text-left narrow">{{ "Activity"|trans }}</th>
+                        <th scope="col">{{ "Distance"|trans }}</th>
+                        <th scope="col">{{ "Elevation"|trans }}</th>
+                        <th scope="col">{{ "Time"|trans }}</th>
+                        <th scope="col">{{ "Weather"|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for activity in activityCollectionWithActivities.getActivities() %}
+                        <tr>
+                            <td class="narrow">{{ loop.index }}</td>
+                            <td class="narrow">
+                                <div class="flex justify-center">
+                                    <div class="w-18">{{ activity.getStartDate()|formatDate() }}</div>
+                                </div>
+                            </td>
+                            <td class="narrow truncate">
+                                {{ activity|activityLink(ellipses: 180) }}
+                            </td>
+                            <td>
+                                {{ activity.getDistance()|renderMeasurement(activity.getSportType().getActivityType().getDistancePrecision()) }}
+                            </td>
+                            <td>
+                                {{ activity.getElevation()|renderMeasurement(0) }}
+                            </td>
+                            <td>
+                                {{ activity.getElapsedTimeFormatted() }}
+                            </td>
+                            <td>
+                                {% set weather = activity.getWeather() %}
+                                {{ weather ? weather.getWeatherCodeDescription() ~ ', ' ~ weather.getTemperatureInCelsius()|renderMeasurement(0) : '-' }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endautoescape %}
+{% endblock %}

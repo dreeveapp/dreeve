@@ -65,6 +65,25 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
+    public function testRenderEvent(): void
+    {
+        $this->provideFullTestSet();
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withName('Tour of Flanders')
+            ->withType(ActivityCollectionType::EVENT)
+            ->withActivityIds(ActivityIds::fromArray([
+                ActivityId::fromUnprefixed('9830227167'),
+                ActivityId::fromUnprefixed('9830227112'),
+                ActivityId::fromUnprefixed('9830232182'),
+            ]))
+            ->build());
+
+        $this->client->request('GET', '/collections/activityCollection-1');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
     public function testItRendersNoMapWithoutRealWorldRoutes(): void
     {
         $this->provideFullTestSet();
