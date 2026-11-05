@@ -107,7 +107,6 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             'SUM(Activity.elevation) AS totalElevation',
             'SUM(Activity.calories) AS totalCalories',
             'COUNT(Activity.activityId) AS numberOfActivities',
-            'GROUP_CONCAT(DISTINCT Activity.activityType) AS activityTypes',
         )
             ->from('Gear')
             ->leftJoin('Gear', 'Activity', 'Activity', 'Activity.gearId = Gear.gearId')
@@ -119,7 +118,10 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             throw new EntityNotFound(sprintf('Gear "%s" not found', $gearId));
         }
 
-        return $this->hydrate($result);
+        return $this->hydrate(
+            result: $result,
+            activityTypes: $this->findActivityTypesPerGear($gearId)[(string) $gearId] ?? ActivityTypes::empty(),
+        );
     }
 
     private function fetchFindAllResults(bool $onlyUsedGear): Gears
@@ -130,24 +132,56 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
                    SUM(Activity.movingTimeInSeconds) as totalMovingTime,
                    SUM(Activity.elevation) as totalElevation,
                    SUM(Activity.calories) as totalCalories,
-                   COUNT(Activity.activityId) as numberOfActivities,
-                   GROUP_CONCAT(DISTINCT Activity.activityType) AS activityTypes
+                   COUNT(Activity.activityId) as numberOfActivities
             FROM Gear
             '.($onlyUsedGear ? 'INNER' : 'LEFT').' JOIN Activity ON Activity.gearId = Gear.gearId
             GROUP BY Gear.gearId, Gear.isRetired
             ORDER BY Gear.isRetired ASC, totalDistance DESC;
         ')->fetchAllAssociative();
 
+        $activityTypesPerGear = $this->findActivityTypesPerGear();
+
         return Gears::fromArray(array_map(
-            $this->hydrate(...),
+            fn (array $result): Gear => $this->hydrate(
+                result: $result,
+                activityTypes: $activityTypesPerGear[$result['gearId']] ?? ActivityTypes::empty(),
+            ),
             $results
         ));
     }
 
     /**
+     * @return array<string, ActivityTypes>
+     */
+    private function findActivityTypesPerGear(?GearId $gearId = null): array
+    {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('gearId', 'activityType')
+            ->from('Activity')
+            ->andWhere('gearId IS NOT NULL')
+            ->groupBy('gearId', 'activityType')
+            ->orderBy('COUNT(*)', 'DESC')
+            ->addOrderBy('activityType', 'ASC');
+
+        if ($gearId instanceof GearId) {
+            $queryBuilder
+                ->andWhere('gearId = :gearId')
+                ->setParameter('gearId', $gearId);
+        }
+
+        $activityTypesPerGear = [];
+        foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $result) {
+            $activityTypesPerGear[$result['gearId']] ??= ActivityTypes::empty();
+            $activityTypesPerGear[$result['gearId']]->add(ActivityType::from($result['activityType']));
+        }
+
+        return $activityTypesPerGear;
+    }
+
+    /**
      * @param array<string, mixed> $result
      */
-    private function hydrate(array $result): Gear
+    private function hydrate(array $result, ActivityTypes $activityTypes): Gear
     {
         $purchasePrice = null;
         $purchasePriceCurrency = (string) ($result['purchasePriceCurrency'] ?? '');
@@ -173,14 +207,8 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             purchasePrice: $purchasePrice,
         );
 
-        $activityTypes = ActivityTypes::empty();
-        if (!empty($result['activityTypes'])) {
-            $activityTypes = ActivityTypes::fromArray(array_map(
-                ActivityType::from(...),
-                explode(',', (string) $result['activityTypes'])
-            ));
-        }
-
-        return $gear->withActivityTypes($activityTypes);
+        return $gear
+            ->withActivityTypes($activityTypes)
+            ->withMainActivityType($activityTypes->getFirst());
     }
 }

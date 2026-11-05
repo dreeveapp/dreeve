@@ -2,6 +2,7 @@
 
 namespace App\Domain\Gear;
 
+use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypes;
 use App\Domain\Import\ImportMode;
 use App\Domain\Integration\AI\SupportsAITooling;
@@ -44,6 +45,7 @@ final class Gear implements SupportsAITooling
         private readonly int $numberOfActivities,
         private readonly int $totalCalories,
         private readonly ActivityTypes $activityTypes,
+        private readonly ?ActivityType $mainActivityType,
         #[ORM\Embedded(class: Money::class)]
         private readonly ?Money $purchasePrice,
     ) {
@@ -70,6 +72,7 @@ final class Gear implements SupportsAITooling
             numberOfActivities: 0,
             totalCalories: 0,
             activityTypes: ActivityTypes::empty(),
+            mainActivityType: null,
             purchasePrice: null,
         );
         $gear->recordThat(new GearWasAdded());
@@ -104,6 +107,7 @@ final class Gear implements SupportsAITooling
             numberOfActivities: $numberOfActivities,
             totalCalories: $totalCalories,
             activityTypes: ActivityTypes::empty(),
+            mainActivityType: null,
             purchasePrice: $purchasePrice,
         );
     }
@@ -280,6 +284,18 @@ final class Gear implements SupportsAITooling
     {
         return clone ($this, [
             'activityTypes' => $activityTypes,
+        ]);
+    }
+
+    public function getMainActivityType(): ?ActivityType
+    {
+        return $this->mainActivityType;
+    }
+
+    public function withMainActivityType(?ActivityType $mainActivityType): self
+    {
+        return clone ($this, [
+            'mainActivityType' => $mainActivityType,
         ]);
     }
 
