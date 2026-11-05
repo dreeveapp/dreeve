@@ -1,0 +1,89 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% set suggestionsUrl = relativeUrl(path('admin_activity_collection_trip_suggestions')) %}
+    {% autoescape false %}
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold">{{ "Suggested trips"|trans({}, 'admin') }}</h3>
+            <p class="mt-1 text-sm text-gray-500">{{ "Activities far from home on consecutive days, not part of a collection yet."|trans({}, 'admin') }}</p>
+        </div>
+        <div class="relative overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-left">
+                        {{ "Date"|trans }}
+                    </th>
+                    <th scope="col" class="text-left">
+                        {{ "Places"|trans({}, 'admin') }}
+                    </th>
+                    <th scope="col">
+                        {{ "Activities"|trans }}
+                    </th>
+                    <th scope="col" class="narrow sticky-actions">
+                        <span class="sr-only">{{ "Create collection"|trans({}, 'admin') }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for suggestion in tripSuggestions %}
+                    {% set tripSuggestion = suggestion.tripSuggestion %}
+                    <tr>
+                        <td class="whitespace-nowrap text-left">
+                            <div class="flex items-center gap-1.5">
+                                {% for countryCode in tripSuggestion.getCountryCodes() %}
+                                    <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" alt="{{ countryCode|upper }}">
+                                {% endfor %}
+                                <span>
+                                    {{ tripSuggestion.getStartDate()|formatDate('normal') }}
+                                    {% if tripSuggestion.getStartDate() != tripSuggestion.getEndDate() %}
+                                        - {{ tripSuggestion.getEndDate()|formatDate('normal') }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </td>
+                        <td class="text-left">
+                            {{ tripSuggestion.getPlaces()|map(place => place|e)|join(', ') }}
+                        </td>
+                        <td class="whitespace-nowrap">
+                            {{ tripSuggestion.getActivityIds()|length }}
+                        </td>
+                        <td class="narrow whitespace-nowrap sticky-actions">
+                            <form data-dispatch-command="{{ addActivityCollectionCommand }}" data-redirect="{{ relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: suggestion.activityCollectionId}), suggestionsUrl) }}" class="inline-flex">
+                                <input type="hidden" name="activityCollectionId" value="{{ suggestion.activityCollectionId }}">
+                                <input type="hidden" name="name" value="{{ suggestion.name|e }}">
+                                <input type="hidden" name="type" value="{{ tripType.value }}">
+                                {% for activityId in tripSuggestion.getActivityIds() %}
+                                    <input type="hidden" name="activityIds[]" value="{{ activityId }}">
+                                {% endfor %}
+                                <button type="submit" data-has-loading-state class="btn--secondary">
+                                    {{ svg('plus') }}
+                                    <span>{{ "Create collection"|trans({}, 'admin') }}</span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% if tripSuggestions is empty %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
+                                <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
+                                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 8H4m0-2v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-5.032a1 1 0 0 1-.768-.36l-1.9-2.28a1 1 0 0 0-.768-.36H5a1 1 0 0 0-1 1Z"/>
+                                    </svg>
+                                </span>
+                                <div class="flex flex-col gap-1">
+                                    <span class="text-sm font-medium text-gray-800">{{ "No trips found."|trans({}, 'admin') }}</span>
+                                    <span class="text-xs text-gray-500">{{ "Trips need at least 2 activities far from home within a few days, not part of a collection yet."|trans({}, 'admin') }}</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endblock main %}

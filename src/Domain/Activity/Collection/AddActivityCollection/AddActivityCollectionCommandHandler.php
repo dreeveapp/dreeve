@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Collection\AddActivityCollection;
 
-use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\Collection\ActivityCollection;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Image\ImageDirectory;
@@ -40,7 +39,7 @@ final readonly class AddActivityCollectionCommandHandler implements CommandHandl
             name: $command->getName(),
             description: $command->getDescription(),
             type: $command->getType(),
-            activityIds: ActivityIds::empty(),
+            activityIds: $command->getActivityIds(),
             coverImagePath: $coverImagePath,
             createdOn: $this->clock->now(),
         ));

@@ -47,6 +47,26 @@
             </ul>
         </nav>
     {% endif %}
+    {% if isActiveNavItem({'/admin/collections': false}) %}
+        {% set inTripSuggestions = isActiveNavItem({'/admin/collections/suggestions': false}) %}
+        <nav class="contextual-panel" aria-label="{{ "Activity collections"|trans }}">
+            <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {{ "Activity collections"|trans }}
+            </p>
+            <ul class="space-y-1">
+                <li>
+                    <a href="{{ relativeUrl(path('admin_manage_activity_collection_overview')) }}" {{ not inTripSuggestions ? 'aria-selected="true"' : '' }}>
+                        {{ "Collections"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_activity_collection_trip_suggestions')) }}" {{ inTripSuggestions ? 'aria-selected="true"' : '' }}>
+                        {{ "Suggested trips"|trans({}, 'admin') }}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
     {% if isActiveNavItem({'/admin/automation-rules': false}) and importMode.isFiles() %}
         {% set inTestRules = isActiveNavItem({'/admin/automation-rules/test': false}) %}
         {% set inBackfill = isActiveNavItem({'/admin/automation-rules/backfill': false}) %}
