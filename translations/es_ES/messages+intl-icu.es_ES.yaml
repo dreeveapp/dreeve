@@ -100,6 +100,7 @@ Dance: Baile
 Dashboard: 'Panel de control'
 Date: Fecha
 Day: Día
+'Days away': 'Days away'
 'Days completed': 'Days completed'
 'Days needed': 'Días necesarios'
 'Days to go': 'Days to go'
@@ -693,6 +694,7 @@ workouts: entrenamientos
 '{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} meses'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': '{numberOfResults} fotos'
 '{numberOfResults} results': '{numberOfResults} resultados'
 '{numberOfResults} routes': '{numberOfResults} rutas'

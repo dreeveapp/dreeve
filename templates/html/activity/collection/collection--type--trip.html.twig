@@ -1,0 +1,25 @@
+{% extends "html/activity/collection/collection--type--generic.html.twig" %}
+
+{% block header %}
+    {{ parent() }}
+    {% autoescape false %}
+        {% set places = activityCollectionWithActivities.getPlaces() %}
+        {% if places is not empty %}
+            <div class="flex flex-wrap gap-2 mt-3">
+                {% for place, numberOfActivities in places %}
+                    <span class="pill pill--neutral text-xs">{{ place|e }} &middot; {{ numberOfActivities }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endautoescape %}
+{% endblock %}
+
+{% block activitiesStat %}
+    {% autoescape false %}
+        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Days away"|trans }}</div>
+            <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getNumberOfDays() }}</span>
+            <span class="text-xs font-medium text-gray-500">&middot; {{ "{numberOfActivities} activities"|trans({'{numberOfActivities}': activityCollectionWithActivities.getActivities()|length}) }} &middot; {{ "{numberOfRestDays} rest days"|trans({'{numberOfRestDays}': activityCollectionWithActivities.getNumberOfRestDays()}) }}</span>
+        </div>
+    {% endautoescape %}
+{% endblock %}

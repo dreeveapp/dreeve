@@ -100,6 +100,7 @@ Dance: Tánc
 Dashboard: Irányítópult
 Date: Dátum
 Day: Nap
+'Days away': 'Days away'
 'Days completed': 'Days completed'
 'Days needed': 'Szükséges napok'
 'Days to go': 'Days to go'
@@ -693,6 +694,7 @@ workouts: edzések
 '{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} hónap'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': '{numberOfResults} fotó'
 '{numberOfResults} results': '{numberOfResults} találat'
 '{numberOfResults} routes': '{numberOfResults} útvonal'

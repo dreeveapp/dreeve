@@ -100,6 +100,7 @@ Dance: Dança
 Dashboard: Painel
 Date: Data
 Day: Dia
+'Days away': 'Days away'
 'Days completed': 'Dias concluídos'
 'Days needed': 'Dias necessários'
 'Days to go': 'Dias restantes'
@@ -693,6 +694,7 @@ workouts: treinos
 '{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': 'Últimos {numberOfDays} dias'
 '{numberOfMonths} months': '{numberOfMonths} meses'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': '{numberOfResults} fotos'
 '{numberOfResults} results': '{numberOfResults} resultados'
 '{numberOfResults} routes': '{numberOfResults} rotas'

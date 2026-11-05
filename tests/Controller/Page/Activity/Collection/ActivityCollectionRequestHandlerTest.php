@@ -24,7 +24,7 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
         $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
             ->withName('Summer trip')
             ->withDescription('A week of cycling in the sun')
-            ->withType(ActivityCollectionType::TRIP)
+            ->withType(ActivityCollectionType::OTHER)
             ->withActivityIds(ActivityIds::fromArray([
                 ActivityId::fromUnprefixed('9756441741'),
                 ActivityId::fromUnprefixed('9830227112'),
@@ -43,6 +43,25 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
             'X-Dreeve-Cache-Tags',
             'settings.appearance, activity.collections.1, activity.route, activities.9756441741, activities.9830227112',
         );
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testRenderTrip(): void
+    {
+        $this->provideFullTestSet();
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withName('Week in Bruges')
+            ->withType(ActivityCollectionType::TRIP)
+            ->withActivityIds(ActivityIds::fromArray([
+                ActivityId::fromUnprefixed('9830227167'),
+                ActivityId::fromUnprefixed('9830227112'),
+                ActivityId::fromUnprefixed('9830232182'),
+            ]))
+            ->build());
+
+        $this->client->request('GET', '/collections/activityCollection-1');
+
+        $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 
