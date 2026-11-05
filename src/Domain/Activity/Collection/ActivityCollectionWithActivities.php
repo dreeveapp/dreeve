@@ -6,9 +6,11 @@ namespace App\Domain\Activity\Collection;
 
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
+use App\Domain\Activity\WorldType;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
+use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class ActivityCollectionWithActivities
@@ -41,6 +43,12 @@ final readonly class ActivityCollectionWithActivities
     public function getActivities(): Activities
     {
         return $this->activities;
+    }
+
+    public function getActivitiesWithARealWorldRoute(): Activities
+    {
+        return $this->activities->filter(static fn (Activity $activity): bool => WorldType::REAL_WORLD === $activity->getWorldType()
+            && $activity->getEncodedPolyline() instanceof EncodedPolyline);
     }
 
     public function getStartDate(): SerializableDateTime

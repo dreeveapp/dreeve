@@ -166,7 +166,10 @@ trait ProvideTestData
     protected function addActivityCollectionFixtures(): void
     {
         $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
-            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('9756441741')]))
+            ->withActivityIds(ActivityIds::fromArray([
+                ActivityId::fromUnprefixed('9756441741'),
+                ActivityId::fromUnprefixed('9830227112'),
+            ]))
             ->build());
     }
 
