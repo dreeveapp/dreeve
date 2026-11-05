@@ -11,67 +11,65 @@
     } %}
 </div>
 {% autoescape false %}
-    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {% for activityCollectionWithActivities in activityCollectionsWithActivities %}
-                {% set activityCollection = activityCollectionWithActivities.getActivityCollection() %}
-                <a href="{{ relativeUrl(path('activity_collection', {activityCollectionId: activityCollection.getId()})) }}" aria-label="{{ activityCollection.getName()|e('html_attr') }}"
-                   class="group group/image flex flex-col gap-3 rounded-lg border border-gray-200 p-3 shadow-xs hover:border-primary transition">
-                    <div class="no-dark h-40 relative overflow-hidden rounded-lg bg-gray-200">
-                        <img class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover/image:scale-105" loading="lazy"
-                             src="{{ activityCollectionWithActivities.getCoverImagePath() ? relativeUrl(activityCollectionWithActivities.getCoverImagePath()) : placeholderImage() }}"
-                             alt="{{ activityCollection.getName()|e('html_attr') }}"/>
-                        <div class="absolute top-3 left-3">
-                            <span class="pill pill--neutral text-xs">{{ activityCollection.getType()|trans }}</span>
-                        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for activityCollectionWithActivities in activityCollectionsWithActivities %}
+            {% set activityCollection = activityCollectionWithActivities.getActivityCollection() %}
+            <a href="{{ relativeUrl(path('activity_collection', {activityCollectionId: activityCollection.getId()})) }}" aria-label="{{ activityCollection.getName()|e('html_attr') }}"
+               class="group group/image flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-3 shadow-xs hover:border-primary transition">
+                <div class="no-dark h-40 relative overflow-hidden rounded-lg bg-gray-200">
+                    <img class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover/image:scale-105" loading="lazy"
+                         src="{{ activityCollectionWithActivities.getCoverImagePath() ? relativeUrl(activityCollectionWithActivities.getCoverImagePath()) : placeholderImage() }}"
+                         alt="{{ activityCollection.getName()|e('html_attr') }}"/>
+                    <div class="absolute top-3 left-3">
+                        <span class="pill pill--neutral text-xs">{{ activityCollection.getType()|trans }}</span>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-1.5 font-semibold text-gray-900">
-                            {% set countryCodes = activityCollectionWithActivities.getCountryCodes() %}
-                            {% if countryCodes is not empty %}
-                                <span class="flex items-center gap-1">
-                                    {% for countryCode in countryCodes %}
-                                        <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" alt="{{ countryCode|upper }}">
-                                    {% endfor %}
-                                </span>
-                            {% endif %}
-                            <span class="truncate group-hover:text-primary transition" title="{{ activityCollection.getName()|e('html_attr') }}">{{ activityCollection.getName()|e }}</span>
-                        </div>
-                        <div class="flex items-center gap-1.5 mt-1 text-xs text-gray-500">
-                            {{ svg('calendar', 'size-3.5', 'text-gray-400') }}
-                            <span>
-                                {{ activityCollectionWithActivities.getStartDate()|formatDate('normal') }}
-                                {% if activityCollectionWithActivities.getNumberOfDays() > 1 %}
-                                    - {{ activityCollectionWithActivities.getEndDate()|formatDate('normal') }}
-                                {% endif %}
-                                &middot; {{ "{numberOfDays} days"|trans({'{numberOfDays}': activityCollectionWithActivities.getNumberOfDays()}) }}
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5 font-semibold text-gray-900">
+                        {% set countryCodes = activityCollectionWithActivities.getCountryCodes() %}
+                        {% if countryCodes is not empty %}
+                            <span class="flex items-center gap-1">
+                                {% for countryCode in countryCodes %}
+                                    <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" alt="{{ countryCode|upper }}">
+                                {% endfor %}
                             </span>
+                        {% endif %}
+                        <span class="truncate group-hover:text-primary transition" title="{{ activityCollection.getName()|e('html_attr') }}">{{ activityCollection.getName()|e }}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-1 text-xs text-gray-500">
+                        {{ svg('calendar', 'size-3.5', 'text-gray-400') }}
+                        <span>
+                            {{ activityCollectionWithActivities.getStartDate()|formatDate('normal') }}
+                            {% if activityCollectionWithActivities.getNumberOfDays() > 1 %}
+                                - {{ activityCollectionWithActivities.getEndDate()|formatDate('normal') }}
+                            {% endif %}
+                            &middot; {{ "{numberOfDays} days"|trans({'{numberOfDays}': activityCollectionWithActivities.getNumberOfDays()}) }}
+                        </span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Distance"|trans }}</div>
+                        <div class="flex items-baseline gap-1">
+                            {% set distance = activityCollectionWithActivities.getDistance() %}
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ distance|formatMeasurement(0) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ distance|measurementSymbol }}</span>
                         </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
-                            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Distance"|trans }}</div>
-                            <div class="flex items-baseline gap-1">
-                                {% set distance = activityCollectionWithActivities.getDistance() %}
-                                <span class="text-lg font-black tracking-tight text-gray-900">{{ distance|formatMeasurement(0) }}</span>
-                                <span class="text-xs font-medium text-gray-500">{{ distance|measurementSymbol }}</span>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
-                            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Elevation"|trans }}</div>
-                            <div class="flex items-baseline gap-1">
-                                {% set elevation = activityCollectionWithActivities.getElevation() %}
-                                <span class="text-lg font-black tracking-tight text-gray-900">{{ elevation|formatMeasurement(0) }}</span>
-                                <span class="text-xs font-medium text-gray-500">{{ elevation|measurementSymbol }}</span>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
-                            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Activities"|trans }}</div>
-                            <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getActivities()|length }}</span>
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Elevation"|trans }}</div>
+                        <div class="flex items-baseline gap-1">
+                            {% set elevation = activityCollectionWithActivities.getElevation() %}
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ elevation|formatMeasurement(0) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ elevation|measurementSymbol }}</span>
                         </div>
                     </div>
-                </a>
-            {% endfor %}
-        </div>
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Activities"|trans }}</div>
+                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getActivities()|length }}</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
     </div>
 {% endautoescape %}
