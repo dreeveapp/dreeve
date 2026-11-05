@@ -60,8 +60,12 @@
                     </a>
                 </li>
                 <li>
+                    {% set numberOfTripSuggestions = number_of_trip_suggestions() %}
                     <a href="{{ relativeUrl(path('admin_activity_collection_trip_suggestions')) }}" {{ inTripSuggestions ? 'aria-selected="true"' : '' }}>
                         {{ "Suggested trips"|trans({}, 'admin') }}
+                        {% if numberOfTripSuggestions > 0 %}
+                            <span class="ms-auto shrink-0 pill pill--neutral justify-center min-w-5 h-5 px-1.5 font-semibold">{{ numberOfTripSuggestions }}</span>
+                        {% endif %}
                     </a>
                 </li>
             </ul>
