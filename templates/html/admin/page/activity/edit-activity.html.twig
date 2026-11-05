@@ -55,10 +55,11 @@
                     } %}
                         {% block control %}
                             <select id="activity-gear" name="gearId" {{ disabled ? 'disabled' }}>
-                                <option value="">{{ "None"|trans }}</option>
-                                {% for gear in gears %}
-                                    <option value="{{ gear.getId() }}" {{ activity.getGearId() and gear.getId().matches(activity.getGearId()) ? 'selected' }}>{{ gear.getName() }}</option>
-                                {% endfor %}
+                                {% include 'html/admin/component/gear-select-options.html.twig' with {
+                                    gears: gears,
+                                    suggestFor: activity.getSportType().getActivityType(),
+                                    selectedGearId: activity.getGearId(),
+                                } only %}
                             </select>
                         {% endblock %}
                     {% endembed %}

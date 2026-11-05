@@ -470,6 +470,7 @@ Source: Bron
 'Strava refresh token': 'Strava refresh token'
 Subtitle: Ondertitel
 Success: Geslaagd
+Suggested: Suggested
 Sunday: Zondag
 'Supported types': 'Ondersteunde types'
 System: System
@@ -548,6 +549,7 @@ Unit: Eenheid
 'Units & language': 'Units & language'
 'Unsupported file type': 'Niet-ondersteund bestandstype'
 Until: Until
+'Unused gear': 'Unused gear'
 'Upload activity files': 'Activiteitsbestanden uploaden'
 'Upload failed': 'Upload mislukt'
 'Upload files': 'Bestanden uploaden'

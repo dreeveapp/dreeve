@@ -470,6 +470,7 @@ Source: Forrás
 'Strava refresh token': 'Strava frissítési token'
 Subtitle: Alcím
 Success: Sikeres
+Suggested: Suggested
 Sunday: Vasárnap
 'Supported types': 'Támogatott típusok'
 System: System
@@ -548,6 +549,7 @@ Unit: Mértékegység
 'Units & language': 'Units & language'
 'Unsupported file type': 'Nem támogatott fájltípus'
 Until: Until
+'Unused gear': 'Unused gear'
 'Upload activity files': 'Tevékenységfájlok feltöltése'
 'Upload failed': 'A feltöltés sikertelen'
 'Upload files': 'Fájlok feltöltése'

@@ -470,6 +470,7 @@ Source: Quelle
 'Strava refresh token': Strava-Refresh-Token
 Subtitle: Untertitel
 Success: Erfolgreich
+Suggested: Suggested
 Sunday: Sonntag
 'Supported types': 'Unterstützte Typen'
 System: System
@@ -548,6 +549,7 @@ Unit: Einheit
 'Units & language': 'Einheiten & Sprache'
 'Unsupported file type': 'Nicht unterstützter Dateityp'
 Until: Bis
+'Unused gear': 'Unused gear'
 'Upload activity files': 'Aktivitätsdateien hochladen'
 'Upload failed': 'Upload fehlgeschlagen'
 'Upload files': 'Dateien hochladen'
