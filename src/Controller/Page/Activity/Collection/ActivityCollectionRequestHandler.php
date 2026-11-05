@@ -7,9 +7,10 @@ namespace App\Controller\Page\Activity\Collection;
 use App\Application\Navigation\NavigationSection;
 use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
-use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\Collection\ActivityCollection;
 use App\Domain\Activity\Collection\ActivityCollectionCacheTag;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
@@ -44,16 +45,13 @@ final readonly class ActivityCollectionRequestHandler
     public function handle(string $activityCollectionId): HtmlResponse
     {
         $activityCollection = $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId));
-        $activities = $this->activityRepository->findByIds($activityCollection->getActivityIds());
-
-        if ($activities->isEmpty()) {
+        if (!in_array(
+            (string) $activityCollection->getId(),
+            array_map(strval(...), $this->activityCollectionRepository->findIdsWithActivities()),
+            true,
+        )) {
             throw new NotFoundHttpException('Not found');
         }
-
-        $activityCollectionWithActivities = ActivityCollectionWithActivities::create(
-            activityCollection: $activityCollection,
-            activities: $activities,
-        );
 
         return $this->pageRenderer->render(
             cacheability: Cacheability::for(
@@ -61,23 +59,33 @@ final readonly class ActivityCollectionRequestHandler
                 cacheTags: CacheTags::of(
                     ActivityCollectionCacheTag::for($activityCollection->getId()),
                     RootCacheTag::ACTIVITY_ROUTE,
-                    ...$activities->map(static fn (Activity $activity): CacheTag => ActivityCacheTag::for($activity->getId())),
+                    ...$activityCollection->getActivityIds()->map(static fn (ActivityId $activityId): CacheTag => ActivityCacheTag::for($activityId)),
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
-            render: fn (): string => $this->twig->load(sprintf(
-                'html/activity/collection/%s.html.twig',
-                $activityCollection->getType()->getTemplateName(),
-            ))->render([
-                'activityCollectionWithActivities' => $activityCollectionWithActivities,
-                'leafletMap' => $activityCollectionWithActivities->getActivitiesWithARealWorldRoute()->isEmpty() ? null : new RealWorldMap(),
-                'images' => $this->imageRepository->findByActivityIds($activityCollection->getActivityIds()),
-            ]),
+            render: fn (): string => $this->renderFor($activityCollection),
             navigationSection: NavigationSection::ACTIVITY_COLLECTIONS,
             metadata: new PageMetadata(
                 title: $activityCollection->getName(),
                 description: $activityCollection->getDescription(),
             ),
         );
+    }
+
+    private function renderFor(ActivityCollection $activityCollection): string
+    {
+        $activityCollectionWithActivities = ActivityCollectionWithActivities::create(
+            activityCollection: $activityCollection,
+            activities: $this->activityRepository->findByIds($activityCollection->getActivityIds()),
+        );
+
+        return $this->twig->load(sprintf(
+            'html/activity/collection/%s.html.twig',
+            $activityCollection->getType()->getTemplateName(),
+        ))->render([
+            'activityCollectionWithActivities' => $activityCollectionWithActivities,
+            'leafletMap' => $activityCollectionWithActivities->getActivitiesWithARealWorldRoute()->isEmpty() ? null : new RealWorldMap(),
+            'images' => $this->imageRepository->findByActivityIds($activityCollection->getActivityIds()),
+        ]);
     }
 }

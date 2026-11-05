@@ -39,7 +39,7 @@ class ActivityCollectionPolylinesRequestHandlerTest extends ControllerWebTestCas
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activity.collections.1, activity.route, activities.9756441741, activities.9830227112',
+            'settings.appearance, activity.collections.1, activity.route, activities.9830227112, activities.9756441741, activities.deleted',
         );
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
     }
