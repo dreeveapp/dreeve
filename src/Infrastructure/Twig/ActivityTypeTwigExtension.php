@@ -76,7 +76,7 @@ final readonly class ActivityTypeTwigExtension
         }
         $gearGroups[] = [
             'label' => new TranslatableMessage('Unused gear', domain: 'admin'),
-            'gears' => $otherGears->filter(fn (Gear $gear): bool => null === $gear->getMainActivityType()),
+            'gears' => $otherGears->filter(fn (Gear $gear): bool => !$gear->getMainActivityType() instanceof ActivityType),
         ];
         $gearGroups[] = [
             'label' => new TranslatableMessage('Retired', domain: 'admin'),
