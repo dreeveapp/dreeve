@@ -2,7 +2,9 @@
 
 namespace App\Domain\Activity\Image;
 
+use App\Domain\Activity\Activities;
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Image\ImageOrientation;
@@ -31,33 +33,12 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
 
     public function findAll(): Images
     {
-        $images = Images::empty();
-        $activities = $this->activityRepository->findAll();
-        foreach ($activities as $activity) {
-            if (0 === $activity->getTotalImageCount()) {
-                continue;
-            }
+        return $this->buildImagesFor($this->activityRepository->findAll());
+    }
 
-            if ($this->settingsRepository->appearance()->getHidePhotosForSportTypes()->has($activity->getSportType())) {
-                continue;
-            }
-
-            foreach ($activity->getLocalImagePaths() as $localImagePath) {
-                $absoluteImagePath = $this->kernelProjectDir.'/storage'.$localImagePath;
-                $imageOrientation = ImageOrientation::LANDSCAPE;
-                if (file_exists($absoluteImagePath) && ($info = @getimagesize($absoluteImagePath)) !== false) {
-                    $imageOrientation = ImageOrientation::fromWidthAndHeight($info[0], $info[1]);
-                }
-
-                $images->add(Image::create(
-                    imageLocation: $localImagePath,
-                    activity: $activity,
-                    orientation: $imageOrientation,
-                ));
-            }
-        }
-
-        return $images;
+    public function findByActivityIds(ActivityIds $activityIds): Images
+    {
+        return $this->buildImagesFor($this->activityRepository->findByIds($activityIds));
     }
 
     public function findRandomFor(SportTypes $sportTypes, Years $years): Image
@@ -129,5 +110,35 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
                 $this->fileStorage->delete($fileSystemPath);
             }
         }
+    }
+
+    private function buildImagesFor(Activities $activities): Images
+    {
+        $images = Images::empty();
+        foreach ($activities as $activity) {
+            if (0 === $activity->getTotalImageCount()) {
+                continue;
+            }
+
+            if ($this->settingsRepository->appearance()->getHidePhotosForSportTypes()->has($activity->getSportType())) {
+                continue;
+            }
+
+            foreach ($activity->getLocalImagePaths() as $localImagePath) {
+                $absoluteImagePath = $this->kernelProjectDir.'/storage'.$localImagePath;
+                $imageOrientation = ImageOrientation::LANDSCAPE;
+                if (file_exists($absoluteImagePath) && ($info = @getimagesize($absoluteImagePath)) !== false) {
+                    $imageOrientation = ImageOrientation::fromWidthAndHeight($info[0], $info[1]);
+                }
+
+                $images->add(Image::create(
+                    imageLocation: $localImagePath,
+                    activity: $activity,
+                    orientation: $imageOrientation,
+                ));
+            }
+        }
+
+        return $images;
     }
 }
