@@ -1,6 +1,6 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
-    {% embed 'html/admin/component/delete-confirm-modal.html.twig' with {closeUrl: relativeUrl(path('admin_edit_activity_collection', {activityCollectionId: activityCollection.getId()}))} %}
+    {% embed 'html/admin/component/delete-confirm-modal.html.twig' with {closeUrl: relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: activityCollection.getId()}), redirectUrl(relativeUrl(path('admin_manage_activity_collection_overview'))))} %}
         {% block title %}{{ "Remove activity"|trans({}, 'admin') }}{% endblock %}
         {% block hidden_fields %}
             <input type="hidden" name="activityCollectionId" value="{{ activityCollection.getId() }}">
