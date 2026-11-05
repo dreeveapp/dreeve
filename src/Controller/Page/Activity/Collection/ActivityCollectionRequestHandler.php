@@ -14,6 +14,7 @@ use App\Domain\Activity\Collection\ActivityCollectionCacheTag;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
+use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\RealWorldMap;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -35,6 +36,7 @@ final readonly class ActivityCollectionRequestHandler
         private ActivityRepository $activityRepository,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private ImageRepository $imageRepository,
     ) {
     }
 
@@ -69,6 +71,7 @@ final readonly class ActivityCollectionRequestHandler
             ))->render([
                 'activityCollectionWithActivities' => $activityCollectionWithActivities,
                 'leafletMap' => $activityCollectionWithActivities->getActivitiesWithARealWorldRoute()->isEmpty() ? null : new RealWorldMap(),
+                'images' => $this->imageRepository->findByActivityIds($activityCollection->getActivityIds()),
             ]),
             navigationSection: NavigationSection::ACTIVITY_COLLECTIONS,
             metadata: new PageMetadata(

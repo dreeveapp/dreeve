@@ -112,6 +112,39 @@
                 {% endif %}
             {% endblock %}
         </div>
+        {% if images is not empty %}
+            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                <h3 class="text-lg font-semibold mb-4">{{ "Photos"|trans }}</h3>
+                <div class="flex flex-wrap gap-2" data-light-gallery>
+                    {% for image in images %}
+                        {% set activity = image.getActivity() %}
+                        {% set lightGalleryElement = {
+                            'src': relativeUrl(image.getImageUrl()),
+                            'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>'
+                                ~ '<a href="' ~ relativeUrl(path('activity', {'activityId': activity.getId()})) ~ '"'
+                                ~ ' class="mt-2 inline-flex items-center gap-x-1.5 rounded-lg bg-primary hover:bg-orange-600 py-2 px-4 text-sm font-medium text-white! no-underline! hover:no-underline! transition-all active:scale-[0.97]">'
+                                ~ ("Go to activity"|trans)
+                                ~ '<svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg>'
+                                ~ '</a>',
+                            'alt':  activity.getSanitizedName(),
+                        } %}
+                        <a data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}"
+                           class="no-dark grow h-[25vh] relative group/image overflow-hidden rounded-lg shadow-sm"
+                           href="{{ relativeUrl(image.getImageUrl()) }}">
+                            <img class="h-full w-full object-cover align-bottom transition-transform duration-500 group-hover/image:scale-105 lazy"
+                                 data-src="{{ relativeUrl(image.getImageUrl()) }}" alt="{{ activity.getName()|e('html_attr') }}" src="{{ placeholderImage(image.getOrientation()) }}" />
+                            <div class="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-300"></div>
+                            <div class="text-white flex flex-col absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/60 to-transparent p-3
+                            transition-all duration-300 translate-y-full group-hover/image:opacity-100 group-hover/image:translate-y-0">
+                                <p class="text-base font-medium text-ellipsis line-clamp-1">{{ activity.getName()|e }}</p>
+                                <p class="text-xs font-medium opacity-80">{{ activity.getStartDate()|formatDate() }}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                    <div class="grow-10"></div>
+                </div>
+            </div>
+        {% endif %}
         {% block activities %}
             <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
                 <h3 class="text-lg font-semibold mb-4">{{ "Activities"|trans }}</h3>
