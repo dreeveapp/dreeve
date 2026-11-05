@@ -106,6 +106,11 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
                 static fn (array $activity): RouteGeography => RouteGeography::create(Json::decode($activity['routeGeography'] ?: '{}')),
                 $group,
             );
+            $numberOfActivitiesPerCountryCode = array_count_values(array_merge(...array_map(
+                static fn (RouteGeography $routeGeography): array => $routeGeography->getPassedThroughCountries(),
+                $routeGeographies,
+            )));
+            arsort($numberOfActivitiesPerCountryCode);
 
             $tripSuggestions[] = TripSuggestion::create(
                 activityIds: ActivityIds::fromArray(array_map(
@@ -114,10 +119,7 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
                 )),
                 startDate: $startDate,
                 endDate: $endDate,
-                countryCodes: array_values(array_unique(array_merge(...array_map(
-                    static fn (RouteGeography $routeGeography): array => $routeGeography->getPassedThroughCountries(),
-                    $routeGeographies,
-                )))),
+                countryCodes: array_map(strval(...), array_keys($numberOfActivitiesPerCountryCode)),
                 places: array_values(array_unique(array_filter(array_map(
                     static fn (RouteGeography $routeGeography): ?string => $routeGeography->getStartingPointCity(),
                     $routeGeographies,

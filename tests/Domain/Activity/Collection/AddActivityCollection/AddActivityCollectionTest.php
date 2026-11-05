@@ -52,6 +52,16 @@ class AddActivityCollectionTest extends TestCase
             'The type is invalid.',
         ];
 
+        yield 'activity ids not a list' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'activityIds' => 'activity-1'],
+            'The "activityIds" must be a list.',
+        ];
+
+        yield 'invalid activity id' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'activityIds' => ['activity-1', 'segment-2']],
+            'The "activityIds" contain an invalid activity id.',
+        ];
+
         yield 'unsupported cover image type' => [
             [
                 'activityCollectionId' => 'activityCollection-1',

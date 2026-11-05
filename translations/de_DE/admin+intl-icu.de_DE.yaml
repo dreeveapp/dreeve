@@ -8,6 +8,7 @@ AM/PM: morgens/abends
 Access: Zugriff
 Actions: Aktionen
 Active: Aktiv
+'Activities far from home on consecutive days, not part of a collection yet.': 'Activities far from home on consecutive days, not part of a collection yet.'
 'Activities scanned': 'untersuchte Aktivitäten'
 'Activities to skip during import': 'Aktivitäten, die beim Import übersprungen werden'
 'Activities to update': 'zu aktualisierende Aktivitäten'
@@ -111,6 +112,7 @@ Clear: Leeren
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
 Close: Schließen
+Collections: Collections
 Command: Befehl
 Commute: Pendeln
 Component: Komponente
@@ -127,6 +129,7 @@ Configured: Konfiguriert
 'Copy this API key': 'Diesen API-Schlüssel kopieren'
 'Copy this MCP key': 'Copy this MCP key'
 'Cover image': 'Cover image'
+'Create collection': 'Create collection'
 'Cron expression': Cron-Ausdruck
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-Ausdruck, der angibt, wann die Aktion ausgeführt werden soll, z. B. führt '0 14 * * *' sie jeden Tag um 14:00 Uhr aus. Siehe crontab.guru für Hilfe."
 Custom: Custom
@@ -319,6 +322,7 @@ Monday: Montag
 'No segments added yet.': 'Noch keine Segmente hinzugefügt.'
 'No segments match the current filters.': 'Keine Segmente entsprechen den aktuellen Filtern.'
 'No sport types selected': 'Keine Sportarten ausgewählt'
+'No trips found.': 'No trips found.'
 'No unit': 'keine Einheit'
 'Normal date format': 'Normales Datumsformat'
 'Not configured, API access is disabled': 'Not configured, API access is disabled'
@@ -359,6 +363,7 @@ Password: Passwort
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
 'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf der Strecke.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
+Places: Places
 'Polyline color': Routenfarbe
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': Vorschaubereich
@@ -491,6 +496,7 @@ Source: Quelle
 Subtitle: Untertitel
 Success: Erfolgreich
 Suggested: Vorgeschlagen
+'Suggested trips': 'Suggested trips'
 Sunday: Sonntag
 'Supported types': 'Unterstützte Typen'
 System: System
@@ -562,6 +568,7 @@ To: bis
 "Tokens are replaced with the activity's values when the rule runs.": 'Die Platzhalter werden beim Ausführen der Regel durch die Werte der Aktivität ersetzt.'
 'Total size exceeds {max} MB': 'Gesamtgröße überschreitet {max} MB'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Verfolge die Nutzung deiner Ausrüstung anhand deiner Aktivitäten und behalte nutzungs- sowie zeitbasierte Wartungen im Blick.'
+'Trips need at least 2 activities far from home within a few days, not part of a collection yet.': 'Trips need at least 2 activities far from home within a few days, not part of a collection yet.'
 Tuesday: Dienstag
 'Turn gear maintenance tracking on or off.': 'Wartungsverfolgung für Ausrüstung ein- oder ausschalten.'
 'Turns on the AI-powered workout assistant.': 'KI-gestützten Trainingsassistenten aktivieren.'
