@@ -10,6 +10,7 @@ use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\String\Name;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Translation\TranslatableMessage;
 
 class AddCustomSegmentTest extends TestCase
 {
@@ -28,6 +29,10 @@ class AddCustomSegmentTest extends TestCase
         $this->assertSame(120, $command->getEndIndex());
         $this->assertEquals(Name::fromString('Kwaremont'), $command->getName());
         $this->assertTrue($command->isFavourite());
+        $this->assertEquals(
+            new TranslatableMessage('The segment has been created. Its efforts will show up after the next import run.', domain: 'admin'),
+            $command->getFlashMessage(),
+        );
     }
 
     public function testFromPayloadDefaultsToNotFavourite(): void
