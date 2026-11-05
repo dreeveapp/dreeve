@@ -41,7 +41,7 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activity.collections.1, activity.route, activities.9756441741, activities.9830227112',
+            'settings.appearance, activity.collections.1, activity.route, activities.9756441741, activities.9830227112, activities.deleted',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
