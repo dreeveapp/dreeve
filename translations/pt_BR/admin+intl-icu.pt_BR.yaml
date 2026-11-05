@@ -8,7 +8,6 @@ AM/PM: AM/PM
 Access: Access
 Actions: Ações
 Active: Ativo
-'Activities far from home on consecutive days, not part of a collection yet.': 'Activities far from home on consecutive days, not part of a collection yet.'
 'Activities scanned': 'Atividades analisadas'
 'Activities to skip during import': 'Atividades a ignorar durante a importação'
 'Activities to update': 'Atividades a atualizar'
@@ -321,7 +320,7 @@ Monday: Segunda-feira
 'No segments added yet.': 'Nenhum segmento adicionado ainda.'
 'No segments match the current filters.': 'Nenhum segmento corresponde aos filtros atuais.'
 'No sport types selected': 'Nenhum tipo de esporte selecionado'
-'No trips found.': 'No trips found.'
+'No suggestions found.': 'No suggestions found.'
 'No unit': 'Sem unidade'
 'Normal date format': 'Formato de data normal'
 'Not configured, API access is disabled': 'Not configured, API access is disabled'
@@ -564,7 +563,6 @@ To: Para
 "Tokens are replaced with the activity's values when the rule runs.": 'Os tokens são substituídos pelos valores da atividade quando a regra é executada.'
 'Total size exceeds {max} MB': 'O tamanho total excede {max} MB'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Acompanhe o uso do equipamento em suas atividades e fique por dentro da manutenção baseada em tempo e uso.'
-'Trips need at least 2 activities far from home within a few days, not part of a collection yet.': 'Trips need at least 2 activities far from home within a few days, not part of a collection yet.'
 Tuesday: Terça-feira
 'Turn gear maintenance tracking on or off.': 'Ativar ou desativar o acompanhamento de manutenção de equipamentos.'
 'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'

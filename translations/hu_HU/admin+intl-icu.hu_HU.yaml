@@ -8,7 +8,6 @@ AM/PM: AM/PM
 Access: Access
 Actions: Actions
 Active: Aktív
-'Activities far from home on consecutive days, not part of a collection yet.': 'Activities far from home on consecutive days, not part of a collection yet.'
 'Activities scanned': 'Átvizsgált tevékenységek'
 'Activities to skip during import': 'Importáláskor kihagyandó tevékenységek'
 'Activities to update': 'Frissítendő tevékenységek'
@@ -321,7 +320,7 @@ Monday: Hétfő
 'No segments added yet.': 'No segments added yet.'
 'No segments match the current filters.': 'No segments match the current filters.'
 'No sport types selected': 'Nincs kiválasztott sporttípus'
-'No trips found.': 'No trips found.'
+'No suggestions found.': 'No suggestions found.'
 'No unit': 'Nincs mértékegység'
 'Normal date format': 'Normál dátumformátum'
 'Not configured, API access is disabled': 'Not configured, API access is disabled'
@@ -564,7 +563,6 @@ To: Eddig
 "Tokens are replaced with the activity's values when the rule runs.": 'A tokenek a szabály futásakor a tevékenység értékeire cserélődnek.'
 'Total size exceeds {max} MB': 'A teljes méret meghaladja a(z) {max} MB-ot'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Kövesd a felszerelés használatát a tevékenységeidből, és tartsd kézben a használat- és időalapú karbantartást.'
-'Trips need at least 2 activities far from home within a few days, not part of a collection yet.': 'Trips need at least 2 activities far from home within a few days, not part of a collection yet.'
 Tuesday: Kedd
 'Turn gear maintenance tracking on or off.': 'A felszerelés-karbantartás követésének be- vagy kikapcsolása.'
 'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
