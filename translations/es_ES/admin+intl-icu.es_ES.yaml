@@ -470,6 +470,7 @@ Source: Origen
 'Strava refresh token': 'Refresh token de Strava'
 Subtitle: Subtítulo
 Success: Éxito
+Suggested: Suggested
 Sunday: Domingo
 'Supported types': 'Tipos soportados'
 System: System
@@ -548,6 +549,7 @@ Unit: Unidad
 'Units & language': 'Units & language'
 'Unsupported file type': 'Tipo de archivo no soportado'
 Until: Until
+'Unused gear': 'Unused gear'
 'Upload activity files': 'Subir archivos de actividad'
 'Upload failed': 'Fallo al subir'
 'Upload files': 'Subir archivos'

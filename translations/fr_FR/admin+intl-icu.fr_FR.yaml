@@ -470,6 +470,7 @@ Source: Source
 'Strava refresh token': "Jeton d'actualisation Strava"
 Subtitle: Sous-titre
 Success: Succès
+Suggested: Suggested
 Sunday: Dimanche
 'Supported types': 'Types pris en charge'
 System: System
@@ -548,6 +549,7 @@ Unit: Unité
 'Units & language': 'Units & language'
 'Unsupported file type': 'Type de fichier non supporté'
 Until: Until
+'Unused gear': 'Unused gear'
 'Upload activity files': "Téléverser des fichiers d'activité"
 'Upload failed': 'Echec du téléversement'
 'Upload files': 'Téléverser des fichiers'
