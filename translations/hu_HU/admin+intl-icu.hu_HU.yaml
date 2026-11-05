@@ -544,6 +544,7 @@ Tasks: Feladatok
 'These rules will be applied to your existing activities on the next import cycle.': 'Ezek a szabályok a következő importálási ciklusban lesznek alkalmazva a meglévő tevékenységeidre.'
 'This action cannot be undone.': 'Ez a művelet nem vonható vissza.'
 'This activity has no GPS data.': 'This activity has no GPS data.'
+'This collection has no activities yet.': 'This collection has no activities yet.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Ez a komponens több felszerelésre is fel van szerelve, válaszd ki azt, amelyiket szervizelted.'
 'This only removes the import record, the imported activity is kept.': 'Ez csak az importálási rekordot távolítja el, az importált tevékenység megmarad.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Ez az oldal minden megnyitáskor más kulcsot mutat, és csak a környezeti fájlodban lévő érvényesül.'
