@@ -51,7 +51,7 @@ final readonly class ManageActivityFormRequestHandler
             'dispatchCommand' => ManuallyCreateActivity::getCommandName(),
             'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
             'workoutTypes' => WorkoutType::cases(),
-            'gears' => $this->gearRepository->findAll()->sortByIsRetired(),
+            'gears' => $this->gearRepository->findAll()->sortByName()->sortByIsRetired(),
         ]));
     }
 
@@ -66,11 +66,11 @@ final readonly class ManageActivityFormRequestHandler
                 'activity' => $activity,
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
                 'workoutTypes' => WorkoutType::cases(),
-                'gears' => $this->gearRepository->findAll()->sortByIsRetired(),
+                'gears' => $this->gearRepository->findAll()->sortByName()->sortByIsRetired(),
             ]));
         }
 
-        $gears = $this->gearRepository->findAll()->sortByIsRetired();
+        $gears = $this->gearRepository->findAll()->sortByName()->sortByIsRetired();
         $gearIsReadOnly = false;
         if ($this->importMode->isStravaApi()) {
             $currentGear = $activity->getGearId() instanceof GearId
