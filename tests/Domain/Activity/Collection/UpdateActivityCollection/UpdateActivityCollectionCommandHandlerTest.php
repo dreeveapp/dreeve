@@ -11,9 +11,11 @@ use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\UpdateActivityCollection\UpdateActivityCollection;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
 {
@@ -87,5 +89,47 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'name' => 'Mallorca',
             'type' => 'trip',
         ]));
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload, string $expectedExceptionMessage): void
+    {
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload($expectedExceptionMessage));
+
+        UpdateActivityCollection::fromPayload($payload);
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>, string}>
+     */
+    public static function provideInvalidPayloads(): iterable
+    {
+        yield 'missing id' => [
+            ['name' => 'Mallorca', 'type' => 'trip'],
+            'An "activityCollectionId" and "name" are required.',
+        ];
+
+        yield 'missing name' => [
+            ['activityCollectionId' => 'activityCollection-1', 'type' => 'trip'],
+            'An "activityCollectionId" and "name" are required.',
+        ];
+
+        yield 'empty name' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => '   ', 'type' => 'trip'],
+            'The name cannot be empty.',
+        ];
+
+        yield 'missing type' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca'],
+            'The type is invalid.',
+        ];
+
+        yield 'invalid type' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'training-camp'],
+            'The type is invalid.',
+        ];
     }
 }
