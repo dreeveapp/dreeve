@@ -8,9 +8,10 @@ use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final readonly class ActivityCollectionSummary
+final readonly class ActivityCollectionWithActivities
 {
     private function __construct(
         private ActivityCollection $activityCollection,
@@ -23,7 +24,7 @@ final readonly class ActivityCollectionSummary
         Activities $activities,
     ): self {
         if ($activities->isEmpty()) {
-            throw new \InvalidArgumentException('An activity collection summary needs at least one activity.');
+            throw new \InvalidArgumentException('An activity collection needs at least one activity.');
         }
 
         return new self(
@@ -71,6 +72,11 @@ final readonly class ActivityCollectionSummary
     public function getElevation(): Meter
     {
         return Meter::from($this->activities->sum(static fn (Activity $activity): float => $activity->getElevation()->toFloat()));
+    }
+
+    public function getMovingTime(): Seconds
+    {
+        return Seconds::from($this->activities->sum(static fn (Activity $activity): int => $activity->getMovingTimeInSeconds()));
     }
 
     /**
