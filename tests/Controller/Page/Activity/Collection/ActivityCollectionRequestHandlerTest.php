@@ -27,7 +27,7 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
             ->withType(ActivityCollectionType::TRIP)
             ->withActivityIds(ActivityIds::fromArray([
                 ActivityId::fromUnprefixed('9756441741'),
-                ActivityId::fromUnprefixed('9542782314'),
+                ActivityId::fromUnprefixed('9830227112'),
                 ActivityId::fromUnprefixed('deleted'),
             ]))
             ->build());
@@ -41,9 +41,22 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activity.collections.1, activities.9542782314, activities.9756441741',
+            'settings.appearance, activity.collections.1, activity.route, activities.9756441741, activities.9830227112',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testItRendersNoMapWithoutRealWorldRoutes(): void
+    {
+        $this->provideFullTestSet();
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('9756441741')]))
+            ->build());
+
+        $this->client->request('GET', '/collections/activityCollection-1');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertStringNotContainsString('data-leaflet', (string) $this->client->getResponse()->getContent());
     }
 
     public function testItReturnsNotFound(): void
