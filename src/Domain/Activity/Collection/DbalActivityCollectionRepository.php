@@ -115,18 +115,6 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
         )->fetchOne();
     }
 
-    public function findIdsWithActivities(): array
-    {
-        return array_map(
-            ActivityCollectionId::fromString(...),
-            $this->connection->executeQuery(
-                'SELECT DISTINCT ActivityCollection.activityCollectionId
-                FROM ActivityCollection, json_each(ActivityCollection.activityIds) AS member
-                INNER JOIN Activity ON Activity.activityId = member.value'
-            )->fetchFirstColumn(),
-        );
-    }
-
     /**
      * @param array<string, mixed> $result
      */

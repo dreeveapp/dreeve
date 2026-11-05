@@ -159,7 +159,6 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('deleted')]))
             ->build());
         $this->assertFalse($this->repository->hasActivityCollectionsWithActivities());
-        $this->assertSame([], $this->repository->findIdsWithActivities());
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()->withActivityId(ActivityId::fromUnprefixed('1'))->build(),
@@ -170,7 +169,6 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]))
             ->build());
         $this->assertTrue($this->repository->hasActivityCollectionsWithActivities());
-        $this->assertEquals([ActivityCollectionId::fromUnprefixed('2')], $this->repository->findIdsWithActivities());
     }
 
     public function testDelete(): void

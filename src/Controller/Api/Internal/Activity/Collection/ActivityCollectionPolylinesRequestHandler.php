@@ -12,11 +12,13 @@ use App\Domain\Activity\Collection\ActivityCollectionCacheTag;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
+use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -29,6 +31,7 @@ final readonly class ActivityCollectionPolylinesRequestHandler
     public function __construct(
         private ActivityCollectionRepository $activityCollectionRepository,
         private ActivityRepository $activityRepository,
+        private QueryBus $queryBus,
         private CacheableRenderer $cacheableRenderer,
     ) {
     }
@@ -37,11 +40,7 @@ final readonly class ActivityCollectionPolylinesRequestHandler
     public function handle(string $activityCollectionId): JsonResponse
     {
         $activityCollection = $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId));
-        if (!in_array(
-            (string) $activityCollection->getId(),
-            array_map(strval(...), $this->activityCollectionRepository->findIdsWithActivities()),
-            true,
-        )) {
+        if (0 === $this->queryBus->ask(new FindNumberOfActivitiesPerActivityCollection())->getNumberOfActivitiesFor($activityCollection->getId())) {
             throw new NotFoundHttpException('Not found');
         }
 

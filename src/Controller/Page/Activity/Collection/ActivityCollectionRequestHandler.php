@@ -15,6 +15,7 @@ use App\Domain\Activity\Collection\ActivityCollectionCacheTag;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
+use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\RealWorldMap;
 use App\Infrastructure\Cache\Cacheability;
@@ -23,6 +24,7 @@ use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -35,6 +37,7 @@ final readonly class ActivityCollectionRequestHandler
     public function __construct(
         private ActivityCollectionRepository $activityCollectionRepository,
         private ActivityRepository $activityRepository,
+        private QueryBus $queryBus,
         private Environment $twig,
         private PageRenderer $pageRenderer,
         private ImageRepository $imageRepository,
@@ -45,11 +48,7 @@ final readonly class ActivityCollectionRequestHandler
     public function handle(string $activityCollectionId): HtmlResponse
     {
         $activityCollection = $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId));
-        if (!in_array(
-            (string) $activityCollection->getId(),
-            array_map(strval(...), $this->activityCollectionRepository->findIdsWithActivities()),
-            true,
-        )) {
+        if (0 === $this->queryBus->ask(new FindNumberOfActivitiesPerActivityCollection())->getNumberOfActivitiesFor($activityCollection->getId())) {
             throw new NotFoundHttpException('Not found');
         }
 

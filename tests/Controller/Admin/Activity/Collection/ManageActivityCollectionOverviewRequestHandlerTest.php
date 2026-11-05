@@ -71,7 +71,7 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            [['Transalp 2025', 'Event', '0', 'Edit Delete'], ['Mallorca', 'Trip', '2', 'Edit Delete']],
+            [['Transalp 2025', 'Event', '0', 'Edit Delete'], ['Mallorca', 'Trip', '1', 'Edit Delete']],
             $crawler->filter('table.data-table tbody tr')->each(
                 static fn (Crawler $row): array => $row->filter('td')->each(static fn (Crawler $cell): string => trim($cell->text())),
             ),
