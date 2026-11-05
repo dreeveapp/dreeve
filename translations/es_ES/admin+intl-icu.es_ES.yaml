@@ -540,6 +540,7 @@ Tasks: Tareas
 'These rules will be applied to your existing activities on the next import cycle.': 'Estas reglas se aplicarán a tus actividades existentes en el próximo ciclo de importación.'
 'This action cannot be undone.': 'Esta acción no se puede deshacer.'
 'This activity has no GPS data.': 'This activity has no GPS data.'
+'This collection has no activities yet.': 'This collection has no activities yet.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Este componente está montado en múltiples equipamientos, elige al que le hiciste el mantenimiento.'
 'This only removes the import record, the imported activity is kept.': 'Esto solo elimina el registro de importación, la actividad importada se mantiene.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Esta página muestra una clave diferente cada vez que se abre, y solo se aplica la que está en tu archivo de entorno.'

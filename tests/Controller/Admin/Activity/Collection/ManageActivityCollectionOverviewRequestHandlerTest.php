@@ -76,6 +76,11 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
             $crawler->filter('table.data-table tbody td:first-child a')->extract(['href']),
         );
         $this->assertSame(
+            ['This collection has no activities yet.'],
+            $crawler->filter('table.data-table tbody tr:first-child span.text-amber-500')->extract(['title']),
+        );
+        $this->assertCount(1, $crawler->filter('table.data-table tbody span.text-amber-500'));
+        $this->assertSame(
             ['/admin/collections/activityCollection-2/edit', '/admin/collections/activityCollection-1/edit'],
             $crawler->filter('table.data-table tbody a[title="Edit"]')->extract(['href']),
         );
