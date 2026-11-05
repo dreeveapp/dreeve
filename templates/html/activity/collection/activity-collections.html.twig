@@ -20,7 +20,7 @@
                     <div class="flex flex-col gap-3 rounded-lg border border-gray-200 p-3 shadow-xs">
                         <div class="no-dark h-40 relative overflow-hidden rounded-lg bg-gray-200">
                             <img class="absolute inset-0 size-full object-cover" loading="lazy"
-                                 src="{{ activityCollection.getCoverImagePath() ? relativeUrl(activityCollection.getCoverImagePath()) : placeholderImage() }}"
+                                 src="{{ activityCollectionWithActivities.getCoverImagePath() ? relativeUrl(activityCollectionWithActivities.getCoverImagePath()) : placeholderImage() }}"
                                  alt="{{ activityCollection.getName()|e('html_attr') }}"/>
                             <div class="absolute top-3 left-3">
                                 <span class="pill pill--neutral text-xs">{{ activityCollection.getType()|trans }}</span>

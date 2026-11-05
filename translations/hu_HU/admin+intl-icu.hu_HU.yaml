@@ -598,6 +598,7 @@ Weigh-ins: Weigh-ins
 'When enabled, activities without a route, like indoor rides, are left out.': 'Ha be van kapcsolva, az útvonal nélküli tevékenységek, például a beltéri edzések, kimaradnak.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Ha be van kapcsolva, a nyugdíjazottként megjelölt felszerelés kihagyásra kerül. A komponensei nem növelik a használatot, és nem történik karbantartás-követés rájuk.'
 'When set, requests to the admin panel from any other IP address are rejected.': 'Ha be van állítva, az adminfelületre bármely más IP-címről érkező kérések elutasításra kerülnek.'
+"Without a cover image, the first photo of the collection's activities is used.": "Without a cover image, the first photo of the collection's activities is used."
 'Workout type': Edzéstípus
 'You can add it back to your dashboard again later.': 'Később bármikor visszateheted a dashboardodra.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'A fájlokat közvetlenül a(z) {watchFolder} mappába is másolhatod, vagy {linkOpen}kézzel hozzáadhatsz egy tevékenységet{linkClose}.'
