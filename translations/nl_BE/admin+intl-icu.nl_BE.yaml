@@ -116,7 +116,7 @@ Command: Commando
 Commute: Woon-werk
 Component: Onderdeel
 'Conditions are combined with AND.': 'Voorwaarden worden gecombineerd met EN.'
-Config: Configuratie
+Configuration: Configuration
 Configure: Configureren
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configureer de Eddington-getallen die berekend moeten worden. Je kan er maximaal twee tonen in de dashboardwidget.'
 'Configure {widget}': '{widget} configureren'

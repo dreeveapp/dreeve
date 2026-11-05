@@ -116,7 +116,7 @@ Command: Comando
 Commute: Deslocamento
 Component: Componente
 'Conditions are combined with AND.': 'As condições são combinadas com E (AND).'
-Config: Configuração
+Configuration: Configuration
 Configure: Configurar
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configure os números de Eddington a calcular. Você pode exibir até dois no widget do painel.'
 'Configure {widget}': 'Configurar {widget}'
