@@ -50,10 +50,10 @@ COPY docker/php-cli/xdebug.ini "${PHP_INI_DIR}/conf.d"
 RUN rm pie.phar
 
 # Download Caddy to be able to format config file.
-RUN curl -L -o "/tmp/caddy.tar.gz" https://github.com/caddyserver/caddy/releases/download/v2.10.2/caddy_2.10.2_linux_amd64.tar.gz
-RUN tar -xzf /tmp/caddy.tar.gz -C /usr/bin caddy
-RUN rm -f /tmp/caddy.tar.gz
-RUN chmod +x /usr/bin/caddy
+RUN curl -fsSL --retry 5 --retry-all-errors -o "/tmp/caddy.tar.gz" https://github.com/caddyserver/caddy/releases/download/v2.10.2/caddy_2.10.2_linux_amd64.tar.gz \
+ && tar -xzf /tmp/caddy.tar.gz -C /usr/bin caddy \
+ && rm -f /tmp/caddy.tar.gz \
+ && chmod +x /usr/bin/caddy
 
 # Install node and npm.
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash
