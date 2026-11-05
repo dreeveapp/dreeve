@@ -5,7 +5,6 @@
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <div class="mb-4">
             <h3 class="text-lg font-semibold">{{ "Suggested trips"|trans({}, 'admin') }}</h3>
-            <p class="mt-1 text-sm text-gray-500">{{ "Activities far from home on consecutive days, not part of a collection yet."|trans({}, 'admin') }}</p>
         </div>
         <div class="relative overflow-x-auto">
             <table class="data-table">
@@ -74,8 +73,7 @@
                                     </svg>
                                 </span>
                                 <div class="flex flex-col gap-1">
-                                    <span class="text-sm font-medium text-gray-800">{{ "No trips found."|trans({}, 'admin') }}</span>
-                                    <span class="text-xs text-gray-500">{{ "Trips need at least 2 activities far from home within a few days, not part of a collection yet."|trans({}, 'admin') }}</span>
+                                    <span class="text-sm font-medium text-gray-800">{{ "No suggestions found."|trans({}, 'admin') }}</span>
                                 </div>
                             </div>
                         </td>
