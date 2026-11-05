@@ -544,6 +544,7 @@ Tasks: Taken
 'These rules will be applied to your existing activities on the next import cycle.': 'Deze regels worden bij de volgende importcyclus op je bestaande activiteiten toegepast.'
 'This action cannot be undone.': 'Deze actie kan niet ongedaan gemaakt worden.'
 'This activity has no GPS data.': 'This activity has no GPS data.'
+'This collection has no activities yet.': 'This collection has no activities yet.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Dit onderdeel zit op meerdere uitrustingen, kies degene die je onderhouden hebt.'
 'This only removes the import record, the imported activity is kept.': 'Dit verwijdert enkel het importrecord, de geïmporteerde activiteit blijft behouden.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Deze pagina toont bij elke opening een andere sleutel, en enkel die in je omgevingsbestand wordt toegepast.'

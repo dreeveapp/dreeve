@@ -37,17 +37,24 @@
                 {% for activityCollection in activityCollections %}
                     <tr class="group/row">
                         <td class="whitespace-nowrap text-left">
-                            {% if hasActivitiesPerActivityCollectionId[activityCollection.getId()] ?? false %}
-                                <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
-                                   title="{{ activityCollection.getName() }}"
-                                   href="{{ relativeUrl(path('activity_collection', {'activityCollectionId': activityCollection.getId()})) }}">
-                                    {{ activityCollection.getName() }}
-                                </a>
-                            {% else %}
-                                <span class="block max-w-100 truncate font-medium" title="{{ activityCollection.getName() }}">
-                                    {{ activityCollection.getName() }}
-                                </span>
-                            {% endif %}
+                            <div class="flex items-center gap-1.5">
+                                {% if hasActivitiesPerActivityCollectionId[activityCollection.getId()] ?? false %}
+                                    <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                                       title="{{ activityCollection.getName() }}"
+                                       href="{{ relativeUrl(path('activity_collection', {'activityCollectionId': activityCollection.getId()})) }}">
+                                        {{ activityCollection.getName() }}
+                                    </a>
+                                {% else %}
+                                    <span class="block max-w-100 truncate font-medium" title="{{ activityCollection.getName() }}">
+                                        {{ activityCollection.getName() }}
+                                    </span>
+                                    <span class="shrink-0 text-amber-500" title="{{ "This collection has no activities yet."|trans({}, 'admin') }}">
+                                        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        </svg>
+                                    </span>
+                                {% endif %}
+                            </div>
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ activityCollection.getType()|trans }}
