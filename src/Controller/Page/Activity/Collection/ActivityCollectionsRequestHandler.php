@@ -46,6 +46,7 @@ final readonly class ActivityCollectionsRequestHandler
                 cacheTags: CacheTags::of(
                     RootCacheTag::ACTIVITY_COLLECTIONS,
                     RootCacheTag::ACTIVITIES,
+                    RootCacheTag::ACTIVITY_IMAGES,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),

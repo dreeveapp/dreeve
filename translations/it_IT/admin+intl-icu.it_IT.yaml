@@ -598,6 +598,7 @@ Weigh-ins: Weigh-ins
 'When enabled, activities without a route, like indoor rides, are left out.': 'When enabled, activities without a route, like indoor rides, are left out.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'When set, requests to the admin panel from any other IP address are rejected.': 'When set, requests to the admin panel from any other IP address are rejected.'
+"Without a cover image, the first photo of the collection's activities is used.": "Without a cover image, the first photo of the collection's activities is used."
 'Workout type': 'Workout type'
 'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.'

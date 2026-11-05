@@ -40,6 +40,7 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('a[href*="/activities/add"]'));
         $this->assertSame('[]', $form->filter('[data-image-dropzone]')->attr('data-existing-images'));
         $this->assertCount(1, $form->filter('input[data-images-field][name="coverImagePath"]'));
+        $this->assertStringContainsString("Without a cover image, the first photo of the collection's activities is used.", $form->text());
         $this->assertSame('Save and add activities', trim($form->filter('button[type="submit"] .label')->text()));
         $this->assertCount(1, $crawler->filter('.max-w-2xl'));
     }
