@@ -433,6 +433,8 @@ Speed: Geschwindigkeit
 Splits: Zwischenzeiten
 'Sport variety': Sportvielfalt
 Squash: Squash
+Stage: Stage
+Stages: Stages
 'Stair Stepper': Stufen-Stepper
 'Stand Up Paddling': Stand-Up-Paddeln
 'Start times': Startzeiten
@@ -567,6 +569,7 @@ Title: Titel
 'Total hours spent per gear': 'Gesamtstunden pro Ausrüstung'
 'Total hours spent per sport type': 'Gesamtstunden pro Sportart'
 'Total moving time per month': 'Gesamte Bewegungszeit pro Monat'
+'Total time': 'Total time'
 'Trail Run': Trail-Lauf
 'Trail Runs': Trail-Läufe
 'Training 4–5 days every week scores higher than doing everything in one or two days.': '4-5 Tage Training pro Woche erzielen einen höheren Wert als alles an einem oder zwei Tagen zu erledigen.'

@@ -433,6 +433,8 @@ Speed: 速度
 Splits: 分段
 'Sport variety': 'Sport variety'
 Squash: 壁球
+Stage: Stage
+Stages: Stages
 'Stair Stepper': 楼梯机
 'Stand Up Paddling': 站立划桨
 'Start times': 开始时间
@@ -567,6 +569,7 @@ Title: Title
 'Total hours spent per gear': 每种装备总时长
 'Total hours spent per sport type': 每种运动的总时长
 'Total moving time per month': 'Total moving time per month'
+'Total time': 'Total time'
 'Trail Run': 'Trail Run'
 'Trail Runs': 越野跑
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Training 4–5 days every week scores higher than doing everything in one or two days.'

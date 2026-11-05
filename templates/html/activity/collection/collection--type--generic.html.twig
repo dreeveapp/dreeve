@@ -73,10 +73,12 @@
                             <span class="text-xs font-medium text-gray-500">{{ distance|measurementSymbol }}</span>
                         </div>
                     </div>
-                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
-                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Moving time"|trans }}</div>
-                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getMovingTime()|formatSeconds }}</span>
-                    </div>
+                    {% block movingTimeStat %}
+                        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Moving time"|trans }}</div>
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getMovingTime()|formatSeconds }}</span>
+                        </div>
+                    {% endblock %}
                     <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
                         <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Elevation"|trans }}</div>
                         <div class="flex items-baseline gap-1">
@@ -102,8 +104,8 @@
                         'maxZoom': leafletMap.getMaxZoom(),
                         'imageOverlay': leafletMap.getOverlayImageUrl(),
                         'bounds': leafletMap.getBounds(),
-                        'showStartMarker': false,
-                        'showEndMarker': false
+                        'showStartMarker': showRouteMarkers|default(false),
+                        'showEndMarker': showRouteMarkers|default(false)
                     } %}
                     <div class="h-87.5 mt-4 rounded-lg overflow-hidden" style="background-color:{{ leafletMap.getBackgroundColor() }}"
                          data-leaflet='{{ leafletOptions|json_encode }}'></div>
