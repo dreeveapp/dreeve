@@ -164,7 +164,7 @@ final readonly class ActivityCollectionWithActivities
         ));
         arsort($conditions);
 
-        return [] === $conditions ? null : (string) array_key_first($conditions);
+        return [] === $conditions ? null : array_key_first($conditions);
     }
 
     /**
