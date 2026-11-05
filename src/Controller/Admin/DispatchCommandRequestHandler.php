@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsController]
@@ -60,9 +61,10 @@ final readonly class DispatchCommandRequestHandler
         if (!$suppressesFlash && $session instanceof FlashBagAwareSessionInterface) {
             $session->getFlashBag()->add(
                 type: 'success',
-                message: $command instanceof ProvidesFlashMessage
-                    ? $command->getFlashMessage($this->translator)
-                    : $this->translator->trans('Your changes have been saved.', [], 'admin')
+                message: ($command instanceof ProvidesFlashMessage
+                    ? $command->getFlashMessage()
+                    : new TranslatableMessage('Your changes have been saved.', domain: 'admin')
+                )->trans($this->translator),
             );
         }
 
