@@ -40,6 +40,8 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $crawler->filter('a[href$="/activities/add"]'));
         $this->assertSame('[]', $form->filter('[data-image-dropzone]')->attr('data-existing-images'));
         $this->assertCount(1, $form->filter('input[data-images-field][name="coverImagePath"]'));
+        $this->assertSame('Save and add activities', trim($form->filter('button[type="submit"] .label')->text()));
+        $this->assertCount(1, $crawler->filter('.max-w-2xl'));
     }
 
     public function testRendersTheEditFormPrefilledWithTheCollection(): void
@@ -101,6 +103,11 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
             ['/admin/collections/activityCollection-1/activities/activity-2/remove', '/admin/collections/activityCollection-1/activities/activity-3/remove'],
             $form->filter('table.data-table tbody a[title="Remove"]')->extract(['href']),
         );
+        $this->assertSame('Save', trim($form->filter('button[type="submit"] .label')->text()));
+
+        $crawler = $this->client->request('GET', '/admin/collections/activityCollection-1/edit?redirectTo='.urlencode('/collections/activityCollection-1'));
+        $this->assertSame('/collections/activityCollection-1', $crawler->filter('form[data-dispatch-command="update-activity-collection"]')->attr('data-redirect'));
+        $this->assertSame('/collections/activityCollection-1', $crawler->filter('a.btn--secondary:not([href$="/activities/add"])')->attr('href'));
 
         $this->client->request('GET', '/admin/collections/activityCollection-unknown/edit');
         $this->assertResponseStatusCodeSame(404);
