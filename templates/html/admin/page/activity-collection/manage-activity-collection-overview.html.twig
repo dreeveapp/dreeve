@@ -37,9 +37,17 @@
                 {% for activityCollection in activityCollections %}
                     <tr class="group/row">
                         <td class="whitespace-nowrap text-left">
-                            <span class="block max-w-100 truncate font-medium" title="{{ activityCollection.getName() }}">
-                                {{ activityCollection.getName() }}
-                            </span>
+                            {% if hasActivitiesPerActivityCollectionId[activityCollection.getId()] ?? false %}
+                                <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                                   title="{{ activityCollection.getName() }}"
+                                   href="{{ relativeUrl(path('activity_collection', {'activityCollectionId': activityCollection.getId()})) }}">
+                                    {{ activityCollection.getName() }}
+                                </a>
+                            {% else %}
+                                <span class="block max-w-100 truncate font-medium" title="{{ activityCollection.getName() }}">
+                                    {{ activityCollection.getName() }}
+                                </span>
+                            {% endif %}
                         </td>
                         <td class="whitespace-nowrap text-left">
                             {{ activityCollection.getType()|trans }}

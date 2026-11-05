@@ -26,6 +26,10 @@ final readonly class ManageActivityCollectionOverviewRequestHandler
     {
         return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/manage-activity-collection-overview.html.twig', [
             'activityCollections' => $this->activityCollectionRepository->findAll(),
+            'hasActivitiesPerActivityCollectionId' => array_fill_keys(
+                array_map(strval(...), $this->activityCollectionRepository->findIdsWithActivities()),
+                true,
+            ),
             'hasActivities' => $this->activityIdRepository->count() > 0,
         ]));
     }
