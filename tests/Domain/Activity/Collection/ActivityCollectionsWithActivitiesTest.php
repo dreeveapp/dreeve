@@ -52,14 +52,17 @@ class ActivityCollectionsWithActivitiesTest extends TestCase
                 ->build(),
         ]);
 
+        $activityCollectionsWithActivities = ActivityCollectionsWithActivities::create(
+            activityCollections: $activityCollections,
+            activities: $activities,
+        );
+
         $this->assertSame(
             ['activityCollection-transalp', 'activityCollection-mallorca', 'activityCollection-lake-garda'],
-            ActivityCollectionsWithActivities::create(
-                activityCollections: $activityCollections,
-                activities: $activities,
-            )->map(
+            $activityCollectionsWithActivities->map(
                 static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): string => (string) $activityCollectionWithActivities->getActivityCollection()->getId(),
             ),
         );
+        $this->assertNull($activityCollectionsWithActivities->getFirst()?->getCoverImagePath());
     }
 }

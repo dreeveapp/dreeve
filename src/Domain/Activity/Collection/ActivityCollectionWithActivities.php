@@ -27,10 +27,6 @@ final readonly class ActivityCollectionWithActivities
         ActivityCollection $activityCollection,
         Activities $activities,
     ): self {
-        if ($activities->isEmpty()) {
-            throw new \InvalidArgumentException('An activity collection needs at least one activity.');
-        }
-
         return new self(
             activityCollection: $activityCollection,
             activities: $activities->usort(static fn (Activity $a, Activity $b): int => $a->getStartDate() <=> $b->getStartDate()),
