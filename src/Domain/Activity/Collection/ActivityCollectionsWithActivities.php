@@ -32,20 +32,9 @@ final class ActivityCollectionsWithActivities extends Collection
             ));
         }
 
-        return $activityCollectionsWithActivities;
-    }
-
-    /**
-     * @return array<int, list<ActivityCollectionWithActivities>>
-     */
-    public function groupByYear(): array
-    {
-        $activityCollectionsPerYear = [];
-        foreach ($this->usort(static fn (ActivityCollectionWithActivities $a, ActivityCollectionWithActivities $b): int => $b->getStartDate() <=> $a->getStartDate()) as $activityCollectionWithActivities) {
-            $activityCollectionsPerYear[$activityCollectionWithActivities->getStartDate()->getYear()][] = $activityCollectionWithActivities;
-        }
-
-        return $activityCollectionsPerYear;
+        return $activityCollectionsWithActivities->usort(
+            static fn (ActivityCollectionWithActivities $a, ActivityCollectionWithActivities $b): int => $b->getStartDate() <=> $a->getStartDate(),
+        );
     }
 
     public function getItemClassName(): string
