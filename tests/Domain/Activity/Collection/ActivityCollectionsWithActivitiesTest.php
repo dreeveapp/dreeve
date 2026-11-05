@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class ActivityCollectionsWithActivitiesTest extends TestCase
 {
-    public function testGroupByYear(): void
+    public function testCreate(): void
     {
         $activities = Activities::fromArray([
             ActivityBuilder::fromDefaults()
@@ -52,22 +52,13 @@ class ActivityCollectionsWithActivitiesTest extends TestCase
                 ->build(),
         ]);
 
-        $activityCollectionsPerYear = ActivityCollectionsWithActivities::create(
-            activityCollections: $activityCollections,
-            activities: $activities,
-        )->groupByYear();
-
         $this->assertSame(
-            [
-                2025 => ['activityCollection-transalp', 'activityCollection-mallorca'],
-                2024 => ['activityCollection-lake-garda'],
-            ],
-            array_map(
-                static fn (array $activityCollectionsWithActivities): array => array_map(
-                    static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): string => (string) $activityCollectionWithActivities->getActivityCollection()->getId(),
-                    $activityCollectionsWithActivities,
-                ),
-                $activityCollectionsPerYear,
+            ['activityCollection-transalp', 'activityCollection-mallorca', 'activityCollection-lake-garda'],
+            ActivityCollectionsWithActivities::create(
+                activityCollections: $activityCollections,
+                activities: $activities,
+            )->map(
+                static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): string => (string) $activityCollectionWithActivities->getActivityCollection()->getId(),
             ),
         );
     }

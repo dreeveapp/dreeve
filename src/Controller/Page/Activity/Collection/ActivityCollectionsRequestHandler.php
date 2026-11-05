@@ -63,10 +63,10 @@ final readonly class ActivityCollectionsRequestHandler
         $activityCollections = $this->activityCollectionRepository->findAll();
 
         return $this->twig->load('html/activity/collection/activity-collections.html.twig')->render([
-            'activityCollectionsPerYear' => ActivityCollectionsWithActivities::create(
+            'activityCollectionsWithActivities' => ActivityCollectionsWithActivities::create(
                 activityCollections: $activityCollections,
                 activities: $this->activityRepository->findByIds($activityCollections->getActivityIds()),
-            )->groupByYear(),
+            ),
         ]);
     }
 }
