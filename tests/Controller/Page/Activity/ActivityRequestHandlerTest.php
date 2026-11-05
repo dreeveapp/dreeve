@@ -3,8 +3,11 @@
 namespace App\Tests\Controller\Page\Activity;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\Collection\ActivityCollectionId;
+use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Lap\ActivityLapId;
 use App\Domain\Activity\Lap\ActivityLapRepository;
@@ -25,6 +28,7 @@ use App\Infrastructure\Config\DemoMode;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
 use App\Tests\Domain\Activity\Lap\ActivityLapBuilder;
 use App\Tests\Domain\Activity\Shifting\ActivityDrivetrainUsageBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
@@ -42,6 +46,22 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
     public function testRender(): void
     {
         $this->provideFullTestSet();
+        $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
+        $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
+            ->withName('Summer trip')
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('9756441741')]))
+            ->build());
+        $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('2'))
+            ->withName('Zwift league')
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('9542782314'), ActivityId::fromUnprefixed('9756441741')]))
+            ->build());
+        $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('3'))
+            ->withName('Not this one')
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('9542782314')]))
+            ->build());
 
         $this->client->request('GET', '/activities/activity-9756441741');
 
@@ -53,8 +73,9 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activities.9756441741, gear, settings.security, settings.general, settings.athleteWeight, settings.athleteFtp',
+            'settings.appearance, activities.9756441741, gear, activity.collections, settings.security, settings.general, settings.athleteWeight, settings.athleteFtp',
         );
+        $this->assertStringNotContainsString('Not this one', (string) $this->client->getResponse()->getContent());
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }
 

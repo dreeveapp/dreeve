@@ -10,6 +10,7 @@ use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\DistributionChartsBuilder;
 use App\Domain\Activity\EnrichedActivityRepository;
 use App\Domain\Activity\GpxFileName;
@@ -57,6 +58,7 @@ final readonly class ActivityRequestHandler
         private ActivitySplitRepository $activitySplitRepository,
         private ActivityLapRepository $activityLapRepository,
         private ActivityDrivetrainUsageRepository $activityDrivetrainUsageRepository,
+        private ActivityCollectionRepository $activityCollectionRepository,
         private SettingsRepository $settingsRepository,
         private TranslatorInterface $translator,
         private PageRenderer $pageRenderer,
@@ -82,6 +84,7 @@ final readonly class ActivityRequestHandler
                 cacheTags: CacheTags::of(
                     ActivityCacheTag::for($activityId),
                     RootCacheTag::GEAR,
+                    RootCacheTag::ACTIVITY_COLLECTIONS,
                     RootCacheTag::SETTINGS_SECURITY,
                     RootCacheTag::SETTINGS_GENERAL,
                     RootCacheTag::SETTINGS_ATHLETE_WEIGHT,
@@ -156,6 +159,7 @@ final readonly class ActivityRequestHandler
             'hasProfileChart' => $numberOfProfileChartLanes > 0,
             'heartRateZones' => $timeInHeartRateZones,
             'showStartTime' => $this->visitor->isTrusted(),
+            'activityCollections' => $this->activityCollectionRepository->findForActivity($activityId),
             'drivetrainUsages' => $activity->getSportType()->supportsShiftingStats()
                 ? $this->activityDrivetrainUsageRepository->findByActivity($activityId)
                 : ActivityDrivetrainUsages::empty(),
