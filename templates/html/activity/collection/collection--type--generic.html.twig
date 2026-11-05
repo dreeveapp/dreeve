@@ -41,11 +41,27 @@
                         {{ svg('calendar', 'size-3.5', 'text-gray-400') }}
                         {{ activityCollectionWithActivities.getStartDate()|formatDate('normal') }}
                         {% if activityCollectionWithActivities.getNumberOfDays() > 1 %}
-                            &ndash; {{ activityCollectionWithActivities.getEndDate()|formatDate('normal') }}
+                            - {{ activityCollectionWithActivities.getEndDate()|formatDate('normal') }}
                         {% endif %}
                         &middot; {{ "{numberOfDays} days"|trans({'{numberOfDays}': activityCollectionWithActivities.getNumberOfDays()}) }}
                     </span>
+                    {% set weatherCondition = activityCollectionWithActivities.getMostCommonWeatherCondition() %}
+                    {% if weatherCondition %}
+                        <span class="inline-flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-yellow-500" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none"/></svg>
+                            {% set minTemperature = activityCollectionWithActivities.getMinTemperature()|formatMeasurement(0) %}
+                            {{ weatherCondition }}, {{ minTemperature != activityCollectionWithActivities.getMaxTemperature()|formatMeasurement(0) ? minTemperature ~ ' - ' }}{{ activityCollectionWithActivities.getMaxTemperature()|renderMeasurement(0) }}
+                        </span>
+                    {% endif %}
                 </div>
+                {% set places = activityCollectionWithActivities.getPlaces() %}
+                {% if places is not empty %}
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        {% for place in places %}
+                            <span class="pill pill--neutral text-xs">{{ place|e }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             {% endblock %}
             {% block stats %}
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
@@ -106,6 +122,7 @@
                             <th scope="col">{{ "Distance"|trans }}</th>
                             <th scope="col">{{ "Elevation"|trans }}</th>
                             <th scope="col">{{ "Moving time"|trans }}</th>
+                            <th scope="col">{{ "Weather"|trans }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -127,6 +144,10 @@
                                 </td>
                                 <td>
                                     {{ activity.getMovingTimeFormatted() }}
+                                </td>
+                                <td>
+                                    {% set weather = activity.getWeather() %}
+                                    {{ weather ? weather.getWeatherCodeDescription() ~ ', ' ~ weather.getTemperatureInCelsius()|renderMeasurement(0) : '-' }}
                                 </td>
                             </tr>
                         {% endfor %}
