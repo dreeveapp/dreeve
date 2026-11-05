@@ -6,6 +6,7 @@ namespace App\Controller\Api\Internal\Activity\Collection;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityCacheTag;
+use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionCacheTag;
 use App\Domain\Activity\Collection\ActivityCollectionId;
@@ -36,18 +37,11 @@ final readonly class ActivityCollectionPolylinesRequestHandler
     public function handle(string $activityCollectionId): JsonResponse
     {
         $activityCollection = $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId));
-        $activities = $this->activityRepository->findByIds($activityCollection->getActivityIds());
-
-        if ($activities->isEmpty()) {
-            throw new NotFoundHttpException('Not found');
-        }
-
-        $activitiesWithARealWorldRoute = ActivityCollectionWithActivities::create(
-            activityCollection: $activityCollection,
-            activities: $activities,
-        )->getActivitiesWithARealWorldRoute();
-
-        if ($activitiesWithARealWorldRoute->isEmpty()) {
+        if (!in_array(
+            (string) $activityCollection->getId(),
+            array_map(strval(...), $this->activityCollectionRepository->findIdsWithActivities()),
+            true,
+        )) {
             throw new NotFoundHttpException('Not found');
         }
 
@@ -57,12 +51,23 @@ final readonly class ActivityCollectionPolylinesRequestHandler
                 cacheTags: CacheTags::of(
                     ActivityCollectionCacheTag::for($activityCollection->getId()),
                     RootCacheTag::ACTIVITY_ROUTE,
-                    ...$activities->map(static fn (Activity $activity): CacheTag => ActivityCacheTag::for($activity->getId())),
+                    ...$activityCollection->getActivityIds()->map(static fn (ActivityId $activityId): CacheTag => ActivityCacheTag::for($activityId)),
                 ),
             ),
-            render: fn (): string => Json::encode($activitiesWithARealWorldRoute->map(
-                static fn (Activity $activity): array => $activity->getEncodedPolyline()?->decodeAndPairLatLng() ?? [],
-            )),
+            render: function () use ($activityCollection): string {
+                $activitiesWithARealWorldRoute = ActivityCollectionWithActivities::create(
+                    activityCollection: $activityCollection,
+                    activities: $this->activityRepository->findByIds($activityCollection->getActivityIds()),
+                )->getActivitiesWithARealWorldRoute();
+
+                if ($activitiesWithARealWorldRoute->isEmpty()) {
+                    throw new NotFoundHttpException('Not found');
+                }
+
+                return Json::encode($activitiesWithARealWorldRoute->map(
+                    static fn (Activity $activity): array => $activity->getEncodedPolyline()?->decodeAndPairLatLng() ?? [],
+                ));
+            },
         );
 
         return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
