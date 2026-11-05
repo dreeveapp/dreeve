@@ -96,6 +96,11 @@ final readonly class ActivityCollectionWithActivities
         return Seconds::from($this->activities->sum(static fn (Activity $activity): int => $activity->getMovingTimeInSeconds()));
     }
 
+    public function getElapsedTime(): Seconds
+    {
+        return Seconds::from($this->activities->sum(static fn (Activity $activity): int => $activity->getElapsedTimeInSeconds()));
+    }
+
     /**
      * @return string[]
      */

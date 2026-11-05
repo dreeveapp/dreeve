@@ -26,6 +26,7 @@ enum ActivityCollectionType: string implements TranslatableInterface
     {
         return match ($this) {
             self::TRIP => 'collection--type--trip',
+            self::EVENT => 'collection--type--event',
             default => 'collection--type--generic',
         };
     }
