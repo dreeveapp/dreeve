@@ -2,10 +2,11 @@
 {% block main %}
     {% set activityCollection = activityCollection is defined ? activityCollection : null %}
     {% set activityCollectionId = activityCollection ? activityCollection.getId() : activityCollectionId %}
-    {% embed 'html/admin/component/modal.html.twig' with {closeUrl: relativeUrl(path('admin_manage_activity_collection_overview')), modalSize: activityCollection ? 'max-w-2xl' : 'max-w-lg'} %}
+    {% set overviewUrl = redirectUrl(relativeUrl(path('admin_manage_activity_collection_overview'))) %}
+    {% embed 'html/admin/component/modal.html.twig' with {closeUrl: overviewUrl, modalSize: 'max-w-2xl'} %}
         {% block title %}{{ activityCollection ? "Edit collection"|trans({}, 'admin') : "Add collection"|trans({}, 'admin') }}{% endblock %}
         {% block body %}
-            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ activityCollection ? relativeUrl(path('admin_manage_activity_collection_overview')) : relativeUrl(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId})) }}" class="flex flex-col gap-4">
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ activityCollection ? overviewUrl : relativeUrl(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId})) }}" class="flex flex-col gap-4">
                 <input type="hidden" name="activityCollectionId" value="{{ activityCollectionId }}">
                 <div data-form-error class="form-error hidden" role="alert"></div>
                 <div>
@@ -103,9 +104,9 @@
                     {% if activityCollection %}
                         <a href="{{ relativeUrl(path('admin_delete_activity_collection', {activityCollectionId: activityCollectionId})) }}" type="button" class="btn--danger me-auto">{{ "Delete"|trans({}, 'admin') }}</a>
                     {% endif %}
-                    <a href="{{ relativeUrl(path('admin_manage_activity_collection_overview')) }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
+                    <a href="{{ overviewUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
                     <button type="submit" data-has-loading-state class="group btn--primary">
-                        <span class="label">{{ "Save"|trans({}, 'admin') }}</span>
+                        <span class="label">{{ activityCollection ? "Save"|trans({}, 'admin') : "Save and add activities"|trans({}, 'admin') }}</span>
                         <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
                     </button>
                 </div>
