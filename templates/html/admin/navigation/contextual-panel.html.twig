@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li>
-                    {% set numberOfTripSuggestions = number_of_trip_suggestions() %}
+                    {% set numberOfTripSuggestions = isActiveNavItem({'/admin/collections': true, '/admin/collections/suggestions': true}) ? number_of_trip_suggestions() : 0 %}
                     <a href="{{ relativeUrl(path('admin_activity_collection_trip_suggestions')) }}" {{ inTripSuggestions ? 'aria-selected="true"' : '' }}>
                         {{ "Suggested trips"|trans({}, 'admin') }}
                         {% if numberOfTripSuggestions > 0 %}
