@@ -116,7 +116,7 @@ Command: Befehl
 Commute: Pendeln
 Component: Komponente
 'Conditions are combined with AND.': 'Die Bedingungen werden mit UND verknüpft.'
-Config: Konfiguration
+Configuration: Configuration
 Configure: Konfigurieren
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Konfiguriere die zu berechnenden Eddington-Zahlen. Du kannst bis zu zwei im Dashboard-Widget anzeigen.'
 'Configure {widget}': '{widget} konfigurieren'

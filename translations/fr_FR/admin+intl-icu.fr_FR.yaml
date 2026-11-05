@@ -116,7 +116,7 @@ Command: Commande
 Commute: 'Trajet domicile-travail'
 Component: Composant
 'Conditions are combined with AND.': 'Les conditions sont combinées avec ET.'
-Config: Configuration
+Configuration: Configuration
 Configure: Configurer
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': "Configurez les nombres d'Eddington à calculer. Vous pouvez en afficher jusqu'à deux dans le widget du tableau de bord."
 'Configure {widget}': 'Configurer le {widget}'
