@@ -116,7 +116,7 @@ Command: Command
 Commute: Commute
 Component: Component
 'Conditions are combined with AND.': 'Conditions are combined with AND.'
-Config: Config
+Configuration: Configuration
 Configure: Configure
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.'
 'Configure {widget}': 'Configure {widget}'

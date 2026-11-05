@@ -43,7 +43,7 @@ class TripSuggestionsRequestHandlerTest extends AdminWebTestCase
             ['/admin/collections/suggestions'],
             $crawler->filter('nav.contextual-panel[aria-label="Activity collections"] a[aria-selected="true"]')->extract(['href']),
         );
-        $this->assertSame('1', $crawler->filter('nav.contextual-panel[aria-label="Activity collections"] a[aria-selected="true"] .pill')->text());
+        $this->assertSame('1', $crawler->filter('nav.contextual-panel[aria-label="Activity collections"] a[aria-selected="true"] span')->text());
         $suggestion = $crawler->filter('table.data-table tbody tr');
         $this->assertSame(
             [['10-04-2024 - 12-04-2024', 'Pollença', '2', 'Create collection']],
@@ -67,8 +67,8 @@ class TripSuggestionsRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/collections/suggestions');
 
         $this->assertResponseIsSuccessful();
-        $this->assertStringContainsString('No trips found.', $crawler->filter('table.data-table')->text());
+        $this->assertStringContainsString('No suggestions found.', $crawler->filter('table.data-table')->text());
         $this->assertCount(0, $crawler->filter('table.data-table form'));
-        $this->assertCount(0, $crawler->filter('nav.contextual-panel .pill'));
+        $this->assertCount(0, $crawler->filter('nav.contextual-panel a span'));
     }
 }

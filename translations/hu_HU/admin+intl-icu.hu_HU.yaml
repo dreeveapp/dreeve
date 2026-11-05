@@ -116,7 +116,7 @@ Command: Parancs
 Commute: Ingázás
 Component: Komponens
 'Conditions are combined with AND.': 'A feltételek ÉS kapcsolattal vannak összekötve.'
-Config: Konfiguráció
+Configuration: Configuration
 Configure: Beállítás
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Állítsd be a kiszámítandó Eddington-számokat. Legfeljebb kettőt jeleníthetsz meg a dashboard widgetben.'
 'Configure {widget}': '{widget} beállítása'
