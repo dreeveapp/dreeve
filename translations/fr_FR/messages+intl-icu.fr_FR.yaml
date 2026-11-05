@@ -102,6 +102,7 @@ Dance: Danse
 Dashboard: 'Tableau de bord'
 Date: Date
 Day: Jour
+'Days away': 'Days away'
 'Days completed': 'Days completed'
 'Days needed': 'Jours nécessaires'
 'Days to go': 'Days to go'
@@ -696,6 +697,7 @@ workouts: entraînements
 '{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': 'Fenêtre glissante de {numberOfDays} jours'
 '{numberOfMonths} months': '{numberOfMonths} mois'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} résultats'
 '{numberOfResults} routes': '{numberOfResults} parcours'

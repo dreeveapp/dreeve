@@ -24,6 +24,9 @@ enum ActivityCollectionType: string implements TranslatableInterface
 
     public function getTemplateName(): string
     {
-        return 'collection--type--generic';
+        return match ($this) {
+            self::TRIP => 'collection--type--trip',
+            default => 'collection--type--generic',
+        };
     }
 }

@@ -72,6 +72,13 @@ final readonly class ActivityCollectionWithActivities
         return (int) $this->getStartDate()->setTime(0, 0)->diff($this->getEndDate()->setTime(0, 0))->days + 1;
     }
 
+    public function getNumberOfRestDays(): int
+    {
+        return $this->getNumberOfDays() - count(array_unique($this->activities->map(
+            static fn (Activity $activity): string => $activity->getStartDate()->format('Y-m-d'),
+        )));
+    }
+
     public function getDistance(): Kilometer
     {
         return Kilometer::from($this->activities->sum(static fn (Activity $activity): float => $activity->getDistance()->toFloat()));
@@ -95,5 +102,18 @@ final readonly class ActivityCollectionWithActivities
         return array_values(array_unique(array_merge(...$this->activities->map(
             static fn (Activity $activity): array => $activity->getRouteGeography()->getPassedThroughCountries(),
         ))));
+    }
+
+    /**
+     * @return array<int|string, int>
+     */
+    public function getPlaces(): array
+    {
+        $places = array_count_values(array_filter($this->activities->map(
+            static fn (Activity $activity): ?string => $activity->getRouteGeography()->getStartingPointCity(),
+        )));
+        arsort($places);
+
+        return $places;
     }
 }
