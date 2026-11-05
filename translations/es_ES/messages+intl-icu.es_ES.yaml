@@ -74,6 +74,7 @@ Challenges: Retos
 'Clear chat': 'Borrar chat'
 Close: Close
 'Cluster tiles': 'Cuadrículas de clúster'
+Collections: Collections
 Columns: Columnas
 Commute: Desplazamiento
 Commutes: Desplazamientos
@@ -132,6 +133,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington a lo largo del tiempo'
 'Edit dashboard': 'Editar panel de control'
 'Edit this activity': 'Editar esta actividad'
+'Edit this activity collection': 'Edit this activity collection'
 'Edit this segment': 'Edit this segment'
 'Effort vs heart rate': 'Esfuerzo vs frecuencia cardíaca'
 'Elapsed time': 'Tiempo transcurrido'

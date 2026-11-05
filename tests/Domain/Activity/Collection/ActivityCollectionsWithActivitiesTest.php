@@ -9,13 +9,13 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollections;
-use App\Domain\Activity\Collection\ActivityCollectionSummaries;
-use App\Domain\Activity\Collection\ActivityCollectionSummary;
+use App\Domain\Activity\Collection\ActivityCollectionsWithActivities;
+use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\TestCase;
 
-class ActivityCollectionSummariesTest extends TestCase
+class ActivityCollectionsWithActivitiesTest extends TestCase
 {
     public function testGroupByYear(): void
     {
@@ -52,7 +52,7 @@ class ActivityCollectionSummariesTest extends TestCase
                 ->build(),
         ]);
 
-        $summariesPerYear = ActivityCollectionSummaries::create(
+        $activityCollectionsPerYear = ActivityCollectionsWithActivities::create(
             activityCollections: $activityCollections,
             activities: $activities,
         )->groupByYear();
@@ -63,11 +63,11 @@ class ActivityCollectionSummariesTest extends TestCase
                 2024 => ['activityCollection-lake-garda'],
             ],
             array_map(
-                static fn (array $summaries): array => array_map(
-                    static fn (ActivityCollectionSummary $summary): string => (string) $summary->getActivityCollection()->getId(),
-                    $summaries,
+                static fn (array $activityCollectionsWithActivities): array => array_map(
+                    static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): string => (string) $activityCollectionWithActivities->getActivityCollection()->getId(),
+                    $activityCollectionsWithActivities,
                 ),
-                $summariesPerYear,
+                $activityCollectionsPerYear,
             ),
         );
     }

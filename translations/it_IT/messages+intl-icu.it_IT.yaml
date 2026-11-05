@@ -74,6 +74,7 @@ Challenges: Sfide
 'Clear chat': 'Cancella chat'
 Close: Close
 'Cluster tiles': 'Tessere del cluster'
+Collections: Collections
 Columns: Columns
 Commute: Commute
 Commutes: 'Spostamenti quotidiani'
@@ -132,6 +133,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington over time'
 'Edit dashboard': 'Edit dashboard'
 'Edit this activity': 'Edit this activity'
+'Edit this activity collection': 'Edit this activity collection'
 'Edit this segment': 'Edit this segment'
 'Effort vs heart rate': 'Sforzo vs frequenza cardiaca'
 'Elapsed time': 'Elapsed time'

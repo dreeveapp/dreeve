@@ -9,15 +9,15 @@ use App\Domain\Activity\Activity;
 use App\Infrastructure\ValueObject\Collection;
 
 /**
- * @extends Collection<ActivityCollectionSummary>
+ * @extends Collection<ActivityCollectionWithActivities>
  */
-final class ActivityCollectionSummaries extends Collection
+final class ActivityCollectionsWithActivities extends Collection
 {
     public static function create(
         ActivityCollections $activityCollections,
         Activities $activities,
     ): self {
-        $summaries = self::empty();
+        $activityCollectionsWithActivities = self::empty();
         foreach ($activityCollections as $activityCollection) {
             $members = $activities->filter(
                 static fn (Activity $activity): bool => $activityCollection->getActivityIds()->has($activity->getId()),
@@ -26,30 +26,30 @@ final class ActivityCollectionSummaries extends Collection
                 continue;
             }
 
-            $summaries->add(ActivityCollectionSummary::create(
+            $activityCollectionsWithActivities->add(ActivityCollectionWithActivities::create(
                 activityCollection: $activityCollection,
                 activities: $members,
             ));
         }
 
-        return $summaries;
+        return $activityCollectionsWithActivities;
     }
 
     /**
-     * @return array<int, list<ActivityCollectionSummary>>
+     * @return array<int, list<ActivityCollectionWithActivities>>
      */
     public function groupByYear(): array
     {
-        $summariesPerYear = [];
-        foreach ($this->usort(static fn (ActivityCollectionSummary $a, ActivityCollectionSummary $b): int => $b->getStartDate() <=> $a->getStartDate()) as $summary) {
-            $summariesPerYear[$summary->getStartDate()->getYear()][] = $summary;
+        $activityCollectionsPerYear = [];
+        foreach ($this->usort(static fn (ActivityCollectionWithActivities $a, ActivityCollectionWithActivities $b): int => $b->getStartDate() <=> $a->getStartDate()) as $activityCollectionWithActivities) {
+            $activityCollectionsPerYear[$activityCollectionWithActivities->getStartDate()->getYear()][] = $activityCollectionWithActivities;
         }
 
-        return $summariesPerYear;
+        return $activityCollectionsPerYear;
     }
 
     public function getItemClassName(): string
     {
-        return ActivityCollectionSummary::class;
+        return ActivityCollectionWithActivities::class;
     }
 }
