@@ -18,6 +18,7 @@ class CacheContextGuardTest extends AdminWebTestCase
     private const array URLS = [
         'activities' => '/activities',
         'activity_collections' => '/collections',
+        'activity_collection' => '/collections/activityCollection-1',
         'activity' => '/activities/activity-9756441741',
         'badges' => '/badges',
         'best_efforts' => '/best-efforts',

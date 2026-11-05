@@ -1,0 +1,121 @@
+{% set activityCollection = activityCollectionWithActivities.getActivityCollection() %}
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+        {
+            'url': 'collections',
+            'label': 'Activity collections'|trans
+        },
+        {
+            'url': 'collections/' ~ activityCollection.getId(),
+            'label': activityCollection.getName()
+        }], 'disableMargin': true} %}
+    {% include 'html/navigation/admin-edit-link.html.twig' with {
+        path: 'admin/collections/' ~ activityCollection.getId() ~ '/edit',
+        redirectTo: 'collections/' ~ activityCollection.getId(),
+        title: "Edit this activity collection"|trans
+    } %}
+</div>
+{% autoescape false %}
+    <div class="grid grid-cols-1 gap-y-4">
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            {% block header %}
+                <div class="flex items-center gap-2">
+                    <h1 class="flex items-center gap-2 text-lg font-semibold text-gray-900">
+                        {% set countryCodes = activityCollectionWithActivities.getCountryCodes() %}
+                        {% if countryCodes is not empty %}
+                            <span class="flex items-center gap-1">
+                                {% for countryCode in countryCodes %}
+                                    <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" alt="{{ countryCode|upper }}">
+                                {% endfor %}
+                            </span>
+                        {% endif %}
+                        {{ activityCollection.getName()|e }}
+                    </h1>
+                    <span class="pill pill--neutral text-xs">{{ activityCollection.getType()|trans }}</span>
+                </div>
+                {% if activityCollection.getDescription() %}
+                    <p class="mt-1 text-xs text-gray-500">{{ activityCollection.getDescription()|e }}</p>
+                {% endif %}
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-600 mt-2">
+                    <span class="inline-flex items-center gap-1.5">
+                        {{ svg('calendar', 'size-3.5', 'text-gray-400') }}
+                        {{ activityCollectionWithActivities.getStartDate()|formatDate('normal') }}
+                        {% if activityCollectionWithActivities.getNumberOfDays() > 1 %}
+                            &ndash; {{ activityCollectionWithActivities.getEndDate()|formatDate('normal') }}
+                        {% endif %}
+                        &middot; {{ "{numberOfDays} days"|trans({'{numberOfDays}': activityCollectionWithActivities.getNumberOfDays()}) }}
+                    </span>
+                </div>
+            {% endblock %}
+            {% block stats %}
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Distance"|trans }}</div>
+                        <div class="flex items-baseline gap-1">
+                            {% set distance = activityCollectionWithActivities.getDistance() %}
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ distance|formatMeasurement(0) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ distance|measurementSymbol }}</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Moving time"|trans }}</div>
+                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getMovingTime()|formatSeconds }}</span>
+                    </div>
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Elevation"|trans }}</div>
+                        <div class="flex items-baseline gap-1">
+                            {% set elevation = activityCollectionWithActivities.getElevation() %}
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ elevation|formatMeasurement(0) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ elevation|measurementSymbol }}</span>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Activities"|trans }}</div>
+                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getActivities()|length }}</span>
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+        {% block activities %}
+            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                <h3 class="text-lg font-semibold mb-4">{{ "Activities"|trans }}</h3>
+                <div class="relative overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="narrow">{{ "Date"|trans }}</th>
+                            <th scope="col" class="text-left narrow">{{ "Activity"|trans }}</th>
+                            <th scope="col">{{ "Distance"|trans }}</th>
+                            <th scope="col">{{ "Elevation"|trans }}</th>
+                            <th scope="col">{{ "Moving time"|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for activity in activityCollectionWithActivities.getActivities() %}
+                            <tr>
+                                <td class="narrow">
+                                    <div class="flex justify-center">
+                                        <div class="w-18">{{ activity.getStartDate()|formatDate() }}</div>
+                                    </div>
+                                </td>
+                                <td class="narrow truncate">
+                                    {{ activity|activityLink(ellipses: 180) }}
+                                </td>
+                                <td>
+                                    {{ activity.getDistance()|renderMeasurement(activity.getSportType().getActivityType().getDistancePrecision()) }}
+                                </td>
+                                <td>
+                                    {{ activity.getElevation()|renderMeasurement(0) }}
+                                </td>
+                                <td>
+                                    {{ activity.getMovingTimeFormatted() }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+{% endautoescape %}

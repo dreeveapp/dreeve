@@ -9,7 +9,7 @@ use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
-use App\Domain\Activity\Collection\ActivityCollectionSummaries;
+use App\Domain\Activity\Collection\ActivityCollectionsWithActivities;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -62,7 +62,7 @@ final readonly class ActivityCollectionsRequestHandler
         $activityCollections = $this->activityCollectionRepository->findAll();
 
         return $this->twig->load('html/activity/collection/activity-collections.html.twig')->render([
-            'summariesPerYear' => ActivityCollectionSummaries::create(
+            'activityCollectionsPerYear' => ActivityCollectionsWithActivities::create(
                 activityCollections: $activityCollections,
                 activities: $this->activityRepository->findByIds($activityCollections->getActivityIds()),
             )->groupByYear(),

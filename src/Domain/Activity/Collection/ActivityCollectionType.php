@@ -21,4 +21,9 @@ enum ActivityCollectionType: string implements TranslatableInterface
             self::EVENT => $translator->trans('Event', locale: $locale),
         };
     }
+
+    public function getTemplateName(): string
+    {
+        return 'collection--type--generic';
+    }
 }
