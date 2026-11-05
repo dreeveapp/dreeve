@@ -38,7 +38,8 @@
                     <tr class="group/row">
                         <td class="whitespace-nowrap text-left">
                             <div class="flex items-center gap-1.5">
-                                {% if hasActivitiesPerActivityCollectionId[activityCollection.getId()] ?? false %}
+                                {% set numberOfActivitiesInCollection = numberOfActivities.getNumberOfActivitiesFor(activityCollection.getId()) %}
+                                {% if numberOfActivitiesInCollection > 0 %}
                                     <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
                                        title="{{ activityCollection.getName() }}"
                                        href="{{ relativeUrl(path('activity_collection', {'activityCollectionId': activityCollection.getId()})) }}">
@@ -60,7 +61,7 @@
                             {{ activityCollection.getType()|trans }}
                         </td>
                         <td class="whitespace-nowrap">
-                            {{ activityCollection.getActivityIds()|length }}
+                            {{ numberOfActivitiesInCollection }}
                         </td>
                         <td class="narrow whitespace-nowrap sticky-actions">
                             <div class="inline-flex items-center gap-2">

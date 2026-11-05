@@ -6,6 +6,8 @@ namespace App\Controller\Admin\Activity\Collection;
 
 use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
+use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,6 +20,7 @@ final readonly class ManageActivityCollectionOverviewRequestHandler
         private Environment $twig,
         private ActivityCollectionRepository $activityCollectionRepository,
         private ActivityIdRepository $activityIdRepository,
+        private QueryBus $queryBus,
     ) {
     }
 
@@ -26,10 +29,7 @@ final readonly class ManageActivityCollectionOverviewRequestHandler
     {
         return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/manage-activity-collection-overview.html.twig', [
             'activityCollections' => $this->activityCollectionRepository->findAll(),
-            'hasActivitiesPerActivityCollectionId' => array_fill_keys(
-                array_map(strval(...), $this->activityCollectionRepository->findIdsWithActivities()),
-                true,
-            ),
+            'numberOfActivities' => $this->queryBus->ask(new FindNumberOfActivitiesPerActivityCollection()),
             'hasActivities' => $this->activityIdRepository->count() > 0,
         ]));
     }
