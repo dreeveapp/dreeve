@@ -57,7 +57,7 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
         );
         $numberOfActivitiesPerLocation = array_count_values($locations);
         arsort($numberOfActivitiesPerLocation);
-        [$homeLatitude, $homeLongitude] = array_map(floatval(...), explode(',', (string) array_key_first($numberOfActivitiesPerLocation)));
+        [$homeLatitude, $homeLongitude] = array_map(floatval(...), explode(',', array_key_first($numberOfActivitiesPerLocation)));
 
         $groups = [];
         $currentGroup = [];
@@ -93,7 +93,7 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
             }
 
             $startDate = $group[0]['day'];
-            $endDate = $group[array_key_last($group)]['day'];
+            $endDate = array_last($group)['day'];
             if ($startDate->diff($endDate)->days + 1 > self::MAX_NUMBER_OF_DAYS) {
                 continue;
             }
