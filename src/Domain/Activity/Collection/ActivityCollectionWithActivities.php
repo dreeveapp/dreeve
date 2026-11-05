@@ -7,8 +7,10 @@ namespace App\Domain\Activity\Collection;
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\WorldType;
+use App\Domain\Integration\Weather\OpenMeteo\Weather;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Temperature\Celsius;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -105,15 +107,53 @@ final readonly class ActivityCollectionWithActivities
     }
 
     /**
-     * @return array<int|string, int>
+     * @return string[]
      */
     public function getPlaces(): array
     {
-        $places = array_count_values(array_filter($this->activities->map(
+        return array_values(array_unique(array_filter($this->activities->map(
             static fn (Activity $activity): ?string => $activity->getRouteGeography()->getStartingPointCity(),
-        )));
-        arsort($places);
+        ))));
+    }
 
-        return $places;
+    public function getMinTemperature(): ?Celsius
+    {
+        $temperatures = array_map(
+            static fn (Weather $weather): float => $weather->getTemperatureInCelsius()->toFloat(),
+            $this->getWeathers(),
+        );
+
+        return [] === $temperatures ? null : Celsius::from(min($temperatures));
+    }
+
+    public function getMaxTemperature(): ?Celsius
+    {
+        $temperatures = array_map(
+            static fn (Weather $weather): float => $weather->getTemperatureInCelsius()->toFloat(),
+            $this->getWeathers(),
+        );
+
+        return [] === $temperatures ? null : Celsius::from(max($temperatures));
+    }
+
+    public function getMostCommonWeatherCondition(): ?string
+    {
+        $conditions = array_count_values(array_map(
+            static fn (Weather $weather): string => $weather->getWeatherCodeDescription(),
+            $this->getWeathers(),
+        ));
+        arsort($conditions);
+
+        return [] === $conditions ? null : (string) array_key_first($conditions);
+    }
+
+    /**
+     * @return Weather[]
+     */
+    private function getWeathers(): array
+    {
+        return array_values(array_filter($this->activities->map(
+            static fn (Activity $activity): ?Weather => $activity->getWeather(),
+        )));
     }
 }
