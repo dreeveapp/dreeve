@@ -16,7 +16,7 @@ final class Images extends Collection
     public function getActivityIds(): ActivityIds
     {
         return ActivityIds::fromArray($this->map(
-            fn (Image $image): ActivityId => $image->getActivityId()
+            fn (Image $image): ActivityId => $image->getActivity()->getId()
         ))->unique();
     }
 

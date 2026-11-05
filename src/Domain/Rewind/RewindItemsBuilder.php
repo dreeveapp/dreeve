@@ -315,7 +315,7 @@ final readonly class RewindItemsBuilder
         }
 
         if ($randomImage instanceof Image) {
-            $activity = $this->activityRepository->find($randomImage->getActivityId());
+            $activity = $this->activityRepository->find($randomImage->getActivity()->getId());
             $rewindItems->add(RewindItem::from(
                 icon: 'image',
                 title: $this->translator->trans('Photo'),
