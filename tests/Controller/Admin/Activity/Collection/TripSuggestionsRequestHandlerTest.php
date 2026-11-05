@@ -58,6 +58,10 @@ class TripSuggestionsRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('Spain, Apr 2024', $form->filter('input[name="name"]')->attr('value'));
         $this->assertSame('trip', $form->filter('input[name="type"]')->attr('value'));
         $this->assertSame(['activity-trip-1', 'activity-trip-2'], $form->filter('input[name="activityIds[]"]')->extract(['value']));
+
+        $crawler = $this->client->request('GET', '/admin/collections/add');
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(0, $crawler->filter('nav.contextual-panel a span'));
     }
 
     public function testRendersTheEmptyState(): void
