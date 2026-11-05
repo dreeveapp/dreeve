@@ -27,7 +27,7 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
         $this->assertStringNotContainsString('No collections added yet.', $crawler->filter('body')->text());
         $this->assertCount(1, $crawler->filter('table.data-table a.btn--primary[href$="/admin/upload"]'));
         $this->assertCount(0, $crawler->filter('a.btn--add'));
-        $this->assertCount(1, $crawler->filter('#drawer-navigation a[href$="/admin/collections"][aria-selected="true"]'));
+        $this->assertCount(1, $crawler->filter('#drawer-navigation a[title="Activity collections"][aria-selected="true"]'));
     }
 
     public function testRendersTheEmptyState(): void
@@ -41,6 +41,11 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
         $this->assertStringContainsString('No collections added yet.', $crawler->filter('body')->text());
         $this->assertStringNotContainsString('No activities imported yet.', $crawler->filter('body')->text());
         $this->assertSame('/admin/collections/add', $crawler->filter('a.btn--add')->attr('href'));
+        $this->assertSame(
+            ['/admin/collections'],
+            $crawler->filter('nav.contextual-panel[aria-label="Activity collections"] a[aria-selected="true"]')->extract(['href']),
+        );
+        $this->assertCount(1, $crawler->filter('main.md\\:ml-76'));
     }
 
     public function testRendersTheCollectionsNewestFirst(): void

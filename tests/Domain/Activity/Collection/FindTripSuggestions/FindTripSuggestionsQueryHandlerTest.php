@@ -65,7 +65,11 @@ class FindTripSuggestionsQueryHandlerTest extends ContainerTestCase
                     Longitude::fromString($longitude),
                 ))
                 ->withWorldType($worldType)
-                ->withRouteGeography(RouteGeography::create(str_starts_with($activityId, 'trip-') ? ['country_code' => 'ES', 'city' => 'Pollença'] : []))
+                ->withRouteGeography(RouteGeography::create(match (true) {
+                    'trip-1' === $activityId => ['country_code' => 'FR', 'city' => 'Perpignan'],
+                    str_starts_with($activityId, 'trip-') => ['country_code' => 'ES', 'city' => 'Pollença'],
+                    default => [],
+                }))
                 ->build(), []));
         }
         $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
@@ -89,8 +93,8 @@ class FindTripSuggestionsQueryHandlerTest extends ContainerTestCase
                     ]),
                     startDate: SerializableDateTime::fromString('2024-04-10 00:00:00'),
                     endDate: SerializableDateTime::fromString('2024-04-15 00:00:00'),
-                    countryCodes: ['es'],
-                    places: ['Pollença'],
+                    countryCodes: ['es', 'fr'],
+                    places: ['Perpignan', 'Pollença'],
                 ),
             ],
             $response->getTripSuggestions(),

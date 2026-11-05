@@ -8,6 +8,7 @@ AM/PM: AM/PM
 Access: Access
 Actions: Acties
 Active: Actief
+'Activities far from home on consecutive days, not part of a collection yet.': 'Activities far from home on consecutive days, not part of a collection yet.'
 'Activities scanned': 'Gescande activiteiten'
 'Activities to skip during import': 'Over te slaan activiteiten bij het importeren'
 'Activities to update': 'Bij te werken activiteiten'
@@ -111,6 +112,7 @@ Clear: Wissen
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
 Close: Sluiten
+Collections: Collections
 Command: Commando
 Commute: Woon-werk
 Component: Onderdeel
@@ -127,6 +129,7 @@ Configured: Geconfigureerd
 'Copy this API key': 'Kopieer deze API-sleutel'
 'Copy this MCP key': 'Copy this MCP key'
 'Cover image': 'Cover image'
+'Create collection': 'Create collection'
 'Cron expression': Cron-expressie
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-expressie die bepaalt wanneer de actie uitgevoerd wordt, bv. '0 14 * * *' wordt elke dag om 14:00 uitgevoerd. Zie crontab.guru voor hulp."
 Custom: Custom
@@ -318,6 +321,7 @@ Monday: Maandag
 'No segments added yet.': 'No segments added yet.'
 'No segments match the current filters.': 'No segments match the current filters.'
 'No sport types selected': 'Geen sporttypes geselecteerd'
+'No trips found.': 'No trips found.'
 'No unit': 'Geen eenheid'
 'Normal date format': 'Normaal datumformaat'
 'Not configured, API access is disabled': 'Not configured, API access is disabled'
@@ -356,6 +360,7 @@ Password: Wachtwoord
 'Pick a device you already recorded with, or type a new name.': 'Kies een toestel waarmee je al geregistreerd hebt, of typ een nieuwe naam.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Kies de regels die je wil toepassen om te zien welke activiteiten zouden wijzigen.'
+Places: Places
 'Polyline color': Routekleur
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Selectie bekijken'
@@ -487,6 +492,7 @@ Source: Bron
 Subtitle: Ondertitel
 Success: Geslaagd
 Suggested: Suggested
+'Suggested trips': 'Suggested trips'
 Sunday: Zondag
 'Supported types': 'Ondersteunde types'
 System: System
@@ -558,6 +564,7 @@ To: Tot
 "Tokens are replaced with the activity's values when the rule runs.": 'Tokens worden vervangen door de waarden van de activiteit wanneer de regel uitgevoerd wordt.'
 'Total size exceeds {max} MB': 'Totale grootte is groter dan {max} MB'
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Volg het gebruik van je uitrusting op basis van je activiteiten en blijf op de hoogte van onderhoud op basis van gebruik en tijd.'
+'Trips need at least 2 activities far from home within a few days, not part of a collection yet.': 'Trips need at least 2 activities far from home within a few days, not part of a collection yet.'
 Tuesday: Dinsdag
 'Turn gear maintenance tracking on or off.': 'Het opvolgen van onderhoud van uitrusting in- of uitschakelen.'
 'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'

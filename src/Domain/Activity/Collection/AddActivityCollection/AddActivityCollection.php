@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Collection\AddActivityCollection;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Image\NewImage;
@@ -24,6 +27,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
         private ?string $description,
         private ActivityCollectionType $type,
         private ?NewImage $newImage,
+        private ActivityIds $activityIds,
     ) {
     }
 
@@ -48,6 +52,20 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
         $description = $payload['description'] ?? null;
         $description = is_string($description) ? trim($description) : '';
 
+        $activityIds = $payload['activityIds'] ?? [];
+        if (!is_array($activityIds)) {
+            throw CouldNotDeserializeCommand::invalidPayload('The "activityIds" must be a list.');
+        }
+
+        try {
+            $activityIds = ActivityIds::fromArray(array_map(
+                static fn (mixed $activityId): ActivityId => ActivityReference::parse(is_string($activityId) ? $activityId : ''),
+                array_values($activityIds),
+            ));
+        } catch (\InvalidArgumentException) {
+            throw CouldNotDeserializeCommand::invalidPayload('The "activityIds" contain an invalid activity id.');
+        }
+
         [$newImages] = self::parseImages($payload, 'coverImagePath');
 
         return new self(
@@ -56,6 +74,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
             description: '' === $description ? null : $description,
             type: $activityCollectionType,
             newImage: $newImages[0] ?? null,
+            activityIds: $activityIds,
         );
     }
 
@@ -82,5 +101,10 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
     public function getNewImage(): ?NewImage
     {
         return $this->newImage;
+    }
+
+    public function getActivityIds(): ActivityIds
+    {
+        return $this->activityIds;
     }
 }
