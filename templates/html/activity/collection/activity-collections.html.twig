@@ -43,7 +43,7 @@
                                 <span>
                                     {{ activityCollectionWithActivities.getStartDate()|formatDate('normal') }}
                                     {% if activityCollectionWithActivities.getNumberOfDays() > 1 %}
-                                        &ndash; {{ activityCollectionWithActivities.getEndDate()|formatDate('normal') }}
+                                        - {{ activityCollectionWithActivities.getEndDate()|formatDate('normal') }}
                                     {% endif %}
                                     &middot; {{ "{numberOfDays} days"|trans({'{numberOfDays}': activityCollectionWithActivities.getNumberOfDays()}) }}
                                 </span>
