@@ -53,6 +53,21 @@ final readonly class ActivityCollectionWithActivities
             && $activity->getEncodedPolyline() instanceof EncodedPolyline);
     }
 
+    public function getCoverImagePath(): ?string
+    {
+        if ($coverImagePath = $this->activityCollection->getCoverImagePath()) {
+            return $coverImagePath;
+        }
+
+        foreach ($this->activities as $activity) {
+            if ($localImagePaths = $activity->getLocalImagePaths()) {
+                return reset($localImagePaths);
+            }
+        }
+
+        return null;
+    }
+
     public function getStartDate(): SerializableDateTime
     {
         $activity = $this->activities->getFirst();

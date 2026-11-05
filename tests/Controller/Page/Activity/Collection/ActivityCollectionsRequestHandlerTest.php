@@ -54,7 +54,7 @@ class ActivityCollectionsRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activity.collections, activities',
+            'settings.appearance, activity.collections, activities, activity.images',
         );
         $this->assertStringNotContainsString('Not started yet', (string) $this->client->getResponse()->getContent());
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());

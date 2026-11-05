@@ -594,6 +594,7 @@ Weigh-ins: Weigh-ins
 'When enabled, activities without a route, like indoor rides, are left out.': 'Si está activado, se omiten las actividades sin ruta, como el ciclismo indoor.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Si está activado, se omite el equipamiento marcado como retirado. Sus componentes no aumentarán el uso y no se hará seguimiento de su mantenimiento.'
 'When set, requests to the admin panel from any other IP address are rejected.': 'Si está configurado, las peticiones al panel de administración desde cualquier otra dirección IP serán rechazadas.'
+"Without a cover image, the first photo of the collection's activities is used.": "Without a cover image, the first photo of the collection's activities is used."
 'Workout type': 'Tipo de entrenamiento'
 'You can add it back to your dashboard again later.': 'Puedes volver a añadirlo a tu panel de control más tarde.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'También puedes copiar archivos directamente en la carpeta {watchFolder}, o {linkOpen}añadir una actividad manualmente{linkClose}.'
