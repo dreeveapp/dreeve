@@ -69,10 +69,12 @@
                             <span class="text-xs font-medium text-gray-500">{{ elevation|measurementSymbol }}</span>
                         </div>
                     </div>
-                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
-                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Activities"|trans }}</div>
-                        <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getActivities()|length }}</span>
-                    </div>
+                    {% block activitiesStat %}
+                        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Activities"|trans }}</div>
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getActivities()|length }}</span>
+                        </div>
+                    {% endblock %}
                 </div>
             {% endblock %}
             {% block map %}
