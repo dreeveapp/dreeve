@@ -51,7 +51,7 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
             ->withName('Mallorca')
             ->withType(ActivityCollectionType::TRIP)
-            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1'), ActivityId::fromUnprefixed('2')]))
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('903645'), ActivityId::fromUnprefixed('deleted')]))
             ->withCreatedOn(SerializableDateTime::fromString('2025-04-20 10:00:00'))
             ->build());
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
@@ -70,6 +70,10 @@ class ManageActivityCollectionOverviewRequestHandlerTest extends AdminWebTestCas
             $crawler->filter('table.data-table tbody tr')->each(
                 static fn (Crawler $row): array => $row->filter('td')->each(static fn (Crawler $cell): string => trim($cell->text())),
             ),
+        );
+        $this->assertSame(
+            ['/collections/activityCollection-1'],
+            $crawler->filter('table.data-table tbody td:first-child a')->extract(['href']),
         );
         $this->assertSame(
             ['/admin/collections/activityCollection-2/edit', '/admin/collections/activityCollection-1/edit'],
