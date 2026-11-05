@@ -41,6 +41,29 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withName('My Custom Gear')
                 ->build()
         );
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('zwift-bike'))
+                ->withGearType(GearType::CUSTOM)
+                ->withName('Zwift bike')
+                ->build()
+        );
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('old-shoes'))
+                ->withGearType(GearType::CUSTOM)
+                ->withName('Old shoes')
+                ->withIsRetired(true)
+                ->build()
+        );
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('zwift-ride'))
+                ->withDistance(Kilometer::from(40))
+                ->withGearId(GearId::fromUnprefixed('zwift-bike'))
+                ->build(),
+            [],
+        ));
 
         $this->client->loginUser($this->adminUser());
 
@@ -85,7 +108,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('(m)', $crawler->filter('label[for="activity-elevation"]')->text());
 
         $this->assertSame(
-            ['None', 'My Custom Gear'],
+            ['None', 'My Custom Gear', 'Zwift bike', 'Old shoes ☠️'],
             $crawler->filter('select#activity-gear option')->each(fn (Crawler $option): string => $option->text()),
         );
 
@@ -466,7 +489,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         // In files mode all gears are selectable, imported or custom.
         $this->assertSame(
-            ['None', 'Strava Bike', 'My Custom Gear'],
+            ['None', 'My Custom Gear', 'Strava Bike'],
             $crawler->filter('select#activity-gear option')->each(fn (Crawler $option): string => $option->text()),
         );
 
