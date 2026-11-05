@@ -10,9 +10,11 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\RemoveActivityFromCollection\RemoveActivityFromCollection;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class RemoveActivityFromCollectionCommandHandlerTest extends ContainerTestCase
 {
@@ -48,5 +50,25 @@ class RemoveActivityFromCollectionCommandHandlerTest extends ContainerTestCase
             'activityCollectionId' => 'activityCollection-999',
             'activityId' => 'activity-1',
         ]));
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    #[DataProvider('provideInvalidPayloads')]
+    public function testFromPayloadThrowsOnInvalidPayload(array $payload): void
+    {
+        $this->expectExceptionObject(CouldNotDeserializeCommand::invalidPayload('An "activityCollectionId" and "activityId" are required.'));
+
+        RemoveActivityFromCollection::fromPayload($payload);
+    }
+
+    /**
+     * @return iterable<string, array{array<string, mixed>}>
+     */
+    public static function provideInvalidPayloads(): iterable
+    {
+        yield 'missing collection id' => [['activityId' => 'activity-1']];
+        yield 'missing activity id' => [['activityCollectionId' => 'activityCollection-1']];
     }
 }
