@@ -1,6 +1,6 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
-    {% set editUrl = relativeUrl(path('admin_edit_activity_collection', {activityCollectionId: activityCollection.getId()})) %}
+    {% set editUrl = relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: activityCollection.getId()}), redirectUrl(relativeUrl(path('admin_manage_activity_collection_overview')))) %}
     {% embed 'html/admin/component/modal.html.twig' with {closeUrl: editUrl} %}
         {% block title %}{{ "Add activity to {activityCollection}"|trans({'{activityCollection}': activityCollection.getName()}, 'admin') }}{% endblock %}
         {% block body %}

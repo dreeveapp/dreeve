@@ -40,7 +40,7 @@
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">
                             <span class="text-sm font-medium text-gray-700">{{ "Activities"|trans }}</span>
-                            <a href="{{ relativeUrl(path('admin_add_activity_to_collection', {activityCollectionId: activityCollectionId})) }}" type="button" class="btn--secondary">
+                            <a href="{{ relativeUrlWithRedirectTo(path('admin_add_activity_to_collection', {activityCollectionId: activityCollectionId}), overviewUrl) }}" type="button" class="btn--secondary">
                                 {{ svg('plus') }}
                                 <span>{{ "Add activity"|trans({}, 'admin') }}</span>
                             </a>
@@ -80,7 +80,7 @@
                                             {{ activity.getStartDate()|formatDate() }}
                                         </td>
                                         <td class="narrow whitespace-nowrap sticky-actions">
-                                            <a href="{{ relativeUrl(path('admin_remove_activity_from_collection', {activityCollectionId: activityCollectionId, activityId: activity.getId()})) }}"
+                                            <a href="{{ relativeUrlWithRedirectTo(path('admin_remove_activity_from_collection', {activityCollectionId: activityCollectionId, activityId: activity.getId()}), overviewUrl) }}"
                                                class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
                                                title="{{ "Remove"|trans({}, 'admin') }}">
                                                 <span class="sr-only">{{ "Remove"|trans({}, 'admin') }}</span>
