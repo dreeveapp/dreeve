@@ -14,11 +14,13 @@ use App\Domain\Activity\Collection\ActivityCollectionCacheTag;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
+use App\Domain\Activity\RealWorldMap;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTag;
 use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -56,6 +58,7 @@ final readonly class ActivityCollectionRequestHandler
                 cacheKey: sprintf('activity-collections.%s', $activityCollection->getId()->toUnprefixedString()),
                 cacheTags: CacheTags::of(
                     ActivityCollectionCacheTag::for($activityCollection->getId()),
+                    RootCacheTag::ACTIVITY_ROUTE,
                     ...$activities->map(static fn (Activity $activity): CacheTag => ActivityCacheTag::for($activity->getId())),
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
@@ -65,6 +68,7 @@ final readonly class ActivityCollectionRequestHandler
                 $activityCollection->getType()->getTemplateName(),
             ))->render([
                 'activityCollectionWithActivities' => $activityCollectionWithActivities,
+                'leafletMap' => $activityCollectionWithActivities->getActivitiesWithARealWorldRoute()->isEmpty() ? null : new RealWorldMap(),
             ]),
             navigationSection: NavigationSection::ACTIVITY_COLLECTIONS,
             metadata: new PageMetadata(

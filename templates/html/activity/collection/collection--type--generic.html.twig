@@ -75,6 +75,22 @@
                     </div>
                 </div>
             {% endblock %}
+            {% block map %}
+                {% if leafletMap %}
+                    {% set leafletOptions = {
+                        'polylineUrl': relativeUrl(path('activity_collection_polylines', {activityCollectionId: activityCollection.getId()})),
+                        'tileLayer': leafletMap.getTileLayer(),
+                        'minZoom': leafletMap.getMinZoom(),
+                        'maxZoom': leafletMap.getMaxZoom(),
+                        'imageOverlay': leafletMap.getOverlayImageUrl(),
+                        'bounds': leafletMap.getBounds(),
+                        'showStartMarker': false,
+                        'showEndMarker': false
+                    } %}
+                    <div class="h-87.5 mt-4 rounded-lg overflow-hidden" style="background-color:{{ leafletMap.getBackgroundColor() }}"
+                         data-leaflet='{{ leafletOptions|json_encode }}'></div>
+                {% endif %}
+            {% endblock %}
         </div>
         {% block activities %}
             <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
