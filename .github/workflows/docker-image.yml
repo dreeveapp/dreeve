@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-scripts --no-dev
 
+      - name: Compress Symfony Intl data
+        run: composer run compress-intl
+
       - name: Build countries geography asset
         run: |
           touch .env
