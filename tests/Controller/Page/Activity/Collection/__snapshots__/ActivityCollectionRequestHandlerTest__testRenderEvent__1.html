@@ -345,9 +345,17 @@
                     </div>
                                                                                 <div class="h-87.5 mt-4 rounded-lg overflow-hidden" style="background-color:#bbbbb7" data-leaflet='{"polylineUrl":"\/api\/internal\/collections\/activityCollection-1\/polylines","tileLayer":"https:\/\/tile.openstreetmap.org\/{z}\/{x}\/{y}.png","minZoom":1,"maxZoom":17,"imageOverlay":null,"bounds":[],"showStartMarker":true,"showEndMarker":true}'></div>
                                     </div>
-                            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-            <h3 class="text-lg font-semibold mb-4">Stages</h3>
-            <div class="relative overflow-x-auto">
+                            <details open class="group/section p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            <summary class="list-none cursor-pointer flex items-center justify-between select-none">
+                <div class="flex items-center gap-2">
+                    <h3 class="text-lg font-semibold">Stages</h3>
+                    <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">3</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewbox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m1 1 4 4 4-4"></path>
+                </svg>
+            </summary>
+            <div class="mt-4 relative overflow-x-auto">
                 <table class="data-table">
                     <thead>
                     <tr>
@@ -427,7 +435,7 @@
                                         </tbody>
                 </table>
             </div>
-        </div>
+        </details>
         </div>
 
     </main>
