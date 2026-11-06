@@ -60,11 +60,13 @@ https://github.com/user-attachments/assets/2789c961-f04f-4804-b6eb-88d45e62687c
 * **Rewind** - A fun way to look back on your year in motion
 * **Challenges** - Browse the Strava challenges and trophies you have earned
 * **Activity photos** - Relive your moments with a photo archive
+* **Activity collections** - Bundle activities into trips and events
 
 **Integrations & more**
 
 * **AI workout assistant** - Get workout suggestions and insights from the AI provider of your choice, or a local Ollama model
 * **MCP server** - Connect Claude, Cursor or any other MCP client to your data
+* **Single sign-on** - Log in to the admin panel with your own OIDC identity provider, such as Authentik, Authelia or Pocket ID
 * **User badges** - Shareable badges you can embed on your website, blog, or forum profiles
 * **PWA support** - Use it like a native app on your phone
 
