@@ -113,9 +113,17 @@
             {% endblock %}
         </div>
         {% if images is not empty %}
-            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-                <h3 class="text-lg font-semibold mb-4">{{ "Photos"|trans }}</h3>
-                <div class="flex flex-wrap gap-2" data-light-gallery>
+            <details open class="group/section p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                <summary class="list-none cursor-pointer flex items-center justify-between select-none">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-lg font-semibold">{{ "Photos"|trans }}</h3>
+                        <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ images|length }}</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m1 1 4 4 4-4"/>
+                    </svg>
+                </summary>
+                <div class="mt-4 flex flex-wrap gap-2" data-light-gallery>
                     {% for image in images %}
                         {% set activity = image.getActivity() %}
                         {% set lightGalleryElement = {
@@ -143,12 +151,20 @@
                     {% endfor %}
                     <div class="grow-10"></div>
                 </div>
-            </div>
+            </details>
         {% endif %}
         {% block activities %}
-            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-                <h3 class="text-lg font-semibold mb-4">{{ "Activities"|trans }}</h3>
-                <div class="relative overflow-x-auto">
+            <details open class="group/section p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                <summary class="list-none cursor-pointer flex items-center justify-between select-none">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-lg font-semibold">{{ "Activities"|trans }}</h3>
+                        <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ activityCollectionWithActivities.getActivities()|length }}</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m1 1 4 4 4-4"/>
+                    </svg>
+                </summary>
+                <div class="mt-4 relative overflow-x-auto">
                     <table class="data-table">
                         <thead>
                         <tr>
@@ -187,7 +203,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </details>
         {% endblock %}
     </div>
 {% endautoescape %}
