@@ -27,7 +27,6 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
     private const float AWAY_FROM_HOME_IN_METERS = 75000;
     private const int MAX_DAYS_BETWEEN_ACTIVITIES = 4;
     private const int MIN_NUMBER_OF_ACTIVITIES = 2;
-    private const int MAX_NUMBER_OF_DAYS = 21;
     private const float MAX_SHARE_OF_A_LOCATION = 0.05;
 
     public function __construct(
@@ -120,12 +119,6 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
                 continue;
             }
 
-            $startDate = $group[0]['day'];
-            $endDate = array_last($group)['day'];
-            if ($startDate->diff($endDate)->days + 1 > self::MAX_NUMBER_OF_DAYS) {
-                continue;
-            }
-
             if (array_any($group, static fn (array $activity): bool => isset($activityIdsInACollection[$activity['activityId']]))) {
                 continue;
             }
@@ -145,8 +138,8 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
                     static fn (array $activity): ActivityId => ActivityId::fromString($activity['activityId']),
                     $group,
                 )),
-                startDate: $startDate,
-                endDate: $endDate,
+                startDate: $group[0]['day'],
+                endDate: array_last($group)['day'],
                 countryCodes: array_map(strval(...), array_keys($numberOfActivitiesPerCountryCode)),
                 places: array_values(array_unique(array_filter(array_map(
                     static fn (RouteGeography $routeGeography): ?string => $routeGeography->getStartingPointCity(),
