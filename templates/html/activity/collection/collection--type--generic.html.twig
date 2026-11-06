@@ -163,10 +163,8 @@
                         <tbody>
                         {% for activity in activityCollectionWithActivities.getActivities() %}
                             <tr>
-                                <td class="narrow">
-                                    <div class="flex justify-center">
-                                        <div class="w-18">{{ activity.getStartDate()|formatDate() }}</div>
-                                    </div>
+                                <td class="narrow whitespace-nowrap">
+                                    {{ activity.getStartDate()|formatDate() }}
                                 </td>
                                 <td class="narrow truncate">
                                     {{ activity|activityLink(ellipses: 180) }}
