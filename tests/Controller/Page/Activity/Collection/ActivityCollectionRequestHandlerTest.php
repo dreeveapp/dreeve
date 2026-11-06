@@ -28,6 +28,7 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
             ->withActivityIds(ActivityIds::fromArray([
                 ActivityId::fromUnprefixed('9756441741'),
                 ActivityId::fromUnprefixed('9830227112'),
+                ActivityId::fromUnprefixed('8756441741'),
                 ActivityId::fromUnprefixed('deleted'),
             ]))
             ->build());
@@ -41,7 +42,7 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activity.collections.1, activity.route, activities.9756441741, activities.9830227112, activities.deleted',
+            'settings.appearance, activity.collections.1, activity.route, activities.9756441741, activities.9830227112, activities.8756441741, activities.deleted',
         );
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
     }

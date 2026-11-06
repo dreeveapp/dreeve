@@ -84,7 +84,7 @@ final readonly class ActivityCollectionRequestHandler
         ))->render([
             'activityCollectionWithActivities' => $activityCollectionWithActivities,
             'leafletMap' => $activityCollectionWithActivities->getActivitiesWithARealWorldRoute()->isEmpty() ? null : new RealWorldMap(),
-            'images' => $this->imageRepository->findByActivityIds($activityCollection->getActivityIds()),
+            'images' => $this->imageRepository->findByActivityIds($activityCollection->getActivityIds())->reverse(),
         ]);
     }
 }
