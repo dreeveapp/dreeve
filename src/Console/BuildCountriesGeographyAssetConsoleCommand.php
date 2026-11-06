@@ -6,6 +6,7 @@ namespace App\Console;
 
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Polygon;
+use App\Infrastructure\ValueObject\String\CompressedString;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use GuzzleHttp\Client;
 use League\Flysystem\FilesystemOperator;
@@ -95,12 +96,12 @@ final class BuildCountriesGeographyAssetConsoleCommand extends Command
             $totalPolygons += count($encodedPolygons);
             // Each element is already a complete JSON array, so this is the encoding of the list.
             $this->countriesGeographyStorage->write(
-                $countryCode.'.json',
-                '['.implode(',', $encodedPolygons).']'
+                $countryCode.'.json.zst',
+                (string) CompressedString::fromUncompressed('['.implode(',', $encodedPolygons).']')
             );
         }
 
-        $this->countriesGeographyStorage->write('index.json', Json::encode($index));
+        $this->countriesGeographyStorage->write('index.json.zst', (string) Json::encodeAndCompress($index));
 
         $bytes = 0;
         foreach ($this->countriesGeographyStorage->listContents('') as $file) {

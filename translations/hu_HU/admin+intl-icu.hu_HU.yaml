@@ -272,6 +272,7 @@ Latitude: Szélesség
 Locale: Nyelv
 Log: Napló
 'Log maintenance': 'Karbantartás naplózása'
+'Long date format': 'Long date format'
 Longitude: Hosszúság
 'MCP access': 'MCP access'
 'MCP key': 'MCP key'
@@ -348,6 +349,8 @@ Operator: Operátor
 'Optional. Leave empty to always apply this goal.': 'Opcionális. Hagyd üresen, hogy ez a cél mindig érvényes legyen.'
 'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Opcionális. A jelenlegi Zwift-szinted (1 vagy magasabb). Hagyd üresen a Zwift-jelvény elrejtéséhez.'
 'Optional. Your current Zwift racing score (between 0 and 1000).': 'Opcionális. A jelenlegi Zwift versenypontszámod (0 és 1000 között).'
+'PHP date format documentation': 'PHP date format documentation'
+'PHP date format for long dates, e.g. F j, Y renders to January 1, 2025.': 'PHP date format for long dates, e.g. F j, Y renders to January 1, 2025.'
 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP dátumformátum a normál dátumokhoz, pl. a d-m-Y így jelenik meg: 01-01-2025.'
 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP dátumformátum a rövid dátumokhoz, pl. a d-m-y így jelenik meg: 01-01-25.'
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Alkatrészek, amelyek karbantartását követed, pl.: láncok, kazetták, fékbetétek...'
@@ -422,6 +425,7 @@ Saving...: Mentés...
 'Search by name, date or activity ID': 'Keresés név, dátum vagy tevékenység-azonosító alapján'
 Seconds: Másodperc
 Security: Biztonság
+'See the {phpDateFormat}.': 'See the {phpDateFormat}.'
 'Segment management': 'Segment management'
 'Segments will appear here once you create them from one of your activities.': 'Segments will appear here once you create them from one of your activities.'
 'Select a component first...': 'Előbb válassz egy komponenst...'

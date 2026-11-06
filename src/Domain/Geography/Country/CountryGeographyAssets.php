@@ -31,7 +31,7 @@ final class CountryGeographyAssets
         }
 
         /** @var list<array{countryCode: string, polygonIndex: int, boundingBox: array{float, float, float, float}}> $rawIndex */
-        $rawIndex = Json::decode($this->readAsset('index.json'));
+        $rawIndex = Json::uncompressAndDecode($this->readAsset('index.json.zst'));
 
         return $this->index = array_map(
             fn (array $entry): array => [
@@ -44,7 +44,7 @@ final class CountryGeographyAssets
 
     public function has(string $countryCode): bool
     {
-        return is_file($this->assetsDirectory.'/'.$countryCode.'.json');
+        return is_file($this->assetsDirectory.'/'.$countryCode.'.json.zst');
     }
 
     /**
@@ -52,7 +52,7 @@ final class CountryGeographyAssets
      */
     public function polygonsFor(string $countryCode): array
     {
-        return Json::decode($this->readAsset($countryCode.'.json'));
+        return Json::uncompressAndDecode($this->readAsset($countryCode.'.json.zst'));
     }
 
     private function readAsset(string $fileName): string

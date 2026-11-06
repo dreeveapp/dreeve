@@ -34,6 +34,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-scripts --no-dev
 
+      - name: Compress Symfony Intl data
+        run: composer run compress-intl
+
       - name: Build countries geography asset
         run: |
           touch .env
@@ -44,16 +47,16 @@ jobs:
           ASSET_ROOT=resources
           ASSET_DIR="$ASSET_ROOT/countries"
 
-          if [[ ! -f "$ASSET_DIR/index.json" ]]; then
-            echo "::error::$ASSET_DIR/index.json is missing, refusing to build an image without country boundaries"
+          if [[ ! -f "$ASSET_DIR/index.json.zst" ]]; then
+            echo "::error::$ASSET_DIR/index.json.zst is missing, refusing to build an image without country boundaries"
             exit 1
           fi
 
-          ENTRIES=$(jq 'length' "$ASSET_DIR/index.json")
-          COUNTRIES=$(find "$ASSET_DIR" -name '*.json' -not -name 'index.json' | wc -l)
+          ENTRIES=$(zstd -dc "$ASSET_DIR/index.json.zst" | jq 'length')
+          COUNTRIES=$(find "$ASSET_DIR" -name '*.json.zst' -not -name 'index.json.zst' | wc -l)
 
           if (( ENTRIES < 4000 )); then
-            echo "::error::index.json holds only $ENTRIES polygons, expected 4000+"
+            echo "::error::index.json.zst holds only $ENTRIES polygons, expected 4000+"
             exit 1
           fi
           if (( COUNTRIES < 200 )); then
