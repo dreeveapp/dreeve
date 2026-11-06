@@ -16,6 +16,8 @@ use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
+use App\Infrastructure\ValueObject\Time\DateRange;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class UpdateActivityCollection extends DomainCommand implements DeserializableCommand
 {
@@ -30,6 +32,8 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         private ?NewImage $newImage,
         private ?RemovedImage $removedImage,
         private ActivityIds $activityIds,
+        private ?ActivityId $activityIdToAdd,
+        private ?DateRange $addActivitiesInRange,
     ) {
     }
 
@@ -61,11 +65,40 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
 
         try {
             $activityIds = ActivityIds::fromArray(array_map(
-                static fn (mixed $activityId): ActivityId => ActivityReference::parse(is_string($activityId) ? $activityId : ''),
-                array_values(array_filter($activityIds, static fn (mixed $activityId): bool => '' !== $activityId)),
+                static fn (mixed $activityId): ActivityId => ActivityId::fromString($activityId),
+                array_values($activityIds),
             ))->unique();
         } catch (\InvalidArgumentException) {
             throw CouldNotDeserializeCommand::invalidPayload('The "activityIds" contain an invalid activity id.');
+        }
+
+        $activityIdToAdd = $payload['activityIdToAdd'] ?? '';
+        $addActivitiesFrom = $payload['addActivitiesFrom'] ?? '';
+        $addActivitiesTill = $payload['addActivitiesTill'] ?? '';
+        $addsDateRange = '' !== $addActivitiesFrom || '' !== $addActivitiesTill;
+        if ('' !== $activityIdToAdd && $addsDateRange) {
+            throw CouldNotDeserializeCommand::invalidPayload('Add one activity or a date range, not both.');
+        }
+
+        try {
+            $activityIdToAdd = '' === $activityIdToAdd ? null : ActivityReference::parse(is_string($activityIdToAdd) ? $activityIdToAdd : '');
+        } catch (\InvalidArgumentException) {
+            throw CouldNotDeserializeCommand::invalidPayload('The "activityIdToAdd" is an invalid activity id.');
+        }
+
+        $from = is_string($addActivitiesFrom) ? \DateTimeImmutable::createFromFormat('!Y-m-d', $addActivitiesFrom) : false;
+        $till = is_string($addActivitiesTill) ? \DateTimeImmutable::createFromFormat('!Y-m-d', $addActivitiesTill) : false;
+        if ($addsDateRange && (!$from || $from->format('Y-m-d') !== $addActivitiesFrom || !$till || $till->format('Y-m-d') !== $addActivitiesTill)) {
+            throw CouldNotDeserializeCommand::invalidPayload('Fill in both dates to add the activities in a date range.');
+        }
+
+        try {
+            $addActivitiesInRange = $from && $till ? DateRange::fromDates(
+                from: SerializableDateTime::fromDateTimeImmutable($from),
+                till: SerializableDateTime::fromDateTimeImmutable($till),
+            ) : null;
+        } catch (\InvalidArgumentException) {
+            throw CouldNotDeserializeCommand::invalidPayload('The start date must be on or before the end date.');
         }
 
         [$newImages, $removedImages] = self::parseImages($payload, 'coverImagePath');
@@ -78,6 +111,8 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
             newImage: $newImages[0] ?? null,
             removedImage: $removedImages[0] ?? null,
             activityIds: $activityIds,
+            activityIdToAdd: $activityIdToAdd,
+            addActivitiesInRange: $addActivitiesInRange,
         );
     }
 
@@ -114,5 +149,15 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
     public function getActivityIds(): ActivityIds
     {
         return $this->activityIds;
+    }
+
+    public function getActivityIdToAdd(): ?ActivityId
+    {
+        return $this->activityIdToAdd;
+    }
+
+    public function getAddActivitiesInRange(): ?DateRange
+    {
+        return $this->addActivitiesInRange;
     }
 }
