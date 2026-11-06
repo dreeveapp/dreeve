@@ -55,6 +55,16 @@ final readonly class EncodedPolyline extends NonEmptyStringLiteral
         );
     }
 
+    public function getEndingCoordinate(): Coordinate
+    {
+        $points = $this->decodePoints();
+
+        return Coordinate::createFromLatAndLng(
+            latitude: Latitude::fromString((string) $points[count($points) - 2]),
+            longitude: Longitude::fromString((string) $points[count($points) - 1]),
+        );
+    }
+
     /**
      * @return float[]
      */
