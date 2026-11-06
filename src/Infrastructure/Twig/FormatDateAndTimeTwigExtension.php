@@ -23,6 +23,7 @@ final readonly class FormatDateAndTimeTwigExtension
         $dateFormat = match ($formatType) {
             'short' => $dateAndTimeFormat->getDateFormatShort(),
             'normal' => $dateAndTimeFormat->getDateFormatNormal(),
+            'long' => $dateAndTimeFormat->getDateFormatLong(),
             default => throw new \InvalidArgumentException(sprintf('Invalid date formatType "%s"', $formatType)),
         };
 

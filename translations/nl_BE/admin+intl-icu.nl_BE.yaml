@@ -257,6 +257,7 @@ Latitude: Breedtegraad
 Locale: Taalinstelling
 Log: Log
 'Log maintenance': 'Onderhoud loggen'
+'Long date format': 'Long date format'
 Longitude: Lengtegraad
 'MCP access': 'MCP access'
 'MCP key': 'MCP key'
@@ -330,6 +331,8 @@ Operator: Operator
 'Optional. Leave empty to always apply this goal.': 'Optioneel. Laat leeg om dit doel altijd toe te passen.'
 'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Optioneel. Je huidige Zwift-level (1 of hoger). Laat leeg om de Zwift-badge te verbergen.'
 'Optional. Your current Zwift racing score (between 0 and 1000).': 'Optioneel. Je huidige Zwift Racing Score (tussen 0 en 1000).'
+'PHP date format documentation': 'PHP date format documentation'
+'PHP date format for long dates, e.g. F j, Y renders to January 1, 2025.': 'PHP date format for long dates, e.g. F j, Y renders to January 1, 2025.'
 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP-datumformaat voor normale datums, bv. d-m-Y wordt 01-01-2025.'
 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP-datumformaat voor korte datums, bv. d-m-y wordt 01-01-25.'
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Onderdelen waarvan je het onderhoud bijhoudt, bv.: kettingen, cassettes, remblokken...'
@@ -401,6 +404,7 @@ Saving...: 'Aan het opslaan...'
 'Search by name, date or activity ID': 'Zoeken op naam, datum of activiteits-ID'
 Seconds: Seconden
 Security: Beveiliging
+'See the {phpDateFormat}.': 'See the {phpDateFormat}.'
 'Segment management': 'Segment management'
 'Segments will appear here once you create them from one of your activities.': 'Segments will appear here once you create them from one of your activities.'
 'Select a component first...': 'Selecteer eerst een onderdeel...'

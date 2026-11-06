@@ -22,6 +22,8 @@ class AppearanceSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('select[name="data[unitSystem]"]'));
         $this->assertCount(1, $crawler->filter('select[name="data[locale]"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[dateFormat][short]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="data[dateFormat][long]"]'));
+        $this->assertCount(1, $crawler->filter('a[href="https://www.php.net/manual/en/datetime.format.php"]'));
 
         // The settings navigation, with "Appearance" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
