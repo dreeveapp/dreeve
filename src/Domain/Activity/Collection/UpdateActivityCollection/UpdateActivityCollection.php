@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Collection\UpdateActivityCollection;
 
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Image\NewImage;
@@ -26,6 +29,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         private ActivityCollectionType $type,
         private ?NewImage $newImage,
         private ?RemovedImage $removedImage,
+        private ActivityIds $activityIds,
     ) {
     }
 
@@ -50,6 +54,20 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         $description = $payload['description'] ?? null;
         $description = is_string($description) ? trim($description) : '';
 
+        $activityIds = $payload['activityIds'] ?? [];
+        if (!is_array($activityIds)) {
+            throw CouldNotDeserializeCommand::invalidPayload('The "activityIds" must be a list.');
+        }
+
+        try {
+            $activityIds = ActivityIds::fromArray(array_map(
+                static fn (mixed $activityId): ActivityId => ActivityReference::parse(is_string($activityId) ? $activityId : ''),
+                array_values(array_filter($activityIds, static fn (mixed $activityId): bool => '' !== $activityId)),
+            ))->unique();
+        } catch (\InvalidArgumentException) {
+            throw CouldNotDeserializeCommand::invalidPayload('The "activityIds" contain an invalid activity id.');
+        }
+
         [$newImages, $removedImages] = self::parseImages($payload, 'coverImagePath');
 
         return new self(
@@ -59,6 +77,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
             type: $activityCollectionType,
             newImage: $newImages[0] ?? null,
             removedImage: $removedImages[0] ?? null,
+            activityIds: $activityIds,
         );
     }
 
@@ -90,5 +109,10 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
     public function getRemovedImage(): ?RemovedImage
     {
         return $this->removedImage;
+    }
+
+    public function getActivityIds(): ActivityIds
+    {
+        return $this->activityIds;
     }
 }

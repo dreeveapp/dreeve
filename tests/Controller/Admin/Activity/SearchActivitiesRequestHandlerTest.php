@@ -41,7 +41,9 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
                 'value' => 'activity-1',
                 'reference' => 'Morning commute (activity-1)',
                 'label' => 'Morning commute',
-                'sublabel' => '2025-06-01 08:00 · Ride',
+                'sublabel' => '01-06-25 · Ride',
+                'date' => '01-06-25',
+                'sportType' => 'Ride',
             ],
         ], Json::decode((string) $this->client->getResponse()->getContent()));
     }
@@ -92,7 +94,9 @@ class SearchActivitiesRequestHandlerTest extends AdminWebTestCase
                 'value' => 'activity-1',
                 'reference' => 'Morning Run (activity-1)',
                 'label' => 'Morning Run',
-                'sublabel' => '2025-06-01 08:00 · Run',
+                'sublabel' => '01-06-25 · Run',
+                'date' => '01-06-25',
+                'sportType' => 'Run',
             ],
         ], Json::decode((string) $this->client->getResponse()->getContent()));
     }

@@ -3,6 +3,7 @@
 namespace App\Tests\Domain\Activity\Collection;
 
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\Collection\ActivityCollectionCacheTag;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\DbalActivityCollectionRepository;
@@ -39,7 +40,7 @@ class ActivityCollectionInvalidateCacheTagsListenerTest extends ContainerTestCas
         $this->activityCollectionRepository->add($activityCollection);
         $this->warmUpRenderCache();
 
-        $this->activityCollectionRepository->update($activityCollection->addActivity(ActivityId::fromUnprefixed('1')));
+        $this->activityCollectionRepository->update($activityCollection->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')])));
 
         $this->assertFalse($this->isServedFromCache(RootCacheTag::ACTIVITY_COLLECTIONS));
         $this->assertFalse($this->isServedFromCache(ActivityCollectionCacheTag::for(ActivityCollectionId::fromUnprefixed('1'))));
@@ -51,13 +52,14 @@ class ActivityCollectionInvalidateCacheTagsListenerTest extends ContainerTestCas
         $activityCollection = ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
             ->withName('Mallorca')
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1'), ActivityId::fromUnprefixed('2')]))
             ->build();
         $this->activityCollectionRepository->add($activityCollection);
         $this->warmUpRenderCache();
 
         $this->activityCollectionRepository->update($activityCollection
             ->withName('Mallorca')
-            ->removeActivity(ActivityId::fromUnprefixed('1')));
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('2'), ActivityId::fromUnprefixed('1')])));
 
         $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_COLLECTIONS));
         $this->assertTrue($this->isServedFromCache(ActivityCollectionCacheTag::for(ActivityCollectionId::fromUnprefixed('1'))));
