@@ -39,17 +39,14 @@
                 </div>
                 {% if activityCollection %}
                     <div class="flex flex-col gap-2">
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700">{{ "Activities"|trans }}</span>
-                            <a href="{{ relativeUrlWithRedirectTo(path('admin_add_activity_to_collection', {activityCollectionId: activityCollectionId}), overviewUrl) }}" type="button" class="btn--secondary">
-                                {{ svg('plus') }}
-                                <span>{{ "Add activity"|trans({}, 'admin') }}</span>
-                            </a>
-                        </div>
+                        <span class="text-sm font-medium text-gray-700">{{ "Activities"|trans }}</span>
                         <div class="relative overflow-x-auto">
                             <table class="data-table">
                                 <thead>
                                 <tr>
+                                    <th scope="col" class="narrow">
+                                        <span class="sr-only">{{ "In collection"|trans({}, 'admin') }}</span>
+                                    </th>
                                     <th scope="col" class="text-left">
                                         {{ "Name"|trans }}
                                     </th>
@@ -59,14 +56,14 @@
                                     <th scope="col" class="text-left">
                                         {{ "Date"|trans }}
                                     </th>
-                                    <th scope="col" class="narrow sticky-actions">
-                                        <span class="sr-only">{{ "Remove"|trans({}, 'admin') }}</span>
-                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for activity in activities %}
                                     <tr>
+                                        <td class="narrow">
+                                            <input type="checkbox" name="activityIds[]" value="{{ activity.getId() }}" checked aria-label="{{ activity.getName() }}">
+                                        </td>
                                         <td class="whitespace-nowrap text-left">
                                             <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
                                                title="{{ activity.getName() }}"
@@ -75,18 +72,10 @@
                                             </a>
                                         </td>
                                         <td class="whitespace-nowrap text-left">
-                                            {{ activity.getSportType()|trans }}
+                                            {{ activity.getSportType()|transSingular }}
                                         </td>
                                         <td class="whitespace-nowrap text-left">
                                             {{ activity.getStartDate()|formatDate() }}
-                                        </td>
-                                        <td class="narrow whitespace-nowrap sticky-actions">
-                                            <a href="{{ relativeUrlWithRedirectTo(path('admin_remove_activity_from_collection', {activityCollectionId: activityCollectionId, activityId: activity.getId()}), overviewUrl) }}"
-                                               class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
-                                               title="{{ "Remove"|trans({}, 'admin') }}">
-                                                <span class="sr-only">{{ "Remove"|trans({}, 'admin') }}</span>
-                                                {{ svg('trash') }}
-                                            </a>
                                         </td>
                                     </tr>
                                 {% else %}
@@ -98,6 +87,23 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+                        </div>
+                        <p class="description">{{ "Unchecked activities are removed from the collection when you save."|trans({}, 'admin') }}</p>
+                    </div>
+                    <div>
+                        <label for="activity-collection-activity">{{ "Add activity"|trans({}, 'admin') }}</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="activity-collection-activity" name="activityIds[]"
+                                   placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
+                                   autocomplete="off" spellcheck="false"
+                                   data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}"
+                                   data-autocomplete-use-reference>
+                            <button type="submit" data-has-loading-state class="group btn--secondary shrink-0"
+                                    data-redirect="{{ relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId}), overviewUrl) }}">
+                                {{ svg('plus') }}
+                                <span class="label">{{ "Add"|trans({}, 'admin') }}</span>
+                                <span class="label--loading">{{ "Adding..."|trans({}, 'admin') }}</span>
+                            </button>
                         </div>
                     </div>
                 {% endif %}

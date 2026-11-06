@@ -28,7 +28,6 @@ Add: Add
 'Add a widget': 'Adicionar um widget'
 'Add action': 'Adicionar ação'
 'Add activity': 'Adicionar atividade'
-'Add activity to {activityCollection}': 'Add activity to {activityCollection}'
 'Add automation rule': 'Adicionar regra de automação'
 'Add challenge': 'Adicionar desafio'
 'Add collection': 'Add collection'
@@ -77,7 +76,6 @@ Apply: Aplicar
 'Are you sure you want to delete {name}?': 'Tem certeza de que deseja excluir {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Tem certeza de que deseja excluir {task} no componente {component} para o equipamento {gear}, realizado em {date}?'
 'Are you sure you want to remove the {widget} widget?': 'Tem certeza de que deseja remover o widget {widget}?'
-'Are you sure you want to remove {activity} from {activityCollection}?': 'Are you sure you want to remove {activity} from {activityCollection}?'
 'Assign gear': 'Atribuir equipamento'
 Athlete: Athlete
 'Athlete settings': 'Configurações do atleta'
@@ -249,6 +247,7 @@ Import: Importar
 'Imported files will appear here once you upload them.': 'Os arquivos importados aparecerão aqui assim que você os enviar.'
 'Imported from Strava': 'Importado do Strava'
 'Imports new Strava activities.': 'Importa novas atividades do Strava.'
+'In collection': 'In collection'
 'Include retired gear': 'Incluir equipamento aposentado'
 Info: Informações
 'Installed on': 'Instalado em'
@@ -384,7 +383,6 @@ Radius: Raio
 Remove: Remover
 'Remove Eddington': 'Remover Eddington'
 'Remove action': 'Remover ação'
-'Remove activity': 'Remove activity'
 'Remove challenge': 'Remover desafio'
 'Remove command': 'Remover comando'
 'Remove condition': 'Remover condição'
@@ -507,7 +505,6 @@ Tasks: Tarefas
 'Test automation rules': 'Testar regras de automação'
 'Test rules': 'Testar regras'
 'The URL the app is hosted on.': 'O URL onde o aplicativo está hospedado.'
-'The activity itself is not deleted.': 'The activity itself is not deleted.'
 'The activity started': 'A atividade começou'
 'The activity will be marked as a commute.': 'A atividade será marcada como deslocamento.'
 'The activity will be marked as a group activity.': 'A atividade será marcada como atividade em grupo.'
@@ -574,6 +571,7 @@ Tuesday: Terça-feira
 'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Tipo
 URL: URL
+'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
 Unit: Unidade
 'Unit system': 'Sistema de unidades'
 'Units & language': 'Units & language'

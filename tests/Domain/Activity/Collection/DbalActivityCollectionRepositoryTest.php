@@ -90,6 +90,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withDescription('Before')
             ->withType(ActivityCollectionType::TRIP)
             ->withCoverImagePath('/files/activity-collections/before.jpg')
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]))
             ->build();
         $this->repository->add($activityCollection);
 
@@ -97,36 +98,11 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withName('After')
             ->withDescription(null)
             ->withType(ActivityCollectionType::EVENT)
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('2'), ActivityId::fromUnprefixed('3')]))
             ->withCoverImagePath(null);
         $this->repository->update($updated);
 
         $this->assertEquals($updated, $this->repository->find($activityCollection->getId()));
-    }
-
-    public function testAddAndRemoveActivities(): void
-    {
-        $activityCollection = ActivityCollectionBuilder::fromDefaults()
-            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
-            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]))
-            ->build();
-        $this->repository->add($activityCollection);
-
-        $this->repository->update(
-            $activityCollection
-                ->addActivity(ActivityId::fromUnprefixed('2'))
-                ->addActivity(ActivityId::fromUnprefixed('3'))
-                ->addActivity(ActivityId::fromUnprefixed('2'))
-                ->removeActivity(ActivityId::fromUnprefixed('1'))
-        );
-
-        $this->assertEquals(
-            ActivityIds::fromArray([ActivityId::fromUnprefixed('2'), ActivityId::fromUnprefixed('3')]),
-            $this->repository->find($activityCollection->getId())->getActivityIds(),
-        );
-        $this->assertEquals(
-            ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]),
-            $activityCollection->getActivityIds(),
-        );
     }
 
     public function testFindForActivity(): void
