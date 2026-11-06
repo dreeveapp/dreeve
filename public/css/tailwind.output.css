@@ -3164,9 +3164,6 @@
   .ps-3 {
     padding-inline-start: calc(var(--spacing) * 3);
   }
-  .ps-5 {
-    padding-inline-start: calc(var(--spacing) * 5);
-  }
   .ps-10 {
     padding-inline-start: calc(var(--spacing) * 10);
   }
@@ -3772,8 +3769,14 @@
   :is(:where(.group\/bulk-delete):has(:is(input:checked)) .group-has-\[input\:checked\]\/bulk-delete\:inline-flex) {
     display: inline-flex;
   }
+  :is(:where(.group\/member):has(:is(input:not(:checked))) .group-has-\[input\:not\(\:checked\)\]\/member\:line-through) {
+    text-decoration-line: line-through;
+  }
   :is(:where(.group\/range-filter):has(:is(input:not(:placeholder-shown))) .group-has-\[input\:not\(\:placeholder-shown\)\]\/range-filter\:visible) {
     visibility: visible;
+  }
+  :is(:where(.group\/add-activity):has(:is(input:placeholder-shown)) .group-has-\[input\:placeholder-shown\]\/add-activity\:hidden) {
+    display: none;
   }
   :is(:where(.group\/max-hr):has(:is(option[value=dateRangeBased]:checked)) .group-has-\[option\[value\=dateRangeBased\]\:checked\]\/max-hr\:block) {
     display: block;
@@ -3783,9 +3786,6 @@
   }
   :is(:where(.group\/resting-hr):has(:is(option[value=fixed]:checked)) .group-has-\[option\[value\=fixed\]\:checked\]\/resting-hr\:block) {
     display: block;
-  }
-  :is(:where(.group)[aria-expanded="true"] .group-aria-expanded\:rotate-180) {
-    rotate: 180deg;
   }
   :is(:where(.group\/route)[data-state="empty"] .group-data-\[state\=empty\]\/route\:inline) {
     display: inline;
@@ -4236,6 +4236,12 @@
   }
   .has-checked\:text-primary:has(:checked) {
     color: var(--color-primary);
+  }
+  .has-\[input\:not\(\:checked\)\]\:bg-red-50\/60\!:has(:is(input:not(:checked))) {
+    background-color: color-mix(in srgb, #FEF2F2 60%, transparent) !important;
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-red-50) 60%, transparent) !important;
+    }
   }
   @media (width >= 40rem) {
     .sm\:not-sr-only {
