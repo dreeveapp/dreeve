@@ -8,6 +8,8 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\WorldType;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
@@ -15,6 +17,7 @@ use App\Infrastructure\CQRS\Query\Response;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\GeoMath;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
@@ -42,9 +45,16 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
         $rows = $this->connection->executeQuery(
             'SELECT activityId, startDateTime, startingCoordinateLatitude AS latitude, startingCoordinateLongitude AS longitude, routeGeography
              FROM Activity
-             WHERE worldType = :worldType AND startingCoordinateLatitude IS NOT NULL AND startingCoordinateLongitude IS NOT NULL
+             WHERE worldType = :worldType AND sportType NOT IN (:virtualSportTypes)
+             AND startingCoordinateLatitude IS NOT NULL AND startingCoordinateLongitude IS NOT NULL
              ORDER BY startDateTime ASC',
-            ['worldType' => WorldType::REAL_WORLD->value],
+            [
+                'worldType' => WorldType::REAL_WORLD->value,
+                'virtualSportTypes' => SportTypes::virtual()->map(fn (SportType $sportType): string => $sportType->value),
+            ],
+            [
+                'virtualSportTypes' => ArrayParameterType::STRING,
+            ],
         )->fetchAllAssociative();
 
         if ([] === $rows) {

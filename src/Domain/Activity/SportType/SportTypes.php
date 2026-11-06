@@ -39,7 +39,15 @@ final class SportTypes extends Collection
     {
         return self::fromArray(array_filter(
             SportType::cases(),
-            fn (SportType $sportType): bool => !in_array($sportType, [SportType::VIRTUAL_RIDE, SportType::VIRTUAL_RUN, SportType::VIRTUAL_ROW], true)
+            fn (SportType $sportType): bool => !$sportType->isVirtual()
+        ));
+    }
+
+    public static function virtual(): SportTypes
+    {
+        return self::fromArray(array_filter(
+            SportType::cases(),
+            fn (SportType $sportType): bool => $sportType->isVirtual()
         ));
     }
 
