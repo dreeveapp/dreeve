@@ -15,6 +15,8 @@ use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\GeoMath;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\ArrayParameterType;
@@ -41,9 +43,9 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
     {
         assert($query instanceof FindTripSuggestions);
 
-        /** @var array<int, array{activityId: string, startDateTime: string, latitude: float, longitude: float, routeGeography: ?string}> $rows */
+        /** @var array<int, array{activityId: string, startDateTime: string, latitude: float, longitude: float, routeGeography: ?string, polyline: ?string}> $rows */
         $rows = $this->connection->executeQuery(
-            'SELECT activityId, startDateTime, startingCoordinateLatitude AS latitude, startingCoordinateLongitude AS longitude, routeGeography
+            'SELECT activityId, startDateTime, startingCoordinateLatitude AS latitude, startingCoordinateLongitude AS longitude, routeGeography, polyline
              FROM Activity
              WHERE worldType = :worldType AND sportType NOT IN (:virtualSportTypes)
              AND startingCoordinateLatitude IS NOT NULL AND startingCoordinateLongitude IS NOT NULL
@@ -72,8 +74,24 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
         $groups = [];
         $currentGroup = [];
         foreach ($rows as $index => $row) {
-            $isAway = GeoMath::haversineDistance($homeLatitude, $homeLongitude, $row['latitude'], $row['longitude']) > self::AWAY_FROM_HOME_IN_METERS
-                && $numberOfActivitiesPerLocation[$locations[$index]] / count($rows) < self::MAX_SHARE_OF_A_LOCATION;
+            $startsAway = GeoMath::haversineDistance(
+                lat1: $homeLatitude,
+                lon1: $homeLongitude,
+                lat2: $row['latitude'],
+                lon2: $row['longitude'],
+            ) > self::AWAY_FROM_HOME_IN_METERS;
+            $isAway = $startsAway && $numberOfActivitiesPerLocation[$locations[$index]] / count($rows) < self::MAX_SHARE_OF_A_LOCATION;
+
+            if (!$startsAway) {
+                // The ride from home to the trip's destination.
+                $endingCoordinate = EncodedPolyline::fromOptionalString($row['polyline'])?->getEndingCoordinate();
+                $isAway = $endingCoordinate instanceof Coordinate && GeoMath::haversineDistance(
+                    lat1: $homeLatitude,
+                    lon1: $homeLongitude,
+                    lat2: $endingCoordinate->getLatitude()->toFloat(),
+                    lon2: $endingCoordinate->getLongitude()->toFloat(),
+                ) > self::AWAY_FROM_HOME_IN_METERS;
+            }
             $day = SerializableDateTime::fromString($row['startDateTime'])->setTime(0, 0);
 
             if (!$isAway) {
