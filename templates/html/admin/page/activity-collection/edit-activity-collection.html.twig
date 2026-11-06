@@ -60,12 +60,12 @@
                                 </thead>
                                 <tbody>
                                 {% for activity in activities %}
-                                    <tr>
+                                    <tr class="group/member has-[input:not(:checked)]:bg-red-50/60!">
                                         <td class="narrow">
                                             <input type="checkbox" name="activityIds[]" value="{{ activity.getId() }}" checked aria-label="{{ activity.getName() }}">
                                         </td>
                                         <td class="whitespace-nowrap text-left">
-                                            <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                                            <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline group-has-[input:not(:checked)]/member:line-through"
                                                title="{{ activity.getName() }}"
                                                href="{{ relativeUrl(path('activity', {'activityId': activity.getId()})) }}">
                                                 {{ activity.getName() }}
@@ -92,13 +92,13 @@
                     </div>
                     <div>
                         <label for="activity-collection-activity">{{ "Add activity"|trans({}, 'admin') }}</label>
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 group/add-activity">
                             <input type="text" id="activity-collection-activity" name="activityIds[]"
                                    placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
                                    autocomplete="off" spellcheck="false"
                                    data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}"
                                    data-autocomplete-use-reference>
-                            <button type="submit" data-has-loading-state class="group btn--secondary shrink-0"
+                            <button type="submit" data-has-loading-state class="group btn--secondary shrink-0 group-has-[input:placeholder-shown]/add-activity:hidden"
                                     data-redirect="{{ relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId}), overviewUrl) }}">
                                 {{ svg('plus') }}
                                 <span class="label">{{ "Add"|trans({}, 'admin') }}</span>
