@@ -2,10 +2,15 @@
 {% block main %}
     {% autoescape false %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold">
-                {{ "Activity collection management"|trans({}, 'admin') }}
-            </h3>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+                <h3 class="text-lg font-semibold">
+                    {{ "Activity collection management"|trans({}, 'admin') }}
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                    {{ "Bundle your activities into trips and events."|trans({}, 'admin') }}
+                </p>
+            </div>
             {% if hasActivities %}
                 <a href="{{ relativeUrl(path('admin_add_activity_collection')) }}" type="button" class="btn--add">
                     {{ svg('plus') }}
