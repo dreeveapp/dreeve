@@ -224,7 +224,7 @@ export default function initDispatchCommandForm(rootNode = document) {
 
             await dispatchCommand(commandName, payload);
 
-            const redirectUrl = form.getAttribute('data-redirect');
+            const redirectUrl = event.submitter?.getAttribute('data-redirect') ?? form.getAttribute('data-redirect');
             if (redirectUrl) {
                 window.location.assign(redirectUrl);
             } else {

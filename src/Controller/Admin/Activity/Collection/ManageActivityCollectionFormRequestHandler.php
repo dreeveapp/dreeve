@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Activity\Collection;
 
-use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
-use App\Domain\Activity\Collection\AddActivityToCollection\AddActivityToCollection;
 use App\Domain\Activity\Collection\DeleteActivityCollection\DeleteActivityCollection;
-use App\Domain\Activity\Collection\RemoveActivityFromCollection\RemoveActivityFromCollection;
 use App\Domain\Activity\Collection\UpdateActivityCollection\UpdateActivityCollection;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
@@ -50,30 +46,6 @@ final readonly class ManageActivityCollectionFormRequestHandler
             'activityCollection' => $activityCollection,
             'types' => ActivityCollectionType::cases(),
             'activities' => $this->activityRepository->findByIds($activityCollection->getActivityIds())->reverse(),
-        ]));
-    }
-
-    #[Route(path: '/admin/collections/{activityCollectionId}/activities/add', name: 'admin_add_activity_to_collection', methods: ['GET'], priority: 10)]
-    public function handleAddActivity(string $activityCollectionId): HtmlResponse
-    {
-        return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/add-activity-to-collection.html.twig', [
-            'dispatchCommand' => AddActivityToCollection::getCommandName(),
-            'activityCollection' => $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId)),
-        ]));
-    }
-
-    #[Route(path: '/admin/collections/{activityCollectionId}/activities/{activityId}/remove', name: 'admin_remove_activity_from_collection', methods: ['GET'], priority: 10)]
-    public function handleRemoveActivity(string $activityCollectionId, string $activityId): HtmlResponse
-    {
-        $activityCollection = $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId));
-        if (!$activityCollection->getActivityIds()->has(ActivityId::fromString($activityId))) {
-            throw new NotFoundHttpException('Activity is not part of this collection');
-        }
-
-        return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/remove-activity-from-collection.html.twig', [
-            'dispatchCommand' => RemoveActivityFromCollection::getCommandName(),
-            'activityCollection' => $activityCollection,
-            'activity' => $this->activityRepository->find(ActivityId::fromString($activityId)),
         ]));
     }
 

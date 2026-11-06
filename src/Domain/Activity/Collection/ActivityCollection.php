@@ -144,28 +144,15 @@ final class ActivityCollection
         return $this->activityIds;
     }
 
-    public function addActivity(ActivityId $activityId): self
+    public function withActivityIds(ActivityIds $activityIds): self
     {
-        if ($this->activityIds->has($activityId)) {
+        if (count($activityIds) === count($this->activityIds)
+            && !array_any($activityIds->toArray(), fn (ActivityId $activityId): bool => !$this->activityIds->has($activityId))) {
             return $this;
         }
 
         $activityCollection = clone ($this, [
-            'activityIds' => ActivityIds::fromArray([...$this->activityIds, $activityId]),
-        ]);
-        $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
-
-        return $activityCollection;
-    }
-
-    public function removeActivity(ActivityId $activityId): self
-    {
-        if (!$this->activityIds->has($activityId)) {
-            return $this;
-        }
-
-        $activityCollection = clone ($this, [
-            'activityIds' => $this->activityIds->without($activityId),
+            'activityIds' => $activityIds,
         ]);
         $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
 
