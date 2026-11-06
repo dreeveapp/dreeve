@@ -16,6 +16,7 @@ use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
@@ -26,9 +27,18 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
     public function testHandle(): void
     {
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
-        foreach (['1', '2', '3'] as $activityId) {
+        foreach ([
+            '1' => '2025-06-01 08:00:00',
+            '2' => '2025-06-02 08:00:00',
+            '3' => '2025-06-11 08:00:00',
+            'before-range' => '2025-06-09 23:59:59',
+            'range-start' => '2025-06-10 00:00:00',
+            'range-end' => '2025-06-12 23:59:59',
+            'after-range' => '2025-06-13 00:00:00',
+        ] as $activityId => $startDateTime) {
             $activityRepository->add(ActivityWithRawData::fromState(ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                ->withActivityId(ActivityId::fromUnprefixed((string) $activityId))
+                ->withStartDateTime(SerializableDateTime::fromString($startDateTime))
                 ->build(), []));
         }
         $fileStorage = $this->getContainer()->get('file.storage');
@@ -48,7 +58,9 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'name' => '  Transalp 2025  ',
             'type' => 'event',
             'description' => '   ',
-            'activityIds' => ['activity-3', 'Col du Tourmalet (activity-2)', 'activity-3', ''],
+            'activityIds' => ['activity-3', 'activity-3'],
+            'activityIdToAdd' => 'Col du Tourmalet (activity-2)',
+            'addActivitiesBy' => 'activity',
             'coverImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/activity-collections/old.jpg'],
             ]),
@@ -64,6 +76,26 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
         );
         $this->assertNull($activityCollection->getCoverImagePath());
         $this->assertFalse($fileStorage->fileExists('activity-collections/old.jpg'));
+
+        $this->getContainer()->get(CommandBus::class)->dispatch(UpdateActivityCollection::fromPayload([
+            'activityCollectionId' => 'activityCollection-1',
+            'name' => 'Transalp 2025',
+            'type' => 'event',
+            'activityIds' => ['activity-3', 'activity-2'],
+            'activityIdToAdd' => '',
+            'addActivitiesFrom' => '2025-06-10',
+            'addActivitiesTill' => '2025-06-12',
+        ]));
+
+        $this->assertEquals(
+            ActivityIds::fromArray([
+                ActivityId::fromUnprefixed('3'),
+                ActivityId::fromUnprefixed('2'),
+                ActivityId::fromUnprefixed('range-end'),
+                ActivityId::fromUnprefixed('range-start'),
+            ]),
+            $activityCollectionRepository->find(ActivityCollectionId::fromUnprefixed('1'))->getActivityIds(),
+        );
     }
 
     public function testHandleReplacesTheCoverImage(): void
@@ -117,7 +149,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'activityCollectionId' => 'activityCollection-1',
             'name' => 'Mallorca',
             'type' => 'trip',
-            'activityIds' => ['activity-unknown'],
+            'activityIdToAdd' => 'activity-unknown',
         ]));
     }
 
@@ -167,9 +199,34 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'The "activityIds" must be a list.',
         ];
 
-        yield 'invalid activity id' => [
-            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'activityIds' => [['activity-1']]],
+        yield 'activity reference in activity ids' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'activityIds' => ['Col du Tourmalet (activity-2)']],
             'The "activityIds" contain an invalid activity id.',
+        ];
+
+        yield 'invalid activity to add' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'activityIdToAdd' => ['activity-1']],
+            'The "activityIdToAdd" is an invalid activity id.',
+        ];
+
+        yield 'activity and date range' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'activityIdToAdd' => 'activity-1', 'addActivitiesFrom' => '2025-06-10', 'addActivitiesTill' => ''],
+            'Add one activity or a date range, not both.',
+        ];
+
+        yield 'date range without an end date' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'addActivitiesFrom' => '2025-06-10', 'addActivitiesTill' => ''],
+            'Fill in both dates to add the activities in a date range.',
+        ];
+
+        yield 'date range with an invalid date' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'addActivitiesFrom' => '2025-02-30', 'addActivitiesTill' => '2025-03-02'],
+            'Fill in both dates to add the activities in a date range.',
+        ];
+
+        yield 'date range ending before it starts' => [
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'addActivitiesFrom' => '2025-06-12', 'addActivitiesTill' => '2025-06-10'],
+            'The start date must be on or before the end date.',
         ];
     }
 }

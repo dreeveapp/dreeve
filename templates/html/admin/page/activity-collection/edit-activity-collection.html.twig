@@ -38,9 +38,10 @@
                     <p class="description">{{ "Without a cover image, the first photo of the collection's activities is used."|trans({}, 'admin') }}</p>
                 </div>
                 {% if activityCollection %}
+                    {% set editUrl = relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId}), overviewUrl) %}
                     <div class="flex flex-col gap-2">
                         <span class="text-sm font-medium text-gray-700">{{ "Activities"|trans }}</span>
-                        <div class="relative overflow-x-auto">
+                        <div class="relative max-h-96 overflow-auto">
                             <table class="data-table">
                                 <thead>
                                 <tr>
@@ -90,16 +91,36 @@
                         </div>
                         <p class="description">{{ "Unchecked activities are removed from the collection when you save."|trans({}, 'admin') }}</p>
                     </div>
-                    <div>
-                        <label for="activity-collection-activity">{{ "Add activity"|trans({}, 'admin') }}</label>
-                        <div class="flex gap-2 group/add-activity">
-                            <input type="text" id="activity-collection-activity" name="activityIds[]"
+                    <div class="group/add-activities">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-sm font-medium text-gray-700">{{ "Add activities"|trans({}, 'admin') }}</span>
+                            <div role="group" aria-label="{{ "Add activities"|trans({}, 'admin') }}" class="shrink-0 inline-flex items-center bg-gray-100 rounded-lg p-0.5 text-xxs font-medium">
+                                <input type="radio" name="addActivitiesBy" id="add-activities-by-activity" value="activity" class="sr-only peer/activity" checked>
+                                <label for="add-activities-by-activity" class="cursor-pointer rounded-md px-2 py-1 text-xxs text-gray-500 transition peer-checked/activity:bg-white peer-checked/activity:text-gray-900 peer-checked/activity:shadow-xs peer-focus-visible/activity:ring-2 peer-focus-visible/activity:ring-primary/40">{{ "Activity"|trans({}, 'admin') }}</label>
+                                <input type="radio" name="addActivitiesBy" id="add-activities-by-date-range" value="dateRange" class="sr-only peer/date-range">
+                                <label for="add-activities-by-date-range" class="cursor-pointer rounded-md px-2 py-1 text-xxs text-gray-500 transition peer-checked/date-range:bg-white peer-checked/date-range:text-gray-900 peer-checked/date-range:shadow-xs peer-focus-visible/date-range:ring-2 peer-focus-visible/date-range:ring-primary/40">{{ "Date range"|trans({}, 'admin') }}</label>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 group/add-activity group-has-[#add-activities-by-date-range:checked]/add-activities:hidden">
+                            <input type="text" name="activityIdToAdd" aria-label="{{ "Add activity"|trans({}, 'admin') }}"
                                    placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
                                    autocomplete="off" spellcheck="false"
                                    data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}"
                                    data-autocomplete-use-reference>
                             <button type="submit" data-has-loading-state class="group btn--secondary shrink-0 group-has-[input:placeholder-shown]/add-activity:hidden"
-                                    data-redirect="{{ relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId}), overviewUrl) }}">
+                                    data-redirect="{{ editUrl }}">
+                                {{ svg('plus') }}
+                                <span class="label">{{ "Add"|trans({}, 'admin') }}</span>
+                                <span class="label--loading">{{ "Adding..."|trans({}, 'admin') }}</span>
+                            </button>
+                        </div>
+                        <div class="hidden gap-2 group-has-[#add-activities-by-date-range:checked]/add-activities:flex">
+                            <div class="grid grow grid-cols-2 gap-3">
+                                <input type="date" name="addActivitiesFrom" aria-label="{{ "From"|trans({}, 'admin') }}">
+                                <input type="date" name="addActivitiesTill" aria-label="{{ "To"|trans({}, 'admin') }}">
+                            </div>
+                            <button type="submit" data-has-loading-state class="group btn--secondary shrink-0"
+                                    data-redirect="{{ editUrl }}">
                                 {{ svg('plus') }}
                                 <span class="label">{{ "Add"|trans({}, 'admin') }}</span>
                                 <span class="label--loading">{{ "Adding..."|trans({}, 'admin') }}</span>
