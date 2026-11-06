@@ -18,8 +18,6 @@ ENV APP_DEBUG=0
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
   bash \
-  curl \
-  file \
   tzdata
 
 RUN set -eux; \
