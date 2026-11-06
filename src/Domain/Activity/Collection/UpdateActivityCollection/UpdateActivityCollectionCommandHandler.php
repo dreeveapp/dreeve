@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Collection\UpdateActivityCollection;
 
+use App\Domain\Activity\Activity;
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Image\ImageDirectory;
@@ -13,6 +16,7 @@ use App\Domain\Image\RemovedImage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
+use App\Infrastructure\ValueObject\Time\DateRange;
 
 final readonly class UpdateActivityCollectionCommandHandler implements CommandHandler
 {
@@ -27,15 +31,28 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
     {
         assert($command instanceof UpdateActivityCollection);
 
-        if (count($this->activityRepository->findByIds($command->getActivityIds())) !== count($command->getActivityIds())) {
+        $activityIds = ActivityIds::fromArray(array_filter([
+            ...$command->getActivityIds(),
+            $command->getActivityIdToAdd(),
+        ]))->unique();
+
+        if (count($this->activityRepository->findByIds($activityIds)) !== count($activityIds)) {
             throw CouldNotProcessCommand::withReason('The selected activity does not exist.');
+        }
+
+        $addActivitiesInRange = $command->getAddActivitiesInRange();
+        if ($addActivitiesInRange instanceof DateRange) {
+            $activityIds = $activityIds->mergeWith(ActivityIds::fromArray($this->activityRepository->findByDateRange(
+                from: $addActivitiesInRange->getFrom(),
+                till: $addActivitiesInRange->getTill()->modify('+1 day'),
+            )->map(static fn (Activity $activity): ActivityId => $activity->getId())))->unique();
         }
 
         $activityCollection = $this->activityCollectionRepository->find($command->getActivityCollectionId())
             ->withName($command->getName())
             ->withDescription($command->getDescription())
             ->withType($command->getType())
-            ->withActivityIds($command->getActivityIds());
+            ->withActivityIds($activityIds);
 
         $newImage = $command->getNewImage();
         $removedImage = $command->getRemovedImage();

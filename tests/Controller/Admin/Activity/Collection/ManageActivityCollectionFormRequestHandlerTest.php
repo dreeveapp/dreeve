@@ -38,6 +38,8 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('', $form->filter('textarea[name="description"]')->text());
         $this->assertCount(0, $crawler->filter('a.btn--danger'));
         $this->assertCount(0, $form->filter('input[name="activityIds[]"]'));
+        $this->assertCount(0, $form->filter('input[name="activityIdToAdd"]'));
+        $this->assertCount(0, $form->filter('input[name="addActivitiesFrom"]'));
         $this->assertSame('[]', $form->filter('[data-image-dropzone]')->attr('data-existing-images'));
         $this->assertCount(1, $form->filter('input[data-images-field][name="coverImagePath"]'));
         $this->assertStringContainsString("Without a cover image, the first photo of the collection's activities is used.", $form->text());
@@ -103,10 +105,20 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
             ['activity-2', 'activity-3'],
             $form->filter('table.data-table input[type="checkbox"][name="activityIds[]"][checked]')->extract(['value']),
         );
-        $this->assertSame('/admin/activities/search', $form->filter('input[type="text"][name="activityIds[]"]')->attr('data-autocomplete-url'));
         $this->assertSame(
-            '/admin/collections/activityCollection-1/edit?redirectTo=%2Fadmin%2Fcollections',
-            $form->filter('button[type="submit"].btn--secondary')->attr('data-redirect'),
+            ['activity', 'dateRange'],
+            $form->filter('input[type="radio"][name="addActivitiesBy"]')->extract(['value']),
+        );
+        $this->assertSame('activity', $form->filter('input[type="radio"][name="addActivitiesBy"][checked]')->attr('value'));
+        $this->assertSame('/admin/activities/search', $form->filter('input[type="text"][name="activityIdToAdd"]')->attr('data-autocomplete-url'));
+        $this->assertCount(1, $form->filter('input[type="date"][name="addActivitiesFrom"]'));
+        $this->assertCount(1, $form->filter('input[type="date"][name="addActivitiesTill"]'));
+        $this->assertSame(
+            [
+                '/admin/collections/activityCollection-1/edit?redirectTo=%2Fadmin%2Fcollections',
+                '/admin/collections/activityCollection-1/edit?redirectTo=%2Fadmin%2Fcollections',
+            ],
+            $form->filter('button[type="submit"].btn--secondary')->extract(['data-redirect']),
         );
         $this->assertSame('Save', trim($form->filter('button[type="submit"].btn--primary .label')->text()));
 
@@ -114,8 +126,11 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('/collections/activityCollection-1', $crawler->filter('form[data-dispatch-command="update-activity-collection"]')->attr('data-redirect'));
         $this->assertSame('/collections/activityCollection-1', $crawler->filter('a.btn--secondary')->attr('href'));
         $this->assertSame(
-            '/admin/collections/activityCollection-1/edit?redirectTo=%2Fcollections%2FactivityCollection-1',
-            $crawler->filter('button[type="submit"].btn--secondary')->attr('data-redirect'),
+            [
+                '/admin/collections/activityCollection-1/edit?redirectTo=%2Fcollections%2FactivityCollection-1',
+                '/admin/collections/activityCollection-1/edit?redirectTo=%2Fcollections%2FactivityCollection-1',
+            ],
+            $crawler->filter('button[type="submit"].btn--secondary')->extract(['data-redirect']),
         );
 
         $this->client->request('GET', '/admin/collections/activityCollection-unknown/edit');

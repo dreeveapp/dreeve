@@ -27,6 +27,7 @@ Add: Add
 'Add a rule to start automating your activity details.': 'Füge eine Regel hinzu, um deine Aktivitätsdetails automatisch auszufüllen.'
 'Add a widget': 'Widget hinzufügen'
 'Add action': 'Aktion hinzufügen'
+'Add activities': 'Add activities'
 'Add activity': 'Aktivität hinzufügen'
 'Add automation rule': 'Automatisierungsregel hinzufügen'
 'Add challenge': 'Herausforderung hinzufügen'
@@ -134,6 +135,7 @@ Custom: Custom
 Daemon: Daemon
 'Dashboard layout': Dashboard-Layout
 'Date & time': 'Datum & Zeit'
+'Date range': 'Date range'
 'Date range based': 'Nach Datumsbereich'
 'Define what needs doing and how often.': 'Lege fest, was wie oft erledigt werden muss.'
 Delete: Löschen

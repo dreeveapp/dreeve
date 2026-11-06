@@ -27,6 +27,7 @@ Add: Add
 'Add a rule to start automating your activity details.': 'Adicione uma regra para começar a automatizar os detalhes das suas atividades.'
 'Add a widget': 'Adicionar um widget'
 'Add action': 'Adicionar ação'
+'Add activities': 'Add activities'
 'Add activity': 'Adicionar atividade'
 'Add automation rule': 'Adicionar regra de automação'
 'Add challenge': 'Adicionar desafio'
@@ -134,6 +135,7 @@ Custom: Personalizado
 Daemon: Daemon
 'Dashboard layout': 'Layout do painel'
 'Date & time': 'Date & time'
+'Date range': 'Date range'
 'Date range based': 'Baseado em intervalo de datas'
 'Define what needs doing and how often.': 'Defina o que precisa ser feito e com que frequência.'
 Delete: Excluir
