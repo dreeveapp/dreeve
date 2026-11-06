@@ -22,6 +22,7 @@ class AppearanceSettingsTest extends TestCase
         $this->assertSame(TimeFormat::TWENTY_FOUR, $settings->getDateAndTimeFormat()->getTimeFormat());
         $this->assertSame('d-m-y', (string) $settings->getDateAndTimeFormat()->getDateFormatShort());
         $this->assertSame('d-m-Y', (string) $settings->getDateAndTimeFormat()->getDateFormatNormal());
+        $this->assertSame('F j, Y', (string) $settings->getDateAndTimeFormat()->getDateFormatLong());
         $this->assertCount(0, $settings->getHidePhotosForSportTypes());
     }
 
@@ -35,6 +36,7 @@ class AppearanceSettingsTest extends TestCase
             'dateFormat' => [
                 'short' => 'm-d-y',
                 'normal' => 'm-d-Y',
+                'long' => 'l, F j, Y',
             ],
             'photos' => [
                 'hidePhotosForSportTypes' => ['VirtualRide'],
@@ -46,6 +48,7 @@ class AppearanceSettingsTest extends TestCase
         $this->assertSame(Locale::nl_BE, $settings->getLocale());
         $this->assertSame(TimeFormat::AM_PM, $settings->getDateAndTimeFormat()->getTimeFormat());
         $this->assertSame('m-d-y', (string) $settings->getDateAndTimeFormat()->getDateFormatShort());
+        $this->assertSame('l, F j, Y', (string) $settings->getDateAndTimeFormat()->getDateFormatLong());
         $this->assertCount(1, $settings->getHidePhotosForSportTypes());
     }
 

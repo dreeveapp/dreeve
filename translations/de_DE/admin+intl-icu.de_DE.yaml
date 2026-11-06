@@ -257,6 +257,7 @@ Latitude: Breitengrad
 Locale: Sprache
 Log: Protokoll
 'Log maintenance': 'Wartung protokollieren'
+'Long date format': 'Long date format'
 Longitude: Längengrad
 'MCP access': 'MCP access'
 'MCP key': 'MCP key'
@@ -330,6 +331,8 @@ Operator: Operator
 'Optional. Leave empty to always apply this goal.': 'Optional. Leer lassen, um dieses Ziel immer anzuwenden.'
 'Optional. Your current Zwift level (1 or higher). Leave empty to hide the Zwift badge.': 'Optional. Dein aktuelles Zwift-Level (1 oder höher). Leer lassen, um das Zwift-Abzeichen auszublenden.'
 'Optional. Your current Zwift racing score (between 0 and 1000).': 'Optional. Dein aktueller Zwift Racing Score (zwischen 0 und 1000).'
+'PHP date format documentation': 'PHP date format documentation'
+'PHP date format for long dates, e.g. F j, Y renders to January 1, 2025.': 'PHP date format for long dates, e.g. F j, Y renders to January 1, 2025.'
 'PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025.': 'PHP-Datumsformat für normale Daten, z. B. d-m-Y ergibt 01-01-2025.'
 'PHP date format for short dates, e.g. d-m-y renders to 01-01-25.': 'PHP-Datumsformat für kurze Daten, z. B. d-m-y ergibt 01-01-25.'
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Teile, deren Wartung du verfolgst, z. B. Ketten, Kassetten, Bremsbeläge ...'
@@ -401,6 +404,7 @@ Saving...: 'Wird gespeichert...'
 'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
 Seconds: Sekunden
 Security: Sicherheit
+'See the {phpDateFormat}.': 'See the {phpDateFormat}.'
 'Segment management': Segmentverwaltung
 'Segments will appear here once you create them from one of your activities.': 'Segmente werden hier angezeigt, sobald du sie aus einer deiner Aktivitäten erstellt hast.'
 'Select a component first...': 'Wähle zuerst eine Komponente aus...'

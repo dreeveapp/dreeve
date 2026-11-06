@@ -9,6 +9,7 @@ final readonly class DateAndTimeFormat
     private function __construct(
         private DateFormat $dateFormatShort,
         private DateFormat $dateFormatNormal,
+        private DateFormat $dateFormatLong,
         private TimeFormat $timeFormat,
     ) {
     }
@@ -16,11 +17,13 @@ final readonly class DateAndTimeFormat
     public static function create(
         string $dateFormatShort,
         string $dateFormatNormal,
+        string $dateFormatLong,
         int $timeFormat,
     ): self {
         return new self(
             dateFormatShort: DateFormat::from($dateFormatShort),
             dateFormatNormal: DateFormat::from($dateFormatNormal),
+            dateFormatLong: DateFormat::from($dateFormatLong),
             timeFormat: TimeFormat::from($timeFormat)
         );
     }
@@ -33,6 +36,11 @@ final readonly class DateAndTimeFormat
     public function getDateFormatNormal(): DateFormat
     {
         return $this->dateFormatNormal;
+    }
+
+    public function getDateFormatLong(): DateFormat
+    {
+        return $this->dateFormatLong;
     }
 
     public function getTimeFormat(): TimeFormat
