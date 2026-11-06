@@ -68,8 +68,8 @@ RUN if [ "${TARGETARCH}" = "arm64" ]; then \
       curl -fL -o shoutrrr.tar.gz "https://github.com/nicholas-fedor/shoutrrr/releases/download/v$SHOUTRRR_VERSION/shoutrrr_linux_arm64v8_${SHOUTRRR_VERSION}.tar.gz"; \
     elif [ "${TARGETARCH}" = "amd64" ]; then \
       curl -fL -o shoutrrr.tar.gz "https://github.com/nicholas-fedor/shoutrrr/releases/download/v$SHOUTRRR_VERSION/shoutrrr_linux_amd64_${SHOUTRRR_VERSION}.tar.gz"; \
-    fi
-RUN tar -xzf shoutrrr.tar.gz \
+    fi \
+    && tar -xzf shoutrrr.tar.gz shoutrrr \
     && chmod +x shoutrrr \
     && mv shoutrrr /usr/bin/shoutrrr && rm shoutrrr.tar.gz
 
