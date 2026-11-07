@@ -26,6 +26,14 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-scripts --no-dev
 
+      - name: Verify app version matches the tag
+        if: github.ref_type == 'tag'
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          touch .env
+          bin/console app:release:verify-version "$TAG"
+
       - name: Compress Symfony Intl data
         run: composer run compress-intl
 
