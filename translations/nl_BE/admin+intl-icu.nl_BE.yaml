@@ -76,6 +76,7 @@ Apply: Toepassen
 'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Ben je zeker dat je {name} wil verwijderen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Ben je zeker dat je {task} op {component} voor {gear}, uitgevoerd op {date}, wil verwijderen?'
+'Are you sure you want to dismiss the trip of {dates}?': 'Are you sure you want to dismiss the trip of {dates}?'
 'Are you sure you want to remove the {widget} widget?': 'Ben je zeker dat je de widget {widget} wil verwijderen?'
 'Assign gear': 'Uitrusting toewijzen'
 Athlete: Athlete
@@ -154,6 +155,9 @@ Deleting...: 'Aan het verwijderen...'
 Description: Beschrijving
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Gedetailleerde instructies vind je in {linkOpen}de documentatie{linkClose}.'
 Disabled: Uitgeschakeld
+Dismiss: Dismiss
+'Dismiss suggestion': 'Dismiss suggestion'
+Dismissing...: Dismissing...
 Display: Display
 Distance: Afstand
 'Do not download activity photos': "Geen activiteitsfoto's downloaden"
@@ -258,6 +262,7 @@ Integrations: Integraties
 'Intro text': Introtekst
 'Invalid CSRF token.': 'Ongeldig CSRF-token.'
 'Issuer URL': 'Issuer URL'
+'It will not be suggested again. Its activities are not deleted.': 'It will not be suggested again. Its activities are not deleted.'
 'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Label
 'Last name': Achternaam

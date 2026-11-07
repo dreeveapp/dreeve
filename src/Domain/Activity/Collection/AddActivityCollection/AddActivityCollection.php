@@ -59,7 +59,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
 
         try {
             $activityIds = ActivityIds::fromArray(array_map(
-                static fn (mixed $activityId): ActivityId => ActivityReference::parse(is_string($activityId) ? $activityId : ''),
+                static fn (mixed $activityId): ActivityId => ActivityReference::parse($activityId),
                 array_values($activityIds),
             ));
         } catch (\InvalidArgumentException) {

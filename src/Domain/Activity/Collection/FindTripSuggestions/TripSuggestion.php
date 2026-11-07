@@ -42,6 +42,11 @@ final readonly class TripSuggestion
         );
     }
 
+    public function getId(): TripSuggestionId
+    {
+        return TripSuggestionId::fromUnprefixed(md5(implode(',', $this->activityIds->map(strval(...)))));
+    }
+
     public function getActivityIds(): ActivityIds
     {
         return $this->activityIds;

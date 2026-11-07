@@ -81,7 +81,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         }
 
         try {
-            $activityIdToAdd = '' === $activityIdToAdd ? null : ActivityReference::parse(is_string($activityIdToAdd) ? $activityIdToAdd : '');
+            $activityIdToAdd = '' === $activityIdToAdd ? null : ActivityReference::parse($activityIdToAdd);
         } catch (\InvalidArgumentException) {
             throw CouldNotDeserializeCommand::invalidPayload('The "activityIdToAdd" is an invalid activity id.');
         }

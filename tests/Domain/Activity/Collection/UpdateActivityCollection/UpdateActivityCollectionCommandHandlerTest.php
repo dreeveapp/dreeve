@@ -205,7 +205,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
         ];
 
         yield 'invalid activity to add' => [
-            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'activityIdToAdd' => ['activity-1']],
+            ['activityCollectionId' => 'activityCollection-1', 'name' => 'Mallorca', 'type' => 'trip', 'activityIdToAdd' => 'Col du Tourmalet'],
             'The "activityIdToAdd" is an invalid activity id.',
         ];
 

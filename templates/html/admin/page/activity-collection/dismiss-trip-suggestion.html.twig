@@ -1,0 +1,29 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% embed 'html/admin/component/delete-confirm-modal.html.twig' with {closeUrl: relativeUrl(path('admin_activity_collection_trip_suggestions'))} %}
+        {% block title %}{{ "Dismiss suggestion"|trans({}, 'admin') }}{% endblock %}
+        {% block hidden_fields %}
+            {% for activityId in tripSuggestion.getActivityIds() %}
+                <input type="hidden" name="activityIds[]" value="{{ activityId }}">
+            {% endfor %}
+        {% endblock %}
+        {% block message %}
+            {% autoescape false %}
+            {% set dates = tripSuggestion.getStartDate()|formatDate('normal') %}
+            {% if tripSuggestion.getStartDate() != tripSuggestion.getEndDate() %}
+                {% set dates = dates ~ ' - ' ~ tripSuggestion.getEndDate()|formatDate('normal') %}
+            {% endif %}
+            <p>
+                {{ "Are you sure you want to dismiss the trip of {dates}?"|trans({
+                    '{dates}': '<span class="font-semibold text-gray-900">' ~ dates|e ~ '</span>',
+                }, 'admin') }}
+            </p>
+            <p>
+                {{ "It will not be suggested again. Its activities are not deleted."|trans({}, 'admin') }}
+            </p>
+            {% endautoescape %}
+        {% endblock %}
+        {% block submit_label %}{{ "Dismiss"|trans({}, 'admin') }}{% endblock %}
+        {% block submit_loading_label %}{{ "Dismissing..."|trans({}, 'admin') }}{% endblock %}
+    {% endembed %}
+{% endblock main %}
