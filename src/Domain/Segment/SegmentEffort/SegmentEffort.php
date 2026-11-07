@@ -197,7 +197,6 @@ final class SegmentEffort implements SupportsAITooling
         return [
             'id' => $this->getId()->toUnprefixedString(),
             'segmentId' => $this->getSegmentId()->toUnprefixedString(),
-            'activityId' => $this->getActivityId()->toUnprefixedString(),
             'startDateTime' => $this->getStartDateTime()->format('Y-m-d'),
             'name' => $this->getName(),
             'distanceInKilometer' => $this->getDistance(),

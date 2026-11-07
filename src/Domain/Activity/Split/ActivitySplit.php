@@ -210,7 +210,6 @@ final readonly class ActivitySplit implements SupportsAITooling
     public function exportForAITooling(): array
     {
         return [
-            'activityId' => $this->getActivityId()->toUnprefixedString(),
             'unitSystem' => $this->getUnitSystem()->value,
             'splitNumber' => $this->getSplitNumber(),
             'elapsedTimeInSeconds' => $this->getElapsedTimeInSeconds(),

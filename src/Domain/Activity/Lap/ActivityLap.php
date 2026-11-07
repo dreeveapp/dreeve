@@ -229,7 +229,6 @@ final readonly class ActivityLap implements SupportsAITooling
     {
         return [
             'id' => $this->getLapId()->toUnprefixedString(),
-            'activityId' => $this->getActivityId()->toUnprefixedString(),
             'lapNumber' => $this->getLapNumber(),
             'elapsedTimeInSeconds' => $this->getElapsedTimeInSeconds(),
             'movingTimeInSeconds' => $this->getMovingTimeInSeconds(),

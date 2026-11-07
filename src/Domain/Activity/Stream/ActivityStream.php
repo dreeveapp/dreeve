@@ -150,6 +150,11 @@ final readonly class ActivityStream implements SupportsAITooling
                 'minPower' => min($data),
                 'avgPower' => round(array_sum($data) / count($data)),
             ],
+            StreamType::CADENCE => [
+                'maxCadence' => max($data),
+                'minCadence' => min($data),
+                'avgCadence' => round(array_sum($data) / count($data)),
+            ],
             StreamType::VELOCITY => [
                 'maxMeterPerSecond' => max($data),
                 'minMeterPerSecond' => min($data),
@@ -158,10 +163,12 @@ final readonly class ActivityStream implements SupportsAITooling
             default => [],
         };
 
+        if ([] === $streamTypeSpecificStats) {
+            return [];
+        }
+
         return [
-            'activityId' => $this->getActivityId()->toUnprefixedString(),
             'streamType' => $this->getStreamType()->value,
-            'totalPoints' => count($data),
             ...$streamTypeSpecificStats,
         ];
     }

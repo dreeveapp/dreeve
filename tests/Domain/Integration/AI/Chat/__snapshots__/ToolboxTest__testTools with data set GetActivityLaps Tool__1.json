@@ -2,7 +2,6 @@
     "laps": [
         {
             "id": "test",
-            "activityId": "123456789",
             "lapNumber": 1,
             "elapsedTimeInSeconds": 120,
             "movingTimeInSeconds": 110,

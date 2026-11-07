@@ -1,7 +1,6 @@
 {
     "splits": [
         {
-            "activityId": "123456789",
             "unitSystem": "metric",
             "splitNumber": 3,
             "elapsedTimeInSeconds": 120,
