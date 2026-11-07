@@ -110,30 +110,36 @@
                                 <label for="add-activities-by-date-range" class="cursor-pointer rounded-md px-2 py-1 text-xxs text-gray-500 transition peer-checked/date-range:bg-white peer-checked/date-range:text-gray-900 peer-checked/date-range:shadow-xs peer-focus-visible/date-range:ring-2 peer-focus-visible/date-range:ring-primary/40">{{ "Date range"|trans({}, 'admin') }}</label>
                             </div>
                         </div>
-                        <div class="flex gap-2 group/add-activity group-has-[#add-activities-by-date-range:checked]/add-activities:hidden">
-                            <input type="text" name="activityIdToAdd" aria-label="{{ "Add activity"|trans({}, 'admin') }}"
-                                   placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
-                                   autocomplete="off" spellcheck="false"
-                                   data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}"
-                                   data-autocomplete-use-reference>
-                            <button type="submit" data-has-loading-state class="group btn--secondary shrink-0 group-has-[input:placeholder-shown]/add-activity:hidden"
-                                    data-redirect="{{ editUrl }}">
-                                {{ svg('plus') }}
-                                <span class="label">{{ "Add"|trans({}, 'admin') }}</span>
-                                <span class="label--loading">{{ "Adding..."|trans({}, 'admin') }}</span>
-                            </button>
-                        </div>
-                        <div class="hidden gap-2 group-has-[#add-activities-by-date-range:checked]/add-activities:flex">
-                            <div class="grid grow grid-cols-2 gap-3">
-                                <input type="date" name="addActivitiesFrom" aria-label="{{ "From"|trans({}, 'admin') }}">
-                                <input type="date" name="addActivitiesTill" aria-label="{{ "To"|trans({}, 'admin') }}">
+                        <div class="group-has-[#add-activities-by-date-range:checked]/add-activities:hidden">
+                            <div class="flex gap-2 group/add-activity">
+                                <input type="text" name="activityIdToAdd" aria-label="{{ "Add activity"|trans({}, 'admin') }}"
+                                       placeholder="{{ "Search by name, date or activity ID"|trans({}, 'admin') }}"
+                                       autocomplete="off" spellcheck="false"
+                                       data-autocomplete-url="{{ relativeUrl(path('admin_activity_search')) }}"
+                                       data-autocomplete-use-reference>
+                                <button type="submit" data-has-loading-state class="group btn--secondary shrink-0 group-has-[input:placeholder-shown]/add-activity:hidden"
+                                        data-redirect="{{ editUrl }}">
+                                    {{ svg('plus') }}
+                                    <span class="label">{{ "Add"|trans({}, 'admin') }}</span>
+                                    <span class="label--loading">{{ "Adding..."|trans({}, 'admin') }}</span>
+                                </button>
                             </div>
-                            <button type="submit" data-has-loading-state class="group btn--secondary shrink-0"
-                                    data-redirect="{{ editUrl }}">
-                                {{ svg('plus') }}
-                                <span class="label">{{ "Add"|trans({}, 'admin') }}</span>
-                                <span class="label--loading">{{ "Adding..."|trans({}, 'admin') }}</span>
-                            </button>
+                            <p class="description">{{ "Search and add a single activity to the collection."|trans({}, 'admin') }}</p>
+                        </div>
+                        <div class="hidden group-has-[#add-activities-by-date-range:checked]/add-activities:block">
+                            <div class="flex gap-2">
+                                <div class="grid grow grid-cols-2 gap-3">
+                                    <input type="date" name="addActivitiesFrom" aria-label="{{ "From"|trans({}, 'admin') }}">
+                                    <input type="date" name="addActivitiesTill" aria-label="{{ "To"|trans({}, 'admin') }}">
+                                </div>
+                                <button type="submit" data-has-loading-state class="group btn--secondary shrink-0"
+                                        data-redirect="{{ editUrl }}">
+                                    {{ svg('plus') }}
+                                    <span class="label">{{ "Add"|trans({}, 'admin') }}</span>
+                                    <span class="label--loading">{{ "Adding..."|trans({}, 'admin') }}</span>
+                                </button>
+                            </div>
+                            <p class="description">{{ "Add all activities between two dates, both included."|trans({}, 'admin') }}</p>
                         </div>
                     </div>
                 {% endif %}
