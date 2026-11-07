@@ -11,13 +11,21 @@ export default class LeafletMap {
         this.data = data;
         this.config = config;
 
+        this.isInteractive = false !== data.interactive;
         this.map = L.map(mapNode, {
-            ctrlScrollZoom: config.requireCtrlToZoom,
+            ctrlScrollZoom: this.isInteractive && config.requireCtrlToZoom,
             minZoom: data.minZoom,
             maxZoom: data.maxZoom,
             zoomSnap: .5,
             zoomDelta: .5,
             preferCanvas: true,
+            zoomControl: this.isInteractive,
+            dragging: this.isInteractive,
+            scrollWheelZoom: this.isInteractive,
+            doubleClickZoom: this.isInteractive,
+            touchZoom: this.isInteractive,
+            boxZoom: this.isInteractive,
+            keyboard: this.isInteractive,
         });
 
         if (data.tileLayer) {
@@ -57,7 +65,9 @@ export default class LeafletMap {
 
         featureGroup.addTo(this.map);
         this.map.fitBounds(featureGroup.getBounds(), {maxZoom: this.data.maxZoom});
-        this.map.addControl(createMapToolsControl({bounds: featureGroup.getBounds()}));
+        if (this.isInteractive) {
+            this.map.addControl(createMapToolsControl({bounds: featureGroup.getBounds()}));
+        }
     }
 
     async connectToEChart() {

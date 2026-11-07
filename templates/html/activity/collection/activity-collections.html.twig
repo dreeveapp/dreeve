@@ -17,10 +17,24 @@
             <a href="{{ relativeUrl(path('activity_collection', {activityCollectionId: activityCollection.getId()})) }}" aria-label="{{ activityCollection.getName()|e('html_attr') }}"
                class="group group/image flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-3 shadow-xs hover:border-primary transition">
                 <div class="no-dark h-40 relative overflow-hidden rounded-lg bg-gray-200">
-                    <img class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover/image:scale-105 lazy"
-                         src="{{ placeholderImage() }}"
-                         data-src="{{ activityCollectionWithActivities.getCoverImagePath() ? relativeUrl(activityCollectionWithActivities.getCoverImagePath()) : placeholderImage() }}"
-                         alt="{{ activityCollection.getName()|e('html_attr') }}"/>
+                    {% if activityCollectionWithActivities.usesRouteMapAsCover() %}
+                        {% set leafletOptions = {
+                            'polylineUrl': relativeUrl(path('activity_collection_polylines', {activityCollectionId: activityCollection.getId()})),
+                            'tileLayer': leafletMap.getTileLayer(),
+                            'minZoom': leafletMap.getMinZoom(),
+                            'maxZoom': leafletMap.getMaxZoom(),
+                            'imageOverlay': leafletMap.getOverlayImageUrl(),
+                            'bounds': leafletMap.getBounds(),
+                            'interactive': false
+                        } %}
+                        <div class="absolute inset-0 z-0 pointer-events-none" style="background-color:{{ leafletMap.getBackgroundColor() }}"
+                             data-leaflet='{{ leafletOptions|json_encode }}'></div>
+                    {% else %}
+                        <img class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover/image:scale-105 lazy"
+                             src="{{ placeholderImage() }}"
+                             data-src="{{ activityCollectionWithActivities.getCoverImagePath() ? relativeUrl(activityCollectionWithActivities.getCoverImagePath()) : placeholderImage() }}"
+                             alt="{{ activityCollection.getName()|e('html_attr') }}"/>
+                    {% endif %}
                     <div class="absolute top-3 left-3">
                         <span class="pill pill--neutral text-xs">{{ activityCollection.getType()|trans }}</span>
                     </div>
