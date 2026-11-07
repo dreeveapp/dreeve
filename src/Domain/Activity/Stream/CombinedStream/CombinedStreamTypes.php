@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Stream\CombinedStream;
 
 use App\Domain\Activity\ActivityType;
-use App\Infrastructure\ValueObject\EnumCollection;
+use App\Infrastructure\ValueObject\BackedEnumCollection;
 
 /**
- * @extends EnumCollection<CombinedStreamType>
+ * @extends BackedEnumCollection<CombinedStreamType>
  */
-final class CombinedStreamTypes extends EnumCollection
+final class CombinedStreamTypes extends BackedEnumCollection
 {
     public function getItemClassName(): string
     {

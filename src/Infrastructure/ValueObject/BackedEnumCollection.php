@@ -9,7 +9,7 @@ namespace App\Infrastructure\ValueObject;
  *
  * @extends Collection<T>
  */
-abstract class EnumCollection extends Collection
+abstract class BackedEnumCollection extends Collection
 {
     /**
      * @param array<int|string> $values
