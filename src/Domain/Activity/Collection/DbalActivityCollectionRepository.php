@@ -24,8 +24,8 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
 
     public function add(ActivityCollection $activityCollection): void
     {
-        $sql = 'INSERT INTO ActivityCollection (activityCollectionId, name, description, type, activityIds, coverImagePath, createdOn)
-                VALUES (:activityCollectionId, :name, :description, :type, :activityIds, :coverImagePath, :createdOn)';
+        $sql = 'INSERT INTO ActivityCollection (activityCollectionId, name, description, type, activityIds, coverImagePath, useRouteMapAsCover, createdOn)
+                VALUES (:activityCollectionId, :name, :description, :type, :activityIds, :coverImagePath, :useRouteMapAsCover, :createdOn)';
 
         $this->connection->executeStatement($sql, [
             'activityCollectionId' => $activityCollection->getId(),
@@ -34,6 +34,7 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
             'type' => $activityCollection->getType()->value,
             'activityIds' => Json::encode($activityCollection->getActivityIds()),
             'coverImagePath' => $activityCollection->getCoverImagePath(),
+            'useRouteMapAsCover' => (int) $activityCollection->useRouteMapAsCover(),
             'createdOn' => $activityCollection->getCreatedOn(),
         ]);
 
@@ -47,7 +48,8 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
                     description = :description,
                     type = :type,
                     activityIds = :activityIds,
-                    coverImagePath = :coverImagePath
+                    coverImagePath = :coverImagePath,
+                    useRouteMapAsCover = :useRouteMapAsCover
                 WHERE activityCollectionId = :activityCollectionId';
 
         $this->connection->executeStatement($sql, [
@@ -57,6 +59,7 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
             'type' => $activityCollection->getType()->value,
             'activityIds' => Json::encode($activityCollection->getActivityIds()),
             'coverImagePath' => $activityCollection->getCoverImagePath(),
+            'useRouteMapAsCover' => (int) $activityCollection->useRouteMapAsCover(),
         ]);
 
         $this->eventBus->publishEvents($activityCollection->getRecordedEvents());
@@ -130,6 +133,7 @@ final readonly class DbalActivityCollectionRepository extends DbalRepository imp
                 Json::decode($result['activityIds']),
             )),
             coverImagePath: $result['coverImagePath'],
+            useRouteMapAsCover: (bool) $result['useRouteMapAsCover'],
             createdOn: SerializableDateTime::fromString($result['createdOn']),
         );
     }

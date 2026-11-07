@@ -52,7 +52,8 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
             ->withName($command->getName())
             ->withDescription($command->getDescription())
             ->withType($command->getType())
-            ->withActivityIds($activityIds);
+            ->withActivityIds($activityIds)
+            ->withUseRouteMapAsCover($command->useRouteMapAsCover());
 
         $newImage = $command->getNewImage();
         $removedImage = $command->getRemovedImage();

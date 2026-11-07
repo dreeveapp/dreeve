@@ -24,6 +24,7 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
             'type' => 'trip',
             'description' => '  Spring cycling week  ',
             'activityIds' => ['activity-1', 'Morning ride (activity-2)'],
+            'useRouteMapAsCover' => 'true',
             'coverImagePath' => json_encode([
                 ['status' => 'new', 'filename' => 'cover.jpg', 'content' => base64_encode('image-content')],
             ]),
@@ -36,6 +37,7 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
         $this->assertEquals(ActivityIds::fromArray([ActivityId::fromUnprefixed('1'), ActivityId::fromUnprefixed('2')]), $activityCollection->getActivityIds());
         $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:04'), $activityCollection->getCreatedOn());
         $this->assertSame('/files/activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg', $activityCollection->getCoverImagePath());
+        $this->assertTrue($activityCollection->useRouteMapAsCover());
         $this->assertSame('image-content', $this->getContainer()->get('file.storage')->read('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
     }
 
@@ -53,5 +55,6 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activityCollection->getCoverImagePath());
         $this->assertSame(ActivityCollectionType::EVENT, $activityCollection->getType());
         $this->assertEquals(ActivityIds::empty(), $activityCollection->getActivityIds());
+        $this->assertFalse($activityCollection->useRouteMapAsCover());
     }
 }

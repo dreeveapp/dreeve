@@ -34,6 +34,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
                 ActivityId::fromUnprefixed('1'),
             ]))
             ->withCoverImagePath('/files/activity-collections/cover.jpg')
+            ->withUseRouteMapAsCover(true)
             ->build();
         $this->repository->add($activityCollection);
 
@@ -47,6 +48,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
                     'type' => 'event',
                     'activityIds' => '["activity-2","activity-1"]',
                     'coverImagePath' => '/files/activity-collections/cover.jpg',
+                    'useRouteMapAsCover' => 1,
                     'createdOn' => '2025-04-20 10:00:00',
                 ],
             ],
@@ -99,7 +101,8 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withDescription(null)
             ->withType(ActivityCollectionType::EVENT)
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('2'), ActivityId::fromUnprefixed('3')]))
-            ->withCoverImagePath(null);
+            ->withCoverImagePath(null)
+            ->withUseRouteMapAsCover(true);
         $this->repository->update($updated);
 
         $this->assertEquals($updated, $this->repository->find($activityCollection->getId()));

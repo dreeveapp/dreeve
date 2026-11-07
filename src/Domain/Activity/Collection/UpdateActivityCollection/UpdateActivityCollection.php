@@ -31,6 +31,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         private ActivityCollectionType $type,
         private ?NewImage $newImage,
         private ?RemovedImage $removedImage,
+        private bool $useRouteMapAsCover,
         private ActivityIds $activityIds,
         private ?ActivityId $activityIdToAdd,
         private ?DateRange $addActivitiesInRange,
@@ -110,6 +111,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
             type: $activityCollectionType,
             newImage: $newImages[0] ?? null,
             removedImage: $removedImages[0] ?? null,
+            useRouteMapAsCover: filter_var($payload['useRouteMapAsCover'] ?? false, FILTER_VALIDATE_BOOLEAN),
             activityIds: $activityIds,
             activityIdToAdd: $activityIdToAdd,
             addActivitiesInRange: $addActivitiesInRange,
@@ -144,6 +146,11 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
     public function getRemovedImage(): ?RemovedImage
     {
         return $this->removedImage;
+    }
+
+    public function useRouteMapAsCover(): bool
+    {
+        return $this->useRouteMapAsCover;
     }
 
     public function getActivityIds(): ActivityIds

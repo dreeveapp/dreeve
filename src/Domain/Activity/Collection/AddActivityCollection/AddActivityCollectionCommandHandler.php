@@ -41,6 +41,7 @@ final readonly class AddActivityCollectionCommandHandler implements CommandHandl
             type: $command->getType(),
             activityIds: $command->getActivityIds(),
             coverImagePath: $coverImagePath,
+            useRouteMapAsCover: $command->useRouteMapAsCover(),
             createdOn: $this->clock->now(),
         ));
     }
