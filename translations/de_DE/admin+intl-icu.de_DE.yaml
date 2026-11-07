@@ -76,6 +76,7 @@ Apply: Anwenden
 'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Möchtest du {name} wirklich löschen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Möchtest du {task} an {component} für {gear}, durchgeführt am {date}, wirklich löschen?'
+'Are you sure you want to dismiss the trip of {dates}?': 'Are you sure you want to dismiss the trip of {dates}?'
 'Are you sure you want to remove the {widget} widget?': 'Möchtest du das {widget} Widget entfernen?'
 'Assign gear': 'Ausrüstung zuweisen'
 Athlete: Athlete
@@ -154,6 +155,9 @@ Deleting...: 'wird gelöscht...'
 Description: Beschreibung
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Ausführliche Anleitungen findest du in {linkOpen}der Dokumentation{linkClose}.'
 Disabled: Deaktiviert
+Dismiss: Dismiss
+'Dismiss suggestion': 'Dismiss suggestion'
+Dismissing...: Dismissing...
 Display: Display
 Distance: Distanz
 'Do not download activity photos': 'Keine Bilder von Aktivitäten herunterladen.'
@@ -258,6 +262,7 @@ Integrations: Integrationen
 'Intro text': Einleitungstext
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
 'Issuer URL': 'Issuer URL'
+'It will not be suggested again. Its activities are not deleted.': 'It will not be suggested again. Its activities are not deleted.'
 'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Bezeichnung
 'Last name': Nachname

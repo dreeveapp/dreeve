@@ -51,18 +51,26 @@
                             {{ tripSuggestion.getActivityIds()|length }}
                         </td>
                         <td class="narrow whitespace-nowrap sticky-actions">
-                            <form data-dispatch-command="{{ addActivityCollectionCommand }}" data-redirect="{{ relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: suggestion.activityCollectionId}), suggestionsUrl) }}" class="inline-flex">
-                                <input type="hidden" name="activityCollectionId" value="{{ suggestion.activityCollectionId }}">
-                                <input type="hidden" name="name" value="{{ suggestion.name|e }}">
-                                <input type="hidden" name="type" value="{{ tripType.value }}">
-                                {% for activityId in tripSuggestion.getActivityIds() %}
-                                    <input type="hidden" name="activityIds[]" value="{{ activityId }}">
-                                {% endfor %}
-                                <button type="submit" data-has-loading-state class="btn--secondary">
-                                    {{ svg('plus') }}
-                                    <span>{{ "Create collection"|trans({}, 'admin') }}</span>
-                                </button>
-                            </form>
+                            <div class="flex items-center gap-3">
+                                <form data-dispatch-command="{{ addActivityCollectionCommand }}" data-redirect="{{ relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: suggestion.activityCollectionId}), suggestionsUrl) }}" class="inline-flex">
+                                    <input type="hidden" name="activityCollectionId" value="{{ suggestion.activityCollectionId }}">
+                                    <input type="hidden" name="name" value="{{ suggestion.name|e }}">
+                                    <input type="hidden" name="type" value="{{ tripType.value }}">
+                                    {% for activityId in tripSuggestion.getActivityIds() %}
+                                        <input type="hidden" name="activityIds[]" value="{{ activityId }}">
+                                    {% endfor %}
+                                    <button type="submit" data-has-loading-state class="btn--secondary">
+                                        {{ svg('plus') }}
+                                        <span>{{ "Create collection"|trans({}, 'admin') }}</span>
+                                    </button>
+                                </form>
+                                <a href="{{ relativeUrl(path('admin_dismiss_trip_suggestion', {tripSuggestionId: tripSuggestion.getId()})) }}"
+                                   class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
+                                   title="{{ "Dismiss"|trans({}, 'admin') }}">
+                                    <span class="sr-only">{{ "Dismiss"|trans({}, 'admin') }}</span>
+                                    {{ svg('trash') }}
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}

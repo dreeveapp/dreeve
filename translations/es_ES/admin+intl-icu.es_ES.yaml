@@ -76,6 +76,7 @@ Apply: Aplicar
 'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': '¿Estás seguro de que quieres eliminar {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': '¿Estás seguro de que quieres eliminar la tarea {task} en el componente {component} para el equipamiento {gear}, realizada el {date}?'
+'Are you sure you want to dismiss the trip of {dates}?': 'Are you sure you want to dismiss the trip of {dates}?'
 'Are you sure you want to remove the {widget} widget?': '¿Estás seguro de que quieres quitar el widget {widget}?'
 'Assign gear': 'Asignar equipamiento'
 Athlete: Athlete
@@ -154,6 +155,9 @@ Deleting...: Eliminando...
 Description: Descripción
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Las instrucciones detalladas están disponibles en {linkOpen}la documentación{linkClose}.'
 Disabled: Desactivado
+Dismiss: Dismiss
+'Dismiss suggestion': 'Dismiss suggestion'
+Dismissing...: Dismissing...
 Display: Display
 Distance: Distancia
 'Do not download activity photos': 'Do not download activity photos'
@@ -258,6 +262,7 @@ Integrations: Integraciones
 'Intro text': 'Texto de introducción'
 'Invalid CSRF token.': 'Token CSRF no válido.'
 'Issuer URL': 'Issuer URL'
+'It will not be suggested again. Its activities are not deleted.': 'It will not be suggested again. Its activities are not deleted.'
 'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Etiqueta
 'Last name': Apellidos

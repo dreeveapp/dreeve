@@ -76,6 +76,7 @@ Apply: Alkalmaz
 'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Biztosan törölni szeretnéd: {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Biztosan törölni szeretnéd a(z) {task} feladatot a(z) {component} komponensen a(z) {gear} felszereléshez, amely {date} napon történt?'
+'Are you sure you want to dismiss the trip of {dates}?': 'Are you sure you want to dismiss the trip of {dates}?'
 'Are you sure you want to remove the {widget} widget?': 'Biztosan el szeretnéd távolítani a(z) {widget} widgetet?'
 'Assign gear': 'Felszerelés hozzárendelése'
 Athlete: Athlete
@@ -154,6 +155,9 @@ Deleting...: 'Törlés folyamatban...'
 Description: Leírás
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Részletes útmutató elérhető {linkOpen}a dokumentációban{linkClose}.'
 Disabled: Letiltva
+Dismiss: Dismiss
+'Dismiss suggestion': 'Dismiss suggestion'
+Dismissing...: Dismissing...
 Display: Display
 Distance: Távolság
 'Do not download activity photos': 'Do not download activity photos'
@@ -258,6 +262,7 @@ Integrations: Integrációk
 'Intro text': 'Bevezető szöveg'
 'Invalid CSRF token.': 'Érvénytelen CSRF-token.'
 'Issuer URL': 'Issuer URL'
+'It will not be suggested again. Its activities are not deleted.': 'It will not be suggested again. Its activities are not deleted.'
 'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Címke
 'Last name': Vezetéknév

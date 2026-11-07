@@ -46,18 +46,32 @@ class TripSuggestionsRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('1', $crawler->filter('nav.contextual-panel[aria-label="Activity collections"] a[aria-selected="true"] span')->text());
         $suggestion = $crawler->filter('table.data-table tbody tr');
         $this->assertSame(
-            [['10-04-2024 - 12-04-2024', 'Pollença', '2', 'Create collection']],
+            [['10-04-2024 - 12-04-2024', 'Pollença', '2', 'Create collection Dismiss']],
             $suggestion->each(
                 static fn (Crawler $row): array => $row->filter('td')->each(static fn (Crawler $cell): string => preg_replace('/\s+/', ' ', trim($cell->text())) ?? ''),
             ),
         );
-        $form = $suggestion->filter('form');
+        $form = $suggestion->filter('form[data-dispatch-command="add-activity-collection"]');
         $this->assertSame('add-activity-collection', $form->attr('data-dispatch-command'));
         $activityCollectionId = $form->filter('input[name="activityCollectionId"]')->attr('value');
         $this->assertSame('/admin/collections/'.$activityCollectionId.'/edit?redirectTo=%2Fadmin%2Fcollections%2Fsuggestions', $form->attr('data-redirect'));
         $this->assertSame('Spain, Apr 2024', $form->filter('input[name="name"]')->attr('value'));
         $this->assertSame('trip', $form->filter('input[name="type"]')->attr('value'));
         $this->assertSame(['activity-trip-1', 'activity-trip-2'], $form->filter('input[name="activityIds[]"]')->extract(['value']));
+        $dismissUrl = (string) $suggestion->filter('a[title="Dismiss"]')->attr('href');
+        $this->assertSame('/admin/collections/suggestions/tripSuggestion-'.md5('activity-trip-1,activity-trip-2').'/dismiss', $dismissUrl);
+
+        $crawler = $this->client->request('GET', $dismissUrl);
+        $this->assertResponseIsSuccessful();
+        $this->assertStringContainsString('Dismiss suggestion', $crawler->filter('h3')->text());
+        $dismissForm = $crawler->filter('form[data-dispatch-command="dismiss-trip-suggestion"]');
+        $this->assertSame('/admin/collections/suggestions', $dismissForm->attr('data-redirect'));
+        $this->assertSame(['activity-trip-1', 'activity-trip-2'], $dismissForm->filter('input[name="activityIds[]"]')->extract(['value']));
+        $this->assertStringContainsString('Are you sure you want to dismiss the trip of 10-04-2024 - 12-04-2024?', $dismissForm->text());
+        $this->assertSame('Dismiss', trim($dismissForm->filter('button[type="submit"] .label')->text()));
+
+        $this->client->request('GET', '/admin/collections/suggestions/tripSuggestion-unknown/dismiss');
+        $this->assertResponseStatusCodeSame(404);
 
         $crawler = $this->client->request('GET', '/admin/collections/add');
         $this->assertResponseIsSuccessful();
