@@ -27,9 +27,6 @@ final class ActivityVisibilitiesToImport extends EnumCollection
             return self::fromArray(ActivityVisibility::cases());
         }
 
-        return self::fromArray(array_map(
-            ActivityVisibility::from(...),
-            $visibilities,
-        ));
+        return self::fromValues($visibilities);
     }
 }

@@ -89,10 +89,7 @@ final readonly class DbalCombinedActivityStreamRepository extends DbalRepository
         return CombinedActivityStream::fromState(
             activityId: ActivityId::fromString($result['activityId']),
             unitSystem: UnitSystem::from($result['unitSystem']),
-            streamTypes: CombinedStreamTypes::fromArray(array_map(
-                CombinedStreamType::from(...),
-                explode(',', (string) $result['streamTypes'])
-            )),
+            streamTypes: CombinedStreamTypes::fromValues(explode(',', (string) $result['streamTypes'])),
             data: Json::uncompressAndDecode($result['data']),
             maxYAxisValue: $result['maxYAxisValue'],
         );

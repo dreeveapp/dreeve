@@ -12,6 +12,17 @@ namespace App\Infrastructure\ValueObject;
 abstract class EnumCollection extends Collection
 {
     /**
+     * @param array<int|string> $values
+     */
+    public static function fromValues(array $values): static
+    {
+        /** @var class-string<T> $enumClass */
+        $enumClass = static::empty()->getItemClassName();
+
+        return static::fromArray(array_map($enumClass::from(...), $values));
+    }
+
+    /**
      * @return list<value-of<T>>
      */
     public function toValues(): array

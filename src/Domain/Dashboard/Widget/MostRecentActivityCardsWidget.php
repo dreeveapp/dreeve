@@ -101,10 +101,9 @@ final readonly class MostRecentActivityCardsWidget implements Widget
     {
         $activities = $this->activityRepository->findMostRecent(
             limit: (int) $configuration->get('numberOfActivitiesToDisplay'),
-            restrictToSportTypes: SportTypes::fromArray(array_map(
-                SportType::from(...),
-                $configuration->get('sportTypesToInclude'),  // @phpstan-ignore argument.type
-            )),
+            restrictToSportTypes: SportTypes::fromValues(
+                $configuration->get('sportTypesToInclude'), // @phpstan-ignore argument.type
+            ),
             onlyActivitiesWithARoute: (bool) $configuration->get('onlyShowActivitiesWithAMap'),
         );
 

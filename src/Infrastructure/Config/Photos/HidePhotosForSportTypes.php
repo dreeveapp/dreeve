@@ -16,21 +16,4 @@ final class HidePhotosForSportTypes extends EnumCollection
     {
         return SportType::class;
     }
-
-    /**
-     * @param string[] $sportTypes
-     */
-    public static function from(array $sportTypes): self
-    {
-        if (0 === count($sportTypes)) {
-            return self::empty();
-        }
-
-        return self::fromArray(
-            array_map(
-                SportType::from(...),
-                $sportTypes
-            )
-        );
-    }
 }
