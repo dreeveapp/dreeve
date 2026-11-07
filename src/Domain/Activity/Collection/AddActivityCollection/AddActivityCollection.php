@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Collection\AddActivityCollection;
 
-use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\Collection\ActivityCollectionId;
@@ -60,7 +59,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
 
         try {
             $activityIds = ActivityIds::fromArray(array_map(
-                static fn (mixed $activityId): ActivityId => ActivityReference::parse($activityId),
+                ActivityReference::parse(...),
                 array_values($activityIds),
             ));
         } catch (\InvalidArgumentException) {
