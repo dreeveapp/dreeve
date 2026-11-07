@@ -1,0 +1,155 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Activity\Collection\FindTripSuggestions;
+
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\Collection\ActivityCollectionRepository;
+use App\Domain\Activity\Collection\DismissedTripSuggestionRepository;
+use App\Domain\Activity\Route\RouteGeography;
+use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Activity\WorldType;
+use App\Infrastructure\CQRS\Query\Query;
+use App\Infrastructure\CQRS\Query\QueryHandler;
+use App\Infrastructure\CQRS\Query\Response;
+use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
+use App\Infrastructure\ValueObject\Geography\GeoMath;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Connection;
+
+final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
+{
+    private const float AWAY_FROM_HOME_IN_METERS = 75000;
+    private const int MAX_DAYS_BETWEEN_ACTIVITIES = 4;
+    private const int MIN_NUMBER_OF_ACTIVITIES = 2;
+    private const float MAX_SHARE_OF_A_LOCATION = 0.05;
+
+    public function __construct(
+        private Connection $connection,
+        private ActivityCollectionRepository $activityCollectionRepository,
+        private DismissedTripSuggestionRepository $dismissedTripSuggestionRepository,
+    ) {
+    }
+
+    /**
+     * @param Query<Response> $query
+     */
+    public function handle(Query $query): Response
+    {
+        assert($query instanceof FindTripSuggestions);
+
+        /** @var array<int, array{activityId: string, startDateTime: string, latitude: float, longitude: float, routeGeography: ?string, polyline: ?string}> $rows */
+        $rows = $this->connection->executeQuery(
+            'SELECT activityId, startDateTime, startingCoordinateLatitude AS latitude, startingCoordinateLongitude AS longitude, routeGeography, polyline
+             FROM Activity
+             WHERE worldType = :worldType AND sportType NOT IN (:virtualSportTypes)
+             AND startingCoordinateLatitude IS NOT NULL AND startingCoordinateLongitude IS NOT NULL
+             ORDER BY startDateTime ASC',
+            [
+                'worldType' => WorldType::REAL_WORLD->value,
+                'virtualSportTypes' => SportTypes::virtual()->map(fn (SportType $sportType): string => $sportType->value),
+            ],
+            [
+                'virtualSportTypes' => ArrayParameterType::STRING,
+            ],
+        )->fetchAllAssociative();
+
+        if ([] === $rows) {
+            return new FindTripSuggestionsResponse([]);
+        }
+
+        $locations = array_map(
+            static fn (array $row): string => sprintf('%.1f,%.1f', round($row['latitude'], 1), round($row['longitude'], 1)),
+            $rows,
+        );
+        $numberOfActivitiesPerLocation = array_count_values($locations);
+        arsort($numberOfActivitiesPerLocation);
+        [$homeLatitude, $homeLongitude] = array_map(floatval(...), explode(',', array_key_first($numberOfActivitiesPerLocation)));
+
+        $groups = [];
+        $currentGroup = [];
+        foreach ($rows as $index => $row) {
+            $startsAway = GeoMath::haversineDistance(
+                lat1: $homeLatitude,
+                lon1: $homeLongitude,
+                lat2: $row['latitude'],
+                lon2: $row['longitude'],
+            ) > self::AWAY_FROM_HOME_IN_METERS;
+            $isAway = $startsAway && $numberOfActivitiesPerLocation[$locations[$index]] / count($rows) < self::MAX_SHARE_OF_A_LOCATION;
+
+            if (!$startsAway) {
+                // The ride from home to the trip's destination.
+                $endingCoordinate = EncodedPolyline::fromOptionalString($row['polyline'])?->getEndingCoordinate();
+                $isAway = $endingCoordinate instanceof Coordinate && GeoMath::haversineDistance(
+                    lat1: $homeLatitude,
+                    lon1: $homeLongitude,
+                    lat2: $endingCoordinate->getLatitude()->toFloat(),
+                    lon2: $endingCoordinate->getLongitude()->toFloat(),
+                ) > self::AWAY_FROM_HOME_IN_METERS;
+            }
+            $day = SerializableDateTime::fromString($row['startDateTime'])->setTime(0, 0);
+
+            if (!$isAway) {
+                $groups[] = $currentGroup;
+                $currentGroup = [];
+                continue;
+            }
+
+            $previousAwayActivity = end($currentGroup);
+            if ($previousAwayActivity && $previousAwayActivity['day']->diff($day)->days > self::MAX_DAYS_BETWEEN_ACTIVITIES) {
+                $groups[] = $currentGroup;
+                $currentGroup = [];
+            }
+            $currentGroup[] = [...$row, 'day' => $day];
+        }
+        $groups[] = $currentGroup;
+
+        $activityIdsToSkip = array_flip(array_map(strval(...), [
+            ...$this->activityCollectionRepository->findAll()->getActivityIds(),
+            ...$this->dismissedTripSuggestionRepository->findActivityIds(),
+        ]));
+
+        $tripSuggestions = [];
+        foreach ($groups as $group) {
+            if (count($group) < self::MIN_NUMBER_OF_ACTIVITIES) {
+                continue;
+            }
+
+            if (array_any($group, static fn (array $activity): bool => isset($activityIdsToSkip[$activity['activityId']]))) {
+                continue;
+            }
+
+            $routeGeographies = array_map(
+                static fn (array $activity): RouteGeography => RouteGeography::create(Json::decode($activity['routeGeography'] ?: '{}')),
+                $group,
+            );
+            $numberOfActivitiesPerCountryCode = array_count_values(array_merge(...array_map(
+                static fn (RouteGeography $routeGeography): array => $routeGeography->getPassedThroughCountries(),
+                $routeGeographies,
+            )));
+            arsort($numberOfActivitiesPerCountryCode);
+
+            $tripSuggestions[] = TripSuggestion::create(
+                activityIds: ActivityIds::fromArray(array_map(
+                    static fn (array $activity): ActivityId => ActivityId::fromString($activity['activityId']),
+                    $group,
+                )),
+                startDate: $group[0]['day'],
+                endDate: array_last($group)['day'],
+                countryCodes: array_map(strval(...), array_keys($numberOfActivitiesPerCountryCode)),
+                places: array_values(array_unique(array_filter(array_map(
+                    static fn (RouteGeography $routeGeography): ?string => $routeGeography->getStartingPointCity(),
+                    $routeGeographies,
+                )))),
+            );
+        }
+
+        return new FindTripSuggestionsResponse(array_reverse($tripSuggestions));
+    }
+}

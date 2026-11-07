@@ -6,10 +6,12 @@ namespace App\Tests;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\BestEffort\ActivityBestEffortRepository;
+use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Lap\ActivityLapRepository;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\Split\ActivitySplitRepository;
@@ -48,6 +50,7 @@ use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Domain\Activity\BestEffort\ActivityBestEffortBuilder;
+use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
 use App\Tests\Domain\Activity\Lap\ActivityLapBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
@@ -158,6 +161,16 @@ trait ProvideTestData
         $segmentRepository = $this->getContainer()->get(SegmentRepository::class);
         $segmentRepository->add($segment);
         $segmentRepository->update($segment);
+    }
+
+    protected function addActivityCollectionFixtures(): void
+    {
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityIds(ActivityIds::fromArray([
+                ActivityId::fromUnprefixed('9756441741'),
+                ActivityId::fromUnprefixed('9830227112'),
+            ]))
+            ->build());
     }
 
     private function addSegmentFixtures(): void

@@ -1,4 +1,4 @@
-/*! tailwindcss v4.3.4 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.3.5 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -3164,9 +3164,6 @@
   .ps-3 {
     padding-inline-start: calc(var(--spacing) * 3);
   }
-  .ps-5 {
-    padding-inline-start: calc(var(--spacing) * 5);
-  }
   .ps-10 {
     padding-inline-start: calc(var(--spacing) * 10);
   }
@@ -3769,11 +3766,23 @@
       color: var(--color-primary);
     }
   }
+  :is(:where(.group\/add-activities):has(:is(#add-activities-by-date-range:checked)) .group-has-\[\#add-activities-by-date-range\:checked\]\/add-activities\:flex) {
+    display: flex;
+  }
+  :is(:where(.group\/add-activities):has(:is(#add-activities-by-date-range:checked)) .group-has-\[\#add-activities-by-date-range\:checked\]\/add-activities\:hidden) {
+    display: none;
+  }
   :is(:where(.group\/bulk-delete):has(:is(input:checked)) .group-has-\[input\:checked\]\/bulk-delete\:inline-flex) {
     display: inline-flex;
   }
+  :is(:where(.group\/member):has(:is(input:not(:checked))) .group-has-\[input\:not\(\:checked\)\]\/member\:line-through) {
+    text-decoration-line: line-through;
+  }
   :is(:where(.group\/range-filter):has(:is(input:not(:placeholder-shown))) .group-has-\[input\:not\(\:placeholder-shown\)\]\/range-filter\:visible) {
     visibility: visible;
+  }
+  :is(:where(.group\/add-activity):has(:is(input:placeholder-shown)) .group-has-\[input\:placeholder-shown\]\/add-activity\:hidden) {
+    display: none;
   }
   :is(:where(.group\/max-hr):has(:is(option[value=dateRangeBased]:checked)) .group-has-\[option\[value\=dateRangeBased\]\:checked\]\/max-hr\:block) {
     display: block;
@@ -3783,9 +3792,6 @@
   }
   :is(:where(.group\/resting-hr):has(:is(option[value=fixed]:checked)) .group-has-\[option\[value\=fixed\]\:checked\]\/resting-hr\:block) {
     display: block;
-  }
-  :is(:where(.group)[aria-expanded="true"] .group-aria-expanded\:rotate-180) {
-    rotate: 180deg;
   }
   :is(:where(.group\/route)[data-state="empty"] .group-data-\[state\=empty\]\/route\:inline) {
     display: inline;
@@ -3832,6 +3838,16 @@
   :is(:where(.peer):checked ~ .peer-checked\:text-primary) {
     color: var(--color-primary);
   }
+  :is(:where(.peer\/activity):checked ~ .peer-checked\/activity\:bg-white) {
+    background-color: var(--color-white);
+  }
+  :is(:where(.peer\/activity):checked ~ .peer-checked\/activity\:text-gray-900) {
+    color: var(--color-gray-900);
+  }
+  :is(:where(.peer\/activity):checked ~ .peer-checked\/activity\:shadow-xs) {
+    --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   :is(:where(.peer\/date):checked ~ .peer-checked\/date\:bg-white) {
     background-color: var(--color-white);
   }
@@ -3839,6 +3855,16 @@
     color: var(--color-gray-900);
   }
   :is(:where(.peer\/date):checked ~ .peer-checked\/date\:shadow-xs) {
+    --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  :is(:where(.peer\/date-range):checked ~ .peer-checked\/date-range\:bg-white) {
+    background-color: var(--color-white);
+  }
+  :is(:where(.peer\/date-range):checked ~ .peer-checked\/date-range\:text-gray-900) {
+    color: var(--color-gray-900);
+  }
+  :is(:where(.peer\/date-range):checked ~ .peer-checked\/date-range\:shadow-xs) {
     --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
@@ -3873,11 +3899,31 @@
     --tw-outline-style: none;
     outline-style: none;
   }
+  :is(:where(.peer\/activity):focus-visible ~ .peer-focus-visible\/activity\:ring-2) {
+    --tw-ring-shadow: var(--tw-ring-inset, ) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  :is(:where(.peer\/activity):focus-visible ~ .peer-focus-visible\/activity\:ring-primary\/40) {
+    --tw-ring-color: color-mix(in srgb, #F26722 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-ring-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+    }
+  }
   :is(:where(.peer\/date):focus-visible ~ .peer-focus-visible\/date\:ring-2) {
     --tw-ring-shadow: var(--tw-ring-inset, ) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   :is(:where(.peer\/date):focus-visible ~ .peer-focus-visible\/date\:ring-primary\/40) {
+    --tw-ring-color: color-mix(in srgb, #F26722 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-ring-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
+    }
+  }
+  :is(:where(.peer\/date-range):focus-visible ~ .peer-focus-visible\/date-range\:ring-2) {
+    --tw-ring-shadow: var(--tw-ring-inset, ) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  :is(:where(.peer\/date-range):focus-visible ~ .peer-focus-visible\/date-range\:ring-primary\/40) {
     --tw-ring-color: color-mix(in srgb, #F26722 40%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       --tw-ring-color: color-mix(in oklab, var(--color-primary) 40%, transparent);
@@ -4236,6 +4282,12 @@
   }
   .has-checked\:text-primary:has(:checked) {
     color: var(--color-primary);
+  }
+  .has-\[input\:not\(\:checked\)\]\:bg-red-50\/60\!:has(:is(input:not(:checked))) {
+    background-color: color-mix(in srgb, #FEF2F2 60%, transparent) !important;
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-red-50) 60%, transparent) !important;
+    }
   }
   @media (width >= 40rem) {
     .sm\:not-sr-only {

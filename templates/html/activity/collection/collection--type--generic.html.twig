@@ -1,0 +1,209 @@
+{% set activityCollection = activityCollectionWithActivities.getActivityCollection() %}
+<div class="flex items-center justify-between gap-4 mb-4">
+    {% include 'html/navigation/breadcrumbs.html.twig' with {'breadcrumbs': [
+        {
+            'url': 'collections',
+            'label': 'Activity collections'|trans
+        },
+        {
+            'url': 'collections/' ~ activityCollection.getId(),
+            'label': activityCollection.getName()
+        }], 'disableMargin': true} %}
+    {% include 'html/navigation/admin-edit-link.html.twig' with {
+        path: 'admin/collections/' ~ activityCollection.getId() ~ '/edit',
+        redirectTo: 'collections/' ~ activityCollection.getId(),
+        title: "Edit this activity collection"|trans
+    } %}
+</div>
+{% autoescape false %}
+    <div class="grid grid-cols-1 gap-y-4">
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+            {% block header %}
+                <div class="flex items-center gap-2">
+                    <h1 class="flex items-center gap-2 text-lg font-semibold text-gray-900">
+                        {% set countryCodes = activityCollectionWithActivities.getCountryCodes() %}
+                        {% if countryCodes is not empty %}
+                            <span class="flex items-center gap-1">
+                                {% for countryCode in countryCodes %}
+                                    <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" alt="{{ countryCode|upper }}">
+                                {% endfor %}
+                            </span>
+                        {% endif %}
+                        {{ activityCollection.getName()|e }}
+                    </h1>
+                    <span class="pill pill--neutral text-xs">{{ activityCollection.getType()|trans }}</span>
+                </div>
+                {% if activityCollection.getDescription() %}
+                    <p class="mt-1 text-xs text-gray-500">{{ activityCollection.getDescription()|e }}</p>
+                {% endif %}
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-600 mt-2">
+                    <span class="inline-flex items-center gap-1.5">
+                        {{ svg('calendar', 'size-3.5', 'text-gray-400') }}
+                        {{ activityCollectionWithActivities.getStartDate()|formatDate('normal') }}
+                        {% if activityCollectionWithActivities.getNumberOfDays() > 1 %}
+                            - {{ activityCollectionWithActivities.getEndDate()|formatDate('normal') }}
+                        {% endif %}
+                        &middot; {{ "{numberOfDays} days"|trans({'{numberOfDays}': activityCollectionWithActivities.getNumberOfDays()}) }}
+                    </span>
+                    {% set weatherCondition = activityCollectionWithActivities.getMostCommonWeatherCondition() %}
+                    {% if weatherCondition %}
+                        <span class="inline-flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-yellow-500" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none"/></svg>
+                            {% set minTemperature = activityCollectionWithActivities.getMinTemperature()|formatMeasurement(0) %}
+                            {{ weatherCondition }}, {{ minTemperature != activityCollectionWithActivities.getMaxTemperature()|formatMeasurement(0) ? minTemperature ~ ' - ' }}{{ activityCollectionWithActivities.getMaxTemperature()|renderMeasurement(0) }}
+                        </span>
+                    {% endif %}
+                </div>
+                {% set places = activityCollectionWithActivities.getPlaces() %}
+                {% if places is not empty %}
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        {% for place in places %}
+                            <span class="pill pill--neutral text-xs">{{ place|e }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endblock %}
+            {% block stats %}
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Distance"|trans }}</div>
+                        <div class="flex items-baseline gap-1">
+                            {% set distance = activityCollectionWithActivities.getDistance() %}
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ distance|formatMeasurement(0) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ distance|measurementSymbol }}</span>
+                        </div>
+                    </div>
+                    {% block movingTimeStat %}
+                        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Moving time"|trans }}</div>
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getMovingTime()|formatSeconds }}</span>
+                        </div>
+                    {% endblock %}
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Elevation"|trans }}</div>
+                        <div class="flex items-baseline gap-1">
+                            {% set elevation = activityCollectionWithActivities.getElevation() %}
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ elevation|formatMeasurement(0) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ elevation|measurementSymbol }}</span>
+                        </div>
+                    </div>
+                    {% block activitiesStat %}
+                        <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                            <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Activities"|trans }}</div>
+                            <span class="text-lg font-black tracking-tight text-gray-900">{{ activityCollectionWithActivities.getActivities()|length }}</span>
+                        </div>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+            {% block map %}
+                {% if leafletMap %}
+                    {% set leafletOptions = {
+                        'polylineUrl': relativeUrl(path('activity_collection_polylines', {activityCollectionId: activityCollection.getId()})),
+                        'tileLayer': leafletMap.getTileLayer(),
+                        'minZoom': leafletMap.getMinZoom(),
+                        'maxZoom': leafletMap.getMaxZoom(),
+                        'imageOverlay': leafletMap.getOverlayImageUrl(),
+                        'bounds': leafletMap.getBounds(),
+                        'showStartMarker': showRouteMarkers|default(false),
+                        'showEndMarker': showRouteMarkers|default(false)
+                    } %}
+                    <div class="h-87.5 mt-4 rounded-lg overflow-hidden" style="background-color:{{ leafletMap.getBackgroundColor() }}"
+                         data-leaflet='{{ leafletOptions|json_encode }}'></div>
+                {% endif %}
+            {% endblock %}
+        </div>
+        {% if images is not empty %}
+            <details open class="group/section p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                <summary class="list-none cursor-pointer flex items-center justify-between select-none">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-lg font-semibold">{{ "Photos"|trans }}</h3>
+                        <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ images|length }}</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m1 1 4 4 4-4"/>
+                    </svg>
+                </summary>
+                <div class="mt-4 flex flex-wrap gap-2" data-light-gallery>
+                    {% for image in images %}
+                        {% set activity = image.getActivity() %}
+                        {% set lightGalleryElement = {
+                            'src': relativeUrl(image.getImageUrl()),
+                            'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>'
+                                ~ '<a href="' ~ relativeUrl(path('activity', {'activityId': activity.getId()})) ~ '"'
+                                ~ ' class="mt-2 inline-flex items-center gap-x-1.5 rounded-lg bg-primary hover:bg-orange-600 py-2 px-4 text-sm font-medium text-white! no-underline! hover:no-underline! transition-all active:scale-[0.97]">'
+                                ~ ("Go to activity"|trans)
+                                ~ '<svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg>'
+                                ~ '</a>',
+                            'alt':  activity.getSanitizedName(),
+                        } %}
+                        <a data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}"
+                           class="no-dark grow h-[25vh] relative group/image overflow-hidden rounded-lg shadow-sm"
+                           href="{{ relativeUrl(image.getImageUrl()) }}">
+                            <img class="h-full w-full object-cover align-bottom transition-transform duration-500 group-hover/image:scale-105 lazy"
+                                 data-src="{{ relativeUrl(image.getImageUrl()) }}" alt="{{ activity.getName()|e('html_attr') }}" src="{{ placeholderImage(image.getOrientation()) }}" />
+                            <div class="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-300"></div>
+                            <div class="text-white flex flex-col absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/60 to-transparent p-3
+                            transition-all duration-300 translate-y-full group-hover/image:opacity-100 group-hover/image:translate-y-0">
+                                <p class="text-base font-medium text-ellipsis line-clamp-1">{{ activity.getName()|e }}</p>
+                                <p class="text-xs font-medium opacity-80">{{ activity.getStartDate()|formatDate() }}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                    <div class="grow-10"></div>
+                </div>
+            </details>
+        {% endif %}
+        {% block activities %}
+            <details open class="group/section p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                <summary class="list-none cursor-pointer flex items-center justify-between select-none">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-lg font-semibold">{{ "Activities"|trans }}</h3>
+                        <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ activityCollectionWithActivities.getActivities()|length }}</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m1 1 4 4 4-4"/>
+                    </svg>
+                </summary>
+                <div class="mt-4 relative overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="narrow">{{ "Date"|trans }}</th>
+                            <th scope="col" class="text-left narrow">{{ "Activity"|trans }}</th>
+                            <th scope="col">{{ "Distance"|trans }}</th>
+                            <th scope="col">{{ "Elevation"|trans }}</th>
+                            <th scope="col">{{ "Moving time"|trans }}</th>
+                            <th scope="col">{{ "Weather"|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for activity in activityCollectionWithActivities.getActivities() %}
+                            <tr>
+                                <td class="narrow whitespace-nowrap">
+                                    {{ activity.getStartDate()|formatDate() }}
+                                </td>
+                                <td class="narrow truncate">
+                                    {{ activity|activityLink(ellipses: 180) }}
+                                </td>
+                                <td>
+                                    {{ activity.getDistance()|renderMeasurement(activity.getSportType().getActivityType().getDistancePrecision()) }}
+                                </td>
+                                <td>
+                                    {{ activity.getElevation()|renderMeasurement(0) }}
+                                </td>
+                                <td>
+                                    {{ activity.getMovingTimeFormatted() }}
+                                </td>
+                                <td>
+                                    {% set weather = activity.getWeather() %}
+                                    {{ weather ? weather.getWeatherCodeDescription() ~ ', ' ~ weather.getTemperatureInCelsius()|renderMeasurement(0) : '-' }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        {% endblock %}
+    </div>
+{% endautoescape %}

@@ -103,6 +103,21 @@ final readonly class Countries
         return $countryCode;
     }
 
+    public function getName(string $countryCode): string
+    {
+        if ('xk' === strtolower($countryCode)) {
+            // Currently Symfony does not support Kosovo as a country.
+            // Need to wait until this commit is released in Symfony 7.4:
+            // https://github.com/symfony/symfony/issues/40020
+            return 'Kosovo';
+        }
+
+        return SymfonyCountries::getName(
+            country: strtoupper($countryCode),
+            displayLocale: $this->localeSwitcher->getLocale()
+        );
+    }
+
     /**
      * @param string[] $results
      *
@@ -112,18 +127,7 @@ final readonly class Countries
     {
         $countries = [];
         foreach ($results as $countryCode) {
-            $countryCode = strtolower($countryCode);
-            if ('xk' === $countryCode) {
-                // Currently Symfony does not support Kosovo as a country.
-                // Need to wait until this commit is released in Symfony 7.4:
-                // https://github.com/symfony/symfony/issues/40020
-                $countries[$countryCode] = 'Kosovo';
-                continue;
-            }
-            $countries[$countryCode] = SymfonyCountries::getName(
-                country: strtoupper($countryCode),
-                displayLocale: $this->localeSwitcher->getLocale()
-            );
+            $countries[strtolower($countryCode)] = $this->getName($countryCode);
         }
 
         return $countries;

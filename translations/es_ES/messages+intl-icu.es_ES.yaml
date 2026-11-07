@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Actividades
 Activity: Actividad
+'Activity collections': 'Activity collections'
 'Activity count': 'Recuento de actividades'
 'Activity heatmap': 'Mapa de calor de actividades'
 'Activity locations': 'Ubicaciones de actividades'
@@ -71,6 +72,7 @@ Challenges: Retos
 'Clear chat': 'Borrar chat'
 Close: Close
 'Cluster tiles': 'Cuadrículas de clúster'
+Collections: Collections
 Columns: Columnas
 Commute: Desplazamiento
 Commutes: Desplazamientos
@@ -98,6 +100,7 @@ Dance: Baile
 Dashboard: 'Panel de control'
 Date: Fecha
 Day: Día
+'Days away': 'Days away'
 'Days completed': 'Days completed'
 'Days needed': 'Días necesarios'
 'Days to go': 'Days to go'
@@ -129,6 +132,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington a lo largo del tiempo'
 'Edit dashboard': 'Editar panel de control'
 'Edit this activity': 'Editar esta actividad'
+'Edit this activity collection': 'Edit this activity collection'
 'Edit this segment': 'Edit this segment'
 'Effort vs heart rate': 'Esfuerzo vs frecuencia cardíaca'
 'Elapsed time': 'Tiempo transcurrido'
@@ -144,6 +148,7 @@ Energy: Energía
 'Energy burned across your activities': 'Energía quemada en tus actividades'
 'Enter fullscreen mode': 'Pantalla completa'
 Evening: Noche
+Event: Event
 'Excludes commutes': 'Excluye desplazamientos'
 'Excludes group activities': 'Excluye actividades en grupo'
 'Explorer tiles': 'Cuadrículas exploradas'
@@ -257,6 +262,7 @@ Low: Bajo
 'Low training load': 'Baja carga de entrenamiento'
 Maintenance: Mantenimiento
 'Manage activities': 'Gestionar actividades'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Gestionar equipamiento'
 'Manage recording devices': 'Gestionar dispositivos de grabación'
 'Manage segments': 'Manage segments'
@@ -424,6 +430,8 @@ Speed: Velocidad
 Splits: Parciales
 'Sport variety': 'Variedad de deporte'
 Squash: Squash
+Stage: Stage
+Stages: Stages
 'Stair Stepper': 'Máquina de escaleras'
 'Stand Up Paddling': 'Paddle surf'
 'Start times': 'Horas de inicio'
@@ -558,6 +566,7 @@ Title: Título
 'Total hours spent per gear': 'Horas totales dedicadas por equipamiento'
 'Total hours spent per sport type': 'Horas totales dedicadas por tipo de deporte'
 'Total moving time per month': 'Tiempo total en movimiento por mes'
+'Total time': 'Total time'
 'Trail Run': 'Carrera de montaña'
 'Trail Runs': 'Carreras de montaña'
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Entrenar 4–5 días a la semana puntúa más alto que hacerlo todo en uno o dos días.'
@@ -567,6 +576,7 @@ Title: Título
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Balance de estrés de entrenamiento (Forma) - La diferencia entre forma física (CTL) y fatiga (ATL). Refleja tu disposición para rendir.'
 'Training goals': 'Objetivos de entrenamiento'
 'Training load is accumulating, recovery days are important': 'La carga de entrenamiento se está acumulando, los días de recuperación son importantes'
+Trip: Trip
 Tue: Mar
 Tue.: Mar.
 'Unchanged compared to yesterday': 'Sin cambios en comparación con ayer'
@@ -598,6 +608,7 @@ Walks: Caminatas
 'Waxing the chain...': 'Encerando la cadena...'
 'We detected following issues': 'Hemos detectado los siguientes problemas'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+Weather: Weather
 Wed: Mié
 Wed.: Mié.
 Weekly: Semanal
@@ -684,8 +695,10 @@ workouts: entrenamientos
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} cada {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} actividades'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} actividades en {year}'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} meses'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': '{numberOfResults} fotos'
 '{numberOfResults} results': '{numberOfResults} resultados'
 '{numberOfResults} routes': '{numberOfResults} rutas'

@@ -450,4 +450,13 @@ enum SportType: string implements TranslatableInterface
     {
         return self::VIRTUAL_RIDE === $this;
     }
+
+    public function isVirtual(): bool
+    {
+        return in_array($this, [
+            self::VIRTUAL_RIDE,
+            self::VIRTUAL_RUN,
+            self::VIRTUAL_ROW,
+        ], true);
+    }
 }

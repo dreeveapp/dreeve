@@ -14,10 +14,12 @@ Active: Active
 'Activities will appear here once they are imported.': 'Activities will appear here once they are imported.'
 Activity: Activity
 'Activity ID': 'Activity ID'
+'Activity collection management': 'Activity collection management'
 'Activity description': 'Activity description'
 'Activity management': 'Activity management'
 'Activity name': 'Activity name'
 'Activity visibilities to import': 'Activity visibilities to import'
+Add: Add
 'Add Eddington': 'Add Eddington'
 'Add FTP': 'Add FTP'
 'Add a component to start tracking maintenance.': 'Add a component to start tracking maintenance.'
@@ -25,9 +27,11 @@ Activity: Activity
 'Add a rule to start automating your activity details.': 'Add a rule to start automating your activity details.'
 'Add a widget': 'Add a widget'
 'Add action': 'Add action'
+'Add activities': 'Add activities'
 'Add activity': 'Add activity'
 'Add automation rule': 'Add automation rule'
 'Add challenge': 'Add challenge'
+'Add collection': 'Add collection'
 'Add command': 'Add command'
 'Add component': 'Add component'
 'Add condition': 'Add condition'
@@ -44,6 +48,7 @@ Activity: Activity
 'Add weight': 'Add weight'
 'Add widget': 'Add widget'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.'
+Adding...: Adding...
 Admin: Admin
 'Admin panel': 'Admin panel'
 'Admin username': 'Admin username'
@@ -71,6 +76,7 @@ Apply: Aplicar
 'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Are you sure you want to delete {name}?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?'
+'Are you sure you want to dismiss the trip of {dates}?': 'Are you sure you want to dismiss the trip of {dates}?'
 'Are you sure you want to remove the {widget} widget?': 'Are you sure you want to remove the {widget} widget?'
 'Assign gear': 'Assign gear'
 Athlete: Athlete
@@ -88,6 +94,7 @@ Athlete: Athlete
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
 Birthday: Birthday
+'Bundle your activities into trips and events.': 'Bundle your activities into trips and events.'
 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.'
 'CA certificate': 'CA certificate'
 'Calculate energy (kJ)': 'Calculate energy (kJ)'
@@ -105,11 +112,12 @@ Clear: Clear
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
 Close: Close
+Collections: Collections
 Command: Command
 Commute: Commute
 Component: Component
 'Conditions are combined with AND.': 'Conditions are combined with AND.'
-Config: Config
+Configuration: Configuration
 Configure: Configure
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.'
 'Configure {widget}': 'Configure {widget}'
@@ -120,18 +128,22 @@ Configured: Configured
 'Continues to next rule': 'Continues to next rule'
 'Copy this API key': 'Copy this API key'
 'Copy this MCP key': 'Copy this MCP key'
+'Cover image': 'Cover image'
+'Create collection': 'Create collection'
 'Cron expression': 'Cron expression'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Custom: Custom
 Daemon: Daemon
 'Dashboard layout': 'Dashboard layout'
 'Date & time': 'Date & time'
+'Date range': 'Date range'
 'Date range based': 'Date range based'
 'Define what needs doing and how often.': 'Define what needs doing and how often.'
 Delete: Delete
 'Delete activities': 'Delete activities'
 'Delete activity': 'Delete activity'
 'Delete automation rule': 'Delete automation rule'
+'Delete collection': 'Delete collection'
 'Delete component': 'Delete component'
 'Delete file import': 'Delete file import'
 'Delete gear': 'Delete gear'
@@ -143,6 +155,9 @@ Deleting...: Deleting...
 Description: Description
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.'
 Disabled: Disabled
+Dismiss: Dismiss
+'Dismiss suggestion': 'Dismiss suggestion'
+Dismissing...: Dismissing...
 Display: Display
 Distance: Distance
 'Do not download activity photos': 'Do not download activity photos'
@@ -158,6 +173,7 @@ Duration: Duration
 Edit: Edit
 'Edit activity': 'Edit activity'
 'Edit automation rule': 'Edit automation rule'
+'Edit collection': 'Edit collection'
 'Edit component': 'Edit component'
 'Edit gear': 'Edit gear'
 'Edit maintenance log': 'Edit maintenance log'
@@ -209,6 +225,7 @@ General: General
 'Go to last page': 'Go to last page'
 'Go to next page': 'Go to next page'
 'Go to previous page': 'Go to previous page'
+'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': 'Group activity'
 Heatmap: Heatmap
 'Hide photos for sport types': 'Hide photos for sport types'
@@ -232,9 +249,11 @@ Import: Import
 'Import segment details': 'Import segment details'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.'
 'Import source': 'Import source'
+'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
 'Imported files will appear here once you upload them.': 'Imported files will appear here once you upload them.'
 'Imported from Strava': 'Imported from Strava'
 'Imports new Strava activities.': 'Imports new Strava activities.'
+'In collection': 'In collection'
 'Include retired gear': 'Include retired gear'
 Info: Info
 'Installed on': 'Installed on'
@@ -243,6 +262,8 @@ Integrations: Integrations
 'Intro text': 'Intro text'
 'Invalid CSRF token.': 'Invalid CSRF token.'
 'Issuer URL': 'Issuer URL'
+'It will not be suggested again. Its activities are not deleted.': 'It will not be suggested again. Its activities are not deleted.'
+'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Label
 'Last name': 'Last name'
 Latitude: Latitude
@@ -290,10 +311,12 @@ Monday: Monday
 'Most recent activities (cards)': 'Most recent activities (cards)'
 'Most recent activities (list)': 'Most recent activities (list)'
 'Moving time': 'Moving time'
+'No activities added yet.': 'No activities added yet.'
 'No activities imported yet.': 'No activities imported yet.'
 'No activities match the current filters.': 'No activities match the current filters.'
 'No activity found for that ID.': 'No activity found for that ID.'
 'No automation rules yet.': 'No automation rules yet.'
+'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'No components yet.'
 'No file imports match the current filters.': 'No file imports match the current filters.'
 'No files imported yet.': 'No files imported yet.'
@@ -305,6 +328,7 @@ Monday: Monday
 'No segments added yet.': 'No segments added yet.'
 'No segments match the current filters.': 'No segments match the current filters.'
 'No sport types selected': 'No sport types selected'
+'No suggestions found.': 'No suggestions found.'
 'No unit': 'No unit'
 'Normal date format': 'Normal date format'
 'Not configured, API access is disabled': 'Not configured, API access is disabled'
@@ -345,6 +369,7 @@ Password: Password
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Pick the rules you want to apply to see which activities would change.'
+Places: Places
 'Polyline color': 'Polyline color'
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Preview selection'
@@ -396,6 +421,7 @@ Rules: Rules
 'Rules to apply': 'Rules to apply'
 Saturday: Saturday
 Save: Save
+'Save and add activities': 'Save and add activities'
 'Save settings': 'Save settings'
 Saved: Saved
 Saving...: Saving...
@@ -442,6 +468,7 @@ Settings: Settings
 'Show options': 'Show options'
 'Show password': 'Show password'
 'Showing {first} - {last} of {total}': 'Showing {first} - {last} of {total}'
+"Shows a map of the collection's routes on the overview instead of the cover image.": "Shows a map of the collection's routes on the overview instead of the cover image."
 'Sign in': 'Sign in'
 'Sign in to the admin panel': 'Sign in to the admin panel'
 'Sign in with single sign-on': 'Sign in with single sign-on'
@@ -475,6 +502,8 @@ Source: Source
 Subtitle: Subtitle
 Success: Success
 Suggested: Suggested
+'Suggested trips': 'Suggested trips'
+"Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
 Sunday: Sunday
 'Supported types': 'Supported types'
 System: System
@@ -519,6 +548,7 @@ Tasks: Tasks
 'The start date, optionally with a custom PHP date format': 'The start date, optionally with a custom PHP date format'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.'
 'The total distance ridden with the gear': 'The total distance ridden with the gear'
+'The type decides how the collection page is laid out.': 'The type decides how the collection page is laid out.'
 'The unit system used to render distances, elevations, temperatures, etc.': 'The unit system used to render distances, elevations, temperatures, etc.'
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr'
@@ -527,6 +557,7 @@ Tasks: Tasks
 'These rules will be applied to your existing activities on the next import cycle.': 'These rules will be applied to your existing activities on the next import cycle.'
 'This action cannot be undone.': 'This action cannot be undone.'
 'This activity has no GPS data.': 'This activity has no GPS data.'
+'This collection has no activities yet.': 'This collection has no activities yet.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'This page shows a different key every time it is opened, and only the one in your environment file is applied.'
@@ -548,6 +579,7 @@ Tuesday: Tuesday
 'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Type
 URL: URL
+'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
 Unit: Unit
 'Unit system': 'Unit system'
 'Units & language': 'Units & language'
@@ -560,6 +592,7 @@ Until: Until
 Uploaded: Uploaded
 Uploading...: Uploading...
 'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
+'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: Username
 'Verify token': 'Verify token'
@@ -579,6 +612,7 @@ Weigh-ins: Weigh-ins
 'When enabled, activities without a route, like indoor rides, are left out.': 'When enabled, activities without a route, like indoor rides, are left out.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them."
 'When set, requests to the admin panel from any other IP address are rejected.': 'When set, requests to the admin panel from any other IP address are rejected.'
+"Without a cover image, the first photo of the collection's activities is used.": "Without a cover image, the first photo of the collection's activities is used."
 'Workout type': 'Workout type'
 'You can add it back to your dashboard again later.': 'You can add it back to your dashboard again later.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.'

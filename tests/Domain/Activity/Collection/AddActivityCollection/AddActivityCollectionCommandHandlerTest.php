@@ -1,0 +1,60 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tests\Domain\Activity\Collection\AddActivityCollection;
+
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\Collection\ActivityCollectionId;
+use App\Domain\Activity\Collection\ActivityCollectionRepository;
+use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
+use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
+use App\Tests\ContainerTestCase;
+
+class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
+{
+    public function testHandle(): void
+    {
+        $this->getContainer()->get(CommandBus::class)->dispatch(AddActivityCollection::fromPayload([
+            'activityCollectionId' => 'activityCollection-1',
+            'name' => '  Mallorca  ',
+            'type' => 'trip',
+            'description' => '  Spring cycling week  ',
+            'activityIds' => ['activity-1', 'Morning ride (activity-2)'],
+            'useRouteMapAsCover' => 'true',
+            'coverImagePath' => json_encode([
+                ['status' => 'new', 'filename' => 'cover.jpg', 'content' => base64_encode('image-content')],
+            ]),
+        ]));
+
+        $activityCollection = $this->getContainer()->get(ActivityCollectionRepository::class)->find(ActivityCollectionId::fromUnprefixed('1'));
+        $this->assertSame('Mallorca', $activityCollection->getName());
+        $this->assertSame('Spring cycling week', $activityCollection->getDescription());
+        $this->assertSame(ActivityCollectionType::TRIP, $activityCollection->getType());
+        $this->assertEquals(ActivityIds::fromArray([ActivityId::fromUnprefixed('1'), ActivityId::fromUnprefixed('2')]), $activityCollection->getActivityIds());
+        $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:04'), $activityCollection->getCreatedOn());
+        $this->assertSame('/files/activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg', $activityCollection->getCoverImagePath());
+        $this->assertTrue($activityCollection->useRouteMapAsCover());
+        $this->assertSame('image-content', $this->getContainer()->get('file.storage')->read('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
+    }
+
+    public function testHandleWithoutDescription(): void
+    {
+        $this->getContainer()->get(CommandBus::class)->dispatch(AddActivityCollection::fromPayload([
+            'activityCollectionId' => 'activityCollection-1',
+            'name' => 'Mallorca',
+            'type' => 'event',
+            'description' => '   ',
+        ]));
+
+        $activityCollection = $this->getContainer()->get(ActivityCollectionRepository::class)->find(ActivityCollectionId::fromUnprefixed('1'));
+        $this->assertNull($activityCollection->getDescription());
+        $this->assertNull($activityCollection->getCoverImagePath());
+        $this->assertSame(ActivityCollectionType::EVENT, $activityCollection->getType());
+        $this->assertEquals(ActivityIds::empty(), $activityCollection->getActivityIds());
+        $this->assertFalse($activityCollection->useRouteMapAsCover());
+    }
+}

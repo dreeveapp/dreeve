@@ -14,10 +14,12 @@ Active: Actief
 'Activities will appear here once they are imported.': 'Activiteiten verschijnen hier zodra ze geïmporteerd zijn.'
 Activity: Activiteit
 'Activity ID': Activiteits-ID
+'Activity collection management': 'Activity collection management'
 'Activity description': 'Beschrijving activiteit'
 'Activity management': Activiteitenbeheer
 'Activity name': 'Naam activiteit'
 'Activity visibilities to import': 'Te importeren zichtbaarheden van activiteiten'
+Add: Add
 'Add Eddington': 'Eddington toevoegen'
 'Add FTP': 'FTP toevoegen'
 'Add a component to start tracking maintenance.': 'Voeg een onderdeel toe om onderhoud bij te houden.'
@@ -25,9 +27,11 @@ Activity: Activiteit
 'Add a rule to start automating your activity details.': 'Voeg een regel toe om je activiteitsgegevens automatisch in te vullen.'
 'Add a widget': 'Een widget toevoegen'
 'Add action': 'Actie toevoegen'
+'Add activities': 'Add activities'
 'Add activity': 'Activiteit toevoegen'
 'Add automation rule': 'Automatiseringsregel toevoegen'
 'Add challenge': 'Uitdaging toevoegen'
+'Add collection': 'Add collection'
 'Add command': 'Commando toevoegen'
 'Add component': 'Onderdeel toevoegen'
 'Add condition': 'Voorwaarde toevoegen'
@@ -44,6 +48,7 @@ Activity: Activiteit
 'Add weight': 'Add weight'
 'Add widget': 'Widget toevoegen'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Voeg {fit}-, {tcx}- of {gpx}-bestanden toe. Ze worden om de paar minuten verwerkt.'
+Adding...: Adding...
 Admin: Beheer
 'Admin panel': Beheerpaneel
 'Admin username': 'Gebruikersnaam beheerder'
@@ -71,6 +76,7 @@ Apply: Toepassen
 'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Ben je zeker dat je {name} wil verwijderen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Ben je zeker dat je {task} op {component} voor {gear}, uitgevoerd op {date}, wil verwijderen?'
+'Are you sure you want to dismiss the trip of {dates}?': 'Are you sure you want to dismiss the trip of {dates}?'
 'Are you sure you want to remove the {widget} widget?': 'Ben je zeker dat je de widget {widget} wil verwijderen?'
 'Assign gear': 'Uitrusting toewijzen'
 Athlete: Athlete
@@ -88,6 +94,7 @@ Athlete: Athlete
 'Base URI': Basis-URI
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Voor je de app kan gebruiken, moeten we een paar dingen over je weten. Die worden gebruikt om je hartslagzones en trainingsbelasting te berekenen. Alle andere instellingen kan je later nog verfijnen.'
 Birthday: Geboortedatum
+'Bundle your activities into trips and events.': 'Bundle your activities into trips and events.'
 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.'
 'CA certificate': 'CA certificate'
 'Calculate energy (kJ)': 'Energie berekenen (kJ)'
@@ -105,11 +112,12 @@ Clear: Wissen
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
 Close: Sluiten
+Collections: Collections
 Command: Commando
 Commute: Woon-werk
 Component: Onderdeel
 'Conditions are combined with AND.': 'Voorwaarden worden gecombineerd met EN.'
-Config: Configuratie
+Configuration: Configuration
 Configure: Configureren
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Configureer de Eddington-getallen die berekend moeten worden. Je kan er maximaal twee tonen in de dashboardwidget.'
 'Configure {widget}': '{widget} configureren'
@@ -120,18 +128,22 @@ Configured: Geconfigureerd
 'Continues to next rule': 'Gaat verder naar de volgende regel'
 'Copy this API key': 'Kopieer deze API-sleutel'
 'Copy this MCP key': 'Copy this MCP key'
+'Cover image': 'Cover image'
+'Create collection': 'Create collection'
 'Cron expression': Cron-expressie
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-expressie die bepaalt wanneer de actie uitgevoerd wordt, bv. '0 14 * * *' wordt elke dag om 14:00 uitgevoerd. Zie crontab.guru voor hulp."
 Custom: Custom
 Daemon: Daemon
 'Dashboard layout': Dashboardindeling
 'Date & time': 'Date & time'
+'Date range': 'Date range'
 'Date range based': 'Op basis van datumbereik'
 'Define what needs doing and how often.': 'Bepaal wat er moet gebeuren en hoe vaak.'
 Delete: Verwijderen
 'Delete activities': 'Delete activities'
 'Delete activity': 'Activiteit verwijderen'
 'Delete automation rule': 'Automatiseringsregel verwijderen'
+'Delete collection': 'Delete collection'
 'Delete component': 'Onderdeel verwijderen'
 'Delete file import': 'Bestandsimport verwijderen'
 'Delete gear': 'Uitrusting verwijderen'
@@ -143,6 +155,9 @@ Deleting...: 'Aan het verwijderen...'
 Description: Beschrijving
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Gedetailleerde instructies vind je in {linkOpen}de documentatie{linkClose}.'
 Disabled: Uitgeschakeld
+Dismiss: Dismiss
+'Dismiss suggestion': 'Dismiss suggestion'
+Dismissing...: Dismissing...
 Display: Display
 Distance: Afstand
 'Do not download activity photos': "Geen activiteitsfoto's downloaden"
@@ -158,6 +173,7 @@ Duration: Duur
 Edit: Bewerken
 'Edit activity': 'Activiteit bewerken'
 'Edit automation rule': 'Automatiseringsregel bewerken'
+'Edit collection': 'Edit collection'
 'Edit component': 'Onderdeel bewerken'
 'Edit gear': 'Uitrusting bewerken'
 'Edit maintenance log': 'Onderhoudslog bewerken'
@@ -209,6 +225,7 @@ General: Algemeen
 'Go to last page': 'Naar laatste pagina'
 'Go to next page': 'Naar volgende pagina'
 'Go to previous page': 'Naar vorige pagina'
+'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': Groepsactiviteit
 Heatmap: Heatmap
 'Hide photos for sport types': "Foto's verbergen voor sporttypes"
@@ -232,9 +249,11 @@ Import: Importeren
 'Import segment details': 'Segmentdetails importeren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Importeer segmentdetails zodat segmentkaarten getoond kunnen worden. Dit vraagt een extra Strava API-call per segment en verlengt de importtijd aanzienlijk.'
 'Import source': Importbron
+'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
 'Imported files will appear here once you upload them.': 'Geïmporteerde bestanden verschijnen hier zodra je ze uploadt.'
 'Imported from Strava': 'Geïmporteerd van Strava'
 'Imports new Strava activities.': 'Importeert nieuwe Strava-activiteiten.'
+'In collection': 'In collection'
 'Include retired gear': 'Uitrusting buiten gebruik meenemen'
 Info: Info
 'Installed on': 'Installed on'
@@ -243,6 +262,8 @@ Integrations: Integraties
 'Intro text': Introtekst
 'Invalid CSRF token.': 'Ongeldig CSRF-token.'
 'Issuer URL': 'Issuer URL'
+'It will not be suggested again. Its activities are not deleted.': 'It will not be suggested again. Its activities are not deleted.'
+'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Label
 'Last name': Achternaam
 Latitude: Breedtegraad
@@ -290,10 +311,12 @@ Monday: Maandag
 'Most recent activities (cards)': 'Most recent activities (cards)'
 'Most recent activities (list)': 'Most recent activities (list)'
 'Moving time': Beweegtijd
+'No activities added yet.': 'No activities added yet.'
 'No activities imported yet.': 'Nog geen activiteiten geïmporteerd.'
 'No activities match the current filters.': 'Geen activiteiten die overeenkomen met de huidige filters.'
 'No activity found for that ID.': 'Geen activiteit gevonden voor dat ID.'
 'No automation rules yet.': 'Nog geen automatiseringsregels.'
+'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Nog geen onderdelen.'
 'No file imports match the current filters.': 'Geen bestandsimports die overeenkomen met de huidige filters.'
 'No files imported yet.': 'Nog geen bestanden geïmporteerd.'
@@ -305,6 +328,7 @@ Monday: Maandag
 'No segments added yet.': 'No segments added yet.'
 'No segments match the current filters.': 'No segments match the current filters.'
 'No sport types selected': 'Geen sporttypes geselecteerd'
+'No suggestions found.': 'No suggestions found.'
 'No unit': 'Geen eenheid'
 'Normal date format': 'Normaal datumformaat'
 'Not configured, API access is disabled': 'Not configured, API access is disabled'
@@ -345,6 +369,7 @@ Password: Wachtwoord
 'Pick a device you already recorded with, or type a new name.': 'Kies een toestel waarmee je al geregistreerd hebt, of typ een nieuwe naam.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Kies de regels die je wil toepassen om te zien welke activiteiten zouden wijzigen.'
+Places: Places
 'Polyline color': Routekleur
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Selectie bekijken'
@@ -396,6 +421,7 @@ Rules: Regels
 'Rules to apply': 'Toe te passen regels'
 Saturday: Zaterdag
 Save: Opslaan
+'Save and add activities': 'Save and add activities'
 'Save settings': 'Instellingen opslaan'
 Saved: Opgeslagen
 Saving...: 'Aan het opslaan...'
@@ -442,6 +468,7 @@ Settings: Instellingen
 'Show options': 'Opties tonen'
 'Show password': 'Wachtwoord tonen'
 'Showing {first} - {last} of {total}': '{first} - {last} van {total} getoond'
+"Shows a map of the collection's routes on the overview instead of the cover image.": "Shows a map of the collection's routes on the overview instead of the cover image."
 'Sign in': Aanmelden
 'Sign in to the admin panel': 'Aanmelden bij het beheerpaneel'
 'Sign in with single sign-on': 'Sign in with single sign-on'
@@ -475,6 +502,8 @@ Source: Bron
 Subtitle: Ondertitel
 Success: Geslaagd
 Suggested: Suggested
+'Suggested trips': 'Suggested trips'
+"Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
 Sunday: Zondag
 'Supported types': 'Ondersteunde types'
 System: System
@@ -519,6 +548,7 @@ Tasks: Taken
 'The start date, optionally with a custom PHP date format': 'De startdatum, optioneel met een eigen PHP-datumformaat'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': "De URL's van de tegellagen om de kaarten weer te geven. Voeg er meer dan één toe om ze te stapelen, bijvoorbeeld om plaatsnamen over een satellietlaag te leggen."
 'The total distance ridden with the gear': 'De totale afstand afgelegd met de uitrusting'
+'The type decides how the collection page is laid out.': 'The type decides how the collection page is laid out.'
 'The unit system used to render distances, elevations, temperatures, etc.': 'Het eenhedenstelsel voor afstanden, hoogtes, temperaturen, enz.'
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'Het beeld waarin de heatmap opent. Zowel het middelpunt als het zoomniveau zijn nodig; laat ze leeg om automatisch op je meest actieve gebied in te zoomen.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'De breedte van deze widget moet ingesteld worden op de pagina met dashboardinstellingen. Ze schaalt niet automatisch mee met het aantal activiteiten dat je instelt.'
@@ -527,6 +557,7 @@ Tasks: Taken
 'These rules will be applied to your existing activities on the next import cycle.': 'Deze regels worden bij de volgende importcyclus op je bestaande activiteiten toegepast.'
 'This action cannot be undone.': 'Deze actie kan niet ongedaan gemaakt worden.'
 'This activity has no GPS data.': 'This activity has no GPS data.'
+'This collection has no activities yet.': 'This collection has no activities yet.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Dit onderdeel zit op meerdere uitrustingen, kies degene die je onderhouden hebt.'
 'This only removes the import record, the imported activity is kept.': 'Dit verwijdert enkel het importrecord, de geïmporteerde activiteit blijft behouden.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Deze pagina toont bij elke opening een andere sleutel, en enkel die in je omgevingsbestand wordt toegepast.'
@@ -548,6 +579,7 @@ Tuesday: Dinsdag
 'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Type
 URL: URL
+'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
 Unit: Eenheid
 'Unit system': Eenhedenstelsel
 'Units & language': 'Units & language'
@@ -560,6 +592,7 @@ Until: Until
 Uploaded: Geüpload
 Uploading...: 'Aan het uploaden...'
 'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
+'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': 'Gebruikt om de trainingsbelasting van deze activiteit te berekenen'
 Username: Gebruikersnaam
 'Verify token': Verificatietoken
@@ -579,6 +612,7 @@ Weigh-ins: Weigh-ins
 'When enabled, activities without a route, like indoor rides, are left out.': 'Indien ingeschakeld, worden activiteiten zonder route, zoals indoorritten, weggelaten.'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Indien ingeschakeld, wordt uitrusting die buiten gebruik is overgeslagen. Het gebruik van de onderdelen stijgt niet en er wordt geen onderhoud voor bijgehouden.'
 'When set, requests to the admin panel from any other IP address are rejected.': 'Indien ingesteld, worden verzoeken naar het beheerpaneel van elk ander IP-adres geweigerd.'
+"Without a cover image, the first photo of the collection's activities is used.": "Without a cover image, the first photo of the collection's activities is used."
 'Workout type': 'Type training'
 'You can add it back to your dashboard again later.': 'Je kan hem later opnieuw aan je dashboard toevoegen.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'Je kan bestanden ook rechtstreeks in de map {watchFolder} kopiëren, of {linkOpen}handmatig een activiteit toevoegen{linkClose}.'

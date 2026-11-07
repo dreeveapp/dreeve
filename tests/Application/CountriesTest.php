@@ -31,7 +31,7 @@ class CountriesTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withRouteGeography(RouteGeography::create([
                     'country_code' => 'be',
-                    RouteGeography::PASSED_TROUGH_COUNTRIES => ['BE'],
+                    RouteGeography::PASSED_TROUGH_COUNTRIES => ['BE', 'XK'],
                 ]))
                 ->build(),
             []
@@ -44,9 +44,10 @@ class CountriesTest extends ContainerTestCase
         ));
 
         $this->assertEqualsCanonicalizing(
-            ['pl', 'cz', 'be'],
+            ['pl', 'cz', 'be', 'xk'],
             array_keys($this->countries->getUsedInActivities())
         );
+        $this->assertSame('Kosovo', $this->countries->getUsedInActivities()['xk']);
     }
 
     public function testGetUsedInPhotos(): void

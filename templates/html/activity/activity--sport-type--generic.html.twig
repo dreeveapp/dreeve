@@ -57,6 +57,14 @@
                             {{ "Group activity"|trans }}
                 </span>
                     {% endif %}
+                    {% if activityCollections is not empty %}
+                        <span class="inline-flex items-center gap-1.5" title="{{ "Collections"|trans }}">
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-gray-400" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 8H4m0-2v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-5.032a1 1 0 0 1-.768-.36l-1.9-2.28a1 1 0 0 0-.768-.36H5a1 1 0 0 0-1 1Z"/></svg>
+                            {% for activityCollection in activityCollections %}
+                                <a href="{{ relativeUrl(path('activity_collection', {activityCollectionId: activityCollection.getId()})) }}" class="hover:underline hover:text-primary transition">{{ activityCollection.getName()|e }}</a>{{ not loop.last ? ',' }}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
                     <span class="inline-flex" data-async-content-url="{{ relativeUrl(path('activity_explorer_tiles', {'activityId': activity.getId()})) }}"></span>
                     {% set weather = activity.getWeather() %}
                     {% if weather %}

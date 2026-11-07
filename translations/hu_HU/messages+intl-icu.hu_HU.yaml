@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Tevékenységek
 Activity: Tevékenység
+'Activity collections': 'Activity collections'
 'Activity count': 'Tevékenységek száma'
 'Activity heatmap': 'Tevékenységek hőtérképe'
 'Activity locations': 'Tevékenységek helyszínei'
@@ -71,6 +72,7 @@ Challenges: Kihívások
 'Clear chat': 'Chat törlése'
 Close: Close
 'Cluster tiles': Klasztercsempék
+Collections: Collections
 Columns: Oszlopok
 Commute: Ingázás
 Commutes: Ingázások
@@ -98,6 +100,7 @@ Dance: Tánc
 Dashboard: Irányítópult
 Date: Dátum
 Day: Nap
+'Days away': 'Days away'
 'Days completed': 'Days completed'
 'Days needed': 'Szükséges napok'
 'Days to go': 'Days to go'
@@ -129,6 +132,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington az idő során'
 'Edit dashboard': 'Dashboard szerkesztése'
 'Edit this activity': 'Tevékenység szerkesztése'
+'Edit this activity collection': 'Edit this activity collection'
 'Edit this segment': 'Edit this segment'
 'Effort vs heart rate': 'Erőfeszítés vs pulzus'
 'Elapsed time': 'Eltelt idő'
@@ -144,6 +148,7 @@ Energy: Energia
 'Energy burned across your activities': 'A tevékenységeid során elégetett energia'
 'Enter fullscreen mode': 'Teljes képernyős mód'
 Evening: Este
+Event: Event
 'Excludes commutes': 'Ingázások nélkül'
 'Excludes group activities': 'A csoportos tevékenységek kivételével'
 'Explorer tiles': 'Felfedezett csempék'
@@ -257,6 +262,7 @@ Low: Alacsony
 'Low training load': 'Alacsony edzésterhelés'
 Maintenance: Karbantartás
 'Manage activities': 'Tevékenységek kezelése'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Felszerelések kezelése'
 'Manage recording devices': 'Rögzítő eszközök kezelése'
 'Manage segments': 'Manage segments'
@@ -424,6 +430,8 @@ Speed: Sebesség
 Splits: Részidők
 'Sport variety': Sporttípus-változatosság
 Squash: Squash
+Stage: Stage
+Stages: Stages
 'Stair Stepper': 'Lépcső szimulátor'
 'Stand Up Paddling': SUP
 'Start times': 'Kezdési idők'
@@ -558,6 +566,7 @@ Title: Cím
 'Total hours spent per gear': 'Összes óra felszerelésenkén'
 'Total hours spent per sport type': 'Összes óra sporttípusonként'
 'Total moving time per month': 'Teljes mozgásidő havonta'
+'Total time': 'Total time'
 'Trail Run': Terepfutás
 'Trail Runs': Terepfutások
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'A heti 4–5 napos edzés magasabb pontszámot ér el, mint ha mindent egy-két napra zsúfolnak.'
@@ -567,6 +576,7 @@ Title: Cím
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Edzési stressz egyensúly (Forma) – a fitnesz (CTL) és a fáradtság (ATL) különbsége. Megmutatja, mennyire vagy felkészülve a teljesítésre.'
 'Training goals': 'Edzési célok'
 'Training load is accumulating, recovery days are important': 'Az edzésterhelés halmozódik, a regenerációs napok fontosak'
+Trip: Trip
 Tue: K
 Tue.: Kedd
 'Unchanged compared to yesterday': 'Változatlan a tegnapihoz képest'
@@ -598,6 +608,7 @@ Walks: Séták
 'Waxing the chain...': 'Lánc viaszolása...'
 'We detected following issues': 'A következő problémákat észleltük'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+Weather: Weather
 Wed: Sze
 Wed.: Szer.
 Weekly: Heti
@@ -684,8 +695,10 @@ workouts: edzések
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} minden {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} tevékenység'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} tevékenység {year}-ben'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} hónap'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': '{numberOfResults} fotó'
 '{numberOfResults} results': '{numberOfResults} találat'
 '{numberOfResults} routes': '{numberOfResults} útvonal'

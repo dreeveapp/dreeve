@@ -1,0 +1,121 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block main %}
+    {% autoescape false %}
+    <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+                <h3 class="text-lg font-semibold">
+                    {{ "Activity collection management"|trans({}, 'admin') }}
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                    {{ "Bundle your activities into trips and events."|trans({}, 'admin') }}
+                </p>
+            </div>
+            {% if hasActivities %}
+                <a href="{{ relativeUrl(path('admin_add_activity_collection')) }}" type="button" class="btn--add">
+                    {{ svg('plus') }}
+                    <span>
+                        {{ "Add collection"|trans({}, 'admin') }}
+                    </span>
+                </a>
+            {% endif %}
+        </div>
+        <div class="relative overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-left">
+                        {{ "Name"|trans }}
+                    </th>
+                    <th scope="col" class="text-left">
+                        {{ "Type"|trans({}, 'admin') }}
+                    </th>
+                    <th scope="col">
+                        {{ "Activities"|trans }}
+                    </th>
+                    <th scope="col" class="narrow sticky-actions">
+                        <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for activityCollection in activityCollections %}
+                    <tr class="group/row">
+                        <td class="whitespace-nowrap text-left">
+                            <div class="flex items-center gap-1.5">
+                                {% set numberOfActivitiesInCollection = numberOfActivities.getNumberOfActivitiesFor(activityCollection.getId()) %}
+                                {% if numberOfActivitiesInCollection > 0 %}
+                                    <a class="block max-w-100 truncate font-medium text-blue-600 hover:underline"
+                                       title="{{ activityCollection.getName() }}"
+                                       href="{{ relativeUrl(path('activity_collection', {'activityCollectionId': activityCollection.getId()})) }}">
+                                        {{ activityCollection.getName() }}
+                                    </a>
+                                {% else %}
+                                    <span class="block max-w-100 truncate font-medium" title="{{ activityCollection.getName() }}">
+                                        {{ activityCollection.getName() }}
+                                    </span>
+                                    <span class="shrink-0 text-amber-500" title="{{ "This collection has no activities yet."|trans({}, 'admin') }}">
+                                        <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        </svg>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="whitespace-nowrap text-left">
+                            {{ activityCollection.getType()|trans }}
+                        </td>
+                        <td class="whitespace-nowrap">
+                            {{ numberOfActivitiesInCollection }}
+                        </td>
+                        <td class="narrow whitespace-nowrap sticky-actions">
+                            <div class="inline-flex items-center gap-2">
+                                <a href="{{ relativeUrl(path('admin_edit_activity_collection', {activityCollectionId: activityCollection.getId()})) }}"
+                                   class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-primary"
+                                   title="{{ "Edit"|trans({}, 'admin') }}">
+                                    <span class="sr-only">{{ "Edit"|trans({}, 'admin') }}</span>
+                                    {{ svg('pencil', 'size-5') }}
+                                </a>
+                                <a href="{{ relativeUrl(path('admin_delete_activity_collection', {activityCollectionId: activityCollection.getId()})) }}"
+                                   class="inline-flex items-center justify-center text-gray-500 transition-colors hover:text-red-600"
+                                   title="{{ "Delete"|trans({}, 'admin') }}">
+                                    <span class="sr-only">{{ "Delete"|trans({}, 'admin') }}</span>
+                                    {{ svg('trash') }}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% if activityCollections.isEmpty() %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
+                                <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
+                                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 8H4m0-2v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-5.032a1 1 0 0 1-.768-.36l-1.9-2.28a1 1 0 0 0-.768-.36H5a1 1 0 0 0-1 1Z"/>
+                                    </svg>
+                                </span>
+                                {% if hasActivities %}
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-medium text-gray-800">{{ "No collections added yet."|trans({}, 'admin') }}</span>
+                                        <span class="text-xs text-gray-500">{{ "Group activities into trips and events, and they will appear here."|trans({}, 'admin') }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-medium text-gray-800">{{ "No activities imported yet."|trans({}, 'admin') }}</span>
+                                        <span class="text-xs text-gray-500">{{ "Import your activities first, then group them into collections."|trans({}, 'admin') }}</span>
+                                    </div>
+                                    <a href="{{ relativeUrl(path('admin_file_upload')) }}" class="btn--primary mt-1">
+                                        {{ "Import activities"|trans({}, 'admin') }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endautoescape %}
+{% endblock main %}

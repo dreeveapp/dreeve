@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Activiteiten
 Activity: Activiteit
+'Activity collections': 'Activity collections'
 'Activity count': 'Aantal activiteiten'
 'Activity heatmap': Activiteitenheatmap
 'Activity locations': Activiteitslocaties
@@ -71,6 +72,7 @@ Challenges: Uitdagingen
 'Clear chat': 'Chat wissen'
 Close: Close
 'Cluster tiles': Clustertegels
+Collections: Collections
 Columns: Kolommen
 Commute: Woon-werk
 Commutes: Woon-werkritten
@@ -98,6 +100,7 @@ Dance: Dansen
 Dashboard: Dashboard
 Date: Datum
 Day: Dag
+'Days away': 'Days away'
 'Days completed': 'Days completed'
 'Days needed': 'Dagen nodig'
 'Days to go': 'Days to go'
@@ -129,6 +132,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington doorheen de tijd'
 'Edit dashboard': 'Dashboard bewerken'
 'Edit this activity': 'Deze activiteit bewerken'
+'Edit this activity collection': 'Edit this activity collection'
 'Edit this segment': 'Edit this segment'
 'Effort vs heart rate': 'Inspanning vs. hartslag'
 'Elapsed time': 'Verstreken tijd'
@@ -144,6 +148,7 @@ Energy: Energie
 'Energy burned across your activities': 'Verbruikte energie over je activiteiten'
 'Enter fullscreen mode': 'Volledig scherm'
 Evening: Avond
+Event: Event
 'Excludes commutes': 'Zonder woon-werkritten'
 'Excludes group activities': 'Zonder groepsactiviteiten'
 'Explorer tiles': Explorer-tegels
@@ -257,6 +262,7 @@ Low: Laag
 'Low training load': 'Lage trainingsbelasting'
 Maintenance: Onderhoud
 'Manage activities': 'Activiteiten beheren'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Uitrusting beheren'
 'Manage recording devices': 'Registratietoestellen beheren'
 'Manage segments': 'Manage segments'
@@ -424,6 +430,8 @@ Speed: Snelheid
 Splits: Tussentijden
 'Sport variety': Sportvariatie
 Squash: Squash
+Stage: Stage
+Stages: Stages
 'Stair Stepper': Trappenmachine
 'Stand Up Paddling': 'Stand-up paddling'
 'Start times': Starttijden
@@ -558,6 +566,7 @@ Title: Titel
 'Total hours spent per gear': 'Totaal aantal uren per uitrusting'
 'Total hours spent per sport type': 'Totaal aantal uren per sporttype'
 'Total moving time per month': 'Totale beweegtijd per maand'
+'Total time': 'Total time'
 'Trail Run': Trailrun
 'Trail Runs': Trailruns
 'Training 4–5 days every week scores higher than doing everything in one or two days.': '4–5 dagen per week trainen scoort hoger dan alles op één of twee dagen doen.'
@@ -567,6 +576,7 @@ Title: Titel
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Training Stress Balance (Vorm) – Het verschil tussen fitheid (CTL) en vermoeidheid (ATL). Geeft aan hoe klaar je bent om te presteren.'
 'Training goals': Trainingsdoelen
 'Training load is accumulating, recovery days are important': 'De trainingsbelasting stapelt zich op, hersteldagen zijn belangrijk'
+Trip: Trip
 Tue: Di
 Tue.: Di.
 'Unchanged compared to yesterday': 'Onveranderd ten opzichte van gisteren'
@@ -598,6 +608,7 @@ Walks: Wandelingen
 'Waxing the chain...': 'De ketting aan het waxen...'
 'We detected following issues': 'We hebben de volgende problemen gedetecteerd'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+Weather: Weather
 Wed: Woe
 Wed.: Wo.
 Weekly: Wekelijks
@@ -684,8 +695,10 @@ workouts: trainingen
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} elke {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activiteiten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activiteiten in {year}'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': 'Voortschrijdend venster van {numberOfDays} dagen'
 '{numberOfMonths} months': '{numberOfMonths} maanden'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': "{numberOfResults} foto's"
 '{numberOfResults} results': '{numberOfResults} resultaten'
 '{numberOfResults} routes': '{numberOfResults} routes'

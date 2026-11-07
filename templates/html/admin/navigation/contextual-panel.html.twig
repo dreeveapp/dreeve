@@ -6,7 +6,7 @@
         {% set inRecordingDevices = isActiveNavItem({'/admin/gear/recording-devices': false}) %}
         {% set inGearOverview = not inMaintenance and not inRecordingDevices %}
         <nav class="contextual-panel" aria-label="{{ "Gear"|trans }}">
-            <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+            <p class="px-2 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
                 {{ "Gear"|trans }}
             </p>
             <ul class="space-y-1">
@@ -16,32 +16,47 @@
                     </a>
                 </li>
                 <li>
-                    <button type="button"
-                            class="unstyled group w-full justify-between"
-                            data-collapse-toggle="submenu-maintenance"
-                            aria-controls="submenu-maintenance"
-                            aria-expanded="{{ inMaintenance ? 'true' : 'false' }}">
-                        <span>{{ "Maintenance"|trans }}</span>
-                        <svg class="size-3.5 shrink-0 transition-transform group-aria-expanded:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
-                        </svg>
-                    </button>
-                    <ul id="submenu-maintenance" class="{{ inMaintenance ? '' : 'hidden' }} mt-1 space-y-1">
-                        <li>
-                            <a href="{{ relativeUrl(path('admin_manage_gear_maintenance_logs_overview')) }}" class="ps-5" {{ inMaintenanceLog ? 'aria-selected="true"' : '' }}>
-                                {{ "Log"|trans({}, 'admin') }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ relativeUrl(path('admin_manage_gear_maintenance_config')) }}" class="ps-5" {{ inMaintenanceConfig ? 'aria-selected="true"' : '' }}>
-                                {{ "Config"|trans({}, 'admin') }}
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
                     <a href="{{ relativeUrl(path('admin_manage_recording_devices_overview')) }}" {{ inRecordingDevices ? 'aria-selected="true"' : '' }}>
                         {{ "Recording devices"|trans }}
+                    </a>
+                </li>
+            </ul>
+            <p class="mt-4 px-2 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {{ "Maintenance"|trans }}
+            </p>
+            <ul class="space-y-1">
+                <li>
+                    <a href="{{ relativeUrl(path('admin_manage_gear_maintenance_logs_overview')) }}" {{ inMaintenanceLog ? 'aria-selected="true"' : '' }}>
+                        {{ "Log"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_manage_gear_maintenance_config')) }}" {{ inMaintenanceConfig ? 'aria-selected="true"' : '' }}>
+                        {{ "Configuration"|trans({}, 'admin') }}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+    {% if isActiveNavItem({'/admin/collections': false}) %}
+        {% set inTripSuggestions = isActiveNavItem({'/admin/collections/suggestions': false}) %}
+        <nav class="contextual-panel" aria-label="{{ "Activity collections"|trans }}">
+            <p class="px-2 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {{ "Activity collections"|trans }}
+            </p>
+            <ul class="space-y-1">
+                <li>
+                    <a href="{{ relativeUrl(path('admin_manage_activity_collection_overview')) }}" {{ not inTripSuggestions ? 'aria-selected="true"' : '' }}>
+                        {{ "Collections"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    {% set numberOfTripSuggestions = isActiveNavItem({'/admin/collections': true, '/admin/collections/suggestions': true}) ? number_of_trip_suggestions() : 0 %}
+                    <a href="{{ relativeUrl(path('admin_activity_collection_trip_suggestions')) }}" {{ inTripSuggestions ? 'aria-selected="true"' : '' }}>
+                        {{ "Suggested trips"|trans({}, 'admin') }}
+                        {% if numberOfTripSuggestions > 0 %}
+                            <span class="ms-auto shrink-0 bg-primary/15 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full">{{ numberOfTripSuggestions }}</span>
+                        {% endif %}
                     </a>
                 </li>
             </ul>

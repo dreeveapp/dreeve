@@ -18,4 +18,5 @@ enum NavigationSection: string
     case REWIND = 'rewind';
     case CHALLENGES = 'challenges';
     case PHOTOS = 'photos';
+    case ACTIVITY_COLLECTIONS = 'activity-collections';
 }

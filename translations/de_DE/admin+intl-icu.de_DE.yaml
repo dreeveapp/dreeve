@@ -14,10 +14,12 @@ Active: Aktiv
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
 Activity: Aktivität
 'Activity ID': Aktivitäts-ID
+'Activity collection management': 'Activity collection management'
 'Activity description': Aktivitätsbeschreibung
 'Activity management': Aktivitätenverwaltung
 'Activity name': Aktivitätsname
 'Activity visibilities to import': 'Import der Aktivitätssichtbarkeit'
+Add: Add
 'Add Eddington': 'Eddington hinzufügen'
 'Add FTP': 'FTP hinzufügen'
 'Add a component to start tracking maintenance.': 'Füge eine Komponente hinzu, um mit der Wartungsverfolgung zu beginnen.'
@@ -25,9 +27,11 @@ Activity: Aktivität
 'Add a rule to start automating your activity details.': 'Füge eine Regel hinzu, um deine Aktivitätsdetails automatisch auszufüllen.'
 'Add a widget': 'Widget hinzufügen'
 'Add action': 'Aktion hinzufügen'
+'Add activities': 'Add activities'
 'Add activity': 'Aktivität hinzufügen'
 'Add automation rule': 'Automatisierungsregel hinzufügen'
 'Add challenge': 'Herausforderung hinzufügen'
+'Add collection': 'Add collection'
 'Add command': 'Befehl hinzufügen'
 'Add component': 'Komponente hinzufügen'
 'Add condition': 'Bedingung hinzufügen'
@@ -44,6 +48,7 @@ Activity: Aktivität
 'Add weight': 'Gewicht hinzufügen'
 'Add widget': 'Widget hinzufügen'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
+Adding...: Adding...
 Admin: Admin
 'Admin panel': Adminbereich
 'Admin username': Admin-Benutzername
@@ -71,6 +76,7 @@ Apply: Anwenden
 'Are you sure you want to delete {count} activities?': 'Are you sure you want to delete {count} activities?'
 'Are you sure you want to delete {name}?': 'Möchtest du {name} wirklich löschen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Möchtest du {task} an {component} für {gear}, durchgeführt am {date}, wirklich löschen?'
+'Are you sure you want to dismiss the trip of {dates}?': 'Are you sure you want to dismiss the trip of {dates}?'
 'Are you sure you want to remove the {widget} widget?': 'Möchtest du das {widget} Widget entfernen?'
 'Assign gear': 'Ausrüstung zuweisen'
 Athlete: Athlete
@@ -88,6 +94,7 @@ Athlete: Athlete
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Bevor Sie die App nutzen können, benötigen wir einige Informationen über Sie. Diese werden verwendet, um Ihre Herzfrequenzzonen und Ihre Trainingsbelastung zu berechnen. Alle weiteren Einstellungen können Sie später anpassen.'
 Birthday: Geburtstag
+'Bundle your activities into trips and events.': 'Bundle your activities into trips and events.'
 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'Standardmäßig lassen sich von einer Aktivitätsseite nur die Originaldatei im FIT-, TCX- oder GPX-Format herunterladen. Originaldateien können mehr Details enthalten als auf der Seite angezeigt werden.'
 'CA certificate': 'CA certificate'
 'Calculate energy (kJ)': 'Energie (kJ) berechnen'
@@ -105,11 +112,12 @@ Clear: Leeren
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
 Close: Schließen
+Collections: Collections
 Command: Befehl
 Commute: Pendeln
 Component: Komponente
 'Conditions are combined with AND.': 'Die Bedingungen werden mit UND verknüpft.'
-Config: Konfiguration
+Configuration: Configuration
 Configure: Konfigurieren
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Konfiguriere die zu berechnenden Eddington-Zahlen. Du kannst bis zu zwei im Dashboard-Widget anzeigen.'
 'Configure {widget}': '{widget} konfigurieren'
@@ -120,18 +128,22 @@ Configured: Konfiguriert
 'Continues to next rule': 'Fortsetzung mit der nächsten Regel'
 'Copy this API key': 'Diesen API-Schlüssel kopieren'
 'Copy this MCP key': 'Copy this MCP key'
+'Cover image': 'Cover image'
+'Create collection': 'Create collection'
 'Cron expression': Cron-Ausdruck
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-Ausdruck, der angibt, wann die Aktion ausgeführt werden soll, z. B. führt '0 14 * * *' sie jeden Tag um 14:00 Uhr aus. Siehe crontab.guru für Hilfe."
 Custom: Custom
 Daemon: Daemon
 'Dashboard layout': Dashboard-Layout
 'Date & time': 'Datum & Zeit'
+'Date range': 'Date range'
 'Date range based': 'Nach Datumsbereich'
 'Define what needs doing and how often.': 'Lege fest, was wie oft erledigt werden muss.'
 Delete: Löschen
 'Delete activities': 'Delete activities'
 'Delete activity': 'Aktivität löschen'
 'Delete automation rule': 'Automatisierungsregel löschen'
+'Delete collection': 'Delete collection'
 'Delete component': 'Komponente löschen'
 'Delete file import': 'Dateiimport löschen'
 'Delete gear': 'Ausrüstung löschen'
@@ -143,6 +155,9 @@ Deleting...: 'wird gelöscht...'
 Description: Beschreibung
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Ausführliche Anleitungen findest du in {linkOpen}der Dokumentation{linkClose}.'
 Disabled: Deaktiviert
+Dismiss: Dismiss
+'Dismiss suggestion': 'Dismiss suggestion'
+Dismissing...: Dismissing...
 Display: Display
 Distance: Distanz
 'Do not download activity photos': 'Keine Bilder von Aktivitäten herunterladen.'
@@ -158,6 +173,7 @@ Duration: Dauer
 Edit: Bearbeiten
 'Edit activity': 'Aktivität bearbeiten'
 'Edit automation rule': 'Automatisierungsregel bearbeiten'
+'Edit collection': 'Edit collection'
 'Edit component': 'Komponente bearbeiten'
 'Edit gear': 'Ausrüstung bearbeiten'
 'Edit maintenance log': 'Wartungsprotokoll bearbeiten'
@@ -209,6 +225,7 @@ General: Allgemein
 'Go to last page': 'Zur letzten Seite'
 'Go to next page': 'Zur nächsten Seite'
 'Go to previous page': 'Zur vorherigen Seite'
+'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': Gruppenaktivität
 Heatmap: Heatmap
 'Hide photos for sport types': 'Fotos für Sportarten ausblenden'
@@ -232,9 +249,11 @@ Import: Import
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
 'Import source': Importquelle
+'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
 'Imported files will appear here once you upload them.': 'Importierte Dateien werden hier angezeigt, sobald du sie hochlädst.'
 'Imported from Strava': 'Von Strava importiert'
 'Imports new Strava activities.': 'Importiert neue Strava-Aktivitäten'
+'In collection': 'In collection'
 'Include retired gear': 'Ausgemusterte Ausrüstung einbeziehen'
 Info: Info
 'Installed on': 'Hinzugefügt am'
@@ -243,6 +262,8 @@ Integrations: Integrationen
 'Intro text': Einleitungstext
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
 'Issuer URL': 'Issuer URL'
+'It will not be suggested again. Its activities are not deleted.': 'It will not be suggested again. Its activities are not deleted.'
+'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Bezeichnung
 'Last name': Nachname
 Latitude: Breitengrad
@@ -290,10 +311,12 @@ Monday: Montag
 'Most recent activities (cards)': 'Neueste Aktivitäten (Karten)'
 'Most recent activities (list)': 'Neueste Aktivitäten (Liste)'
 'Moving time': Bewegungszeit
+'No activities added yet.': 'No activities added yet.'
 'No activities imported yet.': 'Noch keine Aktivitäten importiert.'
 'No activities match the current filters.': 'Keine Aktivitäten entsprechen den aktuellen Filtern.'
 'No activity found for that ID.': 'Keine Aktivität für diese ID gefunden.'
 'No automation rules yet.': 'Keine Automatisierungsregel bisher.'
+'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Noch keine Komponenten vorhanden'
 'No file imports match the current filters.': 'Keine Dateiimporte entsprechen den aktuellen Filtern.'
 'No files imported yet.': 'Noch keine Dateien importiert'
@@ -305,6 +328,7 @@ Monday: Montag
 'No segments added yet.': 'Noch keine Segmente hinzugefügt.'
 'No segments match the current filters.': 'Keine Segmente entsprechen den aktuellen Filtern.'
 'No sport types selected': 'Keine Sportarten ausgewählt'
+'No suggestions found.': 'No suggestions found.'
 'No unit': 'keine Einheit'
 'Normal date format': 'Normales Datumsformat'
 'Not configured, API access is disabled': 'Not configured, API access is disabled'
@@ -345,6 +369,7 @@ Password: Passwort
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
 'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf der Strecke.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
+Places: Places
 'Polyline color': Routenfarbe
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': Vorschaubereich
@@ -396,6 +421,7 @@ Rules: Regeln
 'Rules to apply': 'Anzuwendende Regeln'
 Saturday: Samstag
 Save: Speichern
+'Save and add activities': 'Save and add activities'
 'Save settings': 'Einstellungen speichern'
 Saved: gespeichert
 Saving...: 'Wird gespeichert...'
@@ -442,6 +468,7 @@ Settings: Einstellungen
 'Show options': 'Optionen anzeigen'
 'Show password': 'Passwort anzeigen'
 'Showing {first} - {last} of {total}': 'Zeige {first} - {last} von {total}'
+"Shows a map of the collection's routes on the overview instead of the cover image.": "Shows a map of the collection's routes on the overview instead of the cover image."
 'Sign in': Anmelden
 'Sign in to the admin panel': 'Im Adminbereich anmelden'
 'Sign in with single sign-on': 'Sign in with single sign-on'
@@ -475,6 +502,8 @@ Source: Quelle
 Subtitle: Untertitel
 Success: Erfolgreich
 Suggested: Suggested
+'Suggested trips': 'Suggested trips'
+"Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
 Sunday: Sonntag
 'Supported types': 'Unterstützte Typen'
 System: System
@@ -519,6 +548,7 @@ Tasks: Aufgaben
 'The start date, optionally with a custom PHP date format': 'Das Startdatum, optional mit einem benutzerdefinierten PHP-Datumsformat'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'Die Kachelebenen-URLs (Tile Layers), die zum Rendern der Karten verwendet werden. Füge mehrere hinzu, um sie zu stapeln, z.B. um Ortsnamen über eine Satellitenebene zu legen.'
 'The total distance ridden with the gear': 'Die mit der Ausrüstung zurückgelegte Gesamtstrecke'
+'The type decides how the collection page is laid out.': 'The type decides how the collection page is laid out.'
 'The unit system used to render distances, elevations, temperatures, etc.': 'Das Einheitensystem für Entfernungen, Höhen, Temperaturen usw.'
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'Der sichtbare Bereich, in dem sich die Heatmap öffnet. Sowohl das Zentrum als auch die Zoomstufe werden benötigt. Lass sie leer, um automatisch auf deinen aktivsten Bereich zu zoomen.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'Die Breite dieses Widgets muss auf der Dashboard-Einstellungsseite konfiguriert werden. Es wird sich nicht automatisch je nach Anzahl der konfigurierten Aktivitäten skalieren.'
@@ -527,6 +557,7 @@ Tasks: Aufgaben
 'These rules will be applied to your existing activities on the next import cycle.': 'Diese Regeln werden beim nächsten Importvorgang auf Ihre bestehenden Aktivitäten angewendet.'
 'This action cannot be undone.': 'Diese Aktion kann nicht rückgängig gemacht werden.'
 'This activity has no GPS data.': 'This activity has no GPS data.'
+'This collection has no activities yet.': 'This collection has no activities yet.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
 'This only removes the import record, the imported activity is kept.': 'Dadurch wird lediglich der Importdatensatz entfernt, die importierte Aktivität bleibt erhalten.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Diese Seite zeigt jedes Mal einen anderen Schlüssel an, nur der in deiner Umgebungsdatei wird angewendet.'
@@ -548,6 +579,7 @@ Tuesday: Dienstag
 'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Typ
 URL: URL
+'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
 Unit: Einheit
 'Unit system': Einheitensystem
 'Units & language': 'Einheiten & Sprache'
@@ -560,6 +592,7 @@ Until: Bis
 Uploaded: Hochgeladen
 Uploading...: 'Wird hochgeladen...'
 'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
+'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': 'Wird verwendet, um die Trainingsbelastung dieser Aktivität zu berechnen.'
 Username: Benutzername
 'Verify token': 'Token verifizieren'
@@ -579,6 +612,7 @@ Weigh-ins: Gewichtseinträge
 'When enabled, activities without a route, like indoor rides, are left out.': 'Wenn aktiviert, werden Aktivitäten ohne Route, wie Rollentraining, ausgeschlossen'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
 'When set, requests to the admin panel from any other IP address are rejected.': 'Wenn diese Einstellung aktiviert ist, werden Anfragen an den Adminbereich von allen anderen IP-Adressen abgewiesen.'
+"Without a cover image, the first photo of the collection's activities is used.": "Without a cover image, the first photo of the collection's activities is used."
 'Workout type': Trainingstyp
 'You can add it back to your dashboard again later.': 'Du kannst es später wieder zu deinem Dashboard hinzufügen.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'Du kannst Dateien auch direkt in den Ordner {watchFolder} kopieren oder {linkOpen}manuell eine Aktivität hinzufügen{linkClose}.'

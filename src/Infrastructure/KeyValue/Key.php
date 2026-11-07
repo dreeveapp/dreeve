@@ -10,4 +10,5 @@ enum Key: string
     case GEAR_MAINTENANCE = 'gearMaintenance';
     case DASHBOARD = 'dashboard';
     case AUTOMATION_RULES_BACKFILL = 'automationRulesBackfill';
+    case DISMISSED_TRIP_SUGGESTIONS = 'dismissedTripSuggestions';
 }

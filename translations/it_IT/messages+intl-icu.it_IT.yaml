@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Attività
 Activity: Attività
+'Activity collections': 'Activity collections'
 'Activity count': 'Conteggio attività'
 'Activity heatmap': 'Mappa di calore delle attività'
 'Activity locations': 'Luoghi attività'
@@ -71,6 +72,7 @@ Challenges: Sfide
 'Clear chat': 'Cancella chat'
 Close: Close
 'Cluster tiles': 'Tessere del cluster'
+Collections: Collections
 Columns: Columns
 Commute: Commute
 Commutes: 'Spostamenti quotidiani'
@@ -98,6 +100,7 @@ Dance: Dance
 Dashboard: 'Schermata iniziale'
 Date: Data
 Day: Day
+'Days away': 'Days away'
 'Days completed': 'Days completed'
 'Days needed': 'Giorni necessari'
 'Days to go': 'Days to go'
@@ -129,6 +132,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington over time'
 'Edit dashboard': 'Edit dashboard'
 'Edit this activity': 'Edit this activity'
+'Edit this activity collection': 'Edit this activity collection'
 'Edit this segment': 'Edit this segment'
 'Effort vs heart rate': 'Sforzo vs frequenza cardiaca'
 'Elapsed time': 'Elapsed time'
@@ -144,6 +148,7 @@ Energy: Energy
 'Energy burned across your activities': 'Energy burned across your activities'
 'Enter fullscreen mode': 'Entra in modalità schermo intero'
 Evening: Sera
+Event: Event
 'Excludes commutes': 'Esclude gli spostamenti casa-lavoro'
 'Excludes group activities': 'Excludes group activities'
 'Explorer tiles': 'Tessere esplorate'
@@ -257,6 +262,7 @@ Low: Basso
 'Low training load': 'Carico di allenamento basso'
 Maintenance: Manutenzione
 'Manage activities': 'Manage activities'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Manage gear'
 'Manage recording devices': 'Manage recording devices'
 'Manage segments': 'Manage segments'
@@ -424,6 +430,8 @@ Speed: Velocità
 Splits: Intertempi
 'Sport variety': 'Varietà sportiva'
 Squash: Squash
+Stage: Stage
+Stages: Stages
 'Stair Stepper': 'Stepper a gradini'
 'Stand Up Paddling': 'Stand up paddle'
 'Start times': 'Orari di partenza'
@@ -558,6 +566,7 @@ Title: Title
 'Total hours spent per gear': 'Ore totali per attrezzatura'
 'Total hours spent per sport type': 'Ore totali per tipo di sport'
 'Total moving time per month': 'Total moving time per month'
+'Total time': 'Total time'
 'Trail Run': 'Trail Run'
 'Trail Runs': 'Corse trail'
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Allenarsi 4–5 giorni ogni settimana ottiene un punteggio più alto rispetto a concentrare tutto in uno o due giorni.'
@@ -567,6 +576,7 @@ Title: Title
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Training Stress Balance (Forma) – differenza tra forma (CTL) e fatica (ATL). Indica quanto sei pronto a rendere al meglio.'
 'Training goals': 'Obiettivi di allenamento'
 'Training load is accumulating, recovery days are important': 'Il carico di allenamento si sta accumulando, i giorni di recupero sono importanti'
+Trip: Trip
 Tue: Mar
 Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
@@ -598,6 +608,7 @@ Walks: Passeggiate
 'Waxing the chain...': 'Waxing the chain...'
 'We detected following issues': 'Abbiamo rilevato i seguenti problemi'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+Weather: Weather
 Wed: Mer
 Wed.: Wed.
 Weekly: Weekly
@@ -684,8 +695,10 @@ workouts: allenamenti
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} ogni {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} attività'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} attività nel {year}'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} mesi'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'

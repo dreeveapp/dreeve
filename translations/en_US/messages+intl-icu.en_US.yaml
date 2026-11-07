@@ -16,6 +16,7 @@
 'Active gear': 'Active gear'
 Activities: Activities
 Activity: Activity
+'Activity collections': 'Activity collections'
 'Activity count': 'Activity count'
 'Activity heatmap': 'Activity heatmap'
 'Activity locations': 'Activity locations'
@@ -71,6 +72,7 @@ Challenges: Challenges
 'Clear chat': 'Clear chat'
 Close: Close
 'Cluster tiles': 'Cluster tiles'
+Collections: Collections
 Columns: Columns
 Commute: Commute
 Commutes: Commutes
@@ -98,6 +100,7 @@ Dance: Dance
 Dashboard: Dashboard
 Date: Date
 Day: Day
+'Days away': 'Days away'
 'Days completed': 'Days completed'
 'Days needed': 'Days needed'
 'Days to go': 'Days to go'
@@ -129,6 +132,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington over time'
 'Edit dashboard': 'Edit dashboard'
 'Edit this activity': 'Edit this activity'
+'Edit this activity collection': 'Edit this activity collection'
 'Edit this segment': 'Edit this segment'
 'Effort vs heart rate': 'Effort vs heart rate'
 'Elapsed time': 'Elapsed time'
@@ -144,6 +148,7 @@ Energy: Energy
 'Energy burned across your activities': 'Energy burned across your activities'
 'Enter fullscreen mode': 'Enter fullscreen mode'
 Evening: Evening
+Event: Event
 'Excludes commutes': 'Excludes commutes'
 'Excludes group activities': 'Excludes group activities'
 'Explorer tiles': 'Explorer tiles'
@@ -257,6 +262,7 @@ Low: Low
 'Low training load': 'Low training load'
 Maintenance: Maintenance
 'Manage activities': 'Manage activities'
+'Manage activity collections': 'Manage activity collections'
 'Manage gear': 'Manage gear'
 'Manage recording devices': 'Manage recording devices'
 'Manage segments': 'Manage segments'
@@ -424,6 +430,8 @@ Speed: Speed
 Splits: Splits
 'Sport variety': 'Sport variety'
 Squash: Squash
+Stage: Stage
+Stages: Stages
 'Stair Stepper': 'Stair Stepper'
 'Stand Up Paddling': 'Stand Up Paddling'
 'Start times': 'Start times'
@@ -558,6 +566,7 @@ Title: Title
 'Total hours spent per gear': 'Total hours spent per gear'
 'Total hours spent per sport type': 'Total hours spent per sport type'
 'Total moving time per month': 'Total moving time per month'
+'Total time': 'Total time'
 'Trail Run': 'Trail Run'
 'Trail Runs': 'Trail Runs'
 'Training 4–5 days every week scores higher than doing everything in one or two days.': 'Training 4–5 days every week scores higher than doing everything in one or two days.'
@@ -567,6 +576,7 @@ Title: Title
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.'
 'Training goals': 'Training goals'
 'Training load is accumulating, recovery days are important': 'Training load is accumulating, recovery days are important'
+Trip: Trip
 Tue: Tue
 Tue.: Tue.
 'Unchanged compared to yesterday': 'Unchanged compared to yesterday'
@@ -598,6 +608,7 @@ Walks: Walks
 'Waxing the chain...': 'Waxing the chain...'
 'We detected following issues': 'We detected following issues'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+Weather: Weather
 Wed: Wed
 Wed.: Wed.
 Weekly: Weekly
@@ -684,8 +695,10 @@ workouts: workouts
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} every {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} activities'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} activities in {year}'
+'{numberOfDays} days': '{numberOfDays} days'
 '{numberOfDays}-day rolling window': '{numberOfDays}-day rolling window'
 '{numberOfMonths} months': '{numberOfMonths} months'
+'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
 '{numberOfResults} photos': '{numberOfResults} photos'
 '{numberOfResults} results': '{numberOfResults} results'
 '{numberOfResults} routes': '{numberOfResults} routes'

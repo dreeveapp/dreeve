@@ -6,6 +6,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Image\ActivityBasedImageRepository;
+use App\Domain\Activity\Image\Image;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
@@ -112,6 +113,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withSportType(SportType::RUN)
                 ->withTotalImageCount(3)
+                ->withLocalImagePaths('/files/activities/run.jpg')
                 ->build(),
             []
         ));
@@ -120,6 +122,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withSportType(SportType::RIDE)
                 ->withTotalImageCount(4)
+                ->withLocalImagePaths('/files/activities/ride.jpg')
                 ->build(),
             []
         ));
@@ -141,6 +144,10 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
         ]);
 
         $this->assertEquals(3, $this->imageRepository->count());
+        $this->assertEquals(
+            ['/files/activities/run.jpg'],
+            $this->imageRepository->findAll()->map(static fn (Image $image): string => $image->getImageUrl()),
+        );
     }
 
     public function testDeleteForActivity(): void
