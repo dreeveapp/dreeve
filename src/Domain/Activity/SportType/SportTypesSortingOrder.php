@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\SportType;
 
-use App\Infrastructure\ValueObject\EnumCollection;
+use App\Infrastructure\ValueObject\BackedEnumCollection;
 
 /**
- * @extends EnumCollection<SportType>
+ * @extends BackedEnumCollection<SportType>
  */
-class SportTypesSortingOrder extends EnumCollection
+class SportTypesSortingOrder extends BackedEnumCollection
 {
     public function getItemClassName(): string
     {
