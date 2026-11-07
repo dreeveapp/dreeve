@@ -27,6 +27,7 @@ class ActivityCollectionsRequestHandlerTest extends AdminWebTestCase
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
             ->withName('Summer trip')
             ->withType(ActivityCollectionType::TRIP)
+            ->withUseRouteMapAsCover(true)
             ->withActivityIds(ActivityIds::fromArray([
                 ActivityId::fromUnprefixed('9756441741'),
                 ActivityId::fromUnprefixed('9542782314'),
@@ -37,6 +38,7 @@ class ActivityCollectionsRequestHandlerTest extends AdminWebTestCase
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('2'))
             ->withName('Gran fondo')
             ->withType(ActivityCollectionType::EVENT)
+            ->withUseRouteMapAsCover(true)
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('9830227112')]))
             ->withCoverImagePath('files/activity-collections/cover.jpg')
             ->build());
@@ -54,7 +56,7 @@ class ActivityCollectionsRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activity.collections, activities, activity.images',
+            'settings.appearance, activity.collections, activities, activity.images, activity.route',
         );
         $this->assertStringNotContainsString('Not started yet', (string) $this->client->getResponse()->getContent());
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());

@@ -10,6 +10,7 @@ use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionsWithActivities;
+use App\Domain\Activity\RealWorldMap;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -47,6 +48,7 @@ final readonly class ActivityCollectionsRequestHandler
                     RootCacheTag::ACTIVITY_COLLECTIONS,
                     RootCacheTag::ACTIVITIES,
                     RootCacheTag::ACTIVITY_IMAGES,
+                    RootCacheTag::ACTIVITY_ROUTE,
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
@@ -67,6 +69,7 @@ final readonly class ActivityCollectionsRequestHandler
                 activityCollections: $activityCollections,
                 activities: $this->activityRepository->findByIds($activityCollections->getActivityIds()),
             ),
+            'leafletMap' => new RealWorldMap(),
         ]);
     }
 }
