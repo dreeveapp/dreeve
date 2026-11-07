@@ -7,7 +7,6 @@ namespace App\Domain\Activity\Stream\CombinedStream;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityType;
-use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Repository\DbalRepository;
@@ -24,7 +23,7 @@ final readonly class DbalCombinedActivityStreamRepository extends DbalRepository
         $this->connection->executeStatement($sql, [
             'activityId' => $combinedActivityStream->getActivityId(),
             'unitSystem' => $combinedActivityStream->getUnitSystem()->value,
-            'streamTypes' => implode(',', $combinedActivityStream->getStreamTypes()->map(fn (CombinedStreamType $streamType) => $streamType->value)),
+            'streamTypes' => implode(',', $combinedActivityStream->getStreamTypes()->toValues()),
             'data' => Json::encodeAndCompress($combinedActivityStream->getData()),
             'maxYAxisValue' => $combinedActivityStream->getMaxYAxisValue(),
         ]);
@@ -126,7 +125,7 @@ final readonly class DbalCombinedActivityStreamRepository extends DbalRepository
                         fn (CombinedStreamType $streamType) => $streamType->getStreamType()->value,
                         CombinedStreamTypes::othersFor($activityType)->toArray()
                     ),
-                    'sportTypes' => array_map(fn (SportType $sportType) => $sportType->value, $activityType->getSportTypes()->toArray()),
+                    'sportTypes' => $activityType->getSportTypes()->toValues(),
                 ],
                 [
                     'sportTypes' => ArrayParameterType::STRING,

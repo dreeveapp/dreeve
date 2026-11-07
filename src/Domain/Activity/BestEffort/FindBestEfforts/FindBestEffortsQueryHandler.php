@@ -55,7 +55,7 @@ final readonly class FindBestEffortsQueryHandler implements QueryHandler
                          ActivityBestEffort.activityId ASC
             SQL,
             [
-                'sportTypes' => $sportTypes->map(fn (SportType $sportType): string => $sportType->value),
+                'sportTypes' => $sportTypes->toValues(),
                 'distanceInMeter' => $distanceInMeter,
                 'excludedFrom' => ActivityExclusion::BEST_EFFORTS->value,
             ],

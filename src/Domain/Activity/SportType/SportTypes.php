@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Domain\Activity\SportType;
 
 use App\Domain\Activity\ActivityType;
-use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\EnumCollection;
 
 /**
- * @extends Collection<\App\Domain\Activity\SportType\SportType>
+ * @extends EnumCollection<\App\Domain\Activity\SportType\SportType>
  */
-final class SportTypes extends Collection
+final class SportTypes extends EnumCollection
 {
     public function getItemClassName(): string
     {

@@ -5,7 +5,6 @@ namespace App\Domain\Activity\Stream;
 use App\Domain\Activity\ActivityExclusion;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivitySummaryRepository;
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Settings\SettingsRepository;
@@ -64,7 +63,7 @@ final readonly class StreamBasedActivityPowerRepository implements ActivityPower
         $params = [
             'streamType' => StreamType::WATTS->value,
             'metricType' => ActivityStreamMetricType::BEST_AVERAGES->value,
-            'sportTypes' => $sportTypes->map(fn (SportType $sportType) => $sportType->value),
+            'sportTypes' => $sportTypes->toValues(),
             'dateFrom' => $dateRange->getFrom()->format('Y-m-d 00:00:00'),
             'dateTill' => $dateRange->getTill()->format('Y-m-d 23:59:59'),
             'excludedFrom' => ActivityExclusion::PEAK_POWER_OUTPUTS->value,

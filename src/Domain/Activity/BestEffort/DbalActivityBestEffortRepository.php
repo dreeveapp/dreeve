@@ -104,7 +104,7 @@ final readonly class DbalActivityBestEffortRepository extends DbalRepository imp
             $this->connection->executeQuery(
                 $sql,
                 [
-                    'sportTypes' => array_map(fn (SportType $sportType) => $sportType->value, SportTypes::thatSupportsBestEfforts()->toArray()),
+                    'sportTypes' => SportTypes::thatSupportsBestEfforts()->toValues(),
                     'activityId' => (string) $activity,
                     'excludedFrom' => ActivityExclusion::BEST_EFFORTS->value,
                 ],

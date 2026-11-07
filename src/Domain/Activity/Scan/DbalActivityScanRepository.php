@@ -6,7 +6,6 @@ namespace App\Domain\Activity\Scan;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\Repository\DbalRepository;
 use Doctrine\DBAL\ArrayParameterType;
@@ -77,7 +76,7 @@ final readonly class DbalActivityScanRepository extends DbalRepository implement
         $params = [
             'type' => $type->value,
             'subjectId' => $subjectId,
-            'sportTypes' => array_map(fn (SportType $sportType): string => $sportType->value, $sportTypes->toArray()),
+            'sportTypes' => $sportTypes->toValues(),
         ];
         foreach ($requiredStreamTypes as $index => $streamType) {
             $sql .= sprintf(' AND EXISTS (

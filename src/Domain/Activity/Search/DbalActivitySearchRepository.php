@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Search;
 
 use App\Domain\Activity\ActivityHydrator;
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
@@ -50,10 +49,7 @@ final readonly class DbalActivitySearchRepository extends DbalRepository impleme
                     ->andWhere('a.sportType IN (:sportTypes)')
                     ->setParameter(
                         key: 'sportTypes',
-                        value: array_map(
-                            static fn (SportType $sportType): string => $sportType->value,
-                            $filters->getSportTypes()->toArray()
-                        ),
+                        value: $filters->getSportTypes()->toValues(),
                         type: ArrayParameterType::STRING
                     );
             }
