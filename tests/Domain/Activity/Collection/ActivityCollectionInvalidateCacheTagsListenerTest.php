@@ -59,6 +59,7 @@ class ActivityCollectionInvalidateCacheTagsListenerTest extends ContainerTestCas
 
         $this->activityCollectionRepository->update($activityCollection
             ->withName('Mallorca')
+            ->withUseRouteMapAsCover(false)
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('2'), ActivityId::fromUnprefixed('1')])));
 
         $this->assertTrue($this->isServedFromCache(RootCacheTag::ACTIVITY_COLLECTIONS));

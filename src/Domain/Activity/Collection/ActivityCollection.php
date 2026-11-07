@@ -29,6 +29,8 @@ final class ActivityCollection
         private readonly ActivityIds $activityIds,
         #[ORM\Column(type: 'string', nullable: true)]
         private readonly ?string $coverImagePath,
+        #[ORM\Column(type: 'boolean')]
+        private readonly bool $useRouteMapAsCover,
         #[ORM\Column(type: 'datetime_immutable')]
         private readonly SerializableDateTime $createdOn,
     ) {
@@ -41,6 +43,7 @@ final class ActivityCollection
         ActivityCollectionType $type,
         ActivityIds $activityIds,
         ?string $coverImagePath,
+        bool $useRouteMapAsCover,
         SerializableDateTime $createdOn,
     ): self {
         $activityCollection = new self(
@@ -50,6 +53,7 @@ final class ActivityCollection
             type: $type,
             activityIds: $activityIds,
             coverImagePath: $coverImagePath,
+            useRouteMapAsCover: $useRouteMapAsCover,
             createdOn: $createdOn,
         );
         $activityCollection->recordThat(new ActivityCollectionWasAdded());
@@ -64,6 +68,7 @@ final class ActivityCollection
         ActivityCollectionType $type,
         ActivityIds $activityIds,
         ?string $coverImagePath,
+        bool $useRouteMapAsCover,
         SerializableDateTime $createdOn,
     ): self {
         return new self(
@@ -73,6 +78,7 @@ final class ActivityCollection
             type: $type,
             activityIds: $activityIds,
             coverImagePath: $coverImagePath,
+            useRouteMapAsCover: $useRouteMapAsCover,
             createdOn: $createdOn,
         );
     }
@@ -176,6 +182,25 @@ final class ActivityCollection
 
         $activityCollection = clone ($this, [
             'coverImagePath' => $coverImagePath,
+        ]);
+        $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
+
+        return $activityCollection;
+    }
+
+    public function useRouteMapAsCover(): bool
+    {
+        return $this->useRouteMapAsCover;
+    }
+
+    public function withUseRouteMapAsCover(bool $useRouteMapAsCover): self
+    {
+        if ($useRouteMapAsCover === $this->useRouteMapAsCover) {
+            return $this;
+        }
+
+        $activityCollection = clone ($this, [
+            'useRouteMapAsCover' => $useRouteMapAsCover,
         ]);
         $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
 

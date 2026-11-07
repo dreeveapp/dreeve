@@ -27,6 +27,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
         private ?string $description,
         private ActivityCollectionType $type,
         private ?NewImage $newImage,
+        private bool $useRouteMapAsCover,
         private ActivityIds $activityIds,
     ) {
     }
@@ -74,6 +75,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
             description: '' === $description ? null : $description,
             type: $activityCollectionType,
             newImage: $newImages[0] ?? null,
+            useRouteMapAsCover: filter_var($payload['useRouteMapAsCover'] ?? false, FILTER_VALIDATE_BOOLEAN),
             activityIds: $activityIds,
         );
     }
@@ -101,6 +103,11 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
     public function getNewImage(): ?NewImage
     {
         return $this->newImage;
+    }
+
+    public function useRouteMapAsCover(): bool
+    {
+        return $this->useRouteMapAsCover;
     }
 
     public function getActivityIds(): ActivityIds

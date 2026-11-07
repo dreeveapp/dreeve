@@ -18,6 +18,7 @@ final class ActivityCollectionBuilder
     private ActivityCollectionType $type = ActivityCollectionType::TRIP;
     private ActivityIds $activityIds;
     private ?string $coverImagePath = null;
+    private bool $useRouteMapAsCover = false;
     private SerializableDateTime $createdOn;
 
     private function __construct()
@@ -41,6 +42,7 @@ final class ActivityCollectionBuilder
             type: $this->type,
             activityIds: $this->activityIds,
             coverImagePath: $this->coverImagePath,
+            useRouteMapAsCover: $this->useRouteMapAsCover,
             createdOn: $this->createdOn,
         );
     }
@@ -83,6 +85,13 @@ final class ActivityCollectionBuilder
     public function withCoverImagePath(?string $coverImagePath): self
     {
         $this->coverImagePath = $coverImagePath;
+
+        return $this;
+    }
+
+    public function withUseRouteMapAsCover(bool $useRouteMapAsCover): self
+    {
+        $this->useRouteMapAsCover = $useRouteMapAsCover;
 
         return $this;
     }

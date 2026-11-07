@@ -42,6 +42,7 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $form->filter('input[name="addActivitiesFrom"]'));
         $this->assertSame('[]', $form->filter('[data-image-dropzone]')->attr('data-existing-images'));
         $this->assertCount(1, $form->filter('input[data-images-field][name="coverImagePath"]'));
+        $this->assertCount(1, $form->filter('input[type="checkbox"][name="useRouteMapAsCover"]:not([checked])'));
         $this->assertStringContainsString("Without a cover image, the first photo of the collection's activities is used.", $form->text());
         $this->assertSame('Save and add activities', trim($form->filter('button[type="submit"] .label')->text()));
         $this->assertCount(1, $crawler->filter('.max-w-2xl'));
@@ -55,6 +56,7 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
             ->withDescription('Four days across the Alps')
             ->withCoverImagePath('/files/activity-collections/cover.jpg')
             ->withType(ActivityCollectionType::EVENT)
+            ->withUseRouteMapAsCover(true)
             ->withActivityIds(ActivityIds::fromArray([
                 ActivityId::fromUnprefixed('3'),
                 ActivityId::fromUnprefixed('2'),
@@ -92,6 +94,7 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
             [['url' => '/files/activity-collections/cover.jpg', 'name' => 'cover.jpg', 'path' => '/files/activity-collections/cover.jpg']],
             json_decode((string) $form->filter('[data-image-dropzone]')->attr('data-existing-images'), true),
         );
+        $this->assertCount(1, $form->filter('input[type="checkbox"][name="useRouteMapAsCover"][checked]'));
         $this->assertSame('/admin/collections/activityCollection-1/delete', $form->filter('a.btn--danger')->attr('href'));
 
         $this->assertCount(1, $crawler->filter('.modal-like-form .btn--primary'));
