@@ -26,9 +26,6 @@ final class SportTypesToImport extends EnumCollection
             return self::fromArray(SportType::cases());
         }
 
-        return self::fromArray(array_map(
-            SportType::from(...),
-            $types
-        ));
+        return self::fromValues($types);
     }
 }

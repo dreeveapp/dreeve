@@ -19,23 +19,18 @@ final readonly class DbalSportTypeRepository extends DbalRepository implements S
 
     public function findAll(): SportTypes
     {
-        return SportTypes::fromArray(array_map(
-            SportType::from(...),
+        return SportTypes::fromValues(
             $this->connection->executeQuery(
                 sprintf('SELECT DISTINCT sportType FROM Activity ORDER BY CASE sportType %s END', $this->buildOrderByStatement())
             )->fetchFirstColumn()
-        ));
+        );
     }
 
     public function findForImages(): SportTypes
     {
-        $notInSportTypes = ['invalid'];
-        foreach ($this->settingsRepository->appearance()->getHidePhotosForSportTypes() as $sportType) {
-            $notInSportTypes[] = $sportType->value;
-        }
+        $notInSportTypes = ['invalid', ...$this->settingsRepository->appearance()->getHidePhotosForSportTypes()->toValues()];
 
-        return SportTypes::fromArray(array_map(
-            SportType::from(...),
+        return SportTypes::fromValues(
             $this->connection->executeQuery(
                 sprintf(
                     'SELECT DISTINCT sportType FROM Activity WHERE totalImageCount > 0 AND sportType NOT IN (%s) ORDER BY CASE sportType %s END',
@@ -43,7 +38,7 @@ final readonly class DbalSportTypeRepository extends DbalRepository implements S
                     $this->buildOrderByStatement()
                 )
             )->fetchFirstColumn()
-        ));
+        );
     }
 
     private function buildOrderByStatement(): string

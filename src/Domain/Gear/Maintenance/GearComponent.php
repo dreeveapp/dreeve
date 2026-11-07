@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
@@ -92,7 +91,7 @@ final class GearComponent implements \JsonSerializable
                     parent: InstallationParent::fromString($installation['parent']),
                     from: isset($installation['from']) ? SerializableDateTime::fromString($installation['from']) : null,
                     until: isset($installation['until']) ? SerializableDateTime::fromString($installation['until']) : null,
-                    sportTypes: SportTypes::fromArray(array_map(SportType::from(...), $installation['sportTypes'])),
+                    sportTypes: SportTypes::fromValues($installation['sportTypes']),
                 ),
                 $component['installations']
             )),
