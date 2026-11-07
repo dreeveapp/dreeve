@@ -37,6 +37,15 @@
                     {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'coverImagePath', maxImages: 1, existingImages: existingImages } %}
                     <p class="description">{{ "Without a cover image, the first photo of the collection's activities is used."|trans({}, 'admin') }}</p>
                 </div>
+                <div class="flex items-start gap-2">
+                    <input type="checkbox" id="activity-collection-use-route-map-as-cover" name="useRouteMapAsCover" value="true" {{ activityCollection and activityCollection.useRouteMapAsCover() ? 'checked' }} class="mt-0.5">
+                    <div>
+                        <label for="activity-collection-use-route-map-as-cover" class="mt-0!">{{ "Use the route map as cover"|trans({}, 'admin') }}</label>
+                        <p class="mt-0.5 text-xxs text-gray-500">
+                            {{ "Shows a map of the collection's routes on the overview instead of the cover image."|trans({}, 'admin') }}
+                        </p>
+                    </div>
+                </div>
                 {% if activityCollection %}
                     {% set editUrl = relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: activityCollectionId}), overviewUrl) %}
                     <div class="flex flex-col gap-2">

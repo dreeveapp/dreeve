@@ -468,6 +468,7 @@ Settings: Paramètres
 'Show options': 'Voir les options'
 'Show password': 'Voir le mot de passe'
 'Showing {first} - {last} of {total}': 'Affichage de {first} à {last} sur {total}'
+"Shows a map of the collection's routes on the overview instead of the cover image.": "Shows a map of the collection's routes on the overview instead of the cover image."
 'Sign in': Connexion
 'Sign in to the admin panel': "Connexion au panneau d'administration"
 'Sign in with single sign-on': 'Sign in with single sign-on'
@@ -591,6 +592,7 @@ Until: Until
 Uploaded: Téléversé
 Uploading...: 'Téléversement en cours'
 'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
+'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': "Utilisé pour calculer la charge d'entraînement de cette activité"
 Username: "Nom d'utilisateur"
 'Verify token': 'Vérifier le jeton'

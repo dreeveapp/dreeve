@@ -61,6 +61,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'activityIds' => ['activity-3', 'activity-3'],
             'activityIdToAdd' => 'Col du Tourmalet (activity-2)',
             'addActivitiesBy' => 'activity',
+            'useRouteMapAsCover' => 'true',
             'coverImagePath' => json_encode([
                 ['status' => 'removed', 'path' => '/files/activity-collections/old.jpg'],
             ]),
@@ -75,6 +76,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             $activityCollection->getActivityIds(),
         );
         $this->assertNull($activityCollection->getCoverImagePath());
+        $this->assertTrue($activityCollection->useRouteMapAsCover());
         $this->assertFalse($fileStorage->fileExists('activity-collections/old.jpg'));
 
         $this->getContainer()->get(CommandBus::class)->dispatch(UpdateActivityCollection::fromPayload([
@@ -87,6 +89,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'addActivitiesTill' => '2025-06-12',
         ]));
 
+        $activityCollection = $activityCollectionRepository->find(ActivityCollectionId::fromUnprefixed('1'));
         $this->assertEquals(
             ActivityIds::fromArray([
                 ActivityId::fromUnprefixed('3'),
@@ -94,8 +97,9 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
                 ActivityId::fromUnprefixed('range-end'),
                 ActivityId::fromUnprefixed('range-start'),
             ]),
-            $activityCollectionRepository->find(ActivityCollectionId::fromUnprefixed('1'))->getActivityIds(),
+            $activityCollection->getActivityIds(),
         );
+        $this->assertFalse($activityCollection->useRouteMapAsCover());
     }
 
     public function testHandleReplacesTheCoverImage(): void
