@@ -49,6 +49,11 @@ final readonly class ActivityCollectionWithActivities
             && $activity->getEncodedPolyline() instanceof EncodedPolyline);
     }
 
+    public function usesRouteMapAsCover(): bool
+    {
+        return $this->activityCollection->useRouteMapAsCover() && !$this->getActivitiesWithARealWorldRoute()->isEmpty();
+    }
+
     public function getCoverImagePath(): ?string
     {
         if ($coverImagePath = $this->activityCollection->getCoverImagePath()) {
