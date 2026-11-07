@@ -7,6 +7,7 @@ namespace App\Domain\Activity\Collection\FindTripSuggestions;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
+use App\Domain\Activity\Collection\DismissedTripSuggestionRepository;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
@@ -32,6 +33,7 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
     public function __construct(
         private Connection $connection,
         private ActivityCollectionRepository $activityCollectionRepository,
+        private DismissedTripSuggestionRepository $dismissedTripSuggestionRepository,
     ) {
     }
 
@@ -108,10 +110,10 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
         }
         $groups[] = $currentGroup;
 
-        $activityIdsInACollection = array_flip(array_map(
-            strval(...),
-            $this->activityCollectionRepository->findAll()->getActivityIds()->toArray(),
-        ));
+        $activityIdsToSkip = array_flip(array_map(strval(...), [
+            ...$this->activityCollectionRepository->findAll()->getActivityIds(),
+            ...$this->dismissedTripSuggestionRepository->findActivityIds(),
+        ]));
 
         $tripSuggestions = [];
         foreach ($groups as $group) {
@@ -119,7 +121,7 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
                 continue;
             }
 
-            if (array_any($group, static fn (array $activity): bool => isset($activityIdsInACollection[$activity['activityId']]))) {
+            if (array_any($group, static fn (array $activity): bool => isset($activityIdsToSkip[$activity['activityId']]))) {
                 continue;
             }
 

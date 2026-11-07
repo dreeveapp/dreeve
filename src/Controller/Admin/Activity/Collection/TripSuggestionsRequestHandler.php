@@ -8,9 +8,11 @@ use App\Application\Countries;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
+use App\Domain\Activity\Collection\DismissTripSuggestion\DismissTripSuggestion;
 use App\Domain\Activity\Collection\FindTripSuggestions\FindTripSuggestions;
 use App\Domain\Activity\Collection\FindTripSuggestions\TripSuggestion;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -43,6 +45,20 @@ final readonly class TripSuggestionsRequestHandler
                 ],
                 $this->queryBus->ask(new FindTripSuggestions())->getTripSuggestions(),
             ),
+        ]));
+    }
+
+    #[Route(path: '/admin/collections/suggestions/{tripSuggestionId}/dismiss', name: 'admin_dismiss_trip_suggestion', methods: ['GET'], priority: 10)]
+    public function handleDismiss(string $tripSuggestionId): HtmlResponse
+    {
+        $tripSuggestion = array_find(
+            $this->queryBus->ask(new FindTripSuggestions())->getTripSuggestions(),
+            static fn (TripSuggestion $tripSuggestion): bool => $tripSuggestionId === (string) $tripSuggestion->getId(),
+        ) ?? throw new EntityNotFound(sprintf('TripSuggestion "%s" not found', $tripSuggestionId));
+
+        return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/dismiss-trip-suggestion.html.twig', [
+            'dispatchCommand' => DismissTripSuggestion::getCommandName(),
+            'tripSuggestion' => $tripSuggestion,
         ]));
     }
 }

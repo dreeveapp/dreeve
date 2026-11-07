@@ -7,6 +7,7 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
+use App\Domain\Activity\Collection\DismissedTripSuggestionRepository;
 use App\Domain\Activity\Collection\FindTripSuggestions\FindTripSuggestions;
 use App\Domain\Activity\Collection\FindTripSuggestions\FindTripSuggestionsQueryHandler;
 use App\Domain\Activity\Collection\FindTripSuggestions\FindTripSuggestionsResponse;
@@ -59,6 +60,8 @@ class FindTripSuggestionsQueryHandlerTest extends ContainerTestCase
             ['long-trip-9', '2024-08-02', '40.40', '-2.10', WorldType::REAL_WORLD, SportType::RIDE, null],
             ['collected-1', '2024-08-10', '45.60', '10.60', WorldType::REAL_WORLD, SportType::RIDE, null],
             ['collected-2', '2024-08-11', '45.60', '10.60', WorldType::REAL_WORLD, SportType::RIDE, null],
+            ['dismissed-1', '2024-08-20', '43.70', '7.25', WorldType::REAL_WORLD, SportType::RIDE, null],
+            ['dismissed-2', '2024-08-21', '43.70', '7.25', WorldType::REAL_WORLD, SportType::RIDE, null],
             ['departure', '2024-09-01', '51.20', '3.20', WorldType::REAL_WORLD, SportType::RIDE, (string) EncodedPolyline::fromCoordinates([[51.20, 3.20], [50.50, 4.50], [49.90, 5.60]])],
             ['tour-1', '2024-09-02', '49.90', '5.60', WorldType::REAL_WORLD, SportType::RIDE, null],
             ['tour-2', '2024-09-03', '49.40', '6.20', WorldType::REAL_WORLD, SportType::RIDE, null],
@@ -87,10 +90,13 @@ class FindTripSuggestionsQueryHandlerTest extends ContainerTestCase
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('collected-2')]))
             ->build());
+        $dismissedTripSuggestionRepository = $this->getContainer()->get(DismissedTripSuggestionRepository::class);
+        $dismissedTripSuggestionRepository->add(ActivityIds::fromArray([ActivityId::fromUnprefixed('dismissed-2')]));
 
         $response = new FindTripSuggestionsQueryHandler(
             connection: $this->getConnection(),
             activityCollectionRepository: $activityCollectionRepository,
+            dismissedTripSuggestionRepository: $dismissedTripSuggestionRepository,
         )->handle(new FindTripSuggestions());
         assert($response instanceof FindTripSuggestionsResponse);
 
