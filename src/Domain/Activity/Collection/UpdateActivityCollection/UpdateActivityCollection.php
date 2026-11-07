@@ -66,7 +66,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
 
         try {
             $activityIds = ActivityIds::fromArray(array_map(
-                static fn (mixed $activityId): ActivityId => ActivityId::fromString($activityId),
+                ActivityId::fromString(...),
                 array_values($activityIds),
             ))->unique();
         } catch (\InvalidArgumentException) {

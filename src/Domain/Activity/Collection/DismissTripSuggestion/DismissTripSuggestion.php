@@ -30,7 +30,7 @@ final readonly class DismissTripSuggestion extends DomainCommand implements Dese
         try {
             return new self(
                 activityIds: ActivityIds::fromArray(array_map(
-                    static fn (mixed $activityId): ActivityId => ActivityId::fromString($activityId),
+                    ActivityId::fromString(...),
                     array_values($activityIds),
                 )),
             );
