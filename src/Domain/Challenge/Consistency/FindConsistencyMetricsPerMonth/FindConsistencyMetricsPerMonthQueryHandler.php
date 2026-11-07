@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Challenge\Consistency\FindConsistencyMetricsPerMonth;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Calendar\Month;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
@@ -44,7 +43,7 @@ final readonly class FindConsistencyMetricsPerMonthQueryHandler implements Query
                 GROUP BY yearAndMonth
             SQL,
             [
-                'sportTypes' => $sportTypes->map(fn (SportType $sportType) => $sportType->value),
+                'sportTypes' => $sportTypes->toValues(),
             ],
             [
                 'sportTypes' => ArrayParameterType::STRING,

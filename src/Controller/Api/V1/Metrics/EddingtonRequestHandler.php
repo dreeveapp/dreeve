@@ -6,7 +6,6 @@ namespace App\Controller\Api\V1\Metrics;
 
 use App\Domain\Activity\Eddington\Eddington;
 use App\Domain\Activity\Eddington\EddingtonCalculator;
-use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Measurement\UnitSystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -26,9 +25,7 @@ final readonly class EddingtonRequestHandler
         return new JsonResponse(array_map(
             static fn (Eddington $eddington): array => [
                 'label' => $eddington->getLabel(),
-                'sportTypes' => $eddington->getConfig()->getSportTypesToInclude()->map(
-                    static fn (SportType $sportType): string => $sportType->value
-                ),
+                'sportTypes' => $eddington->getConfig()->getSportTypesToInclude()->toValues(),
                 'unit' => $eddington->getUnitSystem()->distanceSymbol(),
                 'number' => $eddington->getNumber(),
                 'daysNeededForNextNumber' => $eddington->getDaysToCompleteForFutureNumbers()[$eddington->getNumber() + 1] ?? $eddington->getNumber() + 1,

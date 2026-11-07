@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Application\Import\StravaImport\ImportActivities;
 
 use App\Domain\Activity\ActivityVisibility;
-use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\EnumCollection;
 
 /**
- * @extends Collection<ActivityVisibility>
+ * @extends EnumCollection<ActivityVisibility>
  */
-final class ActivityVisibilitiesToImport extends Collection
+final class ActivityVisibilitiesToImport extends EnumCollection
 {
     public function getItemClassName(): string
     {

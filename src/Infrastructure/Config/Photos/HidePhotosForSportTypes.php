@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Infrastructure\Config\Photos;
 
 use App\Domain\Activity\SportType\SportType;
-use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\EnumCollection;
 
 /**
- * @extends Collection<SportType>
+ * @extends EnumCollection<SportType>
  */
-final class HidePhotosForSportTypes extends Collection
+final class HidePhotosForSportTypes extends EnumCollection
 {
     public function getItemClassName(): string
     {

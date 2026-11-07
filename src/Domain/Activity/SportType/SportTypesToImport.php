@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\SportType;
 
-use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\EnumCollection;
 
 /**
- * @extends Collection<SportType>
+ * @extends EnumCollection<SportType>
  */
-final class SportTypesToImport extends Collection
+final class SportTypesToImport extends EnumCollection
 {
     public function getItemClassName(): string
     {

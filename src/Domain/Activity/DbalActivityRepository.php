@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
@@ -65,7 +64,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             $queryBuilder->andWhere('sportType IN (:sportTypes)')
                 ->setParameter(
                     key: 'sportTypes',
-                    value: array_map(fn (SportType $sportType): string => $sportType->value, $restrictToSportTypes->toArray()),
+                    value: $restrictToSportTypes->toValues(),
                     type: ArrayParameterType::STRING
                 );
         }

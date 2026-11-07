@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
-use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\EnumCollection;
 
 /**
- * @extends Collection<ActivityType>
+ * @extends EnumCollection<ActivityType>
  */
-final class ActivityTypes extends Collection
+final class ActivityTypes extends EnumCollection
 {
     public function getItemClassName(): string
     {
