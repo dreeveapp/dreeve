@@ -29,6 +29,7 @@ Add: Add
 'Add action': 'Művelet hozzáadása'
 'Add activities': 'Add activities'
 'Add activity': 'Tevékenység hozzáadása'
+'Add all activities between two dates, both included.': 'Add all activities between two dates, both included.'
 'Add automation rule': 'Automatizálási szabály hozzáadása'
 'Add challenge': 'Kihívás hozzáadása'
 'Add collection': 'Add collection'
@@ -427,6 +428,7 @@ Saved: Mentve
 Saving...: Mentés...
 'Scheduled actions': 'Scheduled actions'
 'Scheduled actions the daemon runs at regular intervals.': 'Ütemezett műveletek, amelyeket a daemon rendszeres időközönként futtat.'
+'Search and add a single activity to the collection.': 'Search and add a single activity to the collection.'
 'Search by name, date or activity ID': 'Keresés név, dátum vagy tevékenység-azonosító alapján'
 Seconds: Másodperc
 Security: Biztonság

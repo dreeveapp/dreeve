@@ -29,6 +29,7 @@ Add: Add
 'Add action': 'Add action'
 'Add activities': 'Add activities'
 'Add activity': 'Add activity'
+'Add all activities between two dates, both included.': 'Add all activities between two dates, both included.'
 'Add automation rule': 'Add automation rule'
 'Add challenge': 'Add challenge'
 'Add collection': 'Add collection'
@@ -427,6 +428,7 @@ Saved: Saved
 Saving...: Saving...
 'Scheduled actions': 'Scheduled actions'
 'Scheduled actions the daemon runs at regular intervals.': 'Scheduled actions the daemon runs at regular intervals.'
+'Search and add a single activity to the collection.': 'Search and add a single activity to the collection.'
 'Search by name, date or activity ID': 'Search by name, date or activity ID'
 Seconds: Seconds
 Security: Security

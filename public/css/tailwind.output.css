@@ -3766,8 +3766,8 @@
       color: var(--color-primary);
     }
   }
-  :is(:where(.group\/add-activities):has(:is(#add-activities-by-date-range:checked)) .group-has-\[\#add-activities-by-date-range\:checked\]\/add-activities\:flex) {
-    display: flex;
+  :is(:where(.group\/add-activities):has(:is(#add-activities-by-date-range:checked)) .group-has-\[\#add-activities-by-date-range\:checked\]\/add-activities\:block) {
+    display: block;
   }
   :is(:where(.group\/add-activities):has(:is(#add-activities-by-date-range:checked)) .group-has-\[\#add-activities-by-date-range\:checked\]\/add-activities\:hidden) {
     display: none;

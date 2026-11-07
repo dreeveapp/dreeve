@@ -29,6 +29,7 @@ Add: Add
 'Add action': 'Adicionar ação'
 'Add activities': 'Add activities'
 'Add activity': 'Adicionar atividade'
+'Add all activities between two dates, both included.': 'Add all activities between two dates, both included.'
 'Add automation rule': 'Adicionar regra de automação'
 'Add challenge': 'Adicionar desafio'
 'Add collection': 'Add collection'
@@ -427,6 +428,7 @@ Saved: Salvo
 Saving...: Salvando...
 'Scheduled actions': 'Scheduled actions'
 'Scheduled actions the daemon runs at regular intervals.': 'Ações programadas que o daemon executa em intervalos regulares.'
+'Search and add a single activity to the collection.': 'Search and add a single activity to the collection.'
 'Search by name, date or activity ID': 'Buscar por nome, data ou ID da atividade'
 Seconds: Segundos
 Security: Segurança

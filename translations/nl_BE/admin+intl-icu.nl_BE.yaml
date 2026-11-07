@@ -29,6 +29,7 @@ Add: Add
 'Add action': 'Actie toevoegen'
 'Add activities': 'Add activities'
 'Add activity': 'Activiteit toevoegen'
+'Add all activities between two dates, both included.': 'Add all activities between two dates, both included.'
 'Add automation rule': 'Automatiseringsregel toevoegen'
 'Add challenge': 'Uitdaging toevoegen'
 'Add collection': 'Add collection'
@@ -427,6 +428,7 @@ Saved: Opgeslagen
 Saving...: 'Aan het opslaan...'
 'Scheduled actions': 'Scheduled actions'
 'Scheduled actions the daemon runs at regular intervals.': 'Geplande acties die de daemon op regelmatige tijdstippen uitvoert.'
+'Search and add a single activity to the collection.': 'Search and add a single activity to the collection.'
 'Search by name, date or activity ID': 'Zoeken op naam, datum of activiteits-ID'
 Seconds: Seconden
 Security: Beveiliging
