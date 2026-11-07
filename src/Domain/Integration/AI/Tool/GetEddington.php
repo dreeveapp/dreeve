@@ -6,7 +6,6 @@ namespace App\Domain\Integration\AI\Tool;
 
 use App\Domain\Activity\Eddington\Eddington;
 use App\Domain\Activity\Eddington\EddingtonCalculator;
-use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Measurement\UnitSystem;
 
 final readonly class GetEddington implements AITool
@@ -41,9 +40,7 @@ final readonly class GetEddington implements AITool
         return array_map(
             static fn (Eddington $eddington): array => [
                 'label' => $eddington->getLabel(),
-                'sportTypes' => $eddington->getConfig()->getSportTypesToInclude()->map(
-                    static fn (SportType $sportType): string => $sportType->value
-                ),
+                'sportTypes' => $eddington->getConfig()->getSportTypesToInclude()->toValues(),
                 'unit' => $eddington->getUnitSystem()->distanceSymbol(),
                 'number' => $eddington->getNumber(),
                 'daysNeededForNextNumber' => $eddington->getDaysToCompleteForFutureNumbers()[$eddington->getNumber() + 1] ?? $eddington->getNumber() + 1,

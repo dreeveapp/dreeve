@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance\Installation;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
@@ -73,7 +72,7 @@ final readonly class GearComponentInstallation implements \JsonSerializable
             'parent' => $this->parent,
             'from' => $this->from?->format('Y-m-d'),
             'until' => $this->until?->format('Y-m-d'),
-            'sportTypes' => $this->sportTypes->map(static fn (SportType $sportType): string => $sportType->value),
+            'sportTypes' => $this->sportTypes->toValues(),
         ];
     }
 }

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Application\Import\StravaImport\ImportActivities;
 
 use App\Domain\Activity\ActivityVisibility;
-use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\BackedEnumCollection;
 
 /**
- * @extends Collection<ActivityVisibility>
+ * @extends BackedEnumCollection<ActivityVisibility>
  */
-final class ActivityVisibilitiesToImport extends Collection
+final class ActivityVisibilitiesToImport extends BackedEnumCollection
 {
     public function getItemClassName(): string
     {
@@ -27,9 +27,6 @@ final class ActivityVisibilitiesToImport extends Collection
             return self::fromArray(ActivityVisibility::cases());
         }
 
-        return self::fromArray(array_map(
-            ActivityVisibility::from(...),
-            $visibilities,
-        ));
+        return self::fromValues($visibilities);
     }
 }

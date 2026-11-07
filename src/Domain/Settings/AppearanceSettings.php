@@ -43,7 +43,7 @@ final readonly class AppearanceSettings
                 timeFormat: (int) ($data['timeFormat'] ?? 24)
             ),
             sportTypesSortingOrder: SportTypesSortingOrder::from($data['sportTypesSortingOrder'] ?? []),
-            hidePhotosForSportTypes: HidePhotosForSportTypes::from($data['photos']['hidePhotosForSportTypes'] ?? []),
+            hidePhotosForSportTypes: HidePhotosForSportTypes::fromValues($data['photos']['hidePhotosForSportTypes'] ?? []),
         );
     }
 

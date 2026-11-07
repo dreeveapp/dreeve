@@ -36,10 +36,7 @@ final readonly class FindMovingTimePerGearQueryHandler implements QueryHandler
             SQL,
             [
                 'years' => array_map(strval(...), $query->getYears()->toArray()),
-                'activityType' => array_map(
-                    fn (ActivityType $activityType): string => $activityType->value,
-                    $query->getActivityTypes()?->toArray() ?? ActivityType::cases()
-                ),
+                'activityType' => $query->getActivityTypes()?->toValues() ?? array_column(ActivityType::cases(), 'value'),
             ],
             [
                 'years' => ArrayParameterType::STRING,

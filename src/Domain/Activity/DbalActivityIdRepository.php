@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
@@ -73,7 +72,7 @@ final readonly class DbalActivityIdRepository implements ActivityIdRepository
             ->andWhere('sportType IN (:sportTypes)')
             ->setParameter(
                 key: 'sportTypes',
-                value: array_map(fn (SportType $sportType) => $sportType->value, $sportTypes->toArray()),
+                value: $sportTypes->toValues(),
                 type: ArrayParameterType::STRING
             );
 
