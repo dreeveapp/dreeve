@@ -1,0 +1,10 @@
+{% set selectedGearId = selectedGearId ?? null %}
+
+<option value="">{{ "None"|trans }}</option>
+{% for gearGroup in gearsGroupedByActivityType(gears: gears, suggestFor: suggestFor ?? null) %}
+    <optgroup label="{{ gearGroup.label|trans }}">
+        {% for gear in gearGroup.gears %}
+            <option value="{{ gear.getId() }}" {{ selectedGearId and gear.getId().matches(selectedGearId) ? 'selected' }}>{{ gear.getName() }}</option>
+        {% endfor %}
+    </optgroup>
+{% endfor %}

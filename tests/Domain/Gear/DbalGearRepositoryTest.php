@@ -7,6 +7,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypes;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearId;
@@ -69,7 +70,8 @@ class DbalGearRepositoryTest extends ContainerTestCase
                 ->withNumberOfActivities(2)
                 ->withTotalCalories(1000)
                 ->build()
-                ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE])),
+                ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE]))
+                ->withMainActivityType(ActivityType::RIDE),
             $this->gearRepository->find($gear->getId())
         );
     }
@@ -236,6 +238,28 @@ class DbalGearRepositoryTest extends ContainerTestCase
                 ->build(),
             []
         ));
+        $activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('4'))
+                ->withGearId(GearId::fromUnprefixed('2'))
+                ->withSportType(SportType::WALK)
+                ->withDistance(Kilometer::from(1))
+                ->withElevation(Meter::zero())
+                ->withMovingTimeInSeconds(600)
+                ->build(),
+            []
+        ));
+        $activityRepository->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('5'))
+                ->withGearId(GearId::fromUnprefixed('2'))
+                ->withSportType(SportType::WALK)
+                ->withDistance(Kilometer::from(1))
+                ->withElevation(Meter::zero())
+                ->withMovingTimeInSeconds(600)
+                ->build(),
+            []
+        ));
 
         $this->assertEquals(
             Gears::fromArray([
@@ -246,16 +270,18 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     ->withElevation(Meter::from(300))
                     ->withNumberOfActivities(2)
                     ->build()
-                    ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE])),
+                    ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE]))
+                    ->withMainActivityType(ActivityType::RIDE),
                 GearBuilder::fromDefaults()
                     ->withGearId(GearId::fromUnprefixed('2'))
                     ->withGearType(GearType::CUSTOM)
-                    ->withDistanceInMeter(Meter::from(5000))
-                    ->withMovingTime(Seconds::from(1800))
+                    ->withDistanceInMeter(Meter::from(7000))
+                    ->withMovingTime(Seconds::from(3000))
                     ->withElevation(Meter::from(50))
-                    ->withNumberOfActivities(1)
+                    ->withNumberOfActivities(3)
                     ->build()
-                    ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE])),
+                    ->withActivityTypes(ActivityTypes::fromArray([ActivityType::WALK, ActivityType::RIDE]))
+                    ->withMainActivityType(ActivityType::WALK),
                 GearBuilder::fromDefaults()
                     ->withGearId(GearId::fromUnprefixed('3'))
                     ->withDistanceInMeter(Meter::zero())

@@ -10,7 +10,8 @@ use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\CQRS\Command\ProvidesFlashMessage;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 final readonly class EnrichActivity extends DomainCommand implements DeserializableCommand, ProvidesFlashMessage
 {
@@ -37,8 +38,8 @@ final readonly class EnrichActivity extends DomainCommand implements Deserializa
         return $this->activityId;
     }
 
-    public function getFlashMessage(TranslatorInterface $translator): string
+    public function getFlashMessage(): TranslatableInterface
     {
-        return $translator->trans('Weather and reverse geocoding have been retrieved.', [], 'admin');
+        return new TranslatableMessage('Weather and reverse geocoding have been retrieved.', domain: 'admin');
     }
 }

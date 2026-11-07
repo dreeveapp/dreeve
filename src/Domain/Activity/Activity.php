@@ -912,7 +912,7 @@ final class Activity
             'isCommute' => $this->isCommute,
             'isGroupActivity' => $this->isGroupActivity,
             'workoutType' => $this->workoutType?->value,
-            'excludedFrom' => $this->excludedFrom->map(static fn (ActivityExclusion $exclusion): string => $exclusion->value),
+            'excludedFrom' => $this->excludedFrom->toValues(),
         ];
     }
 

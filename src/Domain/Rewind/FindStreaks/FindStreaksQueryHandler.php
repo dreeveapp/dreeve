@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Rewind\FindStreaks;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
@@ -50,7 +49,7 @@ final readonly class FindStreaksQueryHandler implements QueryHandler
                 ->andWhere('sportType IN (:sportTypes)')
                 ->setParameter(
                     key: 'sportTypes',
-                    value: array_map(fn (SportType $sportType) => $sportType->value, $restrictToSportTypes->toArray()),
+                    value: $restrictToSportTypes->toValues(),
                     type: ArrayParameterType::STRING
                 );
         }

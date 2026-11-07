@@ -96,10 +96,11 @@
                 <div>
                     <label for="activity-gear">{{ "Gear"|trans }}</label>
                     <select id="activity-gear" name="gearId">
-                        <option value="">{{ "None"|trans }}</option>
-                        {% for gear in gears %}
-                            <option value="{{ gear.getId() }}" {{ activity and activity.getGearId() and gear.getId().matches(activity.getGearId()) ? 'selected' }}>{{ gear.getName() }}</option>
-                        {% endfor %}
+                        {% include 'html/admin/component/gear-select-options.html.twig' with {
+                            gears: gears,
+                            suggestFor: activity ? activity.getSportType().getActivityType() : null,
+                            selectedGearId: activity ? activity.getGearId(),
+                        } only %}
                     </select>
                 </div>
                 <div class="flex items-center gap-2">

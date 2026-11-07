@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Eddington\FindDistancePerDay;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
@@ -36,7 +35,7 @@ final readonly class FindDistancePerDayQueryHandler implements QueryHandler
                 ORDER BY day ASC
             SQL,
             [
-                'sportTypes' => $query->getSportTypes()->map(fn (SportType $sportType): string => $sportType->value),
+                'sportTypes' => $query->getSportTypes()->toValues(),
             ],
             [
                 'sportTypes' => ArrayParameterType::STRING,

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\CQRS\Command;
 
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 interface ProvidesFlashMessage
 {
-    public function getFlashMessage(TranslatorInterface $translator): string;
+    public function getFlashMessage(): TranslatableInterface;
 }

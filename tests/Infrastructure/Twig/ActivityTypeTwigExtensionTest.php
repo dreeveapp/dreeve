@@ -4,16 +4,16 @@ namespace App\Tests\Infrastructure\Twig;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\SportType\SportType;
-use App\Infrastructure\Twig\EnumTwigExtension;
+use App\Infrastructure\Twig\ActivityTypeTwigExtension;
 use App\Tests\ContainerTestCase;
 
-class EnumTwigExtensionTest extends ContainerTestCase
+class ActivityTypeTwigExtensionTest extends ContainerTestCase
 {
-    private EnumTwigExtension $enumTwigExtension;
+    private ActivityTypeTwigExtension $activityTypeTwigExtension;
 
     public function testGetSportTypeOptions(): void
     {
-        $options = $this->enumTwigExtension->getSportTypeOptions();
+        $options = $this->activityTypeTwigExtension->getSportTypeOptions();
 
         $this->assertCount(count(SportType::cases()), $options);
         foreach (SportType::cases() as $index => $sportType) {
@@ -29,7 +29,7 @@ class EnumTwigExtensionTest extends ContainerTestCase
                 ['activityType' => ActivityType::WALK, 'sportTypes' => [SportType::WALK, SportType::HIKE]],
                 ['activityType' => ActivityType::RUN, 'sportTypes' => [SportType::RUN, SportType::TRAIL_RUN]],
             ],
-            $this->enumTwigExtension->groupSportTypesByActivityType([SportType::WALK, SportType::RUN, SportType::HIKE, SportType::TRAIL_RUN]),
+            $this->activityTypeTwigExtension->groupSportTypesByActivityType([SportType::WALK, SportType::RUN, SportType::HIKE, SportType::TRAIL_RUN]),
         );
     }
 
@@ -37,14 +37,14 @@ class EnumTwigExtensionTest extends ContainerTestCase
     {
         $this->assertSame(
             ActivityType::RIDE,
-            $this->enumTwigExtension->getActivityTypeFrom(ActivityType::RIDE->value)
+            $this->activityTypeTwigExtension->getActivityTypeFrom(ActivityType::RIDE->value)
         );
     }
 
     public function testGetActivityTypeFromItShouldThrowOnInvalidValue(): void
     {
         $this->expectException(\ValueError::class);
-        $this->enumTwigExtension->getActivityTypeFrom('lol');
+        $this->activityTypeTwigExtension->getActivityTypeFrom('lol');
     }
 
     #[\Override]
@@ -52,6 +52,6 @@ class EnumTwigExtensionTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->enumTwigExtension = $this->getContainer()->get(EnumTwigExtension::class);
+        $this->activityTypeTwigExtension = $this->getContainer()->get(ActivityTypeTwigExtension::class);
     }
 }

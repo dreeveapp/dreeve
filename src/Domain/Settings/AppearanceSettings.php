@@ -39,10 +39,11 @@ final readonly class AppearanceSettings
             dateAndTimeFormat: DateAndTimeFormat::create(
                 dateFormatShort: $dateFormat['short'] ?? 'd-m-y',
                 dateFormatNormal: $dateFormat['normal'] ?? 'd-m-Y',
+                dateFormatLong: $dateFormat['long'] ?? 'F j, Y',
                 timeFormat: (int) ($data['timeFormat'] ?? 24)
             ),
             sportTypesSortingOrder: SportTypesSortingOrder::from($data['sportTypesSortingOrder'] ?? []),
-            hidePhotosForSportTypes: HidePhotosForSportTypes::from($data['photos']['hidePhotosForSportTypes'] ?? []),
+            hidePhotosForSportTypes: HidePhotosForSportTypes::fromValues($data['photos']['hidePhotosForSportTypes'] ?? []),
         );
     }
 

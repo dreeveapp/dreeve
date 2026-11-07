@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Rewind;
 
-use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Image\Image;
 use App\Domain\Activity\Image\ImageRepository;
 use App\Domain\Activity\SportType\SportTypes;
@@ -41,7 +40,6 @@ final readonly class RewindItemsBuilder
     public function __construct(
         private GearRepository $gearRepository,
         private ImageRepository $imageRepository,
-        private ActivityRepository $activityRepository,
         private QueryBus $queryBus,
         private SettingsRepository $settingsRepository,
         private Environment $twig,
@@ -315,7 +313,7 @@ final readonly class RewindItemsBuilder
         }
 
         if ($randomImage instanceof Image) {
-            $activity = $this->activityRepository->find($randomImage->getActivityId());
+            $activity = $randomImage->getActivity();
             $rewindItems->add(RewindItem::from(
                 icon: 'image',
                 title: $this->translator->trans('Photo'),

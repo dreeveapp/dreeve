@@ -41,6 +41,29 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withName('My Custom Gear')
                 ->build()
         );
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('zwift-bike'))
+                ->withGearType(GearType::CUSTOM)
+                ->withName('Zwift bike')
+                ->build()
+        );
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('old-shoes'))
+                ->withGearType(GearType::CUSTOM)
+                ->withName('Old shoes')
+                ->withIsRetired(true)
+                ->build()
+        );
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('zwift-ride'))
+                ->withDistance(Kilometer::from(40))
+                ->withGearId(GearId::fromUnprefixed('zwift-bike'))
+                ->build(),
+            [],
+        ));
 
         $this->client->loginUser($this->adminUser());
 
@@ -85,8 +108,14 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('(m)', $crawler->filter('label[for="activity-elevation"]')->text());
 
         $this->assertSame(
-            ['None', 'My Custom Gear'],
-            $crawler->filter('select#activity-gear option')->each(fn (Crawler $option): string => $option->text()),
+            [
+                ['Cycling' => ['Zwift bike']],
+                ['Unused gear' => ['My Custom Gear']],
+                ['Retired' => ['Old shoes ☠️']],
+            ],
+            $crawler->filter('select#activity-gear optgroup')->each(fn (Crawler $optgroup): array => [
+                (string) $optgroup->attr('label') => $optgroup->filter('option')->each(fn (Crawler $option): string => $option->text()),
+            ]),
         );
 
         // Images can be attached right away.
@@ -425,6 +454,50 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withName('My Custom Gear')
                 ->build()
         );
+        $gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('trail-shoes'))
+                ->withName('Trail shoes')
+                ->build()
+        );
+        $gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('road-shoes'))
+                ->withName('Road shoes')
+                ->build()
+        );
+        $gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('walking-shoes'))
+                ->withName('Walking shoes')
+                ->build()
+        );
+        $gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('old-bike'))
+                ->withName('Old bike')
+                ->withIsRetired(true)
+                ->build()
+        );
+
+        foreach ([
+            ['2', 'b5', SportType::RIDE],
+            ['3', 'trail-shoes', SportType::RUN],
+            ['4', 'trail-shoes', SportType::RUN],
+            ['5', 'trail-shoes', SportType::RIDE],
+            ['6', 'road-shoes', SportType::RUN],
+            ['7', 'walking-shoes', SportType::WALK],
+            ['8', 'old-bike', SportType::RIDE],
+        ] as [$activityId, $gearId, $sportType]) {
+            static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+                ActivityBuilder::fromDefaults()
+                    ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withGearId(GearId::fromUnprefixed($gearId))
+                    ->withSportType($sportType)
+                    ->build(),
+                [],
+            ));
+        }
 
         static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
@@ -464,10 +537,19 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('false', $crawler->filter('input[type="hidden"][name="isCommute"]')->attr('value'));
         $this->assertNull($crawler->filter('input[type="checkbox"][name="excludedFrom[peakPowerOutputs]"]')->attr('checked'));
 
-        // In files mode all gears are selectable, imported or custom.
+        // In files mode all gears are selectable, imported or custom. Gear used for rides is suggested first,
+        // the rest is grouped per main activity type, and gear is never listed twice.
         $this->assertSame(
-            ['None', 'Strava Bike', 'My Custom Gear'],
-            $crawler->filter('select#activity-gear option')->each(fn (Crawler $option): string => $option->text()),
+            [
+                ['Suggested' => ['Strava Bike', 'Trail shoes']],
+                ['Running' => ['Road shoes']],
+                ['Walking' => ['Walking shoes']],
+                ['Unused gear' => ['My Custom Gear']],
+                ['Retired' => ['Old bike ☠️']],
+            ],
+            $crawler->filter('select#activity-gear optgroup')->each(fn (Crawler $optgroup): array => [
+                (string) $optgroup->attr('label') => $optgroup->filter('option')->each(fn (Crawler $option): string => $option->text()),
+            ]),
         );
 
         // The image upload is available.

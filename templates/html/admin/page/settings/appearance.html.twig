@@ -57,7 +57,7 @@
     {% endembed %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Date & time"|trans({}, 'admin')} %}
         {% block body %}
-            <div class="grid gap-4 sm:grid-cols-3">
+            <div class="grid gap-4 sm:grid-cols-2">
                 <div>
                     <label for="timeFormat">{{ "Time format"|trans({}, 'admin') }}</label>
                     <select id="timeFormat" name="data[timeFormat]">
@@ -82,7 +82,17 @@
                         {{ "PHP date format for normal dates, e.g. d-m-Y renders to 01-01-2025."|trans({}, 'admin') }}
                     </p>
                 </div>
+                <div>
+                    <label for="dateFormatLong">{{ "Long date format"|trans({}, 'admin') }}</label>
+                    <input type="text" id="dateFormatLong" name="data[dateFormat][long]" value="{{ dateFormat.long ?? 'F j, Y' }}" required>
+                    <p class="description">
+                        {{ "PHP date format for long dates, e.g. F j, Y renders to January 1, 2025."|trans({}, 'admin') }}
+                    </p>
+                </div>
             </div>
+            <p class="description mt-2">
+                {{ "See the {phpDateFormat}."|trans({'{phpDateFormat}': '<a class="underline" href="https://www.php.net/manual/en/datetime.format.php" target="_blank" rel="noopener">' ~ "PHP date format documentation"|trans({}, 'admin') ~ '</a>'}, 'admin')|raw }}
+            </p>
         {% endblock %}
     {% endembed %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {

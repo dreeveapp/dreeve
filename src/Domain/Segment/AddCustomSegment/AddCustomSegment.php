@@ -12,7 +12,8 @@ use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
 use App\Infrastructure\CQRS\Command\ProvidesFlashMessage;
 use App\Infrastructure\ValueObject\String\Name;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 final readonly class AddCustomSegment extends DomainCommand implements DeserializableCommand, ProvidesFlashMessage
 {
@@ -88,8 +89,8 @@ final readonly class AddCustomSegment extends DomainCommand implements Deseriali
         return $this->isFavourite;
     }
 
-    public function getFlashMessage(TranslatorInterface $translator): string
+    public function getFlashMessage(): TranslatableInterface
     {
-        return $translator->trans('The segment has been created. Its efforts will show up after the next import run.', [], 'admin');
+        return new TranslatableMessage('The segment has been created. Its efforts will show up after the next import run.', domain: 'admin');
     }
 }

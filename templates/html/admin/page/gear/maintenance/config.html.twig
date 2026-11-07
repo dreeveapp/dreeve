@@ -10,7 +10,7 @@
                     <span class="font-medium">{{ "We detected following issues"|trans }}:</span>
                     <ul class="mt-1.5 list-disc list-inside">
                         {% for warning in warnings %}
-                            <li>{{ warning }}</li>
+                            <li>{{ warning|trans }}</li>
                         {% endfor %}
                     </ul>
                 </div>

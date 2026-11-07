@@ -11,9 +11,9 @@ class CountriesGeographyAssetTest extends TestCase
 
     public function testEveryIndexEntryIsWellFormed(): void
     {
-        foreach (Json::decode(file_get_contents(self::ASSETS_DIRECTORY.'/index.json') ?: '[]') as $entry) {
+        foreach (Json::uncompressAndDecode((string) file_get_contents(self::ASSETS_DIRECTORY.'/index.json.zst')) as $entry) {
             $this->assertMatchesRegularExpression('/^[A-Z]{2}$/', $entry['countryCode']);
-            $this->assertFileExists(sprintf('%s/%s.json', self::ASSETS_DIRECTORY, $entry['countryCode']));
+            $this->assertFileExists(sprintf('%s/%s.json.zst', self::ASSETS_DIRECTORY, $entry['countryCode']));
 
             [$minLng, $minLat, $maxLng, $maxLat] = $entry['boundingBox'];
             $this->assertLessThanOrEqual($maxLng, $minLng);
@@ -29,9 +29,9 @@ class CountriesGeographyAssetTest extends TestCase
     {
         $polygonsPerCountry = [];
 
-        foreach (Json::decode(file_get_contents(self::ASSETS_DIRECTORY.'/index.json') ?: '[]') as $entry) {
-            $polygons = $polygonsPerCountry[$entry['countryCode']] ??= Json::decode(
-                file_get_contents(sprintf('%s/%s.json', self::ASSETS_DIRECTORY, $entry['countryCode'])) ?: '[]'
+        foreach (Json::uncompressAndDecode((string) file_get_contents(self::ASSETS_DIRECTORY.'/index.json.zst')) as $entry) {
+            $polygons = $polygonsPerCountry[$entry['countryCode']] ??= Json::uncompressAndDecode(
+                (string) file_get_contents(sprintf('%s/%s.json.zst', self::ASSETS_DIRECTORY, $entry['countryCode']))
             );
 
             $exteriorRing = $polygons[$entry['polygonIndex']][0] ?? null;
@@ -55,7 +55,7 @@ class CountriesGeographyAssetTest extends TestCase
 
     public function testSmallCountriesSurvivedTheBuild(): void
     {
-        $countryCodes = array_unique(array_column(Json::decode(file_get_contents(self::ASSETS_DIRECTORY.'/index.json') ?: '[]'), 'countryCode'));
+        $countryCodes = array_unique(array_column(Json::uncompressAndDecode((string) file_get_contents(self::ASSETS_DIRECTORY.'/index.json.zst')), 'countryCode'));
 
         foreach (['BE', 'NL', 'CZ', 'PL', 'MC', 'LI', 'SM', 'VA', 'AD', 'LS'] as $countryCode) {
             $this->assertContains($countryCode, $countryCodes);

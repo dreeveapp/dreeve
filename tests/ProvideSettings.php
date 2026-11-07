@@ -63,6 +63,7 @@ trait ProvideSettings
             'dateFormat' => [
                 'short' => 'd-m-y',
                 'normal' => 'd-m-Y',
+                'long' => 'F j, Y',
             ],
         ]);
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget\TrainingGoals\FindTrainingGoalMetrics;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\CQRS\Query\Query;
 use App\Infrastructure\CQRS\Query\QueryHandler;
 use App\Infrastructure\CQRS\Query\Response;
@@ -42,7 +41,7 @@ final readonly class FindTrainingGoalMetricsQueryHandler implements QueryHandler
                 AND strftime('%Y-%m-%d', startDateTime) BETWEEN :startDate AND :endDate
             SQL,
             [
-                'sportTypes' => $sportTypes->map(fn (SportType $sportType) => $sportType->value),
+                'sportTypes' => $sportTypes->toValues(),
                 'startDate' => $query->getFrom()->format('Y-m-d'),
                 'endDate' => $query->getTo()->format('Y-m-d'),
             ],

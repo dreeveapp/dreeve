@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity;
 
-use App\Infrastructure\ValueObject\Collection;
+use App\Infrastructure\ValueObject\BackedEnumCollection;
 
 /**
- * @extends Collection<ActivityExclusion>
+ * @extends BackedEnumCollection<ActivityExclusion>
  */
-final class ActivityExclusions extends Collection
+final class ActivityExclusions extends BackedEnumCollection
 {
     public function getItemClassName(): string
     {

@@ -23,7 +23,7 @@ final readonly class ActivitySearchFilters extends Filters
         return new self([
             'from' => $from?->format('Y-m-d'),
             'to' => $to?->format('Y-m-d'),
-            'sportType' => implode(',', $sportTypes->map(static fn (SportType $sportType): string => $sportType->value)),
+            'sportType' => implode(',', $sportTypes->toValues()),
             'hasGpx' => null === $hasGpx ? null : ($hasGpx ? 'true' : 'false'),
         ]);
     }

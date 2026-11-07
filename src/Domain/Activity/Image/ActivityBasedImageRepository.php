@@ -4,7 +4,6 @@ namespace App\Domain\Activity\Image;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Image\ImageOrientation;
 use App\Domain\Image\ImagePath;
@@ -52,10 +51,8 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
 
                 $images->add(Image::create(
                     imageLocation: $localImagePath,
-                    activityId: $activity->getId(),
-                    sportType: $activity->getSportType(),
+                    activity: $activity,
                     orientation: $imageOrientation,
-                    relatedCountryCodes: $activity->getRouteGeography()->getPassedThroughCountries(),
                 ));
             }
         }
@@ -91,10 +88,8 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
 
             return Image::create(
                 imageLocation: $localImagePaths[$randomImageIndex],
-                activityId: $activity->getId(),
-                sportType: $activity->getSportType(),
+                activity: $activity,
                 orientation: $imageOrientation,
-                relatedCountryCodes: $activity->getRouteGeography()->getPassedThroughCountries(),
             );
         }
 
@@ -112,7 +107,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
             $queryBuilder->andWhere('sportType NOT IN (:hiddenSportTypes)')
                 ->setParameter(
                     'hiddenSportTypes',
-                    array_map(fn (SportType $sportType): string => $sportType->value, $hiddenSportTypes->toArray()),
+                    $hiddenSportTypes->toValues(),
                     ArrayParameterType::STRING
                 );
         }
