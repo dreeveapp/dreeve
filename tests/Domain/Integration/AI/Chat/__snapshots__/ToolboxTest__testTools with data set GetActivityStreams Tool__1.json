@@ -66,5 +66,137 @@
             "timeInSeconds": 300,
             "percentage": 13.9
         }
+    },
+    "valueDistributions": {
+        "watts": {
+            "unit": "watts",
+            "columns": [
+                "from",
+                "to",
+                "timeInSeconds"
+            ],
+            "buckets": [
+                [
+                    90,
+                    109,
+                    120
+                ],
+                [
+                    150,
+                    169,
+                    600
+                ],
+                [
+                    210,
+                    229,
+                    900
+                ],
+                [
+                    250,
+                    269,
+                    360
+                ],
+                [
+                    470,
+                    489,
+                    15
+                ]
+            ]
+        },
+        "heartrate": {
+            "unit": "bpm",
+            "columns": [
+                "from",
+                "to",
+                "timeInSeconds"
+            ],
+            "buckets": [
+                [
+                    100,
+                    103,
+                    60
+                ],
+                [
+                    120,
+                    123,
+                    300
+                ],
+                [
+                    140,
+                    143,
+                    600
+                ],
+                [
+                    160,
+                    163,
+                    900
+                ],
+                [
+                    172,
+                    175,
+                    300
+                ]
+            ]
+        },
+        "velocity_smooth": {
+            "unit": "kilometerPerHour",
+            "columns": [
+                "from",
+                "to",
+                "timeInSeconds"
+            ],
+            "buckets": [
+                [
+                    18,
+                    19,
+                    120
+                ],
+                [
+                    24,
+                    25,
+                    900
+                ],
+                [
+                    30,
+                    31,
+                    1200
+                ],
+                [
+                    32,
+                    33,
+                    600
+                ],
+                [
+                    44,
+                    45,
+                    60
+                ]
+            ]
+        },
+        "cadence": {
+            "unit": "rpm",
+            "columns": [
+                "from",
+                "to",
+                "timeInSeconds"
+            ],
+            "buckets": [
+                [
+                    0,
+                    4,
+                    30
+                ],
+                [
+                    85,
+                    89,
+                    1500
+                ],
+                [
+                    90,
+                    94,
+                    1500
+                ]
+            ]
+        }
     }
 }

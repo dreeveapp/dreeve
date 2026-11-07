@@ -220,6 +220,18 @@ class ToolboxTest extends ContainerTestCase
                 data: $bestAveragesData,
             ));
         }
+        foreach ([
+            StreamType::WATTS->value => [90 => 120, 150 => 600, 210 => 900, 250 => 300, 251 => 60, 480 => 15],
+            StreamType::CADENCE->value => [0 => 30, 85 => 600, 88 => 900, 90 => 1200, 92 => 300],
+            StreamType::VELOCITY->value => [18 => 120, 25 => 900, 30 => 1200, 32 => 600, 45 => 60],
+        ] as $streamType => $valueDistribution) {
+            $metricRepository->add(ActivityStreamMetric::create(
+                activityId: ActivityId::fromUnprefixed('123456789'),
+                streamType: StreamType::from($streamType),
+                metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
+                data: $valueDistribution,
+            ));
+        }
         $metricRepository->add(ActivityStreamMetric::create(
             activityId: ActivityId::fromUnprefixed('123456789'),
             streamType: StreamType::HEART_RATE,
