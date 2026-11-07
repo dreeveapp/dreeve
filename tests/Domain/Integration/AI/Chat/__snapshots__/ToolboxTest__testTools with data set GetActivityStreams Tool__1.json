@@ -1,24 +1,70 @@
-[
-    {
-        "activityId": "123456789",
-        "streamType": "watts",
-        "totalPoints": 4253,
-        "maxPower": 540,
-        "minPower": 7,
-        "avgPower": 219
-    },
-    {
-        "activityId": "123456789",
-        "streamType": "cadence",
-        "totalPoints": 4253
-    },
-    [],
-    {
-        "activityId": "123456789",
-        "streamType": "velocity_smooth",
-        "totalPoints": 4253,
-        "maxMeterPerSecond": 540,
-        "minMeterPerSecond": 7,
-        "avgMeterPerSecond": 219
+{
+    "streams": [
+        {
+            "streamType": "watts",
+            "maxPower": 540,
+            "minPower": 7,
+            "avgPower": 219
+        },
+        {
+            "streamType": "cadence",
+            "maxCadence": 540,
+            "minCadence": 7,
+            "avgCadence": 219
+        },
+        {
+            "streamType": "heartrate",
+            "maxHeartRate": 190,
+            "minHeartRate": 163,
+            "avgHeartRate": 178
+        },
+        {
+            "streamType": "velocity_smooth",
+            "maxMeterPerSecond": 540,
+            "minMeterPerSecond": 7,
+            "avgMeterPerSecond": 219
+        }
+    ],
+    "timeInHeartRateZones": {
+        "zone1": {
+            "rangeInBpm": [
+                92,
+                111
+            ],
+            "timeInSeconds": 60,
+            "percentage": 2.8
+        },
+        "zone2": {
+            "rangeInBpm": [
+                112,
+                130
+            ],
+            "timeInSeconds": 300,
+            "percentage": 13.9
+        },
+        "zone3": {
+            "rangeInBpm": [
+                131,
+                148
+            ],
+            "timeInSeconds": 600,
+            "percentage": 27.8
+        },
+        "zone4": {
+            "rangeInBpm": [
+                149,
+                167
+            ],
+            "timeInSeconds": 900,
+            "percentage": 41.7
+        },
+        "zone5": {
+            "rangeInBpm": [
+                168,
+                18500
+            ],
+            "timeInSeconds": 300,
+            "percentage": 13.9
+        }
     }
-]
+}

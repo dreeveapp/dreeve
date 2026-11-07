@@ -74,6 +74,7 @@ class ToolboxTest extends ContainerTestCase
     public static function provideToolErrors(): iterable
     {
         yield 'get_activity_by_id for an unknown activity' => ['get_activity_by_id', ['activityId' => '1'], 'Activity "activity-1" does not exist.'];
+        yield 'get_activity_streams for an unknown activity' => ['get_activity_streams', ['activityId' => '1'], 'Activity "activity-1" does not exist.'];
         yield 'get_streaks with an unknown sport type' => ['get_streaks', ['sportType' => 'Ride,Flying'], '"Flying" is not a known sport type.'];
         yield 'get_training_volume with an invalid date' => ['get_training_volume', ['from' => '2025-13-01', 'to' => '2025-12-31'], '"from" must be a date in YYYY-MM-DD format.'];
         yield 'get_training_volume with a reversed date range' => ['get_training_volume', ['from' => '2025-02-01', 'to' => '2025-01-01'], '"from" must not be later than "to".'];
@@ -196,7 +197,7 @@ class ToolboxTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('123456789'))
                 ->withStreamType(StreamType::HEART_RATE)
                 ->withCreatedOn(SerializableDateTime::fromString('2023-09-27 19:48:21'))
-                ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/watts.json')))
+                ->withData(Json::decode((string) file_get_contents(__DIR__.'/../../../../fixtures/strava/streams/heart-rate.json')))
                 ->build()
         );
 
@@ -219,6 +220,12 @@ class ToolboxTest extends ContainerTestCase
                 data: $bestAveragesData,
             ));
         }
+        $metricRepository->add(ActivityStreamMetric::create(
+            activityId: ActivityId::fromUnprefixed('123456789'),
+            streamType: StreamType::HEART_RATE,
+            metricType: ActivityStreamMetricType::VALUE_DISTRIBUTION,
+            data: [100 => 60, 120 => 300, 140 => 600, 160 => 900, 175 => 300],
+        ));
 
         $this->getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
