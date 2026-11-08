@@ -1,3 +1,27 @@
+# [v5.8.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.8.2) - 2026-11-08
+
+## New features
+* Added a configurable long date format setting
+* Exposed heart rate zones and value distributions to AI tools
+
+## Improvements
+* Allow to sort similar activity matching based on average speed
+* Made manual equipment selection easier
+* Reduced the Docker image size.
+
+## Technical details
+* ISSUE #2983: Rank similar activities by average speed by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2984
+* ISSUE #2986: Delete the leftover appearance heatmap setting before dropping the settings group column by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2987
+* ISSUE #2988: Truncate sidebar labels with CSS instead of a character limit by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2989
+* ISSUE #2985: Make manual selection of equipment easier by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2992
+* ISSUE #2995: Slim down Docker image by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2998
+* ISSUE #2997: Add a configurable long date format setting by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2999
+* ISSUE #3002: Verify AppVersion matches the git tag with a console command by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3003
+* German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/3005
+* ISSUE #3004: Expose heart rate zones and value distributions to the AI tools by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3006
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.8.1...v.5.8.2
+
 # [v5.8.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.8.1) - 2026-11-03
 
 ## New features
