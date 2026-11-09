@@ -5,12 +5,15 @@ namespace App\Tests\Console\Backup;
 use App\Application\AppName;
 use App\Application\AppVersion;
 use App\Console\Backup\CreateBackupConsoleCommand;
+use App\Domain\Backup\AvailableBackups;
 use App\Infrastructure\Process\ProcessFactory;
 use App\Infrastructure\Process\SymfonyProcessFactory;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use Doctrine\DBAL\Connection;
+use League\Flysystem\Filesystem as Flysystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -99,18 +102,18 @@ class CreateBackupConsoleCommandTest extends ConsoleCommandTestCase
         $process->method('getExitCode')->willReturn(2);
         $process->method('getErrorOutput')->willReturn("tar: Cannot write: No space left on device\n");
 
-        $backupPath = $this->projectDirectory.'/backups/dreeve-2026-11-08-030000.tar.zst';
+        $partialBackupPath = $this->projectDirectory.'/backups/dreeve-2026-11-08-030000.tar.zst.partial';
         $processFactory = $this->createMock(ProcessFactory::class);
         $processFactory
             ->expects($this->once())
             ->method('create')
             ->with([
-                'tar', '--zstd', '-cf', $backupPath, '--exclude=files/logs',
+                'tar', '--zstd', '-cf', $partialBackupPath, '--exclude=files/logs',
                 '-C', $this->projectDirectory.'/backups/dreeve-2026-11-08-030000', 'database',
                 '-C', $this->projectDirectory.'/storage', 'files',
             ])
-            ->willReturnCallback(function () use ($backupPath, $process): Process {
-                file_put_contents($backupPath, 'partial backup');
+            ->willReturnCallback(function () use ($partialBackupPath, $process): Process {
+                file_put_contents($partialBackupPath, 'partial backup');
 
                 return $process;
             });
@@ -149,7 +152,7 @@ class CreateBackupConsoleCommandTest extends ConsoleCommandTestCase
             ->expects($this->once())
             ->method('create')
             ->willReturnCallback(function () use ($backupPath, $process): Process {
-                file_put_contents($backupPath, 'backup');
+                file_put_contents($backupPath.'.partial', 'backup');
 
                 return $process;
             });
@@ -163,7 +166,8 @@ class CreateBackupConsoleCommandTest extends ConsoleCommandTestCase
 
         $commandTester->assertCommandIsSuccessful();
         $this->assertStringContainsString('=> Created backup "backups/dreeve-2026-11-08-030000.tar.zst"', $commandTester->getDisplay());
-        $this->assertFileExists($backupPath);
+        $this->assertEquals('backup', file_get_contents($backupPath));
+        $this->assertFileDoesNotExist($backupPath.'.partial');
     }
 
     public function testExecuteWithAnInvalidKeepOption(): void
@@ -212,6 +216,7 @@ class CreateBackupConsoleCommandTest extends ConsoleCommandTestCase
             kernelProjectDir: KernelProjectDir::fromString($this->projectDirectory),
             clock: PausedClock::fromString('2026-11-08 03:00:00'),
             processFactory: $this->processFactory,
+            availableBackups: new AvailableBackups(new Flysystem(new LocalFilesystemAdapter($this->projectDirectory))),
         );
     }
 }

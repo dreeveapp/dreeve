@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Backup;
 
+use App\Domain\Backup\AvailableBackups;
 use App\Infrastructure\Console\ProvideConsoleIntro;
 use App\Infrastructure\Process\ProcessFactory;
 use App\Infrastructure\Time\Clock\Clock;
@@ -32,6 +33,7 @@ final class CreateBackupConsoleCommand extends Command
         private readonly KernelProjectDir $kernelProjectDir,
         private readonly Clock $clock,
         private readonly ProcessFactory $processFactory,
+        private readonly AvailableBackups $availableBackups,
     ) {
         parent::__construct();
     }
@@ -74,6 +76,7 @@ final class CreateBackupConsoleCommand extends Command
         $stagingDirectory = $backupDirectory.'/'.$backupName;
         $databaseSnapshotPath = $stagingDirectory.'/'.self::DATABASE_DIRECTORY.'/dreeve.db';
         $backupPath = $stagingDirectory.'.tar.zst';
+        $partialBackupPath = $backupPath.'.partial';
         mkdir(dirname($databaseSnapshotPath), 0755, true);
 
         try {
@@ -83,7 +86,7 @@ final class CreateBackupConsoleCommand extends Command
             $storageEntries = array_values(array_diff(scandir($storageDirectory) ?: [], ['.', '..', self::DATABASE_DIRECTORY]));
             $output->writeln('=> Archiving storage, this can take a while');
             $process = $this->processFactory->create([
-                'tar', '--zstd', '-cf', $backupPath, '--exclude=files/logs',
+                'tar', '--zstd', '-cf', $partialBackupPath, '--exclude=files/logs',
                 '-C', $stagingDirectory, self::DATABASE_DIRECTORY,
                 '-C', $storageDirectory, ...$storageEntries,
             ]);
@@ -91,8 +94,8 @@ final class CreateBackupConsoleCommand extends Command
             $process->run();
 
             if (!in_array($process->getExitCode(), [0, 1], true)) {
-                if (file_exists($backupPath)) {
-                    unlink($backupPath);
+                if (file_exists($partialBackupPath)) {
+                    unlink($partialBackupPath);
                 }
                 $output->error(sprintf(
                     "Could not create backup, tar exited with code %s:\n%s",
@@ -102,6 +105,8 @@ final class CreateBackupConsoleCommand extends Command
 
                 return Command::FAILURE;
             }
+
+            rename($partialBackupPath, $backupPath);
         } finally {
             if (file_exists($databaseSnapshotPath)) {
                 unlink($databaseSnapshotPath);
@@ -110,17 +115,17 @@ final class CreateBackupConsoleCommand extends Command
             rmdir($stagingDirectory);
         }
 
-        $backups = glob($backupDirectory.'/dreeve-*.tar.zst') ?: [];
-        sort($backups);
+        $backups = $this->availableBackups->findAll();
+        $createdBackup = $backups[count($backups) - 1];
         foreach (array_slice($backups, 0, max(0, count($backups) - $keep)) as $oldBackup) {
-            unlink($oldBackup);
-            $output->writeln(sprintf('=> Deleted old backup "%s"', self::BACKUP_DIRECTORY.'/'.basename($oldBackup)));
+            $this->availableBackups->delete($oldBackup);
+            $output->writeln(sprintf('=> Deleted old backup "%s"', self::BACKUP_DIRECTORY.'/'.$oldBackup->getFilename()));
         }
 
         $output->writeln(sprintf(
             '=> Created backup "%s" (%.1f MB)',
-            self::BACKUP_DIRECTORY.'/'.basename($backupPath),
-            (int) filesize($backupPath) / 1024 / 1024,
+            self::BACKUP_DIRECTORY.'/'.$createdBackup->getFilename(),
+            $createdBackup->getSizeInMegaBytes(),
         ));
 
         return Command::SUCCESS;
