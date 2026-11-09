@@ -20,7 +20,7 @@ class BackupsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="4"]'));
         $this->assertStringContainsString('No backups yet.', $crawler->filter('table.data-table')->text());
         $this->assertCount(1, $crawler->filter('table.data-table a.btn--primary[href="/admin/settings/daemon"]'));
-        $this->assertCount(1, $crawler->filter('table.data-table a[href="https://docs.dreeve.app/troubleshooting/faq/#backup--restore"]'));
+        $this->assertCount(1, $crawler->filter('table.data-table a[href="https://docs.dreeve.app/maintenance/backup-and-restore/#make-a-backup"]'));
         $this->assertCount(1, $crawler->filter('#drawer-navigation a[href="/admin/backups"][aria-selected="true"]'));
     }
 

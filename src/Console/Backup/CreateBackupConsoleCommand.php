@@ -66,7 +66,7 @@ final class CreateBackupConsoleCommand extends Command
         $mounts = is_readable('/proc/self/mountinfo') ? (file('/proc/self/mountinfo', FILE_IGNORE_NEW_LINES) ?: []) : [];
         $backupDirectoryIsMounted = array_any($mounts, fn (string $mount): bool => (explode(' ', $mount)[4] ?? null) === $backupDirectory);
         if (!$backupDirectoryIsMounted) {
-            $output->warning('The backups directory is not mounted as a volume. Backups will be lost when the container is recreated. See https://docs.dreeve.app/troubleshooting/faq/#backup--restore');
+            $output->warning('The backups directory is not mounted as a volume. Backups will be lost when the container is recreated. See https://docs.dreeve.app/maintenance/backup-and-restore/#mount-the-backups-directory');
         }
         if (!is_dir($backupDirectory)) {
             mkdir($backupDirectory, 0755, true);
