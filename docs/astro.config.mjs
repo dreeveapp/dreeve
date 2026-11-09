@@ -104,6 +104,7 @@ export default defineConfig({
 										{ slug: 'getting-started/installation', label: 'Installation' },
 										{ slug: 'getting-started/installation-on-k8s', label: 'Installation on Kubernetes' },
 										{ slug: 'getting-started/updates', label: 'Updates' },
+										{ slug: 'getting-started/backup-and-restore', label: 'Backup & restore' },
 										{ slug: 'getting-started/migrating-from-v4', label: 'Migrating from v4 to v5' },
 									],
 								},
