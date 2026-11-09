@@ -129,6 +129,20 @@ spec:
     requests:
       storage: 1Gi
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # Holds the local backups. Preferably use a storage class backed by
+  # another disk or a NAS than the database and files volumes.
+  name: dreeve-backups
+  namespace: dreeve
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: CHANGE-ME   # <- kubectl get storageclass
+  resources:
+    requests:
+      storage: 20Gi
+---
 # ---------------------------------------------------------------------
 # Deployment - app (Caddy/PHP web) + daemon as two containers in one
 # pod. They share the same SQLite database, so co-locating them avoids
@@ -173,6 +187,8 @@ spec:
               mountPath: /var/www/storage/files
             - name: watch
               mountPath: /var/www/watch
+            - name: backups
+              mountPath: /var/www/backups
             - name: php-ini
               mountPath: /usr/local/etc/php/conf.d/memory-limit.ini
               subPath: memory-limit.ini
@@ -224,6 +240,9 @@ spec:
         - name: watch
           persistentVolumeClaim:
             claimName: dreeve-watch
+        - name: backups
+          persistentVolumeClaim:
+            claimName: dreeve-backups
         - name: php-ini
           configMap:
             name: dreeve-php-ini
@@ -312,7 +331,20 @@ the running pod.
   latest image (`imagePullPolicy: Always`). Pin a version tag instead of
   `latest` if you prefer deliberate upgrades - and snapshot or back up the
   database PVC before major version jumps.
-- **Backups.** Everything that matters lives in the four PVCs, with the
-  database volume being the critical one. SQLite snapshots taken at the
-  storage layer are crash-consistent, which is generally fine for this
-  workload.
+- **Backups.** Everything that matters lives in the database and files
+  PVCs, with the database volume being the critical one. SQLite snapshots
+  taken at the storage layer are crash-consistent, which is generally fine
+  for this workload. Dreeve can also make its own backups into the
+  `dreeve-backups` PVC, see [Backup & restore](/troubleshooting/faq/#backup--restore):
+
+  ```bash
+  kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:backup:create
+  ```
+
+  To restore one, make sure no import is running, then restart the pod so
+  both containers pick up the restored database:
+
+  ```bash
+  kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:backup:restore dreeve-2026-01-01-030000.tar.zst --no-interaction
+  kubectl -n dreeve rollout restart deploy/dreeve
+  ```
