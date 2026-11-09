@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Admin\Backup;
 
 use App\Domain\Backup\AvailableBackups;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\Controller\Admin\AdminWebTestCase;
@@ -17,13 +18,14 @@ class BackupsRequestHandlerTest extends AdminWebTestCase
         static::getContainer()->set(AvailableBackups::class, new AvailableBackups(
             defaultStorage: static::getContainer()->get('default.storage'),
             kernelProjectDir: KernelProjectDir::fromString(sys_get_temp_dir()),
+            queryBus: static::getContainer()->get(QueryBus::class),
         ));
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/backups');
 
         $this->assertResponseIsSuccessful();
-        $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="4"]'));
+        $this->assertCount(1, $crawler->filter('table.data-table tbody td[colspan="6"]'));
         $this->assertStringContainsString('No backups yet.', $crawler->filter('table.data-table')->text());
         $this->assertCount(1, $crawler->filter('table.data-table a.btn--primary[href="/admin/settings/daemon"]'));
         $this->assertCount(1, $crawler->filter('table.data-table a[href="https://docs.dreeve.app/maintenance/backup-and-restore/#make-a-backup"]'));
@@ -37,6 +39,7 @@ class BackupsRequestHandlerTest extends AdminWebTestCase
         $defaultStorage = static::getContainer()->get('default.storage');
         $defaultStorage->write('backups/dreeve-2026-11-07-030000.tar.zst', 'older backup');
         $defaultStorage->write('backups/dreeve-2026-11-08-030000.tar.zst', 'latest backup');
+        $defaultStorage->write('backups/dreeve-2026-11-08-030000.json', '{"appVersion": "v5.8.2", "numberOfActivities": 1234, "firstActivityStartDate": "2015-03-01", "lastActivityStartDate": "2026-11-07"}');
         $defaultStorage->write('backups/dreeve-2026-11-09-030000.tar.zst.partial', 'backup that is still being written');
         $this->client->loginUser($this->adminUser());
 
@@ -45,8 +48,8 @@ class BackupsRequestHandlerTest extends AdminWebTestCase
         $this->assertResponseIsSuccessful();
         $rows = $crawler->filter('table.data-table tbody tr');
         $this->assertCount(2, $rows);
-        $this->assertSame('08-11-26 03:00:00 dreeve-2026-11-08-030000.tar.zst 0.0 MB Download backup', $rows->eq(0)->text());
-        $this->assertStringContainsString('dreeve-2026-11-07-030000.tar.zst', $rows->eq(1)->text());
+        $this->assertSame('08-11-26 03:00:00 dreeve-2026-11-08-030000.tar.zst 0.0MB 1234 01-03-15 - 07-11-26 v5.8.2 Download backup', $rows->eq(0)->text());
+        $this->assertSame('07-11-26 03:00:00 dreeve-2026-11-07-030000.tar.zst 0.0MB - - Download backup', $rows->eq(1)->text());
         $this->assertSame(
             '/admin/backups/dreeve-2026-11-07-030000.tar.zst/download',
             $rows->eq(1)->filter('a[title="Download backup"]')->attr('href'),

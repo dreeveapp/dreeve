@@ -33,7 +33,8 @@ final readonly class FindActivityTotalsQueryHandler implements QueryHandler
                        COALESCE(SUM(calories), 0) AS totalCalories,
                        COALESCE(SUM(movingTimeInSeconds), 0) AS totalMovingTimeInSeconds,
                        COUNT(DISTINCT strftime('%Y%m%d', startDateTime)) AS totalDaysOfWorkingOut,
-                       MIN(startDateTime) AS firstActivityStartDateTime
+                       MIN(startDateTime) AS firstActivityStartDateTime,
+                       MAX(startDateTime) AS lastActivityStartDateTime
                 FROM Activity
             SQL
         )->fetchAssociative();
@@ -49,6 +50,9 @@ final readonly class FindActivityTotalsQueryHandler implements QueryHandler
             totalDaysOfWorkingOut: (int) $result['totalDaysOfWorkingOut'],
             firstActivityStartDate: $result['firstActivityStartDateTime']
                 ? SerializableDateTime::fromString($result['firstActivityStartDateTime'])
+                : null,
+            lastActivityStartDate: $result['lastActivityStartDateTime']
+                ? SerializableDateTime::fromString($result['lastActivityStartDateTime'])
                 : null,
         );
     }

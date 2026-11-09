@@ -28,6 +28,12 @@
                     <th scope="col" class="text-left">
                         {{ "Size"|trans({}, 'admin') }}
                     </th>
+                    <th scope="col">
+                        {{ "Activities"|trans }}
+                    </th>
+                    <th scope="col" class="text-left">
+                        {{ "Version"|trans({}, 'admin') }}
+                    </th>
                     <th scope="col" class="narrow sticky-actions">
                         <span class="sr-only">{{ "Actions"|trans({}, 'admin') }}</span>
                     </th>
@@ -44,7 +50,29 @@
                             {{ backup.getFilename() }}
                         </td>
                         <td class="whitespace-nowrap text-left">
-                            {{ backup.getSizeInMegaBytes()|formatNumber(1) }} MB
+                            {{ backup.getSizeInMegaBytes()|formatNumber(1) }}<span class="text-xxs ml-px">MB</span>
+                        </td>
+                        {% set manifest = backup.getManifest() %}
+                        <td class="whitespace-nowrap">
+                            {% if manifest %}
+                                <div class="flex flex-col gap-1">
+                                    <span>{{ manifest.getNumberOfActivities() }}</span>
+                                    {% if manifest.getNumberOfActivities() > 0 %}
+                                        <span class="text-xs text-gray-500">{{ manifest.getFirstActivityStartDate()|formatDate() }} - {{ manifest.getLastActivityStartDate()|formatDate() }}</span>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td class="whitespace-nowrap text-left">
+                            {% if manifest %}
+                                <span class="pill pill--neutral text-xs">
+                                    {{ manifest.getAppVersion() }}
+                                </span>
+                            {% else %}
+                                -
+                            {% endif %}
                         </td>
                         <td class="narrow whitespace-nowrap sticky-actions">
                             <div class="inline-flex items-center gap-2">
@@ -61,7 +89,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4">
+                        <td colspan="6">
                             <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
                                 <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
                                     <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"

@@ -53,6 +53,10 @@ class FindActivityTotalsQueryHandlerTest extends ContainerTestCase
             $activities->getFirstActivityStartDate(),
             $response->getFirstActivityStartDate(),
         );
+        $this->assertEquals(
+            $activities->getFirst()?->getStartDate(),
+            $response->getLastActivityStartDate(),
+        );
     }
 
     public function testHandleWithoutActivities(): void
@@ -66,6 +70,7 @@ class FindActivityTotalsQueryHandlerTest extends ContainerTestCase
         $this->assertEquals(0, $response->getTotalMovingTimeInSeconds());
         $this->assertEquals(0, $response->getTotalDaysOfWorkingOut());
         $this->assertNull($response->getFirstActivityStartDate());
+        $this->assertNull($response->getLastActivityStartDate());
     }
 
     #[\Override]

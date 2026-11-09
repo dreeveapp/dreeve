@@ -115,6 +115,7 @@ final class CreateBackupConsoleCommand extends Command
 
         $backups = $this->availableBackups->findAll();
         $createdBackup = $backups[count($backups) - 1];
+        $this->availableBackups->writeManifest($createdBackup);
         foreach (array_slice($backups, 0, max(0, count($backups) - $keep)) as $oldBackup) {
             $this->availableBackups->delete($oldBackup);
             $output->writeln(sprintf('=> Deleted old backup "%s"', self::BACKUP_DIRECTORY.'/'.$oldBackup->getFilename()));
