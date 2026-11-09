@@ -204,7 +204,7 @@ From: Von
 Gender: Geschlecht
 General: Allgemein
 'Generate an API key': 'API-Schlüssel generieren'
-'Generate an MCP key': 'Generate an MCP key'
+'Generate an MCP key': 'MCP-Schlüssel generieren'
 'Go to first page': 'Zur ersten Seite'
 'Go to last page': 'Zur letzten Seite'
 'Go to next page': 'Zur nächsten Seite'
@@ -250,9 +250,9 @@ Latitude: Breitengrad
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Lasse alle abgewählt, um jede Sichtbarkeit zu importieren. ⚠️ Wenn du dies einschränkst, nachdem Aktivitäten importiert wurden, werden Aktivitäten von ausgeschlossenen Sichtbarkeiten gelöscht.'
 'Leave empty to include all sport types.': 'Leer lassen, um alle Sportarten einzubeziehen.'
 'Leave empty to use the default title.': 'Leer lassen, um den Standardtitel zu verwenden.'
-'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.'
-'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
-'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.'
+'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Mit diesem Schlüssel kann ein KI-Assistent über den MCP-Server deine Aktivitäten lesen, aber nicht verändern. Bewahre ihn sicher auf und behandle ihn wie ein Passwort.'
+'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Mit diesem Schlüssel kann ein externer Client über HTTP auf die API zugreifen. Er ist der einzige Schutz für den API\-Zugriff. Bewahre ihn daher sicher auf und behandle ihn wie ein Passwort.'
+'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Ermöglicht die Anmeldung im Admin-Panel über einen eigenen Identitätsanbieter, neben dem Administrator-Benutzernamen und Passwort.'
 'Loading the route...': 'Loading the route...'
 Locale: Sprache
 Log: Protokoll
@@ -307,8 +307,8 @@ Monday: Montag
 'No sport types selected': 'Keine Sportarten ausgewählt'
 'No unit': 'keine Einheit'
 'Normal date format': 'Normales Datumsformat'
-'Not configured, API access is disabled': 'Not configured, API access is disabled'
-'Not configured, MCP server is disabled': 'Not configured, MCP server is disabled'
+'Not configured, API access is disabled': 'Nicht konfiguriert. Der API-Zugriff ist deaktiviert.'
+'Not configured, MCP server is disabled': 'Nicht konfiguriert. Der MCP-Zugriff ist deaktiviert.'
 'Not fitted': 'nicht angebaut'
 Notes: Notizen
 'Notification services': Benachrichtungsdienste
@@ -346,7 +346,7 @@ Password: Passwort
 'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf der Strecke.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
 'Polyline color': Routenfarbe
-'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
+'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Bevorzugst du einen eigenen KI-Client, wie z. B. Claude oder Cursor? Verbinde ihn stattdessen mit dem MCP-Server unter {linkOpen}Security{linkClose}.'
 'Preview selection': Vorschaubereich
 'Processed on': 'Verarbeitet am'
 'Profile picture URL': Profilbild-URL
@@ -502,8 +502,8 @@ Tasks: Aufgaben
 'The elevation gain': 'Die Höhenmeter'
 'The formula used to calculate your max heart rate. The default is Fox (220 − age).': 'Die Formel zur Berechnung deiner maximalen Herzfrequenz. Der Standardwert ist Fox (220 − Alter).'
 'The formula used to calculate your resting heart rate. The default is an age-based estimate.': 'Die Formel zur Berechnung deines Ruhepulses. Der Standardwert ist eine altersbasierte Schätzung.'
-'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.': 'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.'
-'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.': 'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.'
+'The key lets an AI assistant read your data through the MCP server. It cannot change anything, but it does expose all of your activities, so treat it like a password.': 'Mit diesem Schlüssel kann ein KI-Assistent über den MCP-Server deine Aktivitäten lesen, aber nicht verändern. Bewahre ihn sicher auf und behandle ihn wie ein Passwort.'
+'The key lets an external client access the API over HTTP. It is the only thing guarding the API, so treat it like a password.': 'Mit diesem Schlüssel kann ein externer Client über HTTP auf die API zugreifen. Er ist der einzige Schutz für den API\-Zugriff. Bewahre ihn daher sicher auf und behandle ihn wie ein Passwort.'
 'The last zone has no upper bound.': 'Die letzte Zone hat keine Obergrenze.'
 'The locale used to render the app.': 'Die für die Anzeige der App verwendete Spracheinstellung.'
 'The max heart rate': 'Die maximale Herzfrequenz'
