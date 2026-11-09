@@ -31,4 +31,9 @@ final readonly class Backup
     {
         return $this->sizeInBytes;
     }
+
+    public function getSizeInMegaBytes(): float
+    {
+        return $this->sizeInBytes / 1024 / 1024;
+    }
 }

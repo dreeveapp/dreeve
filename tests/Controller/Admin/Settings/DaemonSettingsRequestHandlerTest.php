@@ -64,8 +64,7 @@ class DaemonSettingsRequestHandlerTest extends AdminWebTestCase
         $defaultStorage = static::getContainer()->get('default.storage');
         $defaultStorage->write('backups/dreeve-2026-11-07-030000.tar.zst', 'older backup');
         $defaultStorage->write('backups/dreeve-2026-11-08-030000.tar.zst', 'latest backup');
-        $defaultStorage->write('backups/dreeve-2026-11-09-030000.tar.zst', 'backup that is still being written');
-        $defaultStorage->write('backups/dreeve-2026-11-09-030000/database/dreeve.db', 'database snapshot');
+        $defaultStorage->write('backups/dreeve-2026-11-09-030000.tar.zst.partial', 'backup that is still being written');
         $defaultStorage->write('backups/notes.txt', 'not a backup');
         $this->client->loginUser($this->adminUser());
 

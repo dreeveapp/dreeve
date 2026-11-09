@@ -48,7 +48,7 @@
             {% if latestBackup %}
                 <div>
                     <label for="latestBackup" class="mt-0!">{{ "Latest backup"|trans({}, 'admin') }}</label>
-                    <input type="text" id="latestBackup" value="{{ latestBackup.filename }} ({{ (latestBackup.sizeInBytes / 1024 / 1024)|formatNumber(1) }} MB)" disabled>
+                    <input type="text" id="latestBackup" value="{{ latestBackup.filename }} ({{ latestBackup.sizeInMegaBytes|formatNumber(1) }} MB)" disabled>
                 </div>
                 <div class="flex">
                     <a href="{{ relativeUrl(path('admin_download_latest_backup')) }}" type="button" class="btn--primary">
