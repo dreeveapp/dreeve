@@ -1,6 +1,6 @@
 ---
 title: "FAQ"
-description: "Answers to frequently asked questions about Dreeve, importing, Strava, backups and the admin panel."
+description: "Answers to frequently asked questions about Dreeve, importing, Strava and the admin panel."
 ---
 
 ## General
@@ -99,61 +99,6 @@ If you hit the daily rate limit, the app will automatically import the remaining
 
 No, the app only supports one Strava account at a time. If you want to use multiple Strava accounts,
 you will need to run multiple instances of the app, each with its own Strava client ID and secret.
-
-</details>
-
-## Backup & restore
-
-<details>
-<summary>What do I need to back up?</summary>
-
-Only the **`storage/` directory**. That's it.
-
-It holds the SQLite database (`storage/database/dreeve.db`) and the images and files the app generates
-(`storage/files/`). Your original `.fit`, `.tcx` and `.gpx` files are stored **inside the database**, so there is
-nothing else to keep separately.
-
-Your `docker-compose.yml` and `.env` are configuration, not data, but keeping a copy makes a restore quicker.
-
-</details>
-
-<details>
-<summary>How do I make a backup?</summary>
-
-Run the backup command:
-
-```bash
-> docker compose exec app bin/console app:backup:create
-```
-
-It writes one `dreeve-<date>-<time>.tar.zst` file to the `backups/` directory, holding a snapshot of the database
-and the files in `storage/` (logs excluded). It keeps the 7 most recent backups and deletes older ones.
-
-To make a backup every night, enable the **Local backup** task in **Admin panel → Settings → Daemon**.
-
-**Mount the backups directory.** Backups are written to `/var/www/backups` inside the container.
-Add `./backups:/var/www/backups` to the `app` and `daemon` services, see [Installation](/getting-started/installation/#docker-composeyml).
-
-</details>
-
-<details>
-<summary>How do I restore a backup?</summary>
-
-Stop Dreeve, restore the backup in a one-off container and start it again:
-
-```bash
-> docker compose stop app daemon
-> docker compose run --rm app bin/console app:backup:restore dreeve-2026-01-01-030000.tar.zst
-> docker compose up -d
-```
-
-Pass the file name of a backup in the `backups/` directory. The command asks for confirmation first
-
-The restore replaces the database and overwrites the files in `storage/` with the ones from the backup.
-Logs aren't part of a backup and aren't touched.
-
-To move Dreeve to a new server, install it there first and start it once with `docker compose up -d`. Then copy
-the backup into its `backups/` directory and follow the steps above.
 
 </details>
 
