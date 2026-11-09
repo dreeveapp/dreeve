@@ -27,6 +27,7 @@ final readonly class BackupsRequestHandler
     {
         return new HtmlResponse($this->twig->render('html/admin/page/backup/backups.html.twig', [
             'backups' => array_reverse($this->availableBackups->findAll()),
+            'isOnMountedVolume' => $this->availableBackups->isOnMountedVolume(),
         ]));
     }
 

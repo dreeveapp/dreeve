@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin\Backup;
 
+use App\Domain\Backup\AvailableBackups;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use League\Flysystem\FilesystemOperator;
 
@@ -12,6 +14,10 @@ class BackupsRequestHandlerTest extends AdminWebTestCase
 {
     public function testItRendersTheEmptyStateWhenThereAreNoBackups(): void
     {
+        static::getContainer()->set(AvailableBackups::class, new AvailableBackups(
+            defaultStorage: static::getContainer()->get('default.storage'),
+            kernelProjectDir: KernelProjectDir::fromString(sys_get_temp_dir()),
+        ));
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/backups');
@@ -22,6 +28,7 @@ class BackupsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('table.data-table a.btn--primary[href="/admin/settings/daemon"]'));
         $this->assertCount(1, $crawler->filter('table.data-table a[href="https://docs.dreeve.app/maintenance/backup-and-restore/#make-a-backup"]'));
         $this->assertCount(1, $crawler->filter('#drawer-navigation a[href="/admin/backups"][aria-selected="true"]'));
+        $this->assertCount(1, $crawler->filter('.alert--warning a[href="https://docs.dreeve.app/maintenance/backup-and-restore/#mount-the-backups-directory"]'));
     }
 
     public function testItListsTheBackupsNewestFirstAndDownloadsOne(): void

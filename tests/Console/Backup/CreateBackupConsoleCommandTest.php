@@ -216,7 +216,10 @@ class CreateBackupConsoleCommandTest extends ConsoleCommandTestCase
             kernelProjectDir: KernelProjectDir::fromString($this->projectDirectory),
             clock: PausedClock::fromString('2026-11-08 03:00:00'),
             processFactory: $this->processFactory,
-            availableBackups: new AvailableBackups(new Flysystem(new LocalFilesystemAdapter($this->projectDirectory))),
+            availableBackups: new AvailableBackups(
+                defaultStorage: new Flysystem(new LocalFilesystemAdapter($this->projectDirectory)),
+                kernelProjectDir: KernelProjectDir::fromString($this->projectDirectory),
+            ),
         );
     }
 }

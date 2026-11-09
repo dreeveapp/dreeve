@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Backup;
 
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\Target;
@@ -16,6 +17,7 @@ final readonly class AvailableBackups
     public function __construct(
         #[Target('default.storage')]
         private FilesystemOperator $defaultStorage,
+        private KernelProjectDir $kernelProjectDir,
     ) {
     }
 
@@ -48,9 +50,11 @@ final readonly class AvailableBackups
         ) ?? throw new EntityNotFound(sprintf('Backup "%s" not found', $filename));
     }
 
-    public function findLatest(): ?Backup
+    public function isOnMountedVolume(): bool
     {
-        return array_last($this->findAll());
+        $mounts = is_readable('/proc/self/mountinfo') ? (file('/proc/self/mountinfo', FILE_IGNORE_NEW_LINES) ?: []) : [];
+
+        return array_any($mounts, fn (string $mount): bool => (explode(' ', $mount)[4] ?? null) === $this->kernelProjectDir.'/'.self::FOLDER_NAME);
     }
 
     public function passThrough(Backup $backup): void

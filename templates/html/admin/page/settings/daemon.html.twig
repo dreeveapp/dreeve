@@ -40,28 +40,4 @@
             </div>
         {% endblock %}
     {% endembed %}
-    {% embed 'html/admin/page/settings/component/section.html.twig' with {
-        title: "Backup"|trans({}, 'admin'),
-        description: "Download the latest backup to keep a copy somewhere else or to move your data to another server."|trans({}, 'admin'),
-    } %}
-        {% block body %}
-            {% if latestBackup %}
-                <div>
-                    <label for="latestBackup" class="mt-0!">{{ "Latest backup"|trans({}, 'admin') }}</label>
-                    <input type="text" id="latestBackup" value="{{ latestBackup.filename }} ({{ latestBackup.sizeInMegaBytes|formatNumber(1) }} MB)" disabled>
-                </div>
-                <div class="flex">
-                    <a href="{{ relativeUrl(path('admin_download_latest_backup')) }}" type="button" class="btn--primary">
-                        {{ "Download latest backup"|trans({}, 'admin') }}
-                    </a>
-                </div>
-            {% else %}
-                {% set linkOpen = '<a class="font-semibold underline hover:no-underline" href="https://docs.dreeve.app/troubleshooting/faq/#backup--restore">' %}
-                {% set linkClose = '</a>' %}
-                <p class="text-sm text-gray-500">
-                    {{ "There is no backup yet. Enable the local backup action above or create one by hand, as explained in {linkOpen}the documentation{linkClose}."|trans({'{linkOpen}': linkOpen, '{linkClose}': linkClose}, 'admin')|raw }}
-                </p>
-            {% endif %}
-        {% endblock %}
-    {% endembed %}
 {% endblock sections %}
