@@ -18,7 +18,8 @@ ENV APP_DEBUG=0
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
   bash \
-  tzdata
+  tzdata \
+  zstd
 
 RUN set -eux; \
 	install-php-extensions \
