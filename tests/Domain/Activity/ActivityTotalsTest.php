@@ -71,6 +71,7 @@ class ActivityTotalsTest extends ContainerTestCase
                 totalMovingTimeInSeconds: 7200,
                 totalDaysOfWorkingOut: 7,
                 firstActivityStartDate: $firstActivityStartDate,
+                lastActivityStartDate: null,
             ),
             now: $now ?? SerializableDateTime::fromString('2023-11-25'),
             translator: $this->getContainer()->get(TranslatorInterface::class),

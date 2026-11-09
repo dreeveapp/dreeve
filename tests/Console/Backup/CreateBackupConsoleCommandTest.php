@@ -5,11 +5,17 @@ namespace App\Tests\Console\Backup;
 use App\Application\AppName;
 use App\Application\AppVersion;
 use App\Console\Backup\CreateBackupConsoleCommand;
+use App\Domain\Activity\ActivityId;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Backup\AvailableBackups;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Process\ProcessFactory;
 use App\Infrastructure\Process\SymfonyProcessFactory;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Console\ConsoleCommandTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use Doctrine\DBAL\Connection;
 use League\Flysystem\Filesystem as Flysystem;
@@ -35,7 +41,24 @@ class CreateBackupConsoleCommandTest extends ConsoleCommandTestCase
         $this->filesystem->dumpFile($this->projectDirectory.'/storage/files/logs/daemon.log', 'log');
         $this->filesystem->dumpFile($this->projectDirectory.'/storage/gear-maintenance/config.yaml', 'gear');
         $this->filesystem->dumpFile($this->projectDirectory.'/backups/dreeve-2026-11-06-030000.tar.zst', 'oldest');
+        $this->filesystem->dumpFile($this->projectDirectory.'/backups/dreeve-2026-11-06-030000.json', '{"appVersion": "v5.8.1", "numberOfActivities": 1, "firstActivityStartDate": "2015-03-01", "lastActivityStartDate": "2015-03-01"}');
         $this->filesystem->dumpFile($this->projectDirectory.'/backups/dreeve-2026-11-07-030000.tar.zst', 'older');
+
+        $activityRepository = $this->getContainer()->get(ActivityRepository::class);
+        $activityRepository->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('1'))
+                ->withStartDateTime(SerializableDateTime::fromString('2015-03-01 10:00:00'))
+                ->build(),
+            rawData: [],
+        ));
+        $activityRepository->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('2'))
+                ->withStartDateTime(SerializableDateTime::fromString('2026-11-07 18:00:00'))
+                ->build(),
+            rawData: [],
+        ));
 
         $this->connection
             ->expects($this->once())
@@ -62,8 +85,12 @@ class CreateBackupConsoleCommandTest extends ConsoleCommandTestCase
         $this->assertStringContainsString('=> Deleted old backup "backups/dreeve-2026-11-06-030000.tar.zst"', $commandTester->getDisplay());
         $this->assertMatchesRegularExpression('/=> Created backup "backups\/dreeve-2026-11-08-030000.tar.zst" \(\d+\.\d MB\)/', $commandTester->getDisplay());
         $this->assertEquals(
-            ['dreeve-2026-11-07-030000.tar.zst', 'dreeve-2026-11-08-030000.tar.zst'],
+            ['dreeve-2026-11-07-030000.tar.zst', 'dreeve-2026-11-08-030000.json', 'dreeve-2026-11-08-030000.tar.zst'],
             array_values(array_diff(scandir($this->projectDirectory.'/backups') ?: [], ['.', '..'])),
+        );
+        $this->assertJsonStringEqualsJsonString(
+            sprintf('{"appVersion": "%s", "numberOfActivities": 2, "firstActivityStartDate": "2015-03-01", "lastActivityStartDate": "2026-11-07"}', AppVersion::getSemanticVersion()),
+            (string) file_get_contents($this->projectDirectory.'/backups/dreeve-2026-11-08-030000.json'),
         );
 
         $extractedTarPath = $this->projectDirectory.'/extracted.tar';
@@ -219,6 +246,7 @@ class CreateBackupConsoleCommandTest extends ConsoleCommandTestCase
             availableBackups: new AvailableBackups(
                 defaultStorage: new Flysystem(new LocalFilesystemAdapter($this->projectDirectory)),
                 kernelProjectDir: KernelProjectDir::fromString($this->projectDirectory),
+                queryBus: $this->getContainer()->get(QueryBus::class),
             ),
         );
     }

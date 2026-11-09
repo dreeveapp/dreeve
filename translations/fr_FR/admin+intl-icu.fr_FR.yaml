@@ -607,6 +607,7 @@ Uploading...: 'Téléversement en cours'
 'Used to calculate the training load of this activity': "Utilisé pour calculer la charge d'entraînement de cette activité"
 Username: "Nom d'utilisateur"
 'Verify token': 'Vérifier le jeton'
+Version: Version
 Warning: Avertissement
 'Weather and reverse geocoding have been retrieved.': 'La météo et le géocodage inversé ont été récupérés.'
 'Weather and/or reverse geocoding could not be retrieved when this activity was imported.': "La météo et/ou le géocodage inversé n'ont pas pu être récupérés lors de l'import de cette activité."

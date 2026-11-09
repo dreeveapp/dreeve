@@ -20,6 +20,7 @@ final readonly class FindActivityTotalsResponse implements Response
         private int $totalMovingTimeInSeconds,
         private int $totalDaysOfWorkingOut,
         private ?SerializableDateTime $firstActivityStartDate,
+        private ?SerializableDateTime $lastActivityStartDate,
     ) {
     }
 
@@ -61,5 +62,10 @@ final readonly class FindActivityTotalsResponse implements Response
     public function getFirstActivityStartDate(): ?SerializableDateTime
     {
         return $this->firstActivityStartDate;
+    }
+
+    public function getLastActivityStartDate(): ?SerializableDateTime
+    {
+        return $this->lastActivityStartDate;
     }
 }

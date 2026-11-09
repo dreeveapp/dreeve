@@ -11,16 +11,19 @@ final readonly class Backup
     private function __construct(
         private string $filename,
         private int $sizeInBytes,
+        private ?BackupManifest $manifest,
     ) {
     }
 
     public static function create(
         string $filename,
         int $sizeInBytes,
+        ?BackupManifest $manifest,
     ): self {
         return new self(
             filename: $filename,
             sizeInBytes: $sizeInBytes,
+            manifest: $manifest,
         );
     }
 
@@ -42,5 +45,10 @@ final readonly class Backup
     public function getSizeInMegaBytes(): float
     {
         return $this->sizeInBytes / 1024 / 1024;
+    }
+
+    public function getManifest(): ?BackupManifest
+    {
+        return $this->manifest;
     }
 }

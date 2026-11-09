@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Backup;
 
+use App\Application\AppVersion;
+use App\Domain\Activity\FindActivityTotals\FindActivityTotals;
+use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemOperator;
@@ -18,6 +22,7 @@ final readonly class AvailableBackups
         #[Target('default.storage')]
         private FilesystemOperator $defaultStorage,
         private KernelProjectDir $kernelProjectDir,
+        private QueryBus $queryBus,
     ) {
     }
 
@@ -33,9 +38,14 @@ final readonly class AvailableBackups
                 continue;
             }
 
+            $filename = basename($attributes->path());
+            $manifestPath = $this->getManifestPath($filename);
             $backups[] = Backup::create(
-                filename: basename($attributes->path()),
+                filename: $filename,
                 sizeInBytes: (int) $attributes->fileSize(),
+                manifest: $this->defaultStorage->fileExists($manifestPath)
+                    ? BackupManifest::fromArray(Json::decode($this->defaultStorage->read($manifestPath)))
+                    : null,
             );
         }
 
@@ -62,8 +72,25 @@ final readonly class AvailableBackups
         fpassthru($this->defaultStorage->readStream(self::FOLDER_NAME.'/'.$backup->getFilename()));
     }
 
+    public function writeManifest(Backup $backup): void
+    {
+        $activityTotals = $this->queryBus->ask(new FindActivityTotals());
+        $this->defaultStorage->write($this->getManifestPath($backup->getFilename()), Json::encodePretty(BackupManifest::create(
+            appVersion: AppVersion::getSemanticVersion(),
+            numberOfActivities: $activityTotals->getTotalActivities(),
+            firstActivityStartDate: $activityTotals->getFirstActivityStartDate(),
+            lastActivityStartDate: $activityTotals->getLastActivityStartDate(),
+        )));
+    }
+
     public function delete(Backup $backup): void
     {
         $this->defaultStorage->delete(self::FOLDER_NAME.'/'.$backup->getFilename());
+        $this->defaultStorage->delete($this->getManifestPath($backup->getFilename()));
+    }
+
+    private function getManifestPath(string $backupFilename): string
+    {
+        return self::FOLDER_NAME.'/'.basename($backupFilename, '.tar.zst').'.json';
     }
 }
