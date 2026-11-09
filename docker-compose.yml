@@ -6,6 +6,7 @@ services:
         container_name: 'statistics-for-strava-php-cli'
         volumes:
             - './:/var/www/'
+            - /var/www/backups
         working_dir: /var/www
         env_file:
             - path: ./.env
@@ -29,6 +30,7 @@ services:
             - ./storage/database:/var/www/storage/database
             - ./storage/files:/var/www/storage/files
             - ./watch:/var/www/watch
+            - ./backups:/var/www/backups
         env_file: '.env.local'
         healthcheck:
           test: ["CMD", "curl", "-f", "http://localhost:2019/metrics"]
@@ -51,6 +53,7 @@ services:
         - ./storage/database:/var/www/storage/database
         - ./storage/files:/var/www/storage/files
         - ./watch:/var/www/watch
+        - ./backups:/var/www/backups
       env_file: ".env.local"
       healthcheck:
         test: [ "CMD", "sh", "-c", "test -f /var/www/storage/database/dreeve.db && echo 'ok' || exit 1" ]

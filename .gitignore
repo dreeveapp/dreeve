@@ -31,6 +31,7 @@ phpstan.neon
 ###> app-build ###
 /config/app/*.yaml
 /build
+/backups
 /storage
 /cron
 /ollama
