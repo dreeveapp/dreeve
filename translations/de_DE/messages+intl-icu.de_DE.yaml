@@ -16,7 +16,7 @@
 'Active gear': 'Aktive Ausrüstung'
 Activities: Aktivitäten
 Activity: Aktivität
-'Activity collections': 'Activity collections'
+'Activity collections': 'Aktivitätssammlungen'
 'Activity count': 'Anzahl der Aktivitäten'
 'Activity heatmap': Aktivitäts-Heatmap
 'Activity locations': Orte
@@ -55,7 +55,7 @@ Best: Beste
 'Best efforts for {sportType}': 'Bestzeiten für {sportType}'
 'Bike light': Fahrradlicht
 'Bike radar': Fahrradradar
-Boxing: Boxing
+Boxing: Boxen
 'Build zone (–10)': 'Aufbauzone (–10)'
 'Buy me a coffee': 'Spendier mir einen Kaffee'
 'CTL (Fitness)': 'CTL (Fitness)'
@@ -74,7 +74,7 @@ Challenges: Herausforderungen
 'Clear chat': 'Chat löschen'
 Close: Schließen
 'Cluster tiles': Cluster-Kacheln
-Collections: Collections
+Collections: Sammlungen
 Columns: Spalten
 Commute: Pendelfahrt
 Commutes: Pendelfahrten
@@ -102,7 +102,7 @@ Dance: Tanzen
 Dashboard: Dashboard
 Date: Datum
 Day: Tag
-'Days away': 'Days away'
+'Days away': 'Verbleibende Tage'
 'Days completed': 'Absolvierte Tage'
 'Days needed': 'Benötigte Tage'
 'Days to go': 'Tage zum Ziel'
@@ -134,7 +134,7 @@ Eddington: Eddington
 'Eddington over time': 'Eddington im zeitlichen Verlauf'
 'Edit dashboard': 'Dashboard bearbeiten'
 'Edit this activity': 'Diese Aktivität bearbeiten'
-'Edit this activity collection': 'Edit this activity collection'
+'Edit this activity collection': 'Diese Aktivitätssammlung bearbeiten'
 'Edit this segment': 'Dieses Segment bearbeiten'
 'Effort vs heart rate': 'Anstrengung vs Herzfrequenz'
 'Elapsed time': 'Verstrichene Zeit'
@@ -265,7 +265,7 @@ Low: Niedrig
 'Low training load': 'Niedrige Trainingsbelastung'
 Maintenance: Wartung
 'Manage activities': 'Aktivitäten verwalten'
-'Manage activity collections': 'Manage activity collections'
+'Manage activity collections': 'Aktivitätssammlung verwalten'
 'Manage gear': 'Ausrüstung verwalten'
 'Manage recording devices': 'Aufzeichnungsgeräte verwalten'
 'Manage segments': 'Segmente verwalten'
@@ -304,7 +304,7 @@ Morning: Morgen
 Name: Name
 Neutral: Neutral
 'New personal best for': 'Neue persönliche Bestleistung für'
-'New version available': 'New version available'
+'New version available': 'Neue Version verfügbar'
 'Newer activity: {name}': 'Neuere Aktivität: {name}'
 'Next milestone': 'Nächster Meilenstein'
 Night: Nacht
@@ -330,7 +330,7 @@ Oct: Okt
 'On average, that works out to {dailyAverage} per day, a weekly average of {weeklyAverage} and a monthly average of {monthlyAverage} 🐣.': 'Im Schnitt ergibt das {dailyAverage} täglich, mit einem Wochenmittel von {weeklyAverage} und einem Monatsmittel von {monthlyAverage} 🐣.'
 'On your own': Solo
 'One of your gear maintenance tasks is due': 'Eine deiner Ausrüstungswartungsaufgaben steht an'
-"Oops, looks like you've wandered off the map! 🗺️": "Oops, looks like you've wandered off the map! 🗺️"
+"Oops, looks like you've wandered off the map! 🗺️": "Hoppla, da scheinst du dich verirrt zu haben! 🗺️"
 'Open Water Swim': Freiwasserschwimmen
 'Optimal training range': 'Optimale Trainingszone'
 'Original file': Originaldatei
@@ -408,7 +408,7 @@ Sat.: Sa.
 Search: Suche
 'Search by name or place...': 'Nach Name oder Ort suchen...'
 'Search segment...': 'Segment suchen...'
-"See what's new": "See what's new"
+"See what's new": "Neuigkeiten anzeigen"
 Segments: Segmente
 Sep: Sep
 Shifting: Schaltvorgänge
@@ -433,8 +433,8 @@ Speed: Geschwindigkeit
 Splits: Zwischenzeiten
 'Sport variety': Sportvielfalt
 Squash: Squash
-Stage: Stage
-Stages: Stages
+Stage: Etappe
+Stages: Etappen
 'Stair Stepper': Stufen-Stepper
 'Stand Up Paddling': Stand-Up-Paddeln
 'Start times': Startzeiten
@@ -569,7 +569,7 @@ Title: Titel
 'Total hours spent per gear': 'Gesamtstunden pro Ausrüstung'
 'Total hours spent per sport type': 'Gesamtstunden pro Sportart'
 'Total moving time per month': 'Gesamte Bewegungszeit pro Monat'
-'Total time': 'Total time'
+'Total time': 'Gesamtzeit'
 'Trail Run': Trail-Lauf
 'Trail Runs': Trail-Läufe
 'Training 4–5 days every week scores higher than doing everything in one or two days.': '4-5 Tage Training pro Woche erzielen einen höheren Wert als alles an einem oder zwei Tagen zu erledigen.'
@@ -579,7 +579,7 @@ Title: Titel
 'Training Stress Balance (Form) – The difference between fitness (CTL) and fatigue (ATL). Reflects how ready you are to perform.': 'Training Stress Balance (Form) - Die Differenz zwischen Fitness (CTL) und Ermüdung (ATL). Zeigt an, wie leistungsfähig du bist.'
 'Training goals': Trainingsziele
 'Training load is accumulating, recovery days are important': 'Belastung steigt an. Achte auf deine Regeneration.'
-Trip: Trip
+Trip: Tour
 Tue: Di
 Tue.: Di.
 'Unchanged compared to yesterday': 'Unverändert gegenüber gestern'
@@ -610,7 +610,7 @@ Walks: Spaziergänge
 'Water Sports': Wassersport
 'Waxing the chain...': 'Kette wird gewachst...'
 'We detected following issues': 'Wir haben die folgenden Probleme festgestellt'
-"We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+"We've been busy! Check out what's new and read about any breaking changes before you update.": "Wir waren fleißig! Schau dir die Neuerungen an und informiere dich vor dem Update über mögliche inkompatible Änderungen."
 Weather: Weather
 Wed: Mi
 Wed.: Mi.
@@ -698,10 +698,10 @@ workouts: Trainingseinheiten
 '{maintenanceTaskLabel} every {interval}': '{maintenanceTaskLabel} alle {interval}'
 '{numberOfActivities} activities': '{numberOfActivities} Aktivitäten'
 '{numberOfActivities} activities in {year}': '{numberOfActivities} Aktivitäten in {year}'
-'{numberOfDays} days': '{numberOfDays} days'
+'{numberOfDays} days': '{numberOfDays} Tage'
 '{numberOfDays}-day rolling window': '{numberOfDays}-Tage-Zeitraum'
 '{numberOfMonths} months': '{numberOfMonths} Monate'
-'{numberOfRestDays} rest days': '{numberOfRestDays} rest days'
+'{numberOfRestDays} rest days': '{numberOfRestDays} Ruhetage'
 '{numberOfResults} photos': '{numberOfResults} Bilder'
 '{numberOfResults} results': '{numberOfResults} Ergebnisse'
 '{numberOfResults} routes': '{numberOfResults} Routen'
