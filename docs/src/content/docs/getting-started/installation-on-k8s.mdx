@@ -335,7 +335,7 @@ the running pod.
   PVCs, with the database volume being the critical one. SQLite snapshots
   taken at the storage layer are crash-consistent, which is generally fine
   for this workload. Dreeve can also make its own backups into the
-  `dreeve-backups` PVC, see [Backup & restore](/getting-started/backup-and-restore/):
+  `dreeve-backups` PVC, see [Backup & restore](/maintenance/backup-and-restore/):
 
   ```bash
   kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:backup:create
