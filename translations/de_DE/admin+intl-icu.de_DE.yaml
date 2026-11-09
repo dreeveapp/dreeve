@@ -129,6 +129,7 @@ Configured: Konfiguriert
 'Continues to next rule': 'Fortsetzung mit der nächsten Regel'
 'Copy this API key': 'Diesen API-Schlüssel kopieren'
 'Copy this MCP key': 'Copy this MCP key'
+'Creates a backup of the database and storage files in the backups folder.': 'Creates a backup of the database and storage files in the backups folder.'
 'Cover image': 'Cover image'
 'Create collection': 'Create collection'
 'Cron expression': Cron-Ausdruck
@@ -276,6 +277,7 @@ Latitude: Breitengrad
 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Mit diesem Schlüssel kann ein externer Client über HTTP auf die API zugreifen. Er ist der einzige Schutz für den API\-Zugriff. Bewahre ihn daher sicher auf und behandle ihn wie ein Passwort.'
 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Ermöglicht die Anmeldung im Admin-Panel über einen eigenen Identitätsanbieter, neben dem Administrator-Benutzernamen und Passwort.'
 'Loading the route...': 'Loading the route...'
+'Local backup': 'Local backup'
 Locale: Sprache
 Log: Protokoll
 'Log maintenance': 'Wartung protokollieren'

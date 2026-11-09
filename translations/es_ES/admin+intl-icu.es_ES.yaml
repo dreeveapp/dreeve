@@ -129,6 +129,7 @@ Configured: Configurado
 'Continues to next rule': 'Continúa con la siguiente regla'
 'Copy this API key': 'Copiar esta clave API'
 'Copy this MCP key': 'Copy this MCP key'
+'Creates a backup of the database and storage files in the backups folder.': 'Creates a backup of the database and storage files in the backups folder.'
 'Cover image': 'Cover image'
 'Create collection': 'Create collection'
 'Cron expression': 'Expresión cron'
@@ -276,6 +277,7 @@ Latitude: Latitud
 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.'
 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.'
 'Loading the route...': 'Loading the route...'
+'Local backup': 'Local backup'
 Locale: Idioma
 Log: Registro
 'Log maintenance': 'Registrar mantenimiento'
