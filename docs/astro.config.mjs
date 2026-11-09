@@ -60,7 +60,7 @@ export default defineConfig({
 						},
 						{
 							label: 'Connectors',
-							description: 'automatically getting activities from Garmin, Polar, Wahoo, Hammerhead, Zepp, Apple Health, Google Health, MyWhoosh and iGPSPORT into Dreeve',
+							description: 'automatically getting activities from Garmin, Polar, Wahoo, Hammerhead, Zepp, COROS, Apple Health, Google Health, MyWhoosh and iGPSPORT into Dreeve',
 							paths: ['connectors/**'],
 						},
 						{
@@ -136,6 +136,7 @@ export default defineConfig({
 										{ slug: 'connectors/wahoo-connector', label: 'Wahoo Connector' },
 										{ slug: 'connectors/hammerhead-connector', label: 'Hammerhead Connector' },
 										{ slug: 'connectors/zepp-connector', label: 'Zepp Connector' },
+										{ slug: 'connectors/coros-connector', label: 'COROS Connector' },
 										{ slug: 'connectors/apple-health', label: 'Apple Health', badge: { text: 'Community', variant: 'note' } },
 										{ slug: 'connectors/google-health-sync', label: 'Google Health Sync', badge: { text: 'Community', variant: 'note' } },
 										{ slug: 'connectors/mywhoosh-sync', label: 'MyWhoosh Sync', badge: { text: 'Community', variant: 'note' } },
