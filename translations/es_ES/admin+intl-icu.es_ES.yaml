@@ -92,7 +92,6 @@ Athlete: Athlete
 'Average power': 'Potencia media'
 'Back to app': 'Volver a la aplicación'
 'Back to the admin panel': 'Volver al panel de administración'
-Backup: Backup
 Backups: Backups
 'Base URI': 'URI base'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Antes de poder usar la aplicación, necesitamos saber algunas cosas sobre ti. Se utilizan para calcular tus zonas de frecuencia cardíaca y tu carga de entrenamiento. Podrás ajustar todos los demás parámetros más adelante.'
@@ -168,9 +167,7 @@ Distance: Distancia
 'Do not download activity photos': 'Do not download activity photos'
 Done: Hecho
 'Download backup': 'Download backup'
-'Download latest backup': 'Download latest backup'
 'Download original file': 'Download original file'
-'Download the latest backup to keep a copy somewhere else or to move your data to another server.': 'Download the latest backup to keep a copy somewhere else or to move your data to another server.'
 'Drag the start and end markers along the route to select the segment.': 'Drag the start and end markers along the route to select the segment.'
 'Drag to reorder': 'Arrastra para reordenar'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Arrastra para establecer el orden en que se muestran los tipos de deporte en toda la aplicación.'
@@ -276,7 +273,6 @@ Integrations: Integraciones
 'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Etiqueta
 'Last name': Apellidos
-'Latest backup': 'Latest backup'
 Latitude: Latitud
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Déjalo todo sin marcar para importar todos los tipos de deporte. ⚠️ Restringir esto después de haber importado actividades eliminará las actividades de los tipos de deporte excluidos.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Déjalo todo sin marcar para importar todas las visibilidades. ⚠️ Restringir esto después de haber importado actividades eliminará las actividades de las visibilidades excluidas.'
@@ -537,6 +533,7 @@ Tasks: Tareas
 'The average power': 'La potencia media'
 'The average speed': 'La velocidad media'
 'The backfill runs on the next import cycle, using the rules as they are configured at that moment. This cannot be undone.': 'La carga retrospectiva se ejecutará en el siguiente ciclo de importación, usando las reglas tal y como estén configuradas en ese momento. Esto no se puede deshacer.'
+'The backups directory is not mounted as a volume. Backups will be lost when the container is recreated. See {linkOpen}the documentation{linkClose}.': 'The backups directory is not mounted as a volume. Backups will be lost when the container is recreated. See {linkOpen}the documentation{linkClose}.'
 'The calories burned': 'Las calorías quemadas'
 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).': 'El color de las rutas dibujadas en cada mapa. Acepta cualquier color CSS válido, por ejemplo, red, #FF0000 o rgb(255,0,0).'
 'The current name of the activity': 'El nombre actual de la actividad'
@@ -569,7 +566,6 @@ Tasks: Tareas
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'La anchura de este widget debe configurarse en la página de ajustes del panel de control. No se escalará automáticamente según el número de actividades que configures.'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'El tipo de entrenamiento tal y como se configuró en Strava (Carrera, Entrenamiento o Tirada larga), vacío para la mayoría de actividades'
 'Then do this': 'Entonces haz esto'
-'There is no backup yet. Enable the local backup action above or create one by hand, as explained in {linkOpen}the documentation{linkClose}.': 'There is no backup yet. Enable the local backup action above or create one by hand, as explained in {linkOpen}the documentation{linkClose}.'
 'These rules will be applied to your existing activities on the next import cycle.': 'Estas reglas se aplicarán a tus actividades existentes en el próximo ciclo de importación.'
 'This action cannot be undone.': 'Esta acción no se puede deshacer.'
 'This activity has no GPS data.': 'This activity has no GPS data.'
