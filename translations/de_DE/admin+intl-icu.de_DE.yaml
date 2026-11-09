@@ -14,12 +14,12 @@ Active: Aktiv
 'Activities will appear here once they are imported.': 'Aktivitäten werden hier angezeigt, sobald sie importiert wurden.'
 Activity: Aktivität
 'Activity ID': Aktivitäts-ID
-'Activity collection management': 'Activity collection management'
+'Activity collection management': 'Aktivitätssammlungen verwalten'
 'Activity description': Aktivitätsbeschreibung
 'Activity management': Aktivitätenverwaltung
 'Activity name': Aktivitätsname
 'Activity visibilities to import': 'Import der Aktivitätssichtbarkeit'
-Add: Add
+Add: Hinzufügen
 'Add Eddington': 'Eddington hinzufügen'
 'Add FTP': 'FTP hinzufügen'
 'Add a component to start tracking maintenance.': 'Füge eine Komponente hinzu, um mit der Wartungsverfolgung zu beginnen.'
@@ -29,10 +29,10 @@ Add: Add
 'Add action': 'Aktion hinzufügen'
 'Add activities': 'Add activities'
 'Add activity': 'Aktivität hinzufügen'
-'Add all activities between two dates, both included.': 'Add all activities between two dates, both included.'
+'Add all activities between two dates, both included.': 'Alle Aktivitäten zwischen zwei Daten einschließlich beider Daten hinzufügen.'
 'Add automation rule': 'Automatisierungsregel hinzufügen'
 'Add challenge': 'Herausforderung hinzufügen'
-'Add collection': 'Add collection'
+'Add collection': 'Sammlung hinzufügen'
 'Add command': 'Befehl hinzufügen'
 'Add component': 'Komponente hinzufügen'
 'Add condition': 'Bedingung hinzufügen'
@@ -49,7 +49,7 @@ Add: Add
 'Add weight': 'Gewicht hinzufügen'
 'Add widget': 'Widget hinzufügen'
 'Add {fit}, {tcx} or {gpx} files. They are processed every few minutes.': 'Füge {fit}, {tcx} oder {gpx} Dateien hinzu. Sie werden alle paar Minuten verarbeitet'
-Adding...: Adding...
+Adding...: Wird hinzugefügt...
 Admin: Admin
 'Admin panel': Adminbereich
 'Admin username': Admin-Benutzername
@@ -61,7 +61,7 @@ Admin: Admin
 'All sport types must belong to the same activity type.': 'Alle Sportarten müssen demselben Aktivitätstyp angehören.'
 'Allow visitors to download original activity files': 'Besuchern das Herunterladen von Original-Aktivitätsdateien erlauben.'
 'Allowed IP addresses for the admin panel': 'Zulässige IP-Adressen für den Adminbereich'
-'Allowed users': 'Allowed users'
+'Allowed users': 'Zugelassene Benutzer'
 'Any IP address': 'Beliebige IP-Addresse'
 'Any gear assigned to the activity will be removed.': 'Der Aktivität zugeordnete Ausrüstung wird entfernt.'
 'App URL': App-URL
@@ -77,7 +77,7 @@ Apply: Anwenden
 'Are you sure you want to delete {count} activities?': 'Möchtest du wirklich {count} Aktivitäten löschen?'
 'Are you sure you want to delete {name}?': 'Möchtest du {name} wirklich löschen?'
 'Are you sure you want to delete {task} on {component} for {gear}, performed on {date}?': 'Möchtest du {task} an {component} für {gear}, durchgeführt am {date}, wirklich löschen?'
-'Are you sure you want to dismiss the trip of {dates}?': 'Are you sure you want to dismiss the trip of {dates}?'
+'Are you sure you want to dismiss the trip of {dates}?': 'Möchtest du die Tour vom {dates} wirklich verwerfen?'
 'Are you sure you want to remove the {widget} widget?': 'Möchtest du das {widget} Widget entfernen?'
 'Assign gear': 'Ausrüstung zuweisen'
 Athlete: Athlet
@@ -95,7 +95,7 @@ Athlete: Athlet
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Bevor Sie die App nutzen können, benötigen wir einige Informationen über Sie. Diese werden verwendet, um Ihre Herzfrequenzzonen und Ihre Trainingsbelastung zu berechnen. Alle weiteren Einstellungen können Sie später anpassen.'
 Birthday: Geburtstag
-'Bundle your activities into trips and events.': 'Bundle your activities into trips and events.'
+'Bundle your activities into trips and events.': 'Bündele deine Aktivitäten zu Touren und Veranstaltungen.'
 'By default only you can download the original FIT, TCX or GPX file from an activity page. Original files can contain more detail than the page shows.': 'Standardmäßig lassen sich von einer Aktivitätsseite nur die Originaldatei im FIT-, TCX- oder GPX-Format herunterladen. Originaldateien können mehr Details enthalten als auf der Seite angezeigt werden.'
 'CA certificate': 'CA Zertifikat'
 'Calculate energy (kJ)': 'Energie (kJ) berechnen'
@@ -113,12 +113,12 @@ Clear: Leeren
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
 Close: Schließen
-Collections: Collections
+Collections: Sammlungen
 Command: Befehl
 Commute: Pendeln
 Component: Komponente
 'Conditions are combined with AND.': 'Die Bedingungen werden mit UND verknüpft.'
-Configuration: Configuration
+Configuration: Konfiguration
 Configure: Konfigurieren
 'Configure the Eddington numbers to calculate. You can show up to two in the dashboard widget.': 'Konfiguriere die zu berechnenden Eddington-Zahlen. Du kannst bis zu zwei im Dashboard-Widget anzeigen.'
 'Configure {widget}': '{widget} konfigurieren'
@@ -128,24 +128,24 @@ Configured: Konfiguriert
 'Connected sensors': 'Verbundene Sensoren'
 'Continues to next rule': 'Fortsetzung mit der nächsten Regel'
 'Copy this API key': 'Diesen API-Schlüssel kopieren'
-'Copy this MCP key': 'Copy this MCP key'
+'Copy this MCP key': 'Diesen MCP-Schlüssel kopieren'
 'Creates a backup of the database and storage files in the backups folder.': 'Creates a backup of the database and storage files in the backups folder.'
-'Cover image': 'Cover image'
-'Create collection': 'Create collection'
+'Cover image': 'Titelbild'
+'Create collection': 'Sammlung erstellen'
 'Cron expression': Cron-Ausdruck
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-Ausdruck, der angibt, wann die Aktion ausgeführt werden soll, z. B. führt '0 14 * * *' sie jeden Tag um 14:00 Uhr aus. Siehe crontab.guru für Hilfe."
-Custom: Custom
+Custom: Benutzerdefiniert
 Daemon: Daemon
 'Dashboard layout': Dashboard-Layout
 'Date & time': 'Datum & Zeit'
-'Date range': 'Date range'
+'Date range': 'Datumsbereich'
 'Date range based': 'Nach Datumsbereich'
 'Define what needs doing and how often.': 'Lege fest, was wie oft erledigt werden muss.'
 Delete: Löschen
 'Delete activities': 'Aktivitäten löschen'
 'Delete activity': 'Aktivität löschen'
 'Delete automation rule': 'Automatisierungsregel löschen'
-'Delete collection': 'Delete collection'
+'Delete collection': 'Sammlung löschen'
 'Delete component': 'Komponente löschen'
 'Delete file import': 'Dateiimport löschen'
 'Delete gear': 'Ausrüstung löschen'
@@ -157,13 +157,13 @@ Deleting...: 'wird gelöscht...'
 Description: Beschreibung
 'Detailed instructions are available in {linkOpen}the documentation{linkClose}.': 'Ausführliche Anleitungen findest du in {linkOpen}der Dokumentation{linkClose}.'
 Disabled: Deaktiviert
-Dismiss: Dismiss
-'Dismiss suggestion': 'Dismiss suggestion'
-Dismissing...: Dismissing...
-Display: Display
+Dismiss: Verwerfen
+'Dismiss suggestion': 'Vorschlag verwerfen'
+Dismissing...: Wird verworfen...
+Display: Anzeige
 Distance: Distanz
 'Do not download activity photos': 'Keine Bilder von Aktivitäten herunterladen.'
-Done: Done
+Done: Fertig
 'Download original file': 'Originaldatei herunterladen'
 'Drag the start and end markers along the route to select the segment.': 'Ziehe die Start- und Endmarkierungen entlang der Route, um das Segment zu wählen.'
 'Drag to reorder': 'Ziehen zum Neuordnen'
@@ -171,17 +171,17 @@ Done: Done
 Duplicate: Kopieren
 Duration: Dauer
 'Each data point sums everything logged in the preceding number of days.': 'Jeder Datenpunkt enthält die Summe aller in den vorhergehenden Tagen erfassten Werte.'
-'Each period ends when the next one starts.': 'Each period ends when the next one starts.'
+'Each period ends when the next one starts.': 'Jeder Zeitraum endet, wenn der nächste beginnt.'
 Edit: Bearbeiten
 'Edit activity': 'Aktivität bearbeiten'
 'Edit automation rule': 'Automatisierungsregel bearbeiten'
-'Edit collection': 'Edit collection'
+'Edit collection': 'Sammlung bearbeiten'
 'Edit component': 'Komponente bearbeiten'
 'Edit gear': 'Ausrüstung bearbeiten'
 'Edit maintenance log': 'Wartungsprotokoll bearbeiten'
 'Edit recording device': 'Aufzeichnungsgerät bearbeiten'
 'Edit segment': 'Segment bearbeiten'
-Efforts: Efforts
+Efforts: Leistungen
 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Die Auswertung erfolgt nicht sofort. Deine Aktivitäten werden beim nächsten Import (alle 5 Minuten) auf dieses Segment geprüft.'
 Elevation: Höhenmeter
 'Enable AI integration': 'KI-Integration aktivieren'
@@ -196,7 +196,7 @@ Endpoint: Endpunkt
 'Enter your username': 'Gib deinen Benutzernamen ein'
 Every: Alle
 'Exclude from': 'Ausschließen von'
-'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Excluded activities are left out of these statistics, but still show up everywhere else.'
+'Excluded activities are left out of these statistics, but still show up everywhere else.': 'Ausgeschlossene Aktivitäten werden in diesen Statistiken nicht berücksichtigt, aber überall sonst weiterhin angezeigt.'
 'Excluded from': 'Ausgeschlossen von'
 FTP: FTP
 'FTP history (cycling)': 'FTP-Verlauf (Radfahren)'
@@ -227,7 +227,7 @@ General: Allgemein
 'Go to last page': 'Zur letzten Seite'
 'Go to next page': 'Zur nächsten Seite'
 'Go to previous page': 'Zur vorherigen Seite'
-'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
+'Group activities into trips and events, and they will appear here.': 'Gruppiere Aktivitäten zu Touren und Veranstaltungen, dann werden sie hier angezeigt.'
 'Group activity': Gruppenaktivität
 Heatmap: Heatmap
 'Hide photos for sport types': 'Fotos für Sportarten ausblenden'
@@ -251,7 +251,7 @@ Import: Import
 'Import segment details': 'Segmentdetails importieren'
 'Import segment details so segment maps can be displayed. This needs an extra Strava API call per segment and increases import time significantly.': 'Segmentdetails importieren, damit Segmentkarten angezeigt werden können. Dies erfordert einen zusätzlichen Strava-API-Aufruf pro Segment und erhöht die Importzeit erheblich.'
 'Import source': Importquelle
-'Import your activities first, then group them into collections.': 'Import your activities first, then group them into collections.'
+'Import your activities first, then group them into collections.': 'Importiere zuerst deine Aktivitäten und gruppiere sie anschließend in Sammlungen.'
 'Imported files will appear here once you upload them.': 'Importierte Dateien werden hier angezeigt, sobald du sie hochlädst.'
 'Imported from Strava': 'Von Strava importiert'
 'Imports new Strava activities.': 'Importiert neue Strava-Aktivitäten'
@@ -264,8 +264,8 @@ Integrations: Integrationen
 'Intro text': Einleitungstext
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
 'Issuer URL': 'Issuer URL'
-'It will not be suggested again. Its activities are not deleted.': 'It will not be suggested again. Its activities are not deleted.'
-'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
+'It will not be suggested again. Its activities are not deleted.': 'Es wird nicht erneut vorgeschlagen. Die zugehörigen Aktivitäten werden nicht gelöscht.'
+'Its activities are not deleted. This action cannot be undone.': 'Die zugehörigen Aktivitäten werden nicht gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.'
 Label: Bezeichnung
 'Last name': Nachname
 Latitude: Breitengrad
@@ -276,15 +276,15 @@ Latitude: Breitengrad
 'Lets an AI assistant such as Claude or Cursor read your data through the MCP server. The key grants read access only, it cannot change anything.': 'Mit diesem Schlüssel kann ein KI-Assistent über den MCP-Server deine Aktivitäten lesen, aber nicht verändern. Bewahre ihn sicher auf und behandle ihn wie ein Passwort.'
 'Lets an external client access the API over HTTP. The key is the only thing guarding the API, so treat it like a password.': 'Mit diesem Schlüssel kann ein externer Client über HTTP auf die API zugreifen. Er ist der einzige Schutz für den API\-Zugriff. Bewahre ihn daher sicher auf und behandle ihn wie ein Passwort.'
 'Lets you log in to the admin panel through your own identity provider, next to the admin username and password.': 'Ermöglicht die Anmeldung im Admin-Panel über einen eigenen Identitätsanbieter, neben dem Administrator-Benutzernamen und Passwort.'
-'Loading the route...': 'Loading the route...'
+'Loading the route...': 'Route wird geladen...'
 'Local backup': 'Local backup'
 Locale: Sprache
 Log: Protokoll
 'Log maintenance': 'Wartung protokollieren'
 'Long date format': 'langes Datumsformat'
 Longitude: Längengrad
-'MCP access': 'MCP access'
-'MCP key': 'MCP key'
+'MCP access': 'MCP-Zugriff'
+'MCP key': 'MCP-Schlüssel'
 'Maintenance log': Wartungsprotokoll
 'Maintenance logs will appear here once maintenance has been registered.': 'Wartungsprotokolle werden hier angezeigt, sobald eine Wartung erfasst wurde.'
 'Maintenance tasks': Wartungsaufgaben
@@ -314,12 +314,12 @@ Monday: Montag
 'Most recent activities (cards)': 'Neueste Aktivitäten (Karten)'
 'Most recent activities (list)': 'Neueste Aktivitäten (Liste)'
 'Moving time': Bewegungszeit
-'No activities added yet.': 'No activities added yet.'
+'No activities added yet.': 'Noch keine Aktivitäten hinzugefügt.'
 'No activities imported yet.': 'Noch keine Aktivitäten importiert.'
 'No activities match the current filters.': 'Keine Aktivitäten entsprechen den aktuellen Filtern.'
 'No activity found for that ID.': 'Keine Aktivität für diese ID gefunden.'
 'No automation rules yet.': 'Keine Automatisierungsregel bisher.'
-'No collections added yet.': 'No collections added yet.'
+'No collections added yet.': 'Noch keine Sammlungen hinzugefügt.'
 'No components yet.': 'Noch keine Komponenten vorhanden'
 'No file imports match the current filters.': 'Keine Dateiimporte entsprechen den aktuellen Filtern.'
 'No files imported yet.': 'Noch keine Dateien importiert'
@@ -331,7 +331,7 @@ Monday: Montag
 'No segments added yet.': 'Noch keine Segmente hinzugefügt.'
 'No segments match the current filters.': 'Keine Segmente entsprechen den aktuellen Filtern.'
 'No sport types selected': 'Keine Sportarten ausgewählt'
-'No suggestions found.': 'No suggestions found.'
+'No suggestions found.': 'Keine Vorschläge gefunden.'
 'No unit': 'keine Einheit'
 'Normal date format': 'Normales Datumsformat'
 'Not configured, API access is disabled': 'Nicht konfiguriert. Der API-Zugriff ist deaktiviert.'
@@ -372,7 +372,7 @@ Password: Passwort
 'Pick a device you already recorded with, or type a new name.': 'Wähle ein Gerät, mit dem du bereits aufgezeichnet hast, oder gib einen neuen Namen ein.'
 'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf der Strecke.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
-Places: Places
+Places: Orte
 'Polyline color': Routenfarbe
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Bevorzugst du einen eigenen KI-Client, wie z. B. Claude oder Cursor? Verbinde ihn stattdessen mit dem MCP-Server unter {linkOpen}Security{linkClose}.'
 'Preview selection': Vorschaubereich
@@ -388,7 +388,7 @@ Radius: Radius
 'Recreate your containers': 'Container neu erstellen'
 'Redirect URI': 'Redirect URI'
 'Register maintenance': 'Wartung erfassen'
-'Register this URL as the redirect URI with your identity provider.': 'Register this URL as the redirect URI with your identity provider.'
+'Register this URL as the redirect URI with your identity provider.': 'Registriere diese URL bei deinem Identitätsanbieter als Redirect-URI.'
 'Remember me for 7 days': 'Für 7 Tage angemeldet bleiben'
 Remove: Entfernen
 'Remove Eddington': 'Eddington entfernen'
@@ -424,13 +424,13 @@ Rules: Regeln
 'Rules to apply': 'Anzuwendende Regeln'
 Saturday: Samstag
 Save: Speichern
-'Save and add activities': 'Save and add activities'
+'Save and add activities': 'Speichern und Aktivitäten hinzufügen'
 'Save settings': 'Einstellungen speichern'
 Saved: gespeichert
 Saving...: 'Wird gespeichert...'
 'Scheduled actions': 'geplante Aktionen'
 'Scheduled actions the daemon runs at regular intervals.': 'Geplante Aktionen, die der Daemon in regelmäßigen Abständen ausführt.'
-'Search and add a single activity to the collection.': 'Search and add a single activity to the collection.'
+'Search and add a single activity to the collection.': 'Suche eine einzelne Aktivität und füge sie der Sammlung hinzu.'
 'Search by name, date or activity ID': 'Nach Name, Datum oder Aktivitäts-ID suchen'
 Seconds: Sekunden
 Security: Sicherheit
@@ -472,10 +472,10 @@ Settings: Einstellungen
 'Show options': 'Optionen anzeigen'
 'Show password': 'Passwort anzeigen'
 'Showing {first} - {last} of {total}': 'Zeige {first} - {last} von {total}'
-"Shows a map of the collection's routes on the overview instead of the cover image.": "Shows a map of the collection's routes on the overview instead of the cover image."
+"Shows a map of the collection's routes on the overview instead of the cover image.": "Zeigt in der Übersicht eine Karte mit den Routen der Sammlung anstelle des Titelbilds."
 'Sign in': Anmelden
 'Sign in to the admin panel': 'Im Adminbereich anmelden'
-'Sign in with single sign-on': 'Sign in with single sign-on'
+'Sign in with single sign-on': 'Mit Single Sign-on anmelden'
 'Sign out': Abmelden
 'Signing in...': 'Anmeldung läuft...'
 'Single sign-on': 'Single sign-on'
@@ -490,7 +490,7 @@ Source: Quelle
 'Sport types to include': 'Einzubeziehende Sportarten'
 'Start date': Startdatum
 'Start date and time': 'Startdatum und -uhrzeit'
-'Start hour of each period': 'Start hour of each period'
+'Start hour of each period': 'Startzeit jedes Zeitraums'
 'Starts near': 'Beginnt in der Nähe'
 'Stop processing further rules when this rule matches': 'Weitere Regeln ignorieren, wenn diese Regel zutrifft'
 'Stops after match': 'Stoppt nach Treffer'
@@ -506,8 +506,8 @@ Source: Quelle
 Subtitle: Untertitel
 Success: Erfolgreich
 Suggested: Vorgeschlagen
-'Suggested trips': 'Suggested trips'
-"Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
+'Suggested trips': 'Vorgeschlagene Touren'
+"Suggestions based on your activities that aren't in a collection yet.": "Vorschläge basierend auf Aktivitäten, die noch keiner Sammlung zugeordnet sind."
 Sunday: Sonntag
 'Supported types': 'Unterstützte Typen'
 System: System
@@ -552,7 +552,7 @@ Tasks: Aufgaben
 'The start date, optionally with a custom PHP date format': 'Das Startdatum, optional mit einem benutzerdefinierten PHP-Datumsformat'
 'The tile layer URLs used to render the maps. Add more than one to stack them, for example to overlay place names on top of a satellite layer.': 'Die Kachelebenen-URLs (Tile Layers), die zum Rendern der Karten verwendet werden. Füge mehrere hinzu, um sie zu stapeln, z.B. um Ortsnamen über eine Satellitenebene zu legen.'
 'The total distance ridden with the gear': 'Die mit der Ausrüstung zurückgelegte Gesamtstrecke'
-'The type decides how the collection page is laid out.': 'The type decides how the collection page is laid out.'
+'The type decides how the collection page is laid out.': 'Der Typ bestimmt, wie die Sammlungsseite dargestellt wird.'
 'The unit system used to render distances, elevations, temperatures, etc.': 'Das Einheitensystem für Entfernungen, Höhen, Temperaturen usw.'
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'Der sichtbare Bereich, in dem sich die Heatmap öffnet. Sowohl das Zentrum als auch die Zoomstufe werden benötigt. Lass sie leer, um automatisch auf deinen aktivsten Bereich zu zoomen.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'Die Breite dieses Widgets muss auf der Dashboard-Einstellungsseite konfiguriert werden. Es wird sich nicht automatisch je nach Anzahl der konfigurierten Aktivitäten skalieren.'
@@ -560,8 +560,8 @@ Tasks: Aufgaben
 'Then do this': 'Dann ausführen'
 'These rules will be applied to your existing activities on the next import cycle.': 'Diese Regeln werden beim nächsten Importvorgang auf Ihre bestehenden Aktivitäten angewendet.'
 'This action cannot be undone.': 'Diese Aktion kann nicht rückgängig gemacht werden.'
-'This activity has no GPS data.': 'This activity has no GPS data.'
-'This collection has no activities yet.': 'This collection has no activities yet.'
+'This activity has no GPS data.': 'Diese Aktivität enthält keine GPS-Daten.'
+'This collection has no activities yet.': 'Diese Sammlung enthält noch keine Aktivitäten.'
 'This component is fitted to multiple gears, pick the one you serviced.': 'Diese Komponente ist an mehreren Ausrüstungen montiert. Wähle die aus, die du gewartet hast.'
 'This only removes the import record, the imported activity is kept.': 'Dadurch wird lediglich der Importdatensatz entfernt, die importierte Aktivität bleibt erhalten.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Diese Seite zeigt jedes Mal einen anderen Schlüssel an, nur der in deiner Umgebungsdatei wird angewendet.'
@@ -583,7 +583,7 @@ Tuesday: Dienstag
 'Turns on the AI-powered workout assistant.': 'KI-gestützten Trainingsassistenten aktivieren.'
 Type: Typ
 URL: URL
-'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
+'Unchecked activities are removed from the collection when you save.': 'Nicht ausgewählte Aktivitäten werden beim Speichern aus der Sammlung entfernt.'
 Unit: Einheit
 'Unit system': Einheitensystem
 'Units & language': 'Einheiten & Sprache'
@@ -596,7 +596,7 @@ Until: Bis
 Uploaded: Hochgeladen
 Uploading...: 'Wird hochgeladen...'
 'Use caution when enabling this if your app is publicly accessible.': 'Sei vorsichtig, wenn du diese Funktion aktivierst, falls die App öffentlich zugänglich ist.'
-'Use the route map as cover': 'Use the route map as cover'
+'Use the route map as cover': 'Routenkarte als Titelbild verwenden'
 'Used to calculate the training load of this activity': 'Wird verwendet, um die Trainingsbelastung dieser Aktivität zu berechnen.'
 Username: Benutzername
 'Verify token': 'Token verifizieren'
@@ -616,7 +616,7 @@ Weigh-ins: Gewichtseinträge
 'When enabled, activities without a route, like indoor rides, are left out.': 'Wenn aktiviert, werden Aktivitäten ohne Route, wie Rollentraining, ausgeschlossen'
 "When enabled, gear marked as retired is skipped. Its components won't increase usage and no maintenance is tracked for them.": 'Wenn aktiviert, wird als ausgemustert markierte Ausrüstung übersprungen. Ihre Komponenten erhöhen die Nutzung nicht und es wird keine Wartung dafür verfolgt.'
 'When set, requests to the admin panel from any other IP address are rejected.': 'Wenn diese Einstellung aktiviert ist, werden Anfragen an den Adminbereich von allen anderen IP-Adressen abgewiesen.'
-"Without a cover image, the first photo of the collection's activities is used.": "Without a cover image, the first photo of the collection's activities is used."
+"Without a cover image, the first photo of the collection's activities is used.": "Ohne Titelbild wird das erste Foto der Aktivitäten in der Sammlung verwendet."
 'Workout type': Trainingstyp
 'You can add it back to your dashboard again later.': 'Du kannst es später wieder zu deinem Dashboard hinzufügen.'
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'Du kannst Dateien auch direkt in den Ordner {watchFolder} kopieren oder {linkOpen}manuell eine Aktivität hinzufügen{linkClose}.'
@@ -666,7 +666,7 @@ minutes: Minuten
 'on': am
 'on or after': 'am oder danach'
 'on or before': 'am oder davor'
-or: or
+or: oder
 'outside radius': 'außerhalb des Radius'
 then: dann
 'within radius': 'innerhalb des Radius'
@@ -674,8 +674,8 @@ then: dann
 '{count} files uploaded': '{count} Dateien hochgeladen'
 '{count} images selected': '{count} Bilder ausgewählt'
 '{count} rules apply': '{count} Regeln treffen zu'
-'{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.'
-'{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
+'{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} ist gesetzt, aber der Schlüssel wurde nicht von dieser App generiert. Daher bleibt der API-Zugriff deaktiviert. Generiere einen neuen Schlüssel und ersetze ihn.'
+'{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} ist gesetzt, aber der Schlüssel wurde nicht von dieser App generiert. Daher bleibt der MCP-Server deaktiviert. Generiere einen neuen Schlüssel und ersetze ihn.'
 '{label} (copy)': '{label} (Kopie)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} kann nicht gelöscht werden, da es noch mit Aktivitäten, Wartung oder Automatisierungsregeln verknüpft ist.'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr}-Benachrichtigungsdienst-URLs (z. B. discord://token@id, telegram://token@telegram/?channels=channel). Leer lassen, um Benachrichtigungen vollständig zu deaktivieren.'
