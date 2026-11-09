@@ -25,6 +25,7 @@ class CronActionIdTest extends TestCase
         yield [CronActionId::RUN_STRAVA_IMPORT, 'bin/console app:import:strava'];
         yield [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, 'bin/console app:notification:gear-maintenance'];
         yield [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, 'bin/console app:notification:app-update-available'];
+        yield [CronActionId::BACKUP, 'bin/console app:backup:create'];
     }
 
     #[DataProvider('provideDefaultCronExpressions')]
@@ -41,6 +42,7 @@ class CronActionIdTest extends TestCase
         yield [CronActionId::RUN_STRAVA_IMPORT, '30 2 * * *'];
         yield [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, '0 4 * * *'];
         yield [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, '0 4 * * *'];
+        yield [CronActionId::BACKUP, '0 3 * * *'];
     }
 
     #[DataProvider('provideImportModeSupport')]
@@ -60,5 +62,7 @@ class CronActionIdTest extends TestCase
         yield 'gear maintenance supported in strava api mode' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, ImportMode::STRAVA_API, true];
         yield 'app update supported in file mode' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, ImportMode::FILES, true];
         yield 'app update supported in strava api mode' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, ImportMode::STRAVA_API, true];
+        yield 'backup supported in file mode' => [CronActionId::BACKUP, ImportMode::FILES, true];
+        yield 'backup supported in strava api mode' => [CronActionId::BACKUP, ImportMode::STRAVA_API, true];
     }
 }
