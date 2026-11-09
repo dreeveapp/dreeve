@@ -58,7 +58,7 @@ final class RestoreBackupConsoleCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($input->isInteractive() && !$output->confirm(
+        if (!$output->confirm(
             question: 'Restoring overwrites the current database and storage files. Make sure the app and the daemon are stopped. Continue?',
             default: false,
         )) {

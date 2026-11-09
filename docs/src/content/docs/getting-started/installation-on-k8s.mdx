@@ -345,6 +345,6 @@ the running pod.
   both containers pick up the restored database:
 
   ```bash
-  kubectl -n dreeve exec deploy/dreeve -c app -- bin/console app:backup:restore dreeve-2026-01-01-030000.tar.zst --no-interaction
+  kubectl -n dreeve exec -it deploy/dreeve -c app -- bin/console app:backup:restore dreeve-2026-01-01-030000.tar.zst
   kubectl -n dreeve rollout restart deploy/dreeve
   ```
