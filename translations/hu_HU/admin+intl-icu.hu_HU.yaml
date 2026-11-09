@@ -7,6 +7,7 @@ AM/PM: AM/PM
 'API key': API-kulcs
 Access: Access
 Actions: Actions
+'Actions that run automatically at regular intervals.': 'Actions that run automatically at regular intervals.'
 Active: Aktív
 'Activities scanned': 'Átvizsgált tevékenységek'
 'Activities to skip during import': 'Importáláskor kihagyandó tevékenységek'
@@ -137,7 +138,6 @@ Configured: Beállítva
 'Cron expression': 'Cron kifejezés'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": 'Cron kifejezés, amely megadja, mikor fusson a művelet, pl. a „0 14 * * *" minden nap 14:00-kor fut. Segítségért lásd: crontab.guru.'
 Custom: Custom
-Daemon: Daemon
 'Dashboard layout': 'Dashboard elrendezés'
 'Date & time': 'Date & time'
 'Date range': 'Date range'
@@ -189,7 +189,7 @@ Efforts: Efforts
 Elevation: Szintemelkedés
 'Enable AI integration': 'AI-integráció engedélyezése'
 'Enable Strava webhooks': 'Strava webhookok engedélyezése'
-'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
+'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
 Enabled: Engedélyezve
 Endpoint: Végpont
 'Ends near': 'A közelében ér véget'
@@ -227,11 +227,11 @@ Gender: Nem
 General: Általános
 'Generate an API key': 'API-kulcs generálása'
 'Generate an MCP key': 'Generate an MCP key'
-'Go to daemon settings': 'Go to daemon settings'
 'Go to first page': 'Ugrás az első oldalra'
 'Go to last page': 'Ugrás az utolsó oldalra'
 'Go to next page': 'Ugrás a következő oldalra'
 'Go to previous page': 'Ugrás az előző oldalra'
+'Go to scheduled actions': 'Go to scheduled actions'
 'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': 'Csoportos tevékenység'
 Heatmap: Hőtérkép
@@ -435,7 +435,6 @@ Save: Mentés
 Saved: Mentve
 Saving...: Mentés...
 'Scheduled actions': 'Scheduled actions'
-'Scheduled actions the daemon runs at regular intervals.': 'Ütemezett műveletek, amelyeket a daemon rendszeres időközönként futtat.'
 'Search and add a single activity to the collection.': 'Search and add a single activity to the collection.'
 'Search by name, date or activity ID': 'Keresés név, dátum vagy tevékenység-azonosító alapján'
 Seconds: Másodperc

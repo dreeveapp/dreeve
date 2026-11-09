@@ -29,12 +29,12 @@ class DaemonSettingsRequestHandlerTest extends AdminWebTestCase
             $crawler->filter('form[data-dispatch-command="update-settings"]')->text(),
         );
 
-        // The settings navigation, with "Daemon" active.
+        // The settings navigation, with "Scheduled actions" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');
         $this->assertCount(1, $selectedLink);
-        $this->assertStringContainsString('Daemon', $selectedLink->text());
+        $this->assertStringContainsString('Scheduled actions', $selectedLink->text());
     }
 
     public function testItHidesTheStravaImportActionInFileImportMode(): void
