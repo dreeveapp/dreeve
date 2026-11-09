@@ -120,33 +120,40 @@ Your `docker-compose.yml` and `.env` are configuration, not data, but keeping a 
 <details>
 <summary>How do I make a backup?</summary>
 
-Stop the containers, then copy the whole directory:
+Run the backup command:
 
 ```bash
-> docker compose down
-> tar -czf dreeve-backup-$(date +%F).tar.gz storage/
-> docker compose up -d
+> docker compose exec app bin/console app:backup:create
 ```
+
+It writes one `dreeve-<date>-<time>.tar.zst` file to the `backups/` directory, holding a snapshot of the database
+and the files in `storage/` (logs excluded). It keeps the 7 most recent backups and deletes older ones.
+
+To make a backup every night, enable the **Local backup** task in **Admin panel → Settings → Daemon**.
+
+**Mount the backups directory.** Backups are written to `/var/www/backups` inside the container.
+Add `./backups:/var/www/backups` to the `app` and `daemon` services, see [Installation](/getting-started/installation/#docker-composeyml).
 
 </details>
 
 <details>
 <summary>How do I restore a backup?</summary>
 
+Stop Dreeve, restore the backup in a one-off container and start it again:
+
 ```bash
-# Stop the containers
-> docker compose down
-
-# Replace the storage directory with the one from your backup
-> rm -rf storage/
-> tar -xzf dreeve-backup-2026-01-01.tar.gz
-
-# Start again
+> docker compose stop app daemon
+> docker compose run --rm app bin/console app:backup:restore dreeve-2026-01-01-030000.tar.zst
 > docker compose up -d
 ```
 
-The app reads straight from the restored database, so there is nothing else to run. You do **not** need to
-re-import your activities.
+Pass the file name of a backup in the `backups/` directory. The command asks for confirmation first
+
+The restore replaces the database and overwrites the files in `storage/` with the ones from the backup.
+Logs aren't part of a backup and aren't touched.
+
+To move Dreeve to a new server, install it there first and start it once with `docker compose up -d`. Then copy
+the backup into its `backups/` directory and follow the steps above.
 
 </details>
 

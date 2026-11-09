@@ -41,6 +41,8 @@ services:
       - ./storage/files:/var/www/storage/files
       # Drop your .fit/.tcx/.gpx files in ./watch to have them imported.
       - ./watch:/var/www/watch
+      # Local backups. Preferably point this at another disk or a NAS.
+      - ./backups:/var/www/backups
     env_file: ./.env
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:2019/metrics"]
@@ -60,6 +62,7 @@ services:
       - ./storage/database:/var/www/storage/database
       - ./storage/files:/var/www/storage/files
       - ./watch:/var/www/watch
+      - ./backups:/var/www/backups
     env_file: ./.env
     healthcheck:
       test: [ "CMD", "sh", "-c", "test -f /var/www/storage/database/dreeve.db && echo 'ok' || exit 1" ]
@@ -74,7 +77,7 @@ networks:
 
 :::note[Important]
 Both containers must mount the **same** volumes. They share one database, one render cache
-(`./build`) and one watch folder.
+(`./build`), one watch folder and one backups folder.
 :::
 
 ## .env
