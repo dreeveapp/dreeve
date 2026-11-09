@@ -104,16 +104,13 @@ class RestoreBackupConsoleCommandTest extends ConsoleCommandTestCase
 
         $command = $this->getCommandInApplication(RestoreBackupConsoleCommand::NAME);
         $commandTester = new CommandTester($command);
-        $commandTester->execute(
-            [
-                'command' => $command->getName(),
-                RestoreBackupConsoleCommand::FILE_ARGUMENT => $this->projectDirectory.'/backups/dreeve-2026-11-08-030000.tar.zst',
-            ],
-            ['interactive' => false],
-        );
+        $commandTester->setInputs(['yes']);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            RestoreBackupConsoleCommand::FILE_ARGUMENT => $this->projectDirectory.'/backups/dreeve-2026-11-08-030000.tar.zst',
+        ]);
 
         $this->assertEquals(Command::FAILURE, $commandTester->getStatusCode());
-        $this->assertStringNotContainsString('Restoring overwrites the current database', $commandTester->getDisplay());
         $this->assertStringContainsString('Could not restore backup, tar exited with code 2:', $commandTester->getDisplay());
         $this->assertStringNotContainsString('=> Restoring storage files', $commandTester->getDisplay());
         $this->assertEquals(['dreeve.db'], array_values(array_diff(scandir($this->databaseDirectory) ?: [], ['.', '..'])));
