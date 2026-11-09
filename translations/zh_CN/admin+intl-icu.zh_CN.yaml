@@ -93,6 +93,7 @@ Athlete: Athlete
 'Back to app': 'Back to app'
 'Back to the admin panel': 'Back to the admin panel'
 Backup: Backup
+Backups: Backups
 'Base URI': 'Base URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.'
 Birthday: Birthday
@@ -133,6 +134,7 @@ Configured: Configured
 'Creates a backup of the database and storage files in the backups folder.': 'Creates a backup of the database and storage files in the backups folder.'
 'Cover image': 'Cover image'
 'Create collection': 'Create collection'
+'Created on': 'Created on'
 'Cron expression': 'Cron expression'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help."
 Custom: Custom
@@ -165,6 +167,7 @@ Display: Display
 Distance: Distance
 'Do not download activity photos': 'Do not download activity photos'
 Done: Done
+'Download backup': 'Download backup'
 'Download latest backup': 'Download latest backup'
 'Download original file': 'Download original file'
 'Download the latest backup to keep a copy somewhere else or to move your data to another server.': 'Download the latest backup to keep a copy somewhere else or to move your data to another server.'
@@ -189,6 +192,7 @@ Efforts: Efforts
 Elevation: Elevation
 'Enable AI integration': 'Enable AI integration'
 'Enable Strava webhooks': 'Enable Strava webhooks'
+'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
 Enabled: Enabled
 Endpoint: Endpoint
 'Ends near': 'Ends near'
@@ -226,6 +230,7 @@ Gender: Gender
 General: General
 'Generate an API key': 'Generate an API key'
 'Generate an MCP key': 'Generate an MCP key'
+'Go to daemon settings': 'Go to daemon settings'
 'Go to first page': 'Go to first page'
 'Go to last page': 'Go to last page'
 'Go to next page': 'Go to next page'
@@ -323,6 +328,7 @@ Monday: Monday
 'No activities match the current filters.': 'No activities match the current filters.'
 'No activity found for that ID.': 'No activity found for that ID.'
 'No automation rules yet.': 'No automation rules yet.'
+'No backups yet.': 'No backups yet.'
 'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'No components yet.'
 'No file imports match the current filters.': 'No file imports match the current filters.'
@@ -483,6 +489,7 @@ Settings: Settings
 'Sign out': 'Sign out'
 'Signing in...': 'Signing in...'
 'Single sign-on': 'Single sign-on'
+Size: Size
 'Skip activities recorded before': 'Skip activities recorded before'
 Skipped: Skipped
 'Skipped (an earlier rule stopped processing).': 'Skipped (an earlier rule stopped processing).'

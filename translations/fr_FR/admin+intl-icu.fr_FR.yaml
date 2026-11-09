@@ -93,6 +93,7 @@ Athlete: Athlete
 'Back to app': "Retour à l'application"
 'Back to the admin panel': 'Retour au panneau admin'
 Backup: Backup
+Backups: Backups
 'Base URI': 'URI de base'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': "Avant de pouvoir utiliser l'application, nous avons besoin de quelques informations sur vous. Elles servent à calculer vos zones de fréquence cardiaque et votre charge d'entraînement. Vous pourrez affiner tous les autres paramètres plus tard."
 Birthday: Anniversaire
@@ -133,6 +134,7 @@ Configured: Configuré
 'Creates a backup of the database and storage files in the backups folder.': 'Creates a backup of the database and storage files in the backups folder.'
 'Cover image': 'Cover image'
 'Create collection': 'Create collection'
+'Created on': 'Created on'
 'Cron expression': 'Expression Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expression Cron définissant comment l'action doit s'executer, par exemple '0 14 * * *' s'execute chaque jour a 14h00. Se reporter à crontab.guru pour de l'aide."
 Custom: Custom
@@ -165,6 +167,7 @@ Display: Display
 Distance: Distance
 'Do not download activity photos': 'Ne pas télécharger les photos des activités'
 Done: Fait
+'Download backup': 'Download backup'
 'Download latest backup': 'Download latest backup'
 'Download original file': 'Télécharger le fichier original'
 'Download the latest backup to keep a copy somewhere else or to move your data to another server.': 'Download the latest backup to keep a copy somewhere else or to move your data to another server.'
@@ -189,6 +192,7 @@ Efforts: Efforts
 Elevation: Dénivelé
 'Enable AI integration': "Activer l'intégration IA"
 'Enable Strava webhooks': 'Activer les webhooks Strava'
+'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
 Enabled: Activé
 Endpoint: 'Point de passage'
 'Ends near': 'Se termine près de'
@@ -226,6 +230,7 @@ Gender: Sexe
 General: Géneral
 'Generate an API key': 'Générer une clef API'
 'Generate an MCP key': 'Generate an MCP key'
+'Go to daemon settings': 'Go to daemon settings'
 'Go to first page': 'Aller à la première page'
 'Go to last page': 'Aller à la dernière page'
 'Go to next page': 'Aller à la page suivante'
@@ -323,6 +328,7 @@ Monday: Lundi
 'No activities match the current filters.': 'Aucune activité ne correspond aux filtres actuels.'
 'No activity found for that ID.': 'Aucune activité trouvée pour cet ID.'
 'No automation rules yet.': "Aucune règle d'automatisation pour le moment."
+'No backups yet.': 'No backups yet.'
 'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Aucun composant pour le moment.'
 'No file imports match the current filters.': 'Aucun import de fichier ne correspond aux filtres actuels.'
@@ -483,6 +489,7 @@ Settings: Paramètres
 'Sign out': Déconnexion
 'Signing in...': 'Connexion en cours...'
 'Single sign-on': 'Single sign-on'
+Size: Size
 'Skip activities recorded before': 'Ignorer les activités enregistrées avant'
 Skipped: Ignoré
 'Skipped (an earlier rule stopped processing).': 'Ignorée (une règle précédente a arrêté le traitement).'

@@ -93,6 +93,7 @@ Athlete: Athlete
 'Back to app': 'Terug naar de app'
 'Back to the admin panel': 'Terug naar het beheerpaneel'
 Backup: Backup
+Backups: Backups
 'Base URI': Basis-URI
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Voor je de app kan gebruiken, moeten we een paar dingen over je weten. Die worden gebruikt om je hartslagzones en trainingsbelasting te berekenen. Alle andere instellingen kan je later nog verfijnen.'
 Birthday: Geboortedatum
@@ -133,6 +134,7 @@ Configured: Geconfigureerd
 'Creates a backup of the database and storage files in the backups folder.': 'Creates a backup of the database and storage files in the backups folder.'
 'Cover image': 'Cover image'
 'Create collection': 'Create collection'
+'Created on': 'Created on'
 'Cron expression': Cron-expressie
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-expressie die bepaalt wanneer de actie uitgevoerd wordt, bv. '0 14 * * *' wordt elke dag om 14:00 uitgevoerd. Zie crontab.guru voor hulp."
 Custom: Custom
@@ -165,6 +167,7 @@ Display: Display
 Distance: Afstand
 'Do not download activity photos': "Geen activiteitsfoto's downloaden"
 Done: Klaar
+'Download backup': 'Download backup'
 'Download latest backup': 'Download latest backup'
 'Download original file': 'Origineel bestand downloaden'
 'Download the latest backup to keep a copy somewhere else or to move your data to another server.': 'Download the latest backup to keep a copy somewhere else or to move your data to another server.'
@@ -189,6 +192,7 @@ Efforts: Efforts
 Elevation: Hoogte
 'Enable AI integration': 'AI-integratie inschakelen'
 'Enable Strava webhooks': 'Strava-webhooks inschakelen'
+'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
 Enabled: Ingeschakeld
 Endpoint: Endpoint
 'Ends near': 'Eindigt nabij'
@@ -226,6 +230,7 @@ Gender: Geslacht
 General: Algemeen
 'Generate an API key': 'Een API-sleutel genereren'
 'Generate an MCP key': 'Generate an MCP key'
+'Go to daemon settings': 'Go to daemon settings'
 'Go to first page': 'Naar eerste pagina'
 'Go to last page': 'Naar laatste pagina'
 'Go to next page': 'Naar volgende pagina'
@@ -323,6 +328,7 @@ Monday: Maandag
 'No activities match the current filters.': 'Geen activiteiten die overeenkomen met de huidige filters.'
 'No activity found for that ID.': 'Geen activiteit gevonden voor dat ID.'
 'No automation rules yet.': 'Nog geen automatiseringsregels.'
+'No backups yet.': 'No backups yet.'
 'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Nog geen onderdelen.'
 'No file imports match the current filters.': 'Geen bestandsimports die overeenkomen met de huidige filters.'
@@ -483,6 +489,7 @@ Settings: Instellingen
 'Sign out': Afmelden
 'Signing in...': 'Aan het aanmelden...'
 'Single sign-on': 'Single sign-on'
+Size: Size
 'Skip activities recorded before': 'Activiteiten overslaan die geregistreerd zijn voor'
 Skipped: Overgeslagen
 'Skipped (an earlier rule stopped processing).': 'Overgeslagen (een eerdere regel stopte de verwerking).'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Backup;
 
+use App\Infrastructure\Exception\EntityNotFound;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\Target;
@@ -37,6 +38,14 @@ final readonly class AvailableBackups
         }
 
         return $backups;
+    }
+
+    public function findByName(string $filename): Backup
+    {
+        return array_find(
+            $this->findAll(),
+            static fn (Backup $backup): bool => $backup->getFilename() === $filename,
+        ) ?? throw new EntityNotFound(sprintf('Backup "%s" not found', $filename));
     }
 
     public function findLatest(): ?Backup

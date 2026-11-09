@@ -93,6 +93,7 @@ Athlete: Athlete
 'Back to app': 'Vissza az alkalmazáshoz'
 'Back to the admin panel': 'Vissza az adminfelülethez'
 Backup: Backup
+Backups: Backups
 'Base URI': 'Alap URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Mielőtt használni tudnád az alkalmazást, néhány dolgot tudnunk kell rólad. Ezeket a pulzuszónáid és edzésterhelésed kiszámításához használjuk. A többi beállítást később finomhangolhatod.'
 Birthday: Születésnap
@@ -133,6 +134,7 @@ Configured: Beállítva
 'Creates a backup of the database and storage files in the backups folder.': 'Creates a backup of the database and storage files in the backups folder.'
 'Cover image': 'Cover image'
 'Create collection': 'Create collection'
+'Created on': 'Created on'
 'Cron expression': 'Cron kifejezés'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": 'Cron kifejezés, amely megadja, mikor fusson a művelet, pl. a „0 14 * * *" minden nap 14:00-kor fut. Segítségért lásd: crontab.guru.'
 Custom: Custom
@@ -165,6 +167,7 @@ Display: Display
 Distance: Távolság
 'Do not download activity photos': 'Do not download activity photos'
 Done: Kész
+'Download backup': 'Download backup'
 'Download latest backup': 'Download latest backup'
 'Download original file': 'Download original file'
 'Download the latest backup to keep a copy somewhere else or to move your data to another server.': 'Download the latest backup to keep a copy somewhere else or to move your data to another server.'
@@ -189,6 +192,7 @@ Efforts: Efforts
 Elevation: Szintemelkedés
 'Enable AI integration': 'AI-integráció engedélyezése'
 'Enable Strava webhooks': 'Strava webhookok engedélyezése'
+'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
 Enabled: Engedélyezve
 Endpoint: Végpont
 'Ends near': 'A közelében ér véget'
@@ -226,6 +230,7 @@ Gender: Nem
 General: Általános
 'Generate an API key': 'API-kulcs generálása'
 'Generate an MCP key': 'Generate an MCP key'
+'Go to daemon settings': 'Go to daemon settings'
 'Go to first page': 'Ugrás az első oldalra'
 'Go to last page': 'Ugrás az utolsó oldalra'
 'Go to next page': 'Ugrás a következő oldalra'
@@ -323,6 +328,7 @@ Monday: Hétfő
 'No activities match the current filters.': 'Egyetlen tevékenység sem felel meg a jelenlegi szűrőknek.'
 'No activity found for that ID.': 'Nem található tevékenység ehhez az azonosítóhoz.'
 'No automation rules yet.': 'Még nincsenek automatizálási szabályok.'
+'No backups yet.': 'No backups yet.'
 'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Még nincsenek komponensek.'
 'No file imports match the current filters.': 'Egyetlen fájlimport sem felel meg a jelenlegi szűrőknek.'
@@ -483,6 +489,7 @@ Settings: Beállítások
 'Sign out': Kijelentkezés
 'Signing in...': Bejelentkezés...
 'Single sign-on': 'Single sign-on'
+Size: Size
 'Skip activities recorded before': 'Az ezen dátum előtt rögzített tevékenységek kihagyása'
 Skipped: Kihagyva
 'Skipped (an earlier rule stopped processing).': 'Kihagyva (egy korábbi szabály leállította a feldolgozást).'
