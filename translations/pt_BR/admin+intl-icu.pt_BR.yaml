@@ -7,6 +7,7 @@ AM/PM: AM/PM
 'API key': 'Chave da API'
 Access: Access
 Actions: Ações
+'Actions that run automatically at regular intervals.': 'Actions that run automatically at regular intervals.'
 Active: Ativo
 'Activities scanned': 'Atividades analisadas'
 'Activities to skip during import': 'Atividades a ignorar durante a importação'
@@ -137,7 +138,6 @@ Configured: Configurado
 'Cron expression': 'Expressão Cron'
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Expressão Cron especificando quando a ação deve ser executada, ex. '0 14 * * *' executa todos os dias às 14:00. Consulte crontab.guru para obter ajuda."
 Custom: Personalizado
-Daemon: Daemon
 'Dashboard layout': 'Layout do painel'
 'Date & time': 'Date & time'
 'Date range': 'Date range'
@@ -189,7 +189,7 @@ Efforts: Esforços
 Elevation: Elevação
 'Enable AI integration': 'Ativar integração de IA'
 'Enable Strava webhooks': 'Ativar webhooks do Strava'
-'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup scheduled action in the daemon settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
+'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
 Enabled: Ativado
 Endpoint: Endpoint
 'Ends near': 'Termina perto de'
@@ -227,11 +227,11 @@ Gender: Gênero
 General: Geral
 'Generate an API key': 'Gerar uma chave da API'
 'Generate an MCP key': 'Generate an MCP key'
-'Go to daemon settings': 'Go to daemon settings'
 'Go to first page': 'Ir para a primeira página'
 'Go to last page': 'Ir para a última página'
 'Go to next page': 'Ir para a próxima página'
 'Go to previous page': 'Ir para a página anterior'
+'Go to scheduled actions': 'Go to scheduled actions'
 'Group activities into trips and events, and they will appear here.': 'Group activities into trips and events, and they will appear here.'
 'Group activity': 'Atividade em grupo'
 Heatmap: 'Mapa de calor'
@@ -435,7 +435,6 @@ Save: Salvar
 Saved: Salvo
 Saving...: Salvando...
 'Scheduled actions': 'Scheduled actions'
-'Scheduled actions the daemon runs at regular intervals.': 'Ações programadas que o daemon executa em intervalos regulares.'
 'Search and add a single activity to the collection.': 'Search and add a single activity to the collection.'
 'Search by name, date or activity ID': 'Buscar por nome, data ou ID da atividade'
 Seconds: Segundos

@@ -1,11 +1,11 @@
 {% extends "html/admin/page/settings/template.html.twig" %}
-{% set settingsTitle = "Daemon"|trans({}, 'admin') %}
+{% set settingsTitle = "Scheduled actions"|trans({}, 'admin') %}
 
 {% block sections %}
     {% set cron = settings.cron ?? {} %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {
         title: "Scheduled actions"|trans({}, 'admin'),
-        description: "Scheduled actions the daemon runs at regular intervals."|trans({}, 'admin'),
+        description: "Actions that run automatically at regular intervals."|trans({}, 'admin'),
     } %}
         {% block body %}
             <div class="alert alert--info" role="alert">
