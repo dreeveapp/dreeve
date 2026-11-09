@@ -16,6 +16,6 @@ When a new version of the app is released, pull the latest Docker image:
 ```
 
 :::caution
-* **Backup before updates**: always back up your Docker volumes, in particular `storage/database`, before upgrading.
+* **Backup before updates**: always run `app:backup:create` before upgrading. See [Backup & restore](/getting-started/backup-and-restore/).
 * **Check the release notes**: check the [changelog](https://github.com/dreeveapp/dreeve/releases) to see whether there are any breaking changes.
 :::
