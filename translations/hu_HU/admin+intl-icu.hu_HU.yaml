@@ -92,6 +92,7 @@ Athlete: Athlete
 'Average power': 'Átlagos teljesítmény'
 'Back to app': 'Vissza az alkalmazáshoz'
 'Back to the admin panel': 'Vissza az adminfelülethez'
+Backup: Backup
 'Base URI': 'Alap URI'
 'Before you can use the app, we need to know a few things about you. These are used to calculate your heart rate zones and training load. You can fine-tune all other settings later on.': 'Mielőtt használni tudnád az alkalmazást, néhány dolgot tudnunk kell rólad. Ezeket a pulzuszónáid és edzésterhelésed kiszámításához használjuk. A többi beállítást később finomhangolhatod.'
 Birthday: Születésnap
@@ -164,7 +165,9 @@ Display: Display
 Distance: Távolság
 'Do not download activity photos': 'Do not download activity photos'
 Done: Kész
+'Download latest backup': 'Download latest backup'
 'Download original file': 'Download original file'
+'Download the latest backup to keep a copy somewhere else or to move your data to another server.': 'Download the latest backup to keep a copy somewhere else or to move your data to another server.'
 'Drag the start and end markers along the route to select the segment.': 'Drag the start and end markers along the route to select the segment.'
 'Drag to reorder': 'Húzással átrendezhető'
 'Drag to set the order in which sport types are displayed throughout the app.': 'Húzással állítsd be, milyen sorrendben jelenjenek meg a sporttípusok az alkalmazásban.'
@@ -268,6 +271,7 @@ Integrations: Integrációk
 'Its activities are not deleted. This action cannot be undone.': 'Its activities are not deleted. This action cannot be undone.'
 Label: Címke
 'Last name': Vezetéknév
+'Latest backup': 'Latest backup'
 Latitude: Szélesség
 'Leave all unchecked to import every sport type. ⚠️ Restricting this after activities have been imported deletes activities of excluded sport types.': 'Hagyj mindent bejelöletlenül az összes sporttípus importálásához. ⚠️ Ennek korlátozása a tevékenységek importálása után törli a kizárt sporttípusú tevékenységeket.'
 'Leave all unchecked to import every visibility. ⚠️ Restricting this after activities have been imported deletes activities of excluded visibilities.': 'Hagyj mindent bejelöletlenül az összes láthatóság importálásához. ⚠️ Ennek korlátozása a tevékenységek importálása után törli a kizárt láthatóságú tevékenységeket.'
@@ -558,6 +562,7 @@ Tasks: Feladatok
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'Ennek a widgetnek a szélességét a dashboard beállításai oldalon kell megadni. Nem méreteződik automatikusan a beállított tevékenységek száma alapján.'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'Az edzéstípus a Stravában beállítva (Verseny, Edzés vagy Hosszú futás), a legtöbb tevékenységnél üres'
 'Then do this': 'Akkor tedd ezt'
+'There is no backup yet. Enable the local backup action above or create one by hand, as explained in {linkOpen}the documentation{linkClose}.': 'There is no backup yet. Enable the local backup action above or create one by hand, as explained in {linkOpen}the documentation{linkClose}.'
 'These rules will be applied to your existing activities on the next import cycle.': 'Ezek a szabályok a következő importálási ciklusban lesznek alkalmazva a meglévő tevékenységeidre.'
 'This action cannot be undone.': 'Ez a művelet nem vonható vissza.'
 'This activity has no GPS data.': 'This activity has no GPS data.'
