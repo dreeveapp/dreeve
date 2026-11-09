@@ -45,8 +45,13 @@ export default defineConfig({
 					customSets: [
 						{
 							label: 'Getting started',
-							description: 'installing, updating and migrating a Dreeve instance',
+							description: 'installing a Dreeve instance and migrating from v4',
 							paths: ['getting-started/**'],
+						},
+						{
+							label: 'Maintenance',
+							description: 'updating and backing up a Dreeve instance',
+							paths: ['maintenance/**'],
 						},
 						{
 							label: 'Importing activities',
@@ -103,9 +108,14 @@ export default defineConfig({
 										{ slug: 'getting-started/prerequisites', label: 'Prerequisites' },
 										{ slug: 'getting-started/installation', label: 'Installation' },
 										{ slug: 'getting-started/installation-on-k8s', label: 'Installation on Kubernetes' },
-										{ slug: 'getting-started/updates', label: 'Updates' },
-										{ slug: 'getting-started/backup-and-restore', label: 'Backup & restore' },
 										{ slug: 'getting-started/migrating-from-v4', label: 'Migrating from v4 to v5' },
+									],
+								},
+								{
+									label: 'Maintenance',
+									items: [
+										{ slug: 'maintenance/updates', label: 'Updates' },
+										{ slug: 'maintenance/backup-and-restore', label: 'Backup & restore' },
 									],
 								},
 								{
