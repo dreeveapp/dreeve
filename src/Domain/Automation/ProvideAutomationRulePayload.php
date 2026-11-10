@@ -8,7 +8,7 @@ use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\Condition\ConditionType;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 
-trait ParsesAutomationRulePayload
+trait ProvideAutomationRulePayload
 {
     /**
      * @param array<string, mixed> $payload

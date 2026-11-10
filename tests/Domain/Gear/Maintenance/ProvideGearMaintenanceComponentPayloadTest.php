@@ -18,9 +18,9 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class ParsesGearMaintenanceComponentPayloadTest extends TestCase
+class ProvideGearMaintenanceComponentPayloadTest extends TestCase
 {
-    private ParsesGearMaintenanceComponentPayloadStub $parser;
+    private ProvideGearMaintenanceComponentPayloadStub $parser;
 
     public function testParseLabel(): void
     {
@@ -353,6 +353,6 @@ class ParsesGearMaintenanceComponentPayloadTest extends TestCase
     {
         parent::setUp();
 
-        $this->parser = new ParsesGearMaintenanceComponentPayloadStub();
+        $this->parser = new ProvideGearMaintenanceComponentPayloadStub();
     }
 }

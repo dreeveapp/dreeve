@@ -6,7 +6,7 @@ namespace App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
-use App\Domain\Gear\Maintenance\ParsesGearMaintenanceComponentPayload;
+use App\Domain\Gear\Maintenance\ProvideGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
@@ -23,7 +23,7 @@ use Money\Money;
 final readonly class UpdateGearMaintenanceComponent extends DomainCommand implements DeserializableCommand
 {
     use ProvidesCommandName;
-    use ParsesGearMaintenanceComponentPayload;
+    use ProvideGearMaintenanceComponentPayload;
     use ProvideNotesFromPayload;
     use ProvidePurchasePriceFromPayload;
     use ProvideLocalImageFromDropZonePayload;

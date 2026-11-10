@@ -17,7 +17,7 @@ use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-trait ParsesGearMaintenanceComponentPayload
+trait ProvideGearMaintenanceComponentPayload
 {
     /**
      * @param array<string, mixed> $payload

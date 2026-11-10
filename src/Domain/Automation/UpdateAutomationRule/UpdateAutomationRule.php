@@ -7,7 +7,7 @@ namespace App\Domain\Automation\UpdateAutomationRule;
 use App\Domain\Automation\Action\ActionType;
 use App\Domain\Automation\AutomationRuleId;
 use App\Domain\Automation\Condition\ConditionType;
-use App\Domain\Automation\ParsesAutomationRulePayload;
+use App\Domain\Automation\ProvideAutomationRulePayload;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -16,7 +16,7 @@ use App\Infrastructure\CQRS\Command\DomainCommand;
 final readonly class UpdateAutomationRule extends DomainCommand implements DeserializableCommand
 {
     use ProvidesCommandName;
-    use ParsesAutomationRulePayload;
+    use ProvideAutomationRulePayload;
 
     /**
      * @param list<array{type: ConditionType, config: array<string, mixed>}> $conditions
