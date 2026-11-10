@@ -42,6 +42,7 @@ class ManageGearFormRequestHandlerTest extends AdminWebTestCase
                 ->withName('My bike')
                 ->withIsRetired(true)
                 ->withPurchasePrice(Money::EUR(150000))
+                ->withNotes('Size 56, bought second hand')
                 ->build()
         );
 
@@ -60,6 +61,7 @@ class ManageGearFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('1500.00', $form->filter('input[name="purchasePriceAmount"]')->attr('value'));
         $this->assertSame('EUR', $form->filter('select[name="purchasePriceCurrency"] option[selected]')->attr('value'));
         $this->assertSame('retired', $form->filter('select[name="status"] option[selected]')->attr('value'));
+        $this->assertSame('Size 56, bought second hand', $form->filter('textarea[name="notes"]')->text());
 
         $this->client->request('GET', '/admin/gear/'.GearId::fromUnprefixed('unknown').'/edit');
         $this->assertResponseStatusCodeSame(404);
