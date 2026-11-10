@@ -27,8 +27,8 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
 
     public function add(Gear $gear): void
     {
-        $sql = 'INSERT INTO Gear (gearId, createdOn, name, isRetired, `type`, localImagePath, purchasePriceAmount, purchasePriceCurrency)
-        VALUES (:gearId, :createdOn, :name, :isRetired, :type, :localImagePath, :purchasePriceAmount, :purchasePriceCurrency)';
+        $sql = 'INSERT INTO Gear (gearId, createdOn, name, isRetired, `type`, localImagePath, purchasePriceAmount, purchasePriceCurrency, notes)
+        VALUES (:gearId, :createdOn, :name, :isRetired, :type, :localImagePath, :purchasePriceAmount, :purchasePriceCurrency, :notes)';
 
         $purchasePrice = $gear->getPurchasePrice();
         $this->connection->executeStatement($sql, [
@@ -40,6 +40,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             'localImagePath' => $gear->getLocalImagePath(),
             'purchasePriceAmount' => $purchasePrice?->getAmount(),
             'purchasePriceCurrency' => $purchasePrice?->getCurrency()->getCode(),
+            'notes' => $gear->getNotes(),
         ]);
 
         $this->eventBus->publishEvents($gear->getRecordedEvents());
@@ -53,7 +54,8 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
                     `type` = :type,
                     localImagePath = :localImagePath,
                     purchasePriceAmount = :purchasePriceAmount,
-                    purchasePriceCurrency = :purchasePriceCurrency
+                    purchasePriceCurrency = :purchasePriceCurrency,
+                    notes = :notes
                     WHERE gearId = :gearId';
 
         $purchasePrice = $gear->getPurchasePrice();
@@ -65,6 +67,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             'localImagePath' => $gear->getLocalImagePath(),
             'purchasePriceAmount' => $purchasePrice?->getAmount(),
             'purchasePriceCurrency' => $purchasePrice?->getCurrency()->getCode(),
+            'notes' => $gear->getNotes(),
         ]);
 
         $this->eventBus->publishEvents($gear->getRecordedEvents());
@@ -205,6 +208,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             numberOfActivities: (int) ($result['numberOfActivities'] ?? 0),
             totalCalories: (int) ($result['totalCalories'] ?? 0),
             purchasePrice: $purchasePrice,
+            notes: $result['notes'] ?? null,
         );
 
         return $gear

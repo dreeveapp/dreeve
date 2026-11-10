@@ -35,6 +35,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $gear = GearBuilder::fromDefaults()
             ->withGearId(GearId::fromUnprefixed('1'))
             ->withDistanceInMeter(Meter::from(1230))
+            ->withNotes("Serial 123\nBought in Ghent")
             ->build();
         $this->gearRepository->add($gear);
 
@@ -69,6 +70,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
                 ->withElevation(Meter::from(200))
                 ->withNumberOfActivities(2)
                 ->withTotalCalories(1000)
+                ->withNotes("Serial 123\nBought in Ghent")
                 ->build()
                 ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE]))
                 ->withMainActivityType(ActivityType::RIDE),
@@ -134,6 +136,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     'localImagePath' => null,
                     'purchasePriceAmount' => null,
                     'purchasePriceCurrency' => null,
+                    'notes' => null,
                 ],
                 [
                     'gearId' => 'gear-2',
@@ -144,6 +147,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     'localImagePath' => null,
                     'purchasePriceAmount' => null,
                     'purchasePriceCurrency' => null,
+                    'notes' => null,
                 ],
             ],
             $this->getConnection()->executeQuery('SELECT * FROM Gear ORDER BY gearId')->fetchAllAssociative(),
@@ -161,6 +165,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $this->gearRepository->update(
             $gear->withName('Updated gear')
                 ->withIsRetired(true)
+                ->withNotes('Some notes')
         );
 
         $this->assertEquals(
@@ -174,6 +179,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     'localImagePath' => null,
                     'purchasePriceAmount' => 150000,
                     'purchasePriceCurrency' => 'EUR',
+                    'notes' => 'Some notes',
                 ],
             ],
             $this->getConnection()->executeQuery('SELECT * FROM Gear')->fetchAllAssociative(),

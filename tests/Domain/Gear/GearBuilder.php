@@ -26,6 +26,7 @@ final class GearBuilder
     private int $totalCalories = 0;
     private ?string $localImagePath = null;
     private ?Money $purchasePrice = null;
+    private ?string $notes = null;
 
     private function __construct()
     {
@@ -56,6 +57,7 @@ final class GearBuilder
             numberOfActivities: $this->numberOfActivities,
             totalCalories: $this->totalCalories,
             purchasePrice: $this->purchasePrice,
+            notes: $this->notes,
         );
     }
 
@@ -88,6 +90,13 @@ final class GearBuilder
     public function withPurchasePrice(?Money $purchasePrice): self
     {
         $this->purchasePrice = $purchasePrice;
+
+        return $this;
+    }
+
+    public function withNotes(?string $notes): self
+    {
+        $this->notes = $notes;
 
         return $this;
     }

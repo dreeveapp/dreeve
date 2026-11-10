@@ -105,6 +105,7 @@ final readonly class GearStatsRequestHandler
                 numberOfActivities: count($activitiesWithoutGear),
                 totalCalories: (int) $activitiesWithoutGear->sum(fn (Activity $activity): int => $activity->getCalories() ?? 0),
                 purchasePrice: null,
+                notes: null,
             ));
         }
 
