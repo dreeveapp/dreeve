@@ -48,6 +48,8 @@ final class Gear implements SupportsAITooling
         private readonly ?ActivityType $mainActivityType,
         #[ORM\Embedded(class: Money::class)]
         private readonly ?Money $purchasePrice,
+        #[ORM\Column(type: 'text', nullable: true)]
+        private readonly ?string $notes,
     ) {
     }
 
@@ -74,6 +76,7 @@ final class Gear implements SupportsAITooling
             activityTypes: ActivityTypes::empty(),
             mainActivityType: null,
             purchasePrice: null,
+            notes: null,
         );
         $gear->recordThat(new GearWasAdded());
 
@@ -93,6 +96,7 @@ final class Gear implements SupportsAITooling
         int $numberOfActivities,
         int $totalCalories,
         ?Money $purchasePrice,
+        ?string $notes,
     ): self {
         return new self(
             gearId: $gearId,
@@ -109,6 +113,7 @@ final class Gear implements SupportsAITooling
             activityTypes: ActivityTypes::empty(),
             mainActivityType: null,
             purchasePrice: $purchasePrice,
+            notes: $notes,
         );
     }
 
@@ -310,6 +315,23 @@ final class Gear implements SupportsAITooling
             'purchasePrice' => $purchasePrice,
         ]);
         if (!$this->purchasePrice?->equals($purchasePrice)) {
+            $clone->recordThat(new GearWasUpdated());
+        }
+
+        return $clone;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function withNotes(?string $notes): self
+    {
+        $clone = clone ($this, [
+            'notes' => $notes,
+        ]);
+        if ($this->notes !== $notes) {
             $clone->recordThat(new GearWasUpdated());
         }
 
