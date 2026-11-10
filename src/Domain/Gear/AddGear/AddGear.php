@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Gear\AddGear;
 
 use App\Domain\Gear\GearStatus;
+use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
@@ -16,6 +17,7 @@ use Money\Money;
 
 final readonly class AddGear extends DomainCommand implements DeserializableCommand
 {
+    use ProvideNotesFromPayload;
     use ProvidePurchasePriceFromPayload;
     use ProvideLocalImageFromDropZonePayload;
     use ProvidesCommandName;
@@ -25,6 +27,7 @@ final readonly class AddGear extends DomainCommand implements DeserializableComm
         private bool $isRetired,
         private ?Money $purchasePrice,
         private ?NewImage $newImage,
+        private ?string $notes,
     ) {
     }
 
@@ -51,6 +54,7 @@ final readonly class AddGear extends DomainCommand implements DeserializableComm
             isRetired: GearStatus::RETIRED === $gearStatus,
             purchasePrice: self::parsePurchasePrice($payload),
             newImage: $newImages[0] ?? null,
+            notes: self::parseNotes($payload),
         );
     }
 
@@ -72,5 +76,10 @@ final readonly class AddGear extends DomainCommand implements DeserializableComm
     public function getNewImage(): ?NewImage
     {
         return $this->newImage;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
     }
 }

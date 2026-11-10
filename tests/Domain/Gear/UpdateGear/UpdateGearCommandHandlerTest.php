@@ -27,6 +27,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
                 ->withGearId(GearId::fromUnprefixed('1'))
                 ->withName('Original gear')
                 ->withIsRetired(false)
+                ->withNotes('Original notes')
                 ->build()
         );
 
@@ -36,12 +37,14 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             'status' => 'retired',
             'purchasePriceAmount' => '2000.00',
             'purchasePriceCurrency' => 'EUR',
+            'notes' => 'Updated notes',
         ]));
 
         $gear = $this->gearRepository->find(GearId::fromUnprefixed('1'));
         $this->assertSame('Updated gear', $gear->getOriginalName());
         $this->assertTrue($gear->isRetired());
         $this->assertEquals(Money::EUR(200000), $gear->getPurchasePrice());
+        $this->assertSame('Updated notes', $gear->getNotes());
     }
 
     public function testHandleKeepsExistingPurchasePriceWhenNoneGiven(): void

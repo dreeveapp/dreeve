@@ -59,6 +59,7 @@ final class Gear implements SupportsAITooling
         string $name,
         bool $isRetired,
         GearType $type,
+        ?string $notes,
         ?string $localImagePath = null,
     ): self {
         $gear = new self(
@@ -76,7 +77,7 @@ final class Gear implements SupportsAITooling
             activityTypes: ActivityTypes::empty(),
             mainActivityType: null,
             purchasePrice: null,
-            notes: null,
+            notes: $notes,
         );
         $gear->recordThat(new GearWasAdded());
 

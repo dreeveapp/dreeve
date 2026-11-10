@@ -69,6 +69,7 @@ final class GearBuilder
             name: $this->name,
             isRetired: $this->isRetired,
             type: $this->type,
+            notes: $this->notes,
             localImagePath: $this->localImagePath,
         );
     }
