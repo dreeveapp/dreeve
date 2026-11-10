@@ -7,11 +7,13 @@ namespace App\Tests\Domain\Gear\Maintenance;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\ParsesGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
+use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Infrastructure\ValueObject\String\Name;
 
 final class ParsesGearMaintenanceComponentPayloadStub
 {
     use ParsesGearMaintenanceComponentPayload;
+    use ProvideNotesFromPayload;
 
     /**
      * @param array<string, mixed> $payload
