@@ -6,6 +6,7 @@ namespace App\Domain\Gear\UpdateGear;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearStatus;
+use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
@@ -18,6 +19,7 @@ use Money\Money;
 
 final readonly class UpdateGear extends DomainCommand implements DeserializableCommand
 {
+    use ProvideNotesFromPayload;
     use ProvidePurchasePriceFromPayload;
     use ProvideLocalImageFromDropZonePayload;
     use ProvidesCommandName;
@@ -29,6 +31,7 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
         private ?Money $purchasePrice,
         private ?NewImage $newImage,
         private ?RemovedImage $removedImage,
+        private ?string $notes,
     ) {
     }
 
@@ -59,6 +62,7 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
             purchasePrice: self::parsePurchasePrice($payload),
             newImage: $newImages[0] ?? null,
             removedImage: $removedImages[0] ?? null,
+            notes: self::parseNotes($payload),
         );
     }
 
@@ -90,5 +94,10 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
     public function getRemovedImage(): ?RemovedImage
     {
         return $this->removedImage;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
     }
 }

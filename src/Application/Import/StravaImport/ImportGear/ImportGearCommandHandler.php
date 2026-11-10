@@ -69,6 +69,7 @@ final readonly class ImportGearCommandHandler implements CommandHandler
                     name: $stravaGear['name'],
                     isRetired: $stravaGear['retired'] ?? false,
                     type: GearType::IMPORTED,
+                    notes: null,
                 );
                 $this->gearRepository->add($gear);
             }

@@ -26,6 +26,7 @@ class AddGearCommandHandlerTest extends ContainerTestCase
             'status' => 'retired',
             'purchasePriceAmount' => '1500.00',
             'purchasePriceCurrency' => 'EUR',
+            'notes' => 'Bought in Ghent',
         ]));
 
         $gears = $this->gearRepository->findAll();
@@ -37,6 +38,7 @@ class AddGearCommandHandlerTest extends ContainerTestCase
         $this->assertSame(GearType::CUSTOM, $gear->getType());
         $this->assertTrue($gear->isRetired());
         $this->assertEquals(Money::EUR(150000), $gear->getPurchasePrice());
+        $this->assertSame('Bought in Ghent', $gear->getNotes());
         $this->assertEquals(
             SerializableDateTime::fromString('2023-10-17 16:15:04'),
             $gear->getCreatedOn()

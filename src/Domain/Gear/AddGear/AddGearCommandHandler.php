@@ -35,6 +35,7 @@ final readonly class AddGearCommandHandler implements CommandHandler
             name: $command->getName(),
             isRetired: $command->isRetired(),
             type: GearType::CUSTOM,
+            notes: $command->getNotes(),
         );
 
         if ($command->getPurchasePrice() instanceof Money) {

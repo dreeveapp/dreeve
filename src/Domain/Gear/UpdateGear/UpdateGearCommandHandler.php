@@ -27,7 +27,8 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
 
         $gear = $this->gearRepository->find($command->getGearId())
             ->withName($command->getName())
-            ->withIsRetired($command->isRetired());
+            ->withIsRetired($command->isRetired())
+            ->withNotes($command->getNotes());
 
         if ($command->getPurchasePrice() instanceof Money) {
             $gear = $gear->withPurchasePrice($command->getPurchasePrice());

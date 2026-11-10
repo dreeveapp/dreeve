@@ -21,12 +21,14 @@ class UpdateGearTest extends TestCase
             'status' => 'retired',
             'purchasePriceAmount' => '1500.00',
             'purchasePriceCurrency' => 'EUR',
+            'notes' => "  Bought in Ghent\nSize 54  ",
         ]);
 
         $this->assertEquals(GearId::fromUnprefixed('1'), $command->getGearId());
         $this->assertSame('My custom gear', $command->getName());
         $this->assertTrue($command->isRetired());
         $this->assertEquals(Money::EUR(150000), $command->getPurchasePrice());
+        $this->assertSame("Bought in Ghent\nSize 54", $command->getNotes());
     }
 
     public function testFromPayloadDefaultsToActiveWithoutPurchasePrice(): void
@@ -121,6 +123,11 @@ class UpdateGearTest extends TestCase
         yield 'invalid purchase price' => [
             ['gearId' => 'gear-1', 'name' => 'My custom gear', 'purchasePriceAmount' => 'not-a-number'],
             'The purchase price is invalid.',
+        ];
+
+        yield 'invalid notes' => [
+            ['gearId' => 'gear-1', 'name' => 'My custom gear', 'notes' => ['not-a-string']],
+            '"notes" must be a string.',
         ];
     }
 }
