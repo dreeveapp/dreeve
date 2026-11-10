@@ -46,6 +46,11 @@
                 {% endblock %}
             {% endembed %}
             <div>
+                <label for="gear-notes">{{ "Notes"|trans({}, 'admin') }}</label>
+                <textarea id="gear-notes" name="notes" rows="3"
+                          placeholder="{{ "Serial number, size, where you bought it, ..."|trans({}, 'admin') }}">{{ gear ? gear.getNotes()|e }}</textarea>
+            </div>
+            <div>
                 <label>{{ "Image"|trans({}, 'admin') }}</label>
                 {% set existingImages = [] %}
                 {% if gear and gear.getLocalImagePath() %}
