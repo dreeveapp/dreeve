@@ -90,6 +90,70 @@ so a long backfill takes days on purpose.
 
 Each sync also lists the last `LOOKBACK_DAYS` again, catching activities that reach COROS late.
 
+## Choosing which sports are synced
+
+Every sport is synced by default, triathlon and multi-sport included. Two variables narrow that down,
+each a comma-separated list of sport names from the table below (case-insensitive) or numeric COROS
+`sportType` codes:
+
+- `ACTIVITY_TYPES` syncs only the sports it lists.
+- `EXCLUDE_ACTIVITY_TYPES` never syncs the sports it lists.
+
+An activity is synced when `ACTIVITY_TYPES` is unset or lists it, and `EXCLUDE_ACTIVITY_TYPES` does
+not. Listing the same sport in both, by name or by code, stops the connector at startup.
+
+```yaml title="docker-compose.yml"
+services:
+  coros-connector:
+    environment:
+      EXCLUDE_ACTIVITY_TYPES: triathlon,multiSport
+```
+
+Dreeve cannot import a multi-sport `.fit` file: it records the import as failed once and moves on.
+Excluding `triathlon` and `multiSport` keeps that out of your import history.
+
+A filtered-out activity is not downloaded and not recorded, so allowing its sport again delivers it on
+the next sync, as long as it is within `LOOKBACK_DAYS`. Each sync logs every activity it filtered out
+and counts them in its summary, including with `DRY_RUN`.
+
+| Name | Code | Name | Code |
+|---|---|---|---|
+| `run` | 100 | `boatFishingLure` | 707 |
+| `indoorRun` | 101 | `shoreFishingLure` | 708 |
+| `trailRun` | 102 | `pondFishingLure` | 709 |
+| `trackRun` | 103 | `kayakFishingLure` | 710 |
+| `hike` | 104 | `inshoreFishing` | 711 |
+| `mtnClimb` | 105 | `offshoreFishing` | 712 |
+| `climb` | 106 | `boatFlyFishing` | 713 |
+| `bike` | 200 | `shoreFlyFishing` | 714 |
+| `indoorBike` | 201 | `surfFishing` | 715 |
+| `roadEbike` | 202 | `indoorClimb` | 800 |
+| `gravelRoadBike` | 203 | `bouldering` | 801 |
+| `mountainRiding` | 204 | `outdoorClimb` | 802 |
+| `mountainEbike` | 205 | `walk` | 900 |
+| `helmetBike` | 299 | `jumpRope` | 901 |
+| `poolSwim` | 300 | `climbStairs` | 902 |
+| `openWater` | 301 | `elliptical` | 903 |
+| `gymCardio` | 400 | `yoga` | 904 |
+| `gpsCardio` | 401 | `pilates` | 905 |
+| `strength` | 402 | `boxing` | 906 |
+| `ski` | 500 | `badminton` | 1000 |
+| `snowboard` | 501 | `tableTennis` | 1001 |
+| `xcSki` | 502 | `basketball` | 1002 |
+| `skiTouring` | 503 | `football` | 1003 |
+| `row` | 700 | `pickleball` | 1004 |
+| `indoorRow` | 701 | `tennis` | 1005 |
+| `whitewater` | 702 | `padel` | 1006 |
+| `flatwater` | 704 | `frisbee` | 1100 |
+| `windsurfing` | 705 | `skateboarding` | 1101 |
+| `speedsurfing` | 706 | `hyrox` | 1200 |
+| `triathlon` | 10000 | `multiSport` | 10001 |
+| `skiTouringOld` | 10002 | `multiPitch` | 10003 |
+| `customSport` | 98 and 9800–9930 | | |
+
+`customSport` matches every sport you defined yourself. A code that is not in the table, for a sport
+COROS added since, works too.
+
 ## Logging in without a terminal
 
 `login` reads `COROS_EMAIL` and `COROS_PASSWORD`, or their `_FILE` variants, and prompts in a terminal
@@ -131,6 +195,8 @@ Set these under `environment:` on the `coros-connector` service.
 | `DOWNLOAD_DELAY_SECONDS` | `2` | Pause between downloads. |
 | `MAX_BACKOFF_SECONDS` | `21600` | Longest wait after repeated HTTP 429 responses (6 hours). |
 | `MAX_ATTEMPTS` | `5` | Failed downloads before an activity is given up. |
+| `ACTIVITY_TYPES` | - | Sports to sync, all when unset. See [Choosing which sports are synced](#choosing-which-sports-are-synced). |
+| `EXCLUDE_ACTIVITY_TYPES` | - | Sports never to sync. |
 | `WRITE_TITLE` | `true` | Write the COROS activity name into each `.fit` file so Dreeve shows it. |
 | `DRY_RUN` | `false` | Log what would be delivered and write nothing. |
 | `TZ` | `UTC` | Time zone that decides what "today" is. |
