@@ -4,17 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Segment;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Pagination;
-use App\Infrastructure\ValueObject\Geography\Coordinate;
-use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use App\Infrastructure\ValueObject\Geography\Latitude;
-use App\Infrastructure\ValueObject\Geography\Longitude;
-use App\Infrastructure\ValueObject\String\Name;
 use Doctrine\DBAL\Connection;
 
 final readonly class DbalSegmentRepository extends DbalRepository implements SegmentRepository
@@ -95,7 +88,7 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
     public function find(SegmentId $segmentId): Segment
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('*')
+        $queryBuilder->select(SegmentHydrator::columns())
             ->from('Segment')
             ->andWhere('segmentId = :segmentId')
             ->setParameter('segmentId', $segmentId);
@@ -104,13 +97,13 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
             throw new EntityNotFound(sprintf('Segment "%s" not found', $segmentId));
         }
 
-        return $this->hydrate($result);
+        return SegmentHydrator::hydrate($result);
     }
 
     public function findAll(Pagination $pagination): Segments
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('Segment.*', 'COALESCE(efforts.countCompleted, 0) AS countCompleted')
+        $queryBuilder->select(SegmentHydrator::columns('Segment'), 'COALESCE(efforts.countCompleted, 0) AS countCompleted')
             ->from('Segment')
             ->leftJoin(
                 'Segment',
@@ -124,7 +117,7 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
             ->addOrderBy('Segment.segmentId', 'ASC');
 
         return Segments::fromArray(array_map(
-            $this->hydrate(...),
+            SegmentHydrator::hydrate(...),
             $queryBuilder->executeQuery()->fetchAllAssociative()
         ));
     }
@@ -132,14 +125,14 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
     public function findByType(SegmentType $type): Segments
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $queryBuilder->select('*')
+        $queryBuilder->select(SegmentHydrator::columns())
             ->from('Segment')
             ->andWhere('type = :type')
             ->setParameter('type', $type->value)
             ->orderBy('segmentId', 'ASC');
 
         return Segments::fromArray(array_map(
-            $this->hydrate(...),
+            SegmentHydrator::hydrate(...),
             $queryBuilder->executeQuery()->fetchAllAssociative()
         ));
     }
@@ -162,32 +155,6 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
     public function count(): int
     {
         return (int) $this->connection->executeQuery('SELECT COUNT(*) FROM Segment')->fetchOne();
-    }
-
-    /**
-     * @param array<string, mixed> $result
-     */
-    private function hydrate(array $result): Segment
-    {
-        return Segment::fromState(
-            segmentId: SegmentId::fromString($result['segmentId']),
-            name: Name::fromString($result['name']),
-            sportType: SportType::from($result['sportType']),
-            distance: Meter::from($result['distance'])->toKilometer(),
-            maxGradient: $result['maxGradient'],
-            isFavourite: (bool) $result['isFavourite'],
-            climbCategory: $result['climbCategory'],
-            deviceName: $result['deviceName'],
-            countryCode: $result['countryCode'],
-            detailsHaveBeenImported: (bool) $result['detailsHaveBeenImported'],
-            polyline: EncodedPolyline::fromOptionalString($result['polyline']),
-            startingCoordinate: Coordinate::createFromOptionalLatAndLng(
-                Latitude::fromOptionalString((string) $result['startingCoordinateLatitude']),
-                Longitude::fromOptionalString((string) $result['startingCoordinateLongitude'])
-            ),
-            averageGradient: isset($result['averageGradient']) ? (float) $result['averageGradient'] : null,
-            type: SegmentType::from($result['type']),
-        );
     }
 
     public function deleteOrphanedImported(): void
