@@ -9,6 +9,7 @@ use App\Domain\Segment\Segment;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentType;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\String\Name;
 
@@ -24,6 +25,7 @@ final class SegmentBuilder
     private readonly string $countryCode;
     private bool $detailsHaveBeenImported = false;
     private ?EncodedPolyline $polyline = null;
+    private ?Coordinate $startingCoordinate = null;
     private ?float $averageGradient = 2.7;
     private SegmentType $type = SegmentType::IMPORTED;
 
@@ -54,7 +56,7 @@ final class SegmentBuilder
             countryCode: $this->countryCode,
             detailsHaveBeenImported: $this->detailsHaveBeenImported,
             polyline: $this->polyline,
-            startingCoordinate: null,
+            startingCoordinate: $this->startingCoordinate,
             averageGradient: $this->averageGradient,
             type: $this->type,
         );
@@ -119,6 +121,13 @@ final class SegmentBuilder
     public function withPolyline(EncodedPolyline $polyline): self
     {
         $this->polyline = $polyline;
+
+        return $this;
+    }
+
+    public function withStartingCoordinate(Coordinate $startingCoordinate): self
+    {
+        $this->startingCoordinate = $startingCoordinate;
 
         return $this;
     }

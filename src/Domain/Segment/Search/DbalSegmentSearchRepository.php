@@ -13,6 +13,7 @@ use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
+use App\Infrastructure\ValueObject\Geography\BoundingBox;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\ArrayParameterType;
 
@@ -63,6 +64,18 @@ final readonly class DbalSegmentSearchRepository extends DbalRepository implemen
                         value: $filters->getSportTypes()->toValues(),
                         type: ArrayParameterType::STRING
                     );
+            }
+
+            if (($bounds = $filters->getBounds()) instanceof BoundingBox) {
+                $builder
+                    ->andWhere('s.startingCoordinateLatitude BETWEEN :south AND :north')
+                    ->andWhere($bounds->getMinLng() > $bounds->getMaxLng()
+                        ? '(s.startingCoordinateLongitude >= :west OR s.startingCoordinateLongitude <= :east)'
+                        : 's.startingCoordinateLongitude BETWEEN :west AND :east')
+                    ->setParameter('south', $bounds->getMinLat())
+                    ->setParameter('north', $bounds->getMaxLat())
+                    ->setParameter('west', $bounds->getMinLng())
+                    ->setParameter('east', $bounds->getMaxLng());
             }
         }
 
