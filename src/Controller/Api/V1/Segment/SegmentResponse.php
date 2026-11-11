@@ -38,6 +38,15 @@ final class SegmentResponse extends JsonResponse
         ]);
     }
 
+    public static function detail(Segment $segment, int $numberOfTimesRidden, ?SegmentEffort $bestEffort): self
+    {
+        return new self(self::segment(
+            segment: $segment,
+            numberOfTimesRidden: $numberOfTimesRidden,
+            bestEffort: $bestEffort,
+        ));
+    }
+
     /**
      * @return array<string, mixed>
      */
