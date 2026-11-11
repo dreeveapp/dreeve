@@ -1,0 +1,45 @@
+{
+    "segments": [
+        {
+            "id": "segment-1",
+            "name": "Alpe du Zwift",
+            "type": "imported",
+            "sportType": "Ride",
+            "distanceInMeter": 1000,
+            "averageGradient": 2.7,
+            "maxGradient": 5.3,
+            "startLatLng": null,
+            "encodedPolyline": "_p~iF~ps|U_ulLnnqC_mqNvxq`@",
+            "countryCode": "BE",
+            "numberOfTimesRidden": 3,
+            "bestEffort": {
+                "activityId": "activity-2",
+                "startDateLocal": "2023-10-11T08:30:00",
+                "elapsedTimeInSeconds": 250,
+                "averagePower": 200
+            },
+            "stravaUrl": "https://www.strava.com/segments/1"
+        },
+        {
+            "id": "segment-custom-1",
+            "name": "Brugse Poort",
+            "type": "custom",
+            "sportType": "Ride",
+            "distanceInMeter": 1000,
+            "averageGradient": null,
+            "maxGradient": 5.3,
+            "startLatLng": null,
+            "encodedPolyline": null,
+            "countryCode": "BE",
+            "numberOfTimesRidden": 0,
+            "bestEffort": null,
+            "stravaUrl": null
+        }
+    ],
+    "pagination": {
+        "page": 1,
+        "size": 25,
+        "total": 2,
+        "totalPages": 1
+    }
+}

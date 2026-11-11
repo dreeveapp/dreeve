@@ -23,6 +23,25 @@ abstract class BackedEnumCollection extends Collection
     }
 
     /**
+     * @param array<int|string> $values
+     */
+    public static function tryFromValues(array $values): ?static
+    {
+        /** @var class-string<T> $enumClass */
+        $enumClass = static::empty()->getItemClassName();
+
+        $enums = [];
+        foreach ($values as $value) {
+            if (null === $enum = $enumClass::tryFrom($value)) {
+                return null;
+            }
+            $enums[] = $enum;
+        }
+
+        return static::fromArray($enums);
+    }
+
+    /**
      * @return list<value-of<T>>
      */
     public function toValues(): array
