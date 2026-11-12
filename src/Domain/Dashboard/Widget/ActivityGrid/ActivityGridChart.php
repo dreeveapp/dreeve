@@ -107,7 +107,7 @@ final readonly class ActivityGridChart
                             htmlspecialchars(SerializableDateTime::fromString($item[0])->translatedFormat((string) $this->dateFormat)),
                             ActivityGridType::MOVING_TIME === $this->activityGrid->getGridType()
                                 ? sprintf('%02dh%02d', intdiv($item[1], 60), $item[1] % 60)
-                                : $item[1],
+                                : max(0, $item[1]),
                         ),
                     ],
                     $this->activityGrid->getData(),

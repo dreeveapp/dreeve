@@ -114,7 +114,7 @@ final readonly class ActivityGridWidget implements Widget, DependsOnCurrentDay
             $on = SerializableDateTime::fromDateTimeImmutable($dt);
             $activityGrids[ActivityGridType::LOAD->value]->add(
                 on: $on,
-                value: $trainingLoadPerDay[$on->format('Y-m-d')] ?? 0
+                value: isset($movingTimePerDay[$on->format('Y-m-d')]) ? $trainingLoadPerDay[$on->format('Y-m-d')] ?? 0 : -1
             );
             $activityGrids[ActivityGridType::MOVING_TIME->value]->add(
                 on: $on,
