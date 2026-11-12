@@ -10,7 +10,6 @@ use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Length\Mile;
 use App\Infrastructure\Measurement\Time\Hour;
 use App\Infrastructure\Measurement\Time\Minute;
-use Respect\Validation\Rules\Core\Simple;
 
 trait ProvideUnitFromScalar
 {
