@@ -19,6 +19,7 @@ use App\Infrastructure\Mutex\LockIsAlreadyAcquired;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application;
@@ -88,7 +89,7 @@ final class ProcessStravaWebhooksConsoleCommand extends Command
             try {
                 $this->strava->getActivity($activityId);
             } catch (RequestException $exception) {
-                if (404 === $exception->getResponse()?->getStatusCode()) {
+                if ($exception instanceof ResponseException && 404 === $exception->getResponse()->getStatusCode()) {
                     $activityIdsToDelete->add($activityId);
                 }
                 continue;

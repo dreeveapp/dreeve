@@ -20,7 +20,7 @@ use App\Infrastructure\ValueObject\String\Url;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use League\Flysystem\Filesystem;
@@ -131,7 +131,7 @@ class SpyStrava extends Strava
     {
         if ($this->triggerExceptionOnNextCall) {
             $this->triggerExceptionOnNextCall = false;
-            throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+            throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
         }
 
         ++$this->numberOfCallsExecuted;
@@ -148,7 +148,7 @@ class SpyStrava extends Strava
 
         if ($this->triggerExceptionOnNextActivityCall) {
             $this->triggerExceptionOnNextActivityCall = false;
-            throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+            throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
         }
 
         if ($this->returnActivityWithoutSegmentEfforts) {
@@ -158,7 +158,7 @@ class SpyStrava extends Strava
         }
 
         if (!array_key_exists((string) $activityId, $this->activities)) {
-            throw new RequestException(message: 'Record Not Found', request: new Request('GET', 'uri'), response: new Response(404, [], Json::encode(['message' => 'Record Not Found'])));
+            throw new ResponseException(message: 'Record Not Found', request: new Request('GET', 'uri'), response: new Response(404, [], Json::encode(['message' => 'Record Not Found'])));
         }
 
         return $this->activities[(string) $activityId];
@@ -172,7 +172,7 @@ class SpyStrava extends Strava
 
         if ($this->triggerExceptionOnNextCall) {
             $this->triggerExceptionOnNextCall = false;
-            throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+            throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
         }
 
         if (ActivityId::fromUnprefixed('5') == $activityId) {
@@ -201,7 +201,7 @@ class SpyStrava extends Strava
     {
         if ($this->triggerExceptionOnNextCall) {
             $this->triggerExceptionOnNextCall = false;
-            throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+            throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
         }
         ++$this->numberOfCallsExecuted;
         $this->throw429IfMaxNumberOfCallsIsExceeded();
@@ -225,7 +225,7 @@ class SpyStrava extends Strava
     {
         if ($this->triggerExceptionOnNextCall) {
             $this->triggerExceptionOnNextCall = false;
-            throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+            throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
         }
         ++$this->numberOfCallsExecuted;
         $this->throw429IfMaxNumberOfCallsIsExceeded();
@@ -244,7 +244,7 @@ class SpyStrava extends Strava
     {
         if ($this->triggerExceptionOnNextCall) {
             $this->triggerExceptionOnNextCall = false;
-            throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+            throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
         }
 
         ++$this->numberOfCallsExecuted;
@@ -295,7 +295,7 @@ class SpyStrava extends Strava
     {
         if ($this->triggerExceptionOnNextCall) {
             $this->triggerExceptionOnNextCall = false;
-            throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+            throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
         }
 
         return [

@@ -15,7 +15,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -79,7 +79,7 @@ class FetchActivityStreamsTest extends ContainerTestCase
         $this->strava
             ->expects($this->once())
             ->method('getAllActivityStreams')
-            ->willThrowException(new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(404, [], Json::encode(['error' => 'The error']))));
+            ->willThrowException(new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(404, [], Json::encode(['error' => 'The error']))));
 
         $context = ActivityImportContext::create(
             activityId: ActivityId::fromUnprefixed('test'),
@@ -95,7 +95,7 @@ class FetchActivityStreamsTest extends ContainerTestCase
 
     public function testProcessWhenException(): void
     {
-        $theException = new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+        $theException = new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
         $this->strava
             ->expects($this->once())
             ->method('getAllActivityStreams')

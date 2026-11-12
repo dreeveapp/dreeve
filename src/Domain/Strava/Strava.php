@@ -16,8 +16,8 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\String\Url;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\RequestOptions;
 use League\Flysystem\FilesystemOperator;
 use Monolog\Attribute\WithMonologChannel;
@@ -64,12 +64,12 @@ class Strava
 
         try {
             $response = $this->client->request($method, $path, $options);
-        } catch (RequestException $e) {
+        } catch (ResponseException $e) {
             $response = $e->getResponse();
-            if (429 !== $response?->getStatusCode()) {
+            if (429 !== $response->getStatusCode()) {
                 // Rethrow exception if it's not a rate limit error.
-                if ($error = $response?->getBody()->getContents()) {
-                    throw new RequestException(message: $error, request: $e->getRequest(), response: $e->getResponse());
+                if ($error = $response->getBody()->getContents()) {
+                    throw new ResponseException(message: $error, request: $e->getRequest(), response: $response);
                 }
                 throw $e;
             }
@@ -123,7 +123,7 @@ class Strava
     {
         try {
             $accessToken = $this->getAccessToken();
-        } catch (ClientException|RequestException $e) {
+        } catch (RequestException $e) {
             throw new InvalidStravaAccessToken(message: $e->getMessage(), code: $e->getCode(), previous: $e);
         }
 
@@ -142,13 +142,13 @@ class Strava
                     ],
                 ]
             );
-        } catch (ClientException|RequestException $e) {
+        } catch (ResponseException $e) {
             $response = $e->getResponse();
-            if (401 === $response?->getStatusCode()) {
+            if (401 === $response->getStatusCode()) {
                 throw new InsufficientStravaAccessTokenScopes();
             }
 
-            if (403 === $response?->getStatusCode()) {
+            if (403 === $response->getStatusCode()) {
                 $body = (string) $response->getBody();
                 if (str_contains($body, '"Forbidden"') && str_contains($body, '"Inactive"')) {
                     throw StravaApplicationIsInactive::create();

@@ -10,8 +10,7 @@ use App\Domain\Activity\Stream\ActivityStreams;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Strava\Strava;
 use App\Infrastructure\Time\Clock\Clock;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 
 #[AsTaggedItem(priority: 90)]
@@ -35,8 +34,8 @@ final readonly class FetchActivityStreams implements ActivityImportStep
 
         try {
             $stravaStreams = $this->strava->getAllActivityStreams($activityId);
-        } catch (ClientException|RequestException $exception) {
-            if (404 === $exception->getResponse()?->getStatusCode()) {
+        } catch (ResponseException $exception) {
+            if (404 === $exception->getResponse()->getStatusCode()) {
                 // Streams do not exist for this activity.
                 return $context->withStreamsWereImported();
             }

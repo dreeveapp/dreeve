@@ -8,7 +8,7 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\NetworkException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 
@@ -61,7 +61,7 @@ final readonly class LiveOpenMeteo implements OpenMeteo
 
             try {
                 return Json::decode($this->request('v1/archive', 'GET', $options));
-            } catch (CorruptedData|ConnectException|RequestException) {
+            } catch (CorruptedData|NetworkException|RequestException) {
             }
             throw new OpenMeteoArchiveApiCallHasFailed();
         }
@@ -73,7 +73,7 @@ final readonly class LiveOpenMeteo implements OpenMeteo
 
         try {
             return Json::decode($this->request('v1/forecast', 'GET', $options));
-        } catch (CorruptedData|ConnectException|RequestException) {
+        } catch (CorruptedData|NetworkException|RequestException) {
         }
 
         throw new OpenMeteoForecastApiCallHasFailed();

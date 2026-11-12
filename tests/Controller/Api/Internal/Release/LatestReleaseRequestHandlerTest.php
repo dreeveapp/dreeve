@@ -9,7 +9,8 @@ use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 
 class LatestReleaseRequestHandlerTest extends ContainerTestCase
@@ -90,7 +91,10 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
         $client
             ->expects($this->once())
             ->method('request')
-            ->willThrowException(new TransferException('Connection timed out'));
+            ->willThrowException(new ConnectException(
+                message: 'Connection timed out',
+                request: new Request('GET', 'uri'),
+            ));
 
         $handler = new LatestReleaseRequestHandler(
             new GitHub($client),

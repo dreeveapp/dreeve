@@ -14,8 +14,8 @@ use App\Infrastructure\DependencyInjection\Mutex\WithMutex;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 
 #[WithMutex(lockName: LockName::IMPORT_DATA)]
 final readonly class ImportSegmentsCommandHandler implements CommandHandler
@@ -70,8 +70,8 @@ final readonly class ImportSegmentsCommandHandler implements CommandHandler
                 $command->getOutput()->writeln(sprintf('<error>%s</error>', $exception->getMessage()));
 
                 return;
-            } catch (ClientException|RequestException $exception) {
-                if (404 === $exception->getResponse()?->getStatusCode()) {
+            } catch (RequestException $exception) {
+                if ($exception instanceof ResponseException && 404 === $exception->getResponse()->getStatusCode()) {
                     // Segment does not exist anymore. Mark as imported.
                     $this->segmentRepository->update($segment->flagDetailsAsImported());
                 }
