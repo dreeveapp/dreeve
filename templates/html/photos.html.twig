@@ -38,7 +38,7 @@
                     'alt':  activity.getSanitizedName(),
                 } %}
                 <a data-image data-filterables='{{ image.getFilterables()|json_encode }}' data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}"
-                   class="no-dark grow h-[25vh] relative group/image overflow-hidden rounded-lg shadow-sm"
+                   class="no-dark grow h-[25vh] max-w-full {{ image.getOrientation() == enum('App\\Domain\\Image\\ImageOrientation').PORTRAIT ? 'aspect-[3/4]' : 'aspect-[3/2]' }} relative group/image overflow-hidden rounded-lg shadow-sm"
                    href="{{ relativeUrl(image.getImageUrl()) }}">
                     <img class="h-full w-full object-cover align-bottom transition-transform duration-500 group-hover/image:scale-105 lazy"
                          data-src="{{ relativeUrl(image.getImageUrl()) }}" alt="{{ activity.getName() }}" src="{{ placeholderImage(image.getOrientation()) }}" />
