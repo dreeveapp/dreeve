@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller\File;
+namespace App\Tests\Controller\File\Activity;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
