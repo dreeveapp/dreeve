@@ -33,7 +33,7 @@
         "adrenalinkin/doctrine-naming-strategy": "^3.0",
         "doctrine/dbal": "^4",
         "doctrine/doctrine-bundle": "^3.1",
-        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.3",
         "gehrisandro/tailwind-merge-php": "^1.1",
         "guzzlehttp/guzzle": "^8.3",
