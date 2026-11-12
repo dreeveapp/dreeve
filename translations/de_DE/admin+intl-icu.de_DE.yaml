@@ -7,7 +7,7 @@ AM/PM: morgens/abends
 'API key': API-Schlüssel
 Access: Zugriff
 Actions: Aktionen
-'Actions that run automatically at regular intervals.': 'Actions that run automatically at regular intervals.'
+'Actions that run automatically at regular intervals.': 'Aktionen, die in regelmäßigen Abständen automatisch ausgeführt werden.'
 Active: Aktiv
 'Activities scanned': 'untersuchte Aktivitäten'
 'Activities to skip during import': 'Aktivitäten, die beim Import übersprungen werden'
@@ -134,7 +134,7 @@ Configured: Konfiguriert
 'Creates a backup of the database and storage files in the backups folder.': 'Erstellt ein Backup der Datenbank und der Speicherdateien im Backup-Ordner.'
 'Cover image': 'Titelbild'
 'Create collection': 'Sammlung erstellen'
-'Created on': 'Created on'
+'Created on': 'Erstellt am'
 'Cron expression': Cron-Ausdruck
 "Cron expression specifying when the action should run, e.g. '0 14 * * *' runs every day at 14:00. See crontab.guru for help.": "Cron-Ausdruck, der angibt, wann die Aktion ausgeführt werden soll, z. B. führt '0 14 * * *' sie jeden Tag um 14:00 Uhr aus. Siehe crontab.guru für Hilfe."
 Custom: Benutzerdefiniert
@@ -166,7 +166,7 @@ Display: Anzeige
 Distance: Distanz
 'Do not download activity photos': 'Keine Bilder von Aktivitäten herunterladen.'
 Done: Fertig
-'Download backup': 'Download backup'
+'Download backup': 'Backup herunterladen'
 'Download original file': 'Originaldatei herunterladen'
 'Drag the start and end markers along the route to select the segment.': 'Ziehe die Start- und Endmarkierungen entlang der Route, um das Segment zu wählen.'
 'Drag to reorder': 'Ziehen zum Neuordnen'
