@@ -5,7 +5,7 @@
     "lightgallery": "^2.9.0",
     "sortablejs": "^1.15.7",
     "tailwind-scrollbar": "^4.0.2",
-    "tailwindcss": "^4.2.4",
+    "tailwindcss": "^4.3.5",
     "webpack": "^5.102.1",
     "webpack-cli": "^6.0.1"
   }
