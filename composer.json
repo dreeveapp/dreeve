@@ -36,7 +36,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.3",
         "gehrisandro/tailwind-merge-php": "^1.1",
-        "guzzlehttp/guzzle": "^7.9",
+        "guzzlehttp/guzzle": "^8.3",
         "halaxa/json-machine": "^1.2",
         "league/commonmark": "^2.10",
         "league/flysystem-bundle": "^3.3",
