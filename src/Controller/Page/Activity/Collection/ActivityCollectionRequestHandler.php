@@ -29,6 +29,7 @@ use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 #[AsController]
@@ -41,6 +42,7 @@ final readonly class ActivityCollectionRequestHandler
         private Environment $twig,
         private PageRenderer $pageRenderer,
         private ImageRepository $imageRepository,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -67,6 +69,7 @@ final readonly class ActivityCollectionRequestHandler
             metadata: new PageMetadata(
                 title: $activityCollection->getName(),
                 description: $activityCollection->getDescription(),
+                imagePath: $this->urlGenerator->generate('activity_collection_og_image', ['activityCollectionId' => (string) $activityCollection->getId()]),
             ),
         );
     }
