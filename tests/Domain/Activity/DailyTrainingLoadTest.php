@@ -94,6 +94,25 @@ class DailyTrainingLoadTest extends ContainerTestCase
         );
     }
 
+    public function testCalculateWithHeartRateBelowRestingHeartRate(): void
+    {
+        $activity = ActivityBuilder::fromDefaults()
+            ->withAverageHeartRate(40)
+            ->withMovingTimeInSeconds(3600)
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            $activity,
+            []
+        ));
+
+        $this->assertEquals(
+            0,
+            $this->loadOn('2023-10-10'),
+        );
+    }
+
     public function testCalculateShouldBeZero(): void
     {
         $activity = ActivityBuilder::fromDefaults()
