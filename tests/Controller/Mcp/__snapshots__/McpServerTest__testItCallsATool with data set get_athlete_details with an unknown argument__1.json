@@ -3,13 +3,13 @@
     "id": 2,
     "error": {
         "code": -32602,
-        "message": "Invalid parameters for tool 'get_athlete_details': Additional object properties are not allowed: [\"unknown\"]",
+        "message": "Invalid parameters for tool 'get_athlete_details': Object contains unexpected additional properties: `unknown`.",
         "data": {
             "validation_errors": [
                 {
                     "pointer": "/",
                     "keyword": "additionalProperties",
-                    "message": "Additional object properties are not allowed: [\"unknown\"]"
+                    "message": "Object contains unexpected additional properties: `unknown`."
                 }
             ]
         }

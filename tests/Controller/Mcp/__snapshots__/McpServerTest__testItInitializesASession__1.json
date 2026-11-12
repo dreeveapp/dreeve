@@ -6,15 +6,7 @@
         "capabilities": {
             "logging": {},
             "completions": {},
-            "prompts": {
-                "listChanged": true
-            },
-            "resources": {
-                "listChanged": true
-            },
-            "tools": {
-                "listChanged": true
-            }
+            "tools": {}
         },
         "serverInfo": {
             "name": "Dreeve",
