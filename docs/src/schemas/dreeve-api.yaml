@@ -47,7 +47,7 @@ paths:
   /api/v1/activities/{activityId}/streams: { $ref: './activities.yaml#/paths/streams' }
   /api/v1/activities/{activityId}/images: { $ref: './activity-images.yaml#/paths/list' }
   /api/v1/activities/{activityId}/images/{imageId}: { $ref: './activity-images.yaml#/paths/detail' }
-  /api/v1/activities/{activityId}/segments: { $ref: './segments.yaml#/paths/activityEfforts' }
+  /api/v1/activities/{activityId}/segments: { $ref: './activities.yaml#/paths/segmentEfforts' }
   /api/v1/file-imports: { $ref: './file-imports.yaml#/paths/list' }
   /api/v1/file-imports/{fileImportId}/file: { $ref: './file-imports.yaml#/paths/file' }
   /api/v1/gear: { $ref: './gear.yaml#/paths/list' }
@@ -76,13 +76,13 @@ components:
     SegmentList: { $ref: './segments.yaml#/schemas/SegmentList' }
     Segment: { $ref: './segments.yaml#/schemas/Segment' }
     SegmentBestEffort: { $ref: './segments.yaml#/schemas/SegmentBestEffort' }
-    SegmentEffortList: { $ref: './segments.yaml#/schemas/SegmentEffortList' }
-    SegmentEffort: { $ref: './segments.yaml#/schemas/SegmentEffort' }
     PaginationMeta: { $ref: './common.yaml#/schemas/PaginationMeta' }
     Activity: { $ref: './activities.yaml#/schemas/Activity' }
     ActivityImage: { $ref: './activity-images.yaml#/schemas/ActivityImage' }
     ActivityLocation: { $ref: './activities.yaml#/schemas/ActivityLocation' }
     ActivityStreams: { $ref: './activities.yaml#/schemas/ActivityStreams' }
+    SegmentEffortList: { $ref: './activities.yaml#/schemas/SegmentEffortList' }
+    SegmentEffort: { $ref: './activities.yaml#/schemas/SegmentEffort' }
     WeightHistory: { $ref: './weight.yaml#/schemas/WeightHistory' }
     WeightMeasurement: { $ref: './weight.yaml#/schemas/WeightMeasurement' }
     WeightRecorded: { $ref: './weight.yaml#/schemas/WeightRecorded' }
