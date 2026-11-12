@@ -237,6 +237,25 @@ paths:
           $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
         '404':
           $ref: './dreeve-api.yaml#/components/responses/ActivityNotFound'
+  segmentEfforts:
+    get:
+      operationId: listActivitySegmentEfforts
+      tags: [Activities]
+      summary: List segments
+      description: >-
+        Lists the segment one activity in the order they were ridden
+      parameters:
+        - $ref: './dreeve-api.yaml#/components/parameters/ActivityId'
+      responses:
+        '200':
+          description: All segment efforts of the activity.
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/SegmentEffortList' }
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: './dreeve-api.yaml#/components/responses/ActivityNotFound'
 
 schemas:
   ActivityList:
@@ -443,3 +462,58 @@ schemas:
         items:
           type: number
         examples: [[0.5, 1.2, 1.1]]
+  SegmentEffortList:
+    type: object
+    required: [segmentEfforts, pagination]
+    properties:
+      segmentEfforts:
+        type: array
+        items: { $ref: './dreeve-api.yaml#/components/schemas/SegmentEffort' }
+      pagination: { $ref: './dreeve-api.yaml#/components/schemas/PaginationMeta' }
+  SegmentEffort:
+    type: object
+    required:
+      - id
+      - segmentId
+      - name
+      - startDateLocal
+      - elapsedTimeInSeconds
+      - distanceInMeter
+      - averagePower
+      - averageHeartRate
+      - maxHeartRate
+      - rank
+    properties:
+      id:
+        type: string
+        examples: ['segmentEffort-3159640357452378822']
+      segmentId:
+        type: string
+        examples: ['segment-17267489']
+      name:
+        type: string
+        description: The name of the segment.
+        examples: ['Alpe du Zwift']
+      startDateLocal:
+        type: string
+        examples: ['2023-10-10T10:00:00']
+      elapsedTimeInSeconds:
+        type: integer
+        examples: [300]
+      distanceInMeter:
+        type: integer
+        examples: [1500]
+      averagePower:
+        type: [number, 'null']
+        examples: [250.5]
+      averageHeartRate:
+        type: [integer, 'null']
+        examples: [150]
+      maxHeartRate:
+        type: [integer, 'null']
+        examples: [172]
+      rank:
+        type: [integer, 'null']
+        description: >-
+          The position of this effort among all efforts on the segment, fastest first.
+        examples: [2]
