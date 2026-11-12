@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\ValueObject\String;
 
-use Respect\Validation\Validator as v;
-
 readonly class Url extends NonEmptyStringLiteral
 {
     #[\Override]
     protected function validate(string $value): void
     {
         parent::validate($value);
-        if (!v::url()->validate($value)) {
+        if (false === filter_var($value, FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException(sprintf('Invalid url "%s"', $value));
         }
     }
