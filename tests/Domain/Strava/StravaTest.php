@@ -21,6 +21,7 @@ use App\Tests\Infrastructure\Time\Clock\PausedClock;
 use App\Tests\SpyOutput;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
@@ -134,9 +135,10 @@ class StravaTest extends TestCase
         $this->client
             ->expects($this->once())
             ->method('request')
-            ->willThrowException(RequestException::wrapException(
-                new Request('GET', 'uri'),
-                new \RuntimeException()
+            ->willThrowException(new RequestException(
+                message: '',
+                request: new Request('GET', 'uri'),
+                previous: new \RuntimeException(),
             ));
 
         $this->expectExceptionObject(new InvalidStravaAccessToken());
@@ -169,7 +171,7 @@ class StravaTest extends TestCase
                 $this->assertEquals('GET', $method);
                 $this->assertEquals('api/v3/athlete/activities', $path);
 
-                throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(401, [], Json::encode(['error' => 'The error'])));
+                throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(401, [], Json::encode(['error' => 'The error'])));
             });
 
         $this->expectExceptionObject(new InsufficientStravaAccessTokenScopes());
@@ -202,7 +204,7 @@ class StravaTest extends TestCase
                 $this->assertEquals('GET', $method);
                 $this->assertEquals('api/v3/athlete/activities', $path);
 
-                throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(403, [], Json::encode(['message' => 'Forbidden', 'errors' => [['resource' => 'Application', 'field' => 'Status', 'code' => 'Inactive']]])));
+                throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(403, [], Json::encode(['message' => 'Forbidden', 'errors' => [['resource' => 'Application', 'field' => 'Status', 'code' => 'Inactive']]])));
             });
 
         $this->expectExceptionObject(StravaApplicationIsInactive::create());
@@ -220,7 +222,7 @@ class StravaTest extends TestCase
             ->expects($this->never())
             ->method('log');
 
-        $exception = new RequestException(
+        $exception = new ResponseException(
             message: 'The error',
             request: new Request('GET', 'uri'),
             response: new Response(403, [], Json::encode(['message' => 'Forbidden']))
@@ -303,7 +305,7 @@ class StravaTest extends TestCase
                     return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
                 }
 
-                throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
+                throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(500, [], Json::encode(['error' => 'The error'])));
             });
 
         $this->logger
@@ -365,7 +367,7 @@ class StravaTest extends TestCase
                     return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
                 }
 
-                throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(429, [], Json::encode(['error' => 'The error'])));
+                throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(429, [], Json::encode(['error' => 'The error'])));
             });
 
         $this->logger
@@ -395,7 +397,7 @@ class StravaTest extends TestCase
                     return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
                 }
 
-                throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(429, ['x-ratelimit-limit' => '200,2000', 'x-ratelimit-usage' => '1,2', 'x-readratelimit-limit' => '100,1000', 'x-readratelimit-usage' => '99,1001'], Json::encode(['error' => 'The error'])));
+                throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(429, ['x-ratelimit-limit' => '200,2000', 'x-ratelimit-usage' => '1,2', 'x-readratelimit-limit' => '100,1000', 'x-readratelimit-usage' => '99,1001'], Json::encode(['error' => 'The error'])));
             });
 
         $this->logger
@@ -425,7 +427,7 @@ class StravaTest extends TestCase
                     return new Response(200, [], Json::encode(['access_token' => 'theAccessToken']));
                 }
 
-                throw new RequestException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(429, ['x-ratelimit-limit' => '200,2000', 'x-ratelimit-usage' => '1,2', 'x-readratelimit-limit' => '100,1000', 'x-readratelimit-usage' => '101,998'], Json::encode(['error' => 'The error'])));
+                throw new ResponseException(message: 'The error', request: new Request('GET', 'uri'), response: new Response(429, ['x-ratelimit-limit' => '200,2000', 'x-ratelimit-usage' => '1,2', 'x-readratelimit-limit' => '100,1000', 'x-readratelimit-usage' => '101,998'], Json::encode(['error' => 'The error'])));
             });
 
         $this->logger

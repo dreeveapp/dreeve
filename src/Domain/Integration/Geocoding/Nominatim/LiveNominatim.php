@@ -10,7 +10,7 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\NetworkException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
 
@@ -42,7 +42,7 @@ final readonly class LiveNominatim implements Nominatim
 
             $response = Json::decode($response->getBody()->getContents());
             $this->clock->sleep(1);
-        } catch (ConnectException|RequestException) {
+        } catch (NetworkException|RequestException) {
             throw new CouldNotReverseGeocodeAddress();
         }
 

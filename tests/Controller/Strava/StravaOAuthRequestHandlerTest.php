@@ -13,7 +13,7 @@ use App\Domain\Strava\StravaClientSecret;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -82,7 +82,7 @@ class StravaOAuthRequestHandlerTest extends ContainerTestCase
         $this->client
             ->expects($this->once())
             ->method('post')
-            ->willThrowException(new RequestException(
+            ->willThrowException(new ResponseException(
                 message: 'The error',
                 request: new \GuzzleHttp\Psr7\Request('GET', 'uri'),
                 response: new Response(404, [], Json::encode(['error' => 'The error'])),
