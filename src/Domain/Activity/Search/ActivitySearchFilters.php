@@ -51,7 +51,7 @@ final readonly class ActivitySearchFilters extends Filters
             return SportTypes::empty();
         }
 
-        if (!$sportTypes = SportTypes::tryFromValues(array_map(trim(...), explode(',', $sportTypes)))) {
+        if (!($sportTypes = SportTypes::tryFromValues(array_map(trim(...), explode(',', $sportTypes)))) instanceof SportTypes) {
             throw new BadRequestHttpException('"filters[sportType]" contains an unknown sport type.');
         }
 

@@ -37,7 +37,7 @@ final readonly class MetricsFilters extends Filters
             return SportTypes::all();
         }
 
-        if (!$sportTypes = SportTypes::tryFromValues(array_map(trim(...), explode(',', $sportTypes)))) {
+        if (!($sportTypes = SportTypes::tryFromValues(array_map(trim(...), explode(',', $sportTypes)))) instanceof SportTypes) {
             throw new BadRequestHttpException('"filters[sportType]" contains an unknown sport type.');
         }
 
