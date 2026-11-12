@@ -61,6 +61,6 @@ final readonly class ActivityIntensity
         $athleteRestingHeartRate = $athlete->getRestingHeartRate($activity->getStartDate());
         $athleteMaxHeartRate = $athlete->getMaxHeartRate($activity->getStartDate());
 
-        return (int) round(($averageHeartRate - $athleteRestingHeartRate) / ($athleteMaxHeartRate - $athleteRestingHeartRate) * 100);
+        return max(0, (int) round(($averageHeartRate - $athleteRestingHeartRate) / ($athleteMaxHeartRate - $athleteRestingHeartRate) * 100));
     }
 }
