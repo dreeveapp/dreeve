@@ -35,6 +35,7 @@ tags:
   - name: Activity images
   - name: File imports
   - name: Gear
+  - name: Segments
   - name: Weight
   - name: Metrics
 paths:
@@ -46,10 +47,13 @@ paths:
   /api/v1/activities/{activityId}/streams: { $ref: './activities.yaml#/paths/streams' }
   /api/v1/activities/{activityId}/images: { $ref: './activity-images.yaml#/paths/list' }
   /api/v1/activities/{activityId}/images/{imageId}: { $ref: './activity-images.yaml#/paths/detail' }
+  /api/v1/activities/{activityId}/segments: { $ref: './activities.yaml#/paths/segmentEfforts' }
   /api/v1/file-imports: { $ref: './file-imports.yaml#/paths/list' }
   /api/v1/file-imports/{fileImportId}/file: { $ref: './file-imports.yaml#/paths/file' }
   /api/v1/gear: { $ref: './gear.yaml#/paths/list' }
   /api/v1/gear/maintenance-tasks: { $ref: './gear.yaml#/paths/maintenanceTasks' }
+  /api/v1/segments: { $ref: './segments.yaml#/paths/list' }
+  /api/v1/segments/{segmentId}: { $ref: './segments.yaml#/paths/detail' }
   /api/v1/athlete/weights: { $ref: './weight.yaml#/paths/list' }
   /api/v1/athlete/weights/{on}: { $ref: './weight.yaml#/paths/detail' }
   /api/v1/metrics/training-load: { $ref: './metrics.yaml#/paths/trainingLoad' }
@@ -69,11 +73,16 @@ components:
     FileImport: { $ref: './file-imports.yaml#/schemas/FileImport' }
     Gear: { $ref: './gear.yaml#/schemas/Gear' }
     MaintenanceTask: { $ref: './gear.yaml#/schemas/MaintenanceTask' }
+    SegmentList: { $ref: './segments.yaml#/schemas/SegmentList' }
+    Segment: { $ref: './segments.yaml#/schemas/Segment' }
+    SegmentBestEffort: { $ref: './segments.yaml#/schemas/SegmentBestEffort' }
     PaginationMeta: { $ref: './common.yaml#/schemas/PaginationMeta' }
     Activity: { $ref: './activities.yaml#/schemas/Activity' }
     ActivityImage: { $ref: './activity-images.yaml#/schemas/ActivityImage' }
     ActivityLocation: { $ref: './activities.yaml#/schemas/ActivityLocation' }
     ActivityStreams: { $ref: './activities.yaml#/schemas/ActivityStreams' }
+    SegmentEffortList: { $ref: './activities.yaml#/schemas/SegmentEffortList' }
+    SegmentEffort: { $ref: './activities.yaml#/schemas/SegmentEffort' }
     WeightHistory: { $ref: './weight.yaml#/schemas/WeightHistory' }
     WeightMeasurement: { $ref: './weight.yaml#/schemas/WeightMeasurement' }
     WeightRecorded: { $ref: './weight.yaml#/schemas/WeightRecorded' }
@@ -87,6 +96,8 @@ components:
     ActivityId: { $ref: './common.yaml#/parameters/ActivityId' }
     ActivityImageId: { $ref: './common.yaml#/parameters/ActivityImageId' }
     FileImportId: { $ref: './common.yaml#/parameters/FileImportId' }
+    SegmentId: { $ref: './common.yaml#/parameters/SegmentId' }
   responses:
     ActivityNotFound: { $ref: './common.yaml#/responses/ActivityNotFound' }
+    SegmentNotFound: { $ref: './common.yaml#/responses/SegmentNotFound' }
     Unauthorized: { $ref: './common.yaml#/responses/Unauthorized' }

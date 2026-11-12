@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1\Metrics;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\Http\Request\Filters;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -38,16 +37,11 @@ final readonly class MetricsFilters extends Filters
             return SportTypes::all();
         }
 
-        return SportTypes::fromArray(array_map(
-            static function (string $sportType): SportType {
-                if (!$sportType = SportType::tryFrom(trim($sportType))) {
-                    throw new BadRequestHttpException('"filters[sportType]" contains an unknown sport type.');
-                }
+        if (!($sportTypes = SportTypes::tryFromValues(array_map(trim(...), explode(',', $sportTypes)))) instanceof SportTypes) {
+            throw new BadRequestHttpException('"filters[sportType]" contains an unknown sport type.');
+        }
 
-                return $sportType;
-            },
-            explode(',', $sportTypes)
-        ));
+        return $sportTypes;
     }
 
     private function getRequiredDate(string $name): SerializableDateTime

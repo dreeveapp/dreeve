@@ -1,0 +1,183 @@
+paths:
+  list:
+    get:
+      operationId: listSegments
+      tags: [Segments]
+      summary: Search segments
+      description: |
+        Returns segments sorted by name.
+
+        ```
+        GET /api/v1/segments?filters[sportType]=Ride&filters[bounds]=50.9,3.6,51.2,3.9&pagination[size]=50
+        ```
+      parameters:
+        - name: filters
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              sportType:
+                type: string
+                description: >-
+                  One sport type, or several separated by commas
+                examples: ['Ride', 'Run,TrailRun,Hike']
+              bounds:
+                type: string
+                description: >-
+                  A bounding box as `south,west,north,east` in decimal degrees. Only segments whose
+                  start point lies inside the box are returned.
+                examples: ['50.9,3.6,51.2,3.9']
+        - name: pagination
+          in: query
+          required: false
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              page:
+                type: integer
+                minimum: 1
+                default: 1
+              size:
+                type: integer
+                minimum: 1
+                maximum: 100
+                default: 25
+      responses:
+        '200':
+          description: A page of segments, sorted by name.
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/SegmentList' }
+        '400':
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/Error' }
+              examples:
+                unknownSportType:
+                  value:
+                    error: bad_request
+                    message: '"filters[sportType]" contains an unknown sport type.'
+                invalidBounds:
+                  value:
+                    error: bad_request
+                    message: '"filters[bounds]" must be "south,west,north,east" in decimal degrees.'
+                southAboveNorth:
+                  value:
+                    error: bad_request
+                    message: '"filters[bounds]" south must not be greater than north.'
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+  detail:
+    get:
+      operationId: getSegment
+      tags: [Segments]
+      summary: Get one segment
+      parameters:
+        - $ref: './dreeve-api.yaml#/components/parameters/SegmentId'
+      responses:
+        '200':
+          description: The segment.
+          content:
+            application/json:
+              schema: { $ref: './dreeve-api.yaml#/components/schemas/Segment' }
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: './dreeve-api.yaml#/components/responses/SegmentNotFound'
+schemas:
+  SegmentList:
+    type: object
+    required: [segments, pagination]
+    properties:
+      segments:
+        type: array
+        items: { $ref: './dreeve-api.yaml#/components/schemas/Segment' }
+      pagination: { $ref: './dreeve-api.yaml#/components/schemas/PaginationMeta' }
+  Segment:
+    type: object
+    required:
+      - id
+      - name
+      - type
+      - sportType
+      - distanceInMeter
+      - averageGradient
+      - maxGradient
+      - startLatLng
+      - encodedPolyline
+      - countryCode
+      - numberOfTimesRidden
+      - bestEffort
+      - stravaUrl
+    properties:
+      id:
+        type: string
+        examples: ['segment-17267489']
+      name:
+        type: string
+        examples: ['Alpe du Zwift']
+      type:
+        type: string
+        enum: [imported, custom]
+      sportType:
+        type: string
+        examples: ['Ride']
+      distanceInMeter:
+        type: integer
+        examples: [12200]
+      averageGradient:
+        type: [number, 'null']
+        description: In percent.
+        examples: [8.5]
+      maxGradient:
+        type: number
+        description: In percent.
+        examples: [14.2]
+      startLatLng:
+        type: [array, 'null']
+        description: >-
+          The start point as `[latitude, longitude]`
+        minItems: 2
+        maxItems: 2
+        items:
+          type: number
+        examples: [[51.05, 3.72]]
+      encodedPolyline:
+        type: [string, 'null']
+        examples: ['_p~iF~ps|U_ulLnnqC_mqNvxq`@']
+      countryCode:
+        type: [string, 'null']
+        examples: ['BE']
+      numberOfTimesRidden:
+        type: integer
+        examples: [3]
+      bestEffort:
+        oneOf:
+          - $ref: './dreeve-api.yaml#/components/schemas/SegmentBestEffort'
+          - type: 'null'
+        description: The fastest effort on this segment, null when it was never ridden.
+      stravaUrl:
+        type: [string, 'null']
+        description: Null for custom segments.
+        examples: ['https://www.strava.com/segments/17267489']
+  SegmentBestEffort:
+    type: object
+    required: [activityId, startDateLocal, elapsedTimeInSeconds, averagePower]
+    properties:
+      activityId:
+        type: string
+        examples: ['activity-9756441741']
+      startDateLocal:
+        type: string
+        examples: ['2023-10-11T08:30:00']
+      elapsedTimeInSeconds:
+        type: integer
+        examples: [250]
+      averagePower:
+        type: [number, 'null']
+        examples: [200]

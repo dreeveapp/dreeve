@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Search;
 
-use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Infrastructure\Http\Request\Filters;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -52,16 +51,11 @@ final readonly class ActivitySearchFilters extends Filters
             return SportTypes::empty();
         }
 
-        return SportTypes::fromArray(array_map(
-            static function (string $sportType): SportType {
-                if (!$sportType = SportType::tryFrom(trim($sportType))) {
-                    throw new BadRequestHttpException('"filters[sportType]" contains an unknown sport type.');
-                }
+        if (!($sportTypes = SportTypes::tryFromValues(array_map(trim(...), explode(',', $sportTypes)))) instanceof SportTypes) {
+            throw new BadRequestHttpException('"filters[sportType]" contains an unknown sport type.');
+        }
 
-                return $sportType;
-            },
-            explode(',', $sportTypes)
-        ));
+        return $sportTypes;
     }
 
     public function hasGpx(): ?bool
