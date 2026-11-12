@@ -11,7 +11,7 @@ final class ActivityGrid
     private array $data = [];
 
     private function __construct(
-        /** @var array<int, array{min: int|float, max?: int|float, color: string, label: string}> */
+        /** @var array<int, array{min?: int|float, max?: int|float, value?: int, color: string, label: string}> */
         private readonly array $gridPieces,
         private readonly ActivityGridType $gridType,
     ) {
@@ -33,7 +33,7 @@ final class ActivityGrid
     }
 
     /**
-     * @return array<int, array{min: int|float, max?: int|float, color: string, label: string}>
+     * @return array<int, array{min?: int|float, max?: int|float, value?: int, color: string, label: string}>
      */
     public function getPieces(): array
     {

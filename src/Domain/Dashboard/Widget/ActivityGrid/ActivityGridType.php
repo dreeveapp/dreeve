@@ -32,20 +32,19 @@ enum ActivityGridType: string implements TranslatableInterface
     }
 
     /**
-     * @return array<int, array{min: int|float, max?: int|float, color: string, label: string}>
+     * @return array<int, array{min?: int|float, max?: int|float, value?: int, color: string, label: string}>
      */
     public function getPieces(TranslatorInterface $translator): array
     {
         return match ($this) {
             self::LOAD => [
                 [
-                    'min' => 0,
-                    'max' => 0,
+                    'value' => -1,
                     'color' => '#9CA3AF',
                     'label' => $translator->trans('No activities'),
                 ],
                 [
-                    'min' => 0.01,
+                    'min' => 0,
                     'max' => 50,
                     'color' => '#68B34B',
                     'label' => $translator->trans('Low').' (0 - 50)',
