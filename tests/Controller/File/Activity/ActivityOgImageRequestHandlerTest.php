@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Controller\File;
+namespace App\Tests\Controller\File\Activity;
 
 use App\Application\PageMetadata\OpenGraphImageCanvas;
 use App\Tests\Controller\ControllerWebTestCase;
