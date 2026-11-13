@@ -6,6 +6,7 @@ use App\Application\AppVersion;
 use App\Controller\Api\Internal\Release\LatestReleaseRequestHandler;
 use App\Domain\Integration\GitHub\GitHub;
 use App\Infrastructure\Cache\CacheableRenderer;
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use GuzzleHttp\Client;
@@ -33,6 +34,7 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
         $handler = new LatestReleaseRequestHandler(
             new GitHub($client),
             $this->getContainer()->get(CacheableRenderer::class),
+            ManagedMode::fromString('0'),
         );
 
         $response = $handler->handle();
@@ -58,6 +60,7 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
         $handler = new LatestReleaseRequestHandler(
             new GitHub($client),
             $this->getContainer()->get(CacheableRenderer::class),
+            ManagedMode::fromString('0'),
         );
 
         $this->assertEquals(['latestVersion' => AppVersion::getSemanticVersion(), 'updateAvailable' => false], Json::decode((string) $handler->handle()->getContent()));
@@ -80,6 +83,7 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
         $handler = new LatestReleaseRequestHandler(
             new GitHub($client),
             $this->getContainer()->get(CacheableRenderer::class),
+            ManagedMode::fromString('0'),
         );
 
         $this->assertEquals(['latestVersion' => 'v999.0.0', 'updateAvailable' => false], Json::decode((string) $handler->handle()->getContent()));
@@ -99,6 +103,23 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
         $handler = new LatestReleaseRequestHandler(
             new GitHub($client),
             $this->getContainer()->get(CacheableRenderer::class),
+            ManagedMode::fromString('0'),
+        );
+
+        $this->assertEquals(['latestVersion' => null, 'updateAvailable' => false], Json::decode((string) $handler->handle()->getContent()));
+    }
+
+    public function testHandleOnAManagedInstance(): void
+    {
+        $client = $this->createMock(Client::class);
+        $client
+            ->expects($this->never())
+            ->method('request');
+
+        $handler = new LatestReleaseRequestHandler(
+            new GitHub($client),
+            $this->getContainer()->get(CacheableRenderer::class),
+            ManagedMode::fromString('1'),
         );
 
         $this->assertEquals(['latestVersion' => null, 'updateAvailable' => false], Json::decode((string) $handler->handle()->getContent()));

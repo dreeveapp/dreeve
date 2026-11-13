@@ -22,6 +22,7 @@ parameters:
     env(STRAVA_REFRESH_TOKEN): 'replace-me'
     env(DEMO_MODE_IS_ENABLED): 0
     env(DEV_MODE_IS_ENABLED): 0
+    env(DREEVE_MANAGED): 0
     env(TZ): ''
     env(DATABASE_DIRECTORY): '%kernel.project_dir%/storage/database'
 
@@ -77,6 +78,10 @@ services:
     App\Infrastructure\Config\DevMode:
         factory: [ null, 'fromString' ]
         arguments: ['%env(string:DEV_MODE_IS_ENABLED)%']
+
+    App\Infrastructure\Config\ManagedMode:
+        factory: [ null, 'fromString' ]
+        arguments: ['%env(string:DREEVE_MANAGED)%']
 
     App\Infrastructure\Security\Admin\AdminUserName:
         factory: [ null, 'fromString' ]
