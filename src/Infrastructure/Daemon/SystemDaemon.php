@@ -10,6 +10,7 @@ use App\Console\Import\RunFileImportConsoleCommand;
 use App\Console\Strava\ProcessStravaWebhooksConsoleCommand;
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Console\ConsoleOutputAware;
 use App\Infrastructure\Daemon\Cron\CronAction;
 use App\Infrastructure\Daemon\Cron\CronProcess;
@@ -37,6 +38,7 @@ final class SystemDaemon implements Daemon
         private readonly Clock $clock,
         private readonly SettingsRepository $settingsRepository,
         private readonly ImportMode $importMode,
+        private readonly ManagedMode $managedMode,
         private readonly Connection $connection,
     ) {
     }
@@ -70,7 +72,10 @@ final class SystemDaemon implements Daemon
         $jobs = [];
         /** @var CronAction $cronAction */
         foreach ($this->settingsRepository->daemon()->getConfiguredCronActions() as $cronAction) {
-            if (!$cronAction->supportsImportMode($this->importMode)) {
+            if (!$cronAction->supports(
+                importMode: $this->importMode,
+                managedMode: $this->managedMode,
+            )) {
                 continue;
             }
             $jobs[] = [

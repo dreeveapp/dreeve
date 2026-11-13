@@ -27,7 +27,7 @@ abstract class ControllerWebTestCase extends WebTestCase
         parent::setUp();
 
         $this->originalImportMode = $_ENV['IMPORT_MODE'] ?? null;
-        foreach (['DREEVE_API_KEY', 'DREEVE_MCP_KEY', 'OIDC_ISSUER_URL', 'OIDC_CLIENT_ID', 'OIDC_CLIENT_SECRET', 'OIDC_ALLOWED_USERS', 'OIDC_CA_FILE'] as $envVar) {
+        foreach (['DREEVE_API_KEY', 'DREEVE_MCP_KEY', 'DREEVE_MANAGED', 'OIDC_ISSUER_URL', 'OIDC_CLIENT_ID', 'OIDC_CLIENT_SECRET', 'OIDC_ALLOWED_USERS', 'OIDC_CA_FILE'] as $envVar) {
             $this->originalKeys[$envVar] = $_ENV[$envVar] ?? null;
         }
 
@@ -93,6 +93,13 @@ abstract class ControllerWebTestCase extends WebTestCase
     protected function withImportMode(ImportMode $importMode): void
     {
         $_SERVER['IMPORT_MODE'] = $_ENV['IMPORT_MODE'] = $importMode->value;
+
+        $this->rebootClient();
+    }
+
+    protected function withManagedMode(): void
+    {
+        $_SERVER['DREEVE_MANAGED'] = $_ENV['DREEVE_MANAGED'] = '1';
 
         $this->rebootClient();
     }

@@ -4,6 +4,7 @@ namespace App\Tests\Infrastructure\Daemon;
 
 use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Daemon\SystemDaemon;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Serialization\Json;
@@ -61,6 +62,7 @@ class SystemDaemonTest extends ContainerTestCase
             clock: PausedClock::fromString('2025-11-01 10:00:00'),
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
             importMode: ImportMode::FILES,
+            managedMode: ManagedMode::fromString('0'),
             connection: $this->getConnection(),
         );
     }

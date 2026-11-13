@@ -9,6 +9,7 @@ use App\Console\Import\RunStravaImportConsoleCommand;
 use App\Console\Notification\AppUpdateAvailableNotificationConsoleCommand;
 use App\Console\Notification\GearMaintenanceNotificationConsoleCommand;
 use App\Domain\Import\ImportMode;
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Localisation\TranslatableWithDescription;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -50,13 +51,13 @@ enum CronActionId: string implements TranslatableWithDescription
         };
     }
 
-    public function supportsImportMode(ImportMode $importMode): bool
+    public function supports(ImportMode $importMode, ManagedMode $managedMode): bool
     {
-        if (self::RUN_STRAVA_IMPORT !== $this) {
-            return true;
-        }
-
-        return !$importMode->isFiles();
+        return match ($this) {
+            self::RUN_STRAVA_IMPORT => !$importMode->isFiles(),
+            self::APP_UPDATE_AVAILABLE_NOTIFICATION => !$managedMode->isEnabled(),
+            self::GEAR_MAINTENANCE_NOTIFICATION, self::BACKUP => true,
+        };
     }
 
     public function defaultCronExpression(): string
