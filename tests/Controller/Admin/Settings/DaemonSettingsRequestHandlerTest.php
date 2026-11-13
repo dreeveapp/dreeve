@@ -51,4 +51,17 @@ class DaemonSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[name="data[cron][gearMaintenanceNotification][expression]"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[cron][appUpdateAvailableNotification][expression]"]'));
     }
+
+    public function testItHidesTheAppUpdateNotificationActionOnManagedInstances(): void
+    {
+        $this->withManagedMode();
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/daemon');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(0, $crawler->filter('input[name="data[cron][appUpdateAvailableNotification][expression]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="data[cron][gearMaintenanceNotification][expression]"]'));
+        $this->assertCount(1, $crawler->filter('input[name="data[cron][backup][expression]"]'));
+    }
 }
