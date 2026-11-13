@@ -1,5 +1,6 @@
 24-hour: '24 horas'
 'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'Um processamento retroativo já está na fila. Ele será executado no próximo ciclo de importação, em até cinco minutos.'
+'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.'
 'A rule applies': 'Uma regra se aplica'
 AI: IA
 AM/PM: AM/PM

@@ -1,5 +1,6 @@
 24-hour: '24 órás'
 'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'Egy visszatöltés már sorban áll. A következő importálási ciklusban lefut, öt percen belül.'
+'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.'
 'A rule applies': 'Egy szabály érvényes'
 AI: AI
 AM/PM: AM/PM

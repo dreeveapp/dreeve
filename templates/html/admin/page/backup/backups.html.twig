@@ -100,11 +100,17 @@
                                 {% set linkClose = '</a>' %}
                                 <div class="flex flex-col gap-1">
                                     <span class="text-sm font-medium text-gray-800">{{ "No backups yet."|trans({}, 'admin') }}</span>
-                                    <span class="text-xs text-gray-500">{{ "Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}."|trans({'{linkOpen}': linkOpen, '{linkClose}': linkClose}, 'admin')|raw }}</span>
+                                    {% if isManaged %}
+                                        <span class="text-xs text-gray-500">{{ "A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}."|trans({'{linkOpen}': linkOpen, '{linkClose}': linkClose}, 'admin')|raw }}</span>
+                                    {% else %}
+                                        <span class="text-xs text-gray-500">{{ "Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}."|trans({'{linkOpen}': linkOpen, '{linkClose}': linkClose}, 'admin')|raw }}</span>
+                                    {% endif %}
                                 </div>
-                                <a href="{{ relativeUrl(path('admin_settings', {group: 'daemon'})) }}" type="button" class="btn--primary mt-1">
-                                    {{ "Go to scheduled actions"|trans({}, 'admin') }}
-                                </a>
+                                {% if not isManaged %}
+                                    <a href="{{ relativeUrl(path('admin_settings', {group: 'daemon'})) }}" type="button" class="btn--primary mt-1">
+                                        {{ "Go to scheduled actions"|trans({}, 'admin') }}
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

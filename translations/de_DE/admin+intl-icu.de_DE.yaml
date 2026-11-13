@@ -1,5 +1,6 @@
 24-hour: 24-Stunden
 'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'Ein Erstellungsvorgang ist bereits in der Warteschlange. Er wird beim nächsten Importzyklus innerhalb von fünf Minuten ausgeführt.'
+'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.'
 'A rule applies': 'Eine Regel trifft zu'
 AI: KI
 AM/PM: morgens/abends

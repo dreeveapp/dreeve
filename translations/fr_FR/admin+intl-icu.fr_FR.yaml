@@ -1,5 +1,6 @@
 24-hour: '24 heures'
 'A backfill is already queued. It runs on the next import cycle, within five minutes.': "Une application aux activités existantes est déjà en attente. Elle s'exécutera lors du prochain cycle d'import, dans les cinq minutes."
+'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.'
 'A rule applies': "Une règle s'applique"
 AI: IA
 AM/PM: AM/PM
