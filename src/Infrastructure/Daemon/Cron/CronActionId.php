@@ -55,8 +55,16 @@ enum CronActionId: string implements TranslatableWithDescription
     {
         return match ($this) {
             self::RUN_STRAVA_IMPORT => !$importMode->isFiles(),
-            self::APP_UPDATE_AVAILABLE_NOTIFICATION => !$managedMode->isEnabled(),
-            self::GEAR_MAINTENANCE_NOTIFICATION, self::BACKUP => true,
+            self::APP_UPDATE_AVAILABLE_NOTIFICATION, self::BACKUP => !$managedMode->isEnabled(),
+            self::GEAR_MAINTENANCE_NOTIFICATION => true,
+        };
+    }
+
+    public function isForced(ManagedMode $managedMode): bool
+    {
+        return match ($this) {
+            self::BACKUP => $managedMode->isEnabled(),
+            self::RUN_STRAVA_IMPORT, self::GEAR_MAINTENANCE_NOTIFICATION, self::APP_UPDATE_AVAILABLE_NOTIFICATION => false,
         };
     }
 

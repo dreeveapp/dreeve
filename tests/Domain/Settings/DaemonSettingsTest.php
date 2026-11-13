@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
+use App\Domain\Import\ImportMode;
 use App\Domain\Settings\DaemonSettings;
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Daemon\Cron\CronAction;
 use App\Infrastructure\Daemon\Cron\CronActionId;
 use App\Infrastructure\Daemon\Cron\InvalidCronConfig;
@@ -21,7 +23,10 @@ class DaemonSettingsTest extends TestCase
     public function testItAppliesDefaultsForAnEmptyConfiguration(): void
     {
         $settings = DaemonSettings::fromArray([]);
-        $this->assertSame([], iterator_to_array($settings->getConfiguredCronActions()));
+        $this->assertSame([], $settings->getConfiguredCronActions()->forDaemon(
+            importMode: ImportMode::STRAVA_API,
+            managedMode: ManagedMode::fromString('0'),
+        ));
     }
 
     public function testItOnlyYieldsEnabledActions(): void
@@ -40,7 +45,10 @@ class DaemonSettingsTest extends TestCase
                     expression: new \Cron\CronExpression('0 3 * * *'),
                 ),
             ],
-            iterator_to_array($settings->getConfiguredCronActions())
+            $settings->getConfiguredCronActions()->forDaemon(
+                importMode: ImportMode::STRAVA_API,
+                managedMode: ManagedMode::fromString('0'),
+            )
         );
     }
 
@@ -52,7 +60,10 @@ class DaemonSettingsTest extends TestCase
             ],
         ]);
 
-        $actions = iterator_to_array($settings->getConfiguredCronActions());
+        $actions = $settings->getConfiguredCronActions()->forDaemon(
+            importMode: ImportMode::STRAVA_API,
+            managedMode: ManagedMode::fromString('0'),
+        );
         $this->assertCount(1, $actions);
         $this->assertSame(CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, $actions[0]->getId());
     }
@@ -65,7 +76,10 @@ class DaemonSettingsTest extends TestCase
             ],
         ]);
 
-        $actions = iterator_to_array($settings->getConfiguredCronActions());
+        $actions = $settings->getConfiguredCronActions()->forDaemon(
+            importMode: ImportMode::STRAVA_API,
+            managedMode: ManagedMode::fromString('0'),
+        );
         $this->assertCount(1, $actions);
         $this->assertSame('30 2 * * *', (string) $actions[0]->getExpression());
     }

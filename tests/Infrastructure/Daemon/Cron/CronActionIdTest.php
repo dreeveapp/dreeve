@@ -71,6 +71,27 @@ class CronActionIdTest extends TestCase
         yield 'app update not supported on managed instances' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, ImportMode::STRAVA_API, ManagedMode::fromString('1'), false];
         yield 'backup supported in file mode' => [CronActionId::BACKUP, ImportMode::FILES, ManagedMode::fromString('0'), true];
         yield 'backup supported in strava api mode' => [CronActionId::BACKUP, ImportMode::STRAVA_API, ManagedMode::fromString('0'), true];
-        yield 'backup supported on managed instances' => [CronActionId::BACKUP, ImportMode::STRAVA_API, ManagedMode::fromString('1'), true];
+        yield 'backup not supported on managed instances' => [CronActionId::BACKUP, ImportMode::STRAVA_API, ManagedMode::fromString('1'), false];
+    }
+
+    #[DataProvider('provideIsForced')]
+    public function testIsForced(CronActionId $id, ManagedMode $managedMode, bool $expected): void
+    {
+        $this->assertSame($expected, $id->isForced($managedMode));
+    }
+
+    /**
+     * @return iterable<string, array{CronActionId, ManagedMode, bool}>
+     */
+    public static function provideIsForced(): iterable
+    {
+        yield 'strava import not forced' => [CronActionId::RUN_STRAVA_IMPORT, ManagedMode::fromString('0'), false];
+        yield 'strava import not forced on managed instances' => [CronActionId::RUN_STRAVA_IMPORT, ManagedMode::fromString('1'), false];
+        yield 'gear maintenance not forced' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, ManagedMode::fromString('0'), false];
+        yield 'gear maintenance not forced on managed instances' => [CronActionId::GEAR_MAINTENANCE_NOTIFICATION, ManagedMode::fromString('1'), false];
+        yield 'app update not forced' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, ManagedMode::fromString('0'), false];
+        yield 'app update not forced on managed instances' => [CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION, ManagedMode::fromString('1'), false];
+        yield 'backup not forced' => [CronActionId::BACKUP, ManagedMode::fromString('0'), false];
+        yield 'backup forced on managed instances' => [CronActionId::BACKUP, ManagedMode::fromString('1'), true];
     }
 }

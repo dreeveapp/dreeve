@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Infrastructure\Daemon\Cron;
 
+use App\Domain\Import\ImportMode;
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Daemon\Cron\ConfiguredCronActions;
 use App\Infrastructure\Daemon\Cron\CronAction;
 use App\Infrastructure\Daemon\Cron\CronActionId;
@@ -20,27 +22,67 @@ class ConfiguredCronActionsTest extends TestCase
         $_ENV['DAEMON_DEBUG'] = 1;
     }
 
-    public function testItYieldsEnabledActionsAsCronActions(): void
+    public function testForDaemon(): void
     {
+        $configuredCronActions = ConfiguredCronActions::fromConfig([
+            [
+                'action' => 'runStravaImportAndBuildApp',
+                'expression' => '0 1 * * *',
+                'enabled' => true,
+            ],
+            [
+                'action' => 'gearMaintenanceNotification',
+                'expression' => '0 2 * * *',
+                'enabled' => true,
+            ],
+            [
+                'action' => 'appUpdateAvailableNotification',
+                'expression' => '0 5 * * *',
+                'enabled' => true,
+            ],
+            [
+                'action' => 'backup',
+                'expression' => '0 6 * * *',
+                'enabled' => false,
+            ],
+        ]);
+
         $this->assertEquals(
             [
                 CronAction::create(
                     id: CronActionId::GEAR_MAINTENANCE_NOTIFICATION,
-                    expression: new CronExpression('* * * * *'),
+                    expression: new CronExpression('0 2 * * *'),
+                ),
+                CronAction::create(
+                    id: CronActionId::APP_UPDATE_AVAILABLE_NOTIFICATION,
+                    expression: new CronExpression('0 5 * * *'),
                 ),
             ],
-            iterator_to_array(ConfiguredCronActions::fromConfig([
-                [
-                    'action' => 'gearMaintenanceNotification',
-                    'expression' => '* * * * *',
-                    'enabled' => true,
-                ],
-                [
-                    'action' => 'runStravaImportAndBuildApp',
-                    'expression' => '* * * * *',
-                    'enabled' => false,
-                ],
-            ]))
+            $configuredCronActions->forDaemon(
+                importMode: ImportMode::FILES,
+                managedMode: ManagedMode::fromString('0'),
+            )
+        );
+
+        $this->assertEquals(
+            [
+                CronAction::create(
+                    id: CronActionId::RUN_STRAVA_IMPORT,
+                    expression: new CronExpression('0 1 * * *'),
+                ),
+                CronAction::create(
+                    id: CronActionId::GEAR_MAINTENANCE_NOTIFICATION,
+                    expression: new CronExpression('0 2 * * *'),
+                ),
+                CronAction::create(
+                    id: CronActionId::BACKUP,
+                    expression: new CronExpression('0 3 * * *'),
+                ),
+            ],
+            $configuredCronActions->forDaemon(
+                importMode: ImportMode::STRAVA_API,
+                managedMode: ManagedMode::fromString('1'),
+            )
         );
     }
 

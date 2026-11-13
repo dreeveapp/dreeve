@@ -12,7 +12,6 @@ use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Console\ConsoleOutputAware;
-use App\Infrastructure\Daemon\Cron\CronAction;
 use App\Infrastructure\Daemon\Cron\CronProcess;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
@@ -70,14 +69,10 @@ final class SystemDaemon implements Daemon
     {
         /** @var list<array{key: string, mutexTtl: int, expression: string, command: string}> $jobs */
         $jobs = [];
-        /** @var CronAction $cronAction */
-        foreach ($this->settingsRepository->daemon()->getConfiguredCronActions() as $cronAction) {
-            if (!$cronAction->supports(
-                importMode: $this->importMode,
-                managedMode: $this->managedMode,
-            )) {
-                continue;
-            }
+        foreach ($this->settingsRepository->daemon()->getConfiguredCronActions()->forDaemon(
+            importMode: $this->importMode,
+            managedMode: $this->managedMode,
+        ) as $cronAction) {
             $jobs[] = [
                 'key' => $cronAction->getId()->value,
                 'mutexTtl' => 1200,

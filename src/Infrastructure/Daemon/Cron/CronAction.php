@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Daemon\Cron;
 
-use App\Domain\Import\ImportMode;
-use App\Infrastructure\Config\ManagedMode;
 use Cron\CronExpression;
 
 final readonly class CronAction
@@ -39,13 +37,5 @@ final readonly class CronAction
     public function getCommand(): string
     {
         return $this->id->command();
-    }
-
-    public function supports(ImportMode $importMode, ManagedMode $managedMode): bool
-    {
-        return $this->id->supports(
-            importMode: $importMode,
-            managedMode: $managedMode,
-        );
     }
 }

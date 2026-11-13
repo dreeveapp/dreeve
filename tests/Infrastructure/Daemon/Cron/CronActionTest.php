@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Infrastructure\Daemon\Cron;
 
-use App\Domain\Import\ImportMode;
-use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Daemon\Cron\CronAction;
 use App\Infrastructure\Daemon\Cron\CronActionId;
 use Cron\CronExpression;
@@ -32,13 +30,5 @@ class CronActionTest extends TestCase
         );
 
         $this->assertSame('bin/console app:import:strava', $cronAction->getCommand());
-        $this->assertFalse($cronAction->supports(
-            importMode: ImportMode::FILES,
-            managedMode: ManagedMode::fromString('0'),
-        ));
-        $this->assertTrue($cronAction->supports(
-            importMode: ImportMode::STRAVA_API,
-            managedMode: ManagedMode::fromString('0'),
-        ));
     }
 }

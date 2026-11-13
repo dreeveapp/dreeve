@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Daemon\Cron;
 
+use App\Domain\Import\ImportMode;
+use App\Infrastructure\Config\ManagedMode;
 use Cron\CronExpression;
 
-/**
- * @implements \IteratorAggregate<int, CronAction>
- */
-readonly class ConfiguredCronActions implements \IteratorAggregate
+readonly class ConfiguredCronActions
 {
     private function __construct(
         /** @var list<array{action: string, expression: string, enabled: bool}> */
@@ -17,21 +16,42 @@ readonly class ConfiguredCronActions implements \IteratorAggregate
     ) {
     }
 
-    public function getIterator(): \Traversable
+    /**
+     * @return list<CronAction>
+     */
+    public function forDaemon(ImportMode $importMode, ManagedMode $managedMode): array
     {
+        $configByAction = array_column($this->config, null, 'action');
+
         $cronActions = [];
-        foreach ($this->config as $action) {
-            if (!$action['enabled']) {
+        foreach (CronActionId::cases() as $cronActionId) {
+            if ($cronActionId->isForced($managedMode)) {
+                $cronActions[] = CronAction::create(
+                    id: $cronActionId,
+                    expression: new CronExpression($cronActionId->defaultCronExpression()),
+                );
+                continue;
+            }
+
+            if (!$cronActionId->supports(
+                importMode: $importMode,
+                managedMode: $managedMode,
+            )) {
+                continue;
+            }
+
+            $config = $configByAction[$cronActionId->value] ?? null;
+            if (null === $config || !$config['enabled']) {
                 continue;
             }
 
             $cronActions[] = CronAction::create(
-                id: CronActionId::from($action['action']),
-                expression: new CronExpression($action['expression']),
+                id: $cronActionId,
+                expression: new CronExpression($config['expression']),
             );
         }
 
-        return new \ArrayIterator($cronActions);
+        return $cronActions;
     }
 
     /**
