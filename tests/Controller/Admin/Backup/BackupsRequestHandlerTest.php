@@ -33,6 +33,27 @@ class BackupsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('.alert--warning a[href="https://docs.dreeve.app/maintenance/backup-and-restore/#mount-the-backups-directory"]'));
     }
 
+    public function testItExplainsAutomaticBackupsInTheEmptyStateOnManagedInstances(): void
+    {
+        $this->withManagedMode();
+        static::getContainer()->set(AvailableBackups::class, new AvailableBackups(
+            defaultStorage: static::getContainer()->get('default.storage'),
+            kernelProjectDir: KernelProjectDir::fromString(sys_get_temp_dir()),
+            queryBus: static::getContainer()->get(QueryBus::class),
+        ));
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/backups');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(
+            'No backups yet. A backup is created automatically every night. Read more in the documentation.',
+            $crawler->filter('table.data-table tbody td[colspan="6"]')->text(),
+        );
+        $this->assertCount(0, $crawler->filter('table.data-table a.btn--primary'));
+        $this->assertCount(1, $crawler->filter('table.data-table a[href="https://docs.dreeve.app/maintenance/backup-and-restore/#make-a-backup"]'));
+    }
+
     public function testItListsTheBackupsNewestFirstAndDownloadsOne(): void
     {
         /** @var FilesystemOperator $defaultStorage */
