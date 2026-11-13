@@ -9,6 +9,7 @@ use App\Domain\Integration\GitHub\GitHub;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Serialization\Json;
 use GuzzleHttp\Exception\GuzzleException;
@@ -24,12 +25,17 @@ final readonly class LatestReleaseRequestHandler
     public function __construct(
         private GitHub $gitHub,
         private CacheableRenderer $cacheableRenderer,
+        private ManagedMode $managedMode,
     ) {
     }
 
     #[Route(path: '/api/internal/latest-release', name: 'latest_release', methods: ['GET'])]
     public function handle(): JsonResponse
     {
+        if ($this->managedMode->isEnabled()) {
+            return new JsonResponse(['latestVersion' => null, 'updateAvailable' => false]);
+        }
+
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'app.latest-release',
