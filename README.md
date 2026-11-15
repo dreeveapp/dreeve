@@ -21,7 +21,8 @@
 <p align="center">
   <a href="#-showcase">Showcase</a> •
   <a href="#-documentation">Docs</a> •
-  <a href="https://discord.gg/p4zpZyCHNc">Discord</a>
+  <a href="https://discord.gg/p4zpZyCHNc">Discord</a> •
+  <a href="https://dreeve.app/stickers">Free stickers</a>
 </p>
 
 <p align="center">
@@ -39,6 +40,7 @@ https://github.com/user-attachments/assets/2789c961-f04f-4804-b6eb-88d45e62687c
 * **Import activities** - Use raw FIT/TCX/GPX files, sync from Garmin, Polar, Wahoo, Apple Health and more, or connect your Strava account
 * **Admin panel** - Manage activities, gear and every setting from your browser
 * **Automation rules** - Automatically fill in gear, commute flags, sport types and more
+* **Backup & restore** - Schedule nightly backups of your data
 
 **Analysis**
 

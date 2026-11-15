@@ -1,3 +1,60 @@
+# [v5.9.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.9.0) - 2026-11-15
+
+> [!NOTE]
+> We released a separate __Coros__ container to automatically sync your Coros FIT files
+> to Dreeve's watch folder. Read all about it in the docs: https://docs.dreeve.app/integrations/coros-connector/
+> A big thank you to @xballoy for setting this up 👏
+
+## Free Dreeve stickers
+
+Want a Dreeve sticker? Leave your address at [dreeve.app/stickers](https://dreeve.app/stickers) and we'll mail you one for free.
+
+Once it arrives, stick it anywhere you ride, run or work out, and send a photo with the coordinates to hello@dreeve.app. 
+Later on we'll use these to build a map of Dreeve stickers around the world.
+
+<img src="https://dreeve.app/assets/dreeve-stickers.jpg" alt="Dreeve stickers" width="300">
+
+## Activity collections and automated backups
+
+Alongside various improvements and bug fixes, this release introduces two major features.
+
+**Activity collections**: A way to bundle your activities into trips and events. Collections can be managed from the admin panel.
+
+**Automated backups**: You can now schedule regular backups of your Dreeve instance. 
+Find out more in the backup and restore documentation: https://docs.dreeve.app/maintenance/backup-and-restore
+
+## New features
+* Added collections to organise trips and multi-day events
+* Create and restore backups 
+* Added a notes field to gear
+* Exposed segments through the public API
+
+## Improvements
+* Added a sponsor message to the new-version modal
+
+## Bug fixes
+* Fixed photo gallery tiles not wrapping correctly in WebKit
+* Fixed negative values in the load activity heatmap
+
+## Technical details
+* ISSUE #3009: Sponsor nudge in the new-version modal by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3010
+* German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/3012
+* ISSUE #2978: Collections for trips and multi-day events by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/2979
+* ISSUE #3011: Create and restore backups by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3013
+* German Translation for Collections by @effectpears in https://github.com/dreeveapp/dreeve/pull/3014
+* docs: add COROS connector page by @xballoy in https://github.com/dreeveapp/dreeve/pull/3018
+* ISSUE #3020: Note field for gear by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3021
+* German Translation by @effectpears in https://github.com/dreeveapp/dreeve/pull/3022
+* ISSUE #3019: Expose segments in the public API by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3026
+* ISSUE #3023: Size photo gallery tiles by orientation so WebKit wraps them correctly by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3027
+* ISSUE #3041: Fix negative number in load activity heatmap by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3043
+* ISSUE #3044: Managed mode by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3045
+
+## New Contributors
+* @xballoy made their first contribution in https://github.com/dreeveapp/dreeve/pull/3018
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.8.2...v5.9.0
+
 # [v5.8.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.8.2) - 2026-11-08
 
 ## New features
