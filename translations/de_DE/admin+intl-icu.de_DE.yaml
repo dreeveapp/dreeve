@@ -1,6 +1,6 @@
 24-hour: 24-Stunden
 'A backfill is already queued. It runs on the next import cycle, within five minutes.': 'Ein Erstellungsvorgang ist bereits in der Warteschlange. Er wird beim nächsten Importzyklus innerhalb von fünf Minuten ausgeführt.'
-'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.'
+'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'Es wird jede Nacht automatisch eine Sicherungskopie erstellt. Weitere Informationen finden Sie in der Dokumentation.'
 'A rule applies': 'Eine Regel trifft zu'
 AI: KI
 AM/PM: morgens/abends
@@ -190,7 +190,7 @@ Efforts: Leistungen
 Elevation: Höhenmeter
 'Enable AI integration': 'KI-Integration aktivieren'
 'Enable Strava webhooks': 'Strava webhooks aktivieren'
-'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
+'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Aktiviere die lokale Datensicherung in den Einstellungen für geplante Aktionen oder erstelle eine manuelle Datensicherung, wie in {linkOpen}der Dokumentation{linkClose} beschrieben.'
 Enabled: Aktiviert
 Endpoint: Endpunkt
 'Ends near': 'Endet in der Nähe'
@@ -325,7 +325,7 @@ Monday: Montag
 'No activities match the current filters.': 'Keine Aktivitäten entsprechen den aktuellen Filtern.'
 'No activity found for that ID.': 'Keine Aktivität für diese ID gefunden.'
 'No automation rules yet.': 'Keine Automatisierungsregel bisher.'
-'No backups yet.': 'No backups yet.'
+'No backups yet.': 'Keine Datensicherungen bisher.'
 'No collections added yet.': 'Noch keine Sammlungen hinzugefügt.'
 'No components yet.': 'Noch keine Komponenten vorhanden'
 'No file imports match the current filters.': 'Keine Dateiimporte entsprechen den aktuellen Filtern.'
@@ -485,7 +485,7 @@ Settings: Einstellungen
 'Sign out': Abmelden
 'Signing in...': 'Anmeldung läuft...'
 'Single sign-on': 'Single sign-on'
-Size: Size
+Size: Größe
 'Skip activities recorded before': 'Aktivitäten überspringen, die aufgezeichnet wurden vor'
 Skipped: Übersprungen
 'Skipped (an earlier rule stopped processing).': 'Übersprungen (eine vorherige Regel hat die Verarbeitung gestoppt).'
@@ -533,7 +533,7 @@ Tasks: Aufgaben
 'The average power': 'Die durchschnittliche Leistung'
 'The average speed': 'Die durchschnittliche Geschwindigkeit'
 'The backfill runs on the next import cycle, using the rules as they are configured at that moment. This cannot be undone.': 'Die Abarbeitung wird beim nächsten Importzyklus ausgeführt und nutzt die Regeln, die in diesem Moment konfiguriert sind. Dies kann nicht rückgängig gemacht werden.'
-'The backups directory is not mounted as a volume. Backups will be lost when the container is recreated. See {linkOpen}the documentation{linkClose}.': 'The backups directory is not mounted as a volume. Backups will be lost when the container is recreated. See {linkOpen}the documentation{linkClose}.'
+'The backups directory is not mounted as a volume. Backups will be lost when the container is recreated. See {linkOpen}the documentation{linkClose}.': 'Das Backup-Verzeichnis ist nicht als Volume eingebunden. Backups gehen beim Neuerstellen des Containers verloren. Siehe {linkOpen}die Dokumentation{linkClose}.'
 'The calories burned': 'Die verbrannten Kalorien'
 'The color of the routes drawn on every map. Accepts any valid CSS color, e.g. red, #FF0000 or rgb(255,0,0).': 'Die Farbe der Routen, die auf den Karten gezeichnet werden. Akzeptiert jede gültige CSS-Farbe, z.B. red, #FF0000 oder rgb(255,0,0).'
 'The current name of the activity': 'Der aktuelle Name der Aktivität'
