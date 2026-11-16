@@ -19,8 +19,6 @@
         <ini name="zend.assertions" value="1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="13" />
         <env name="APP_URL" value="http://localhost:8080/" force="true" />
         <env name="IMPORT_MODE" value="stravaApi" force="true" />
         <env name="AI_API_KEY" value="the-key" force="true" />
