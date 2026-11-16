@@ -10,6 +10,7 @@ use App\Domain\Integration\AI\Chat\DbalChatRepository;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Renderer\MarkdownRenderer;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -271,7 +272,11 @@ class ChatRequestHandlerTest extends AdminWebTestCase
 
     private function buildSettingsRepository(bool $aiEnabled): SettingsRepository
     {
-        $settingsRepository = new DbalSettingsRepository($this->getContainer()->get(Connection::class), new SpyEventBus());
+        $settingsRepository = new DbalSettingsRepository(
+            connection: $this->getContainer()->get(Connection::class),
+            eventBus: new SpyEventBus(),
+            managedMode: ManagedMode::fromString('0'),
+        );
         $settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
             'ai' => [
                 'enabled' => $aiEnabled,
