@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d440d018cacbf40989eeb09216eff3b",
+    "content-hash": "fa5dc7eae5dd3df6c73ec97c9860935e",
     "packages": [
         {
             "name": "adrenalinkin/doctrine-naming-strategy",
@@ -1524,72 +1524,6 @@
             },
             "time": "2023-08-08T05:53:35+00:00",
             "published-time": "2023-08-08T08:34:49+00:00"
-        },
-        {
-            "name": "gehrisandro/tailwind-merge-php",
-            "version": "v1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/gehrisandro/tailwind-merge-php.git",
-                "reference": "400040c89bc958ed130699ee4db0213f689cd498"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/gehrisandro/tailwind-merge-php/zipball/400040c89bc958ed130699ee4db0213f689cd498",
-                "reference": "400040c89bc958ed130699ee4db0213f689cd498",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.2.0",
-                "psr/simple-cache": "^3.0"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.13.8",
-                "nunomaduro/collision": "^v8.9.1",
-                "pestphp/pest": "^v4.4.2",
-                "pestphp/pest-plugin-type-coverage": "^v4.0.3",
-                "phpstan/phpstan": "^2.1.42",
-                "rector/rector": "^2.3.9",
-                "symfony/var-dumper": "^v7.4.6"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/TailwindMerge.php"
-                ],
-                "psr-4": {
-                    "TailwindMerge\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sandro Gehri",
-                    "email": "sandrogehri@gmail.com"
-                }
-            ],
-            "description": "TailwindMerge for PHP merges multiple Tailwind CSS classes by automatically resolving conflicts between them",
-            "keywords": [
-                "classes",
-                "merge",
-                "php",
-                "tailwindcss"
-            ],
-            "support": {
-                "issues": "https://github.com/gehrisandro/tailwind-merge-php/issues",
-                "source": "https://github.com/gehrisandro/tailwind-merge-php/tree/v1.2.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/gehrisandro",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-03-21T06:39:15+00:00",
-            "published-time": "2026-03-21T06:40:48+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -7426,104 +7360,6 @@
             "published-time": "2026-10-29T17:26:51+00:00"
         },
         {
-            "name": "symfony/form",
-            "version": "v8.1.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/form.git",
-                "reference": "30747df7b964f591d7f25bde3c517b5c71a0a537"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/30747df7b964f591d7f25bde3c517b5c71a0a537",
-                "reference": "30747df7b964f591d7f25bde3c517b5c71a0a537",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.4.1",
-                "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/event-dispatcher": "^7.4|^8.0",
-                "symfony/options-resolver": "^7.4|^8.0",
-                "symfony/polyfill-ctype": "^1.8",
-                "symfony/polyfill-intl-icu": "^1.21",
-                "symfony/polyfill-mbstring": "^1.0",
-                "symfony/property-access": "^7.4|^8.0",
-                "symfony/service-contracts": "^2.5|^3",
-                "symfony/var-exporter": "^8.1"
-            },
-            "conflict": {
-                "symfony/intl": "<7.4",
-                "symfony/translation-contracts": "<2.5",
-                "symfony/validator": "<7.4"
-            },
-            "require-dev": {
-                "doctrine/collections": "^1.0|^2.0",
-                "symfony/clock": "^7.4|^8.0",
-                "symfony/config": "^7.4|^8.0",
-                "symfony/console": "^7.4|^8.0",
-                "symfony/dependency-injection": "^7.4|^8.0",
-                "symfony/expression-language": "^7.4|^8.0",
-                "symfony/html-sanitizer": "^7.4|^8.0",
-                "symfony/http-foundation": "^7.4|^8.0",
-                "symfony/http-kernel": "^7.4|^8.0",
-                "symfony/intl": "^7.4|^8.0",
-                "symfony/security-core": "^7.4|^8.0",
-                "symfony/security-csrf": "^7.4|^8.0",
-                "symfony/translation": "^7.4|^8.0",
-                "symfony/uid": "^7.4|^8.0",
-                "symfony/validator": "^7.4|^8.0",
-                "symfony/var-dumper": "^7.4|^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Form\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Allows to easily create, process and reuse HTML forms",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/form/tree/v8.1.11"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-11-03T13:11:09+00:00",
-            "published-time": "2026-11-04T11:31:37+00:00"
-        },
-        {
             "name": "symfony/framework-bundle",
             "version": "v8.1.11",
             "source": {
@@ -8790,95 +8626,6 @@
             ],
             "time": "2026-10-15T09:18:53+00:00",
             "published-time": "2026-10-28T10:07:44+00:00"
-        },
-        {
-            "name": "symfony/polyfill-intl-icu",
-            "version": "v1.43.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-intl-icu.git",
-                "reference": "aad9cd259a9a4d2810e7ba778ed093bbd76a5ab9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/aad9cd259a9a4d2810e7ba778ed093bbd76a5ab9",
-                "reference": "aad9cd259a9a4d2810e7ba778ed093bbd76a5ab9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "suggest": {
-                "ext-intl": "For best performance and support of other locales than \"en\""
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/polyfill",
-                    "name": "symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Icu\\": ""
-                },
-                "classmap": [
-                    "Resources/stubs"
-                ],
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for intl's ICU-related data and classes",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "icu",
-                "intl",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-intl-icu/tree/v1.43.3"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-10-27T15:55:21+00:00",
-            "published-time": "2026-10-28T10:07:46+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",

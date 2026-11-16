@@ -1,12 +1,7 @@
-# Enable stateless CSRF protection for forms and logins/logouts
+# Enable stateless CSRF protection for logins/logouts and admin commands
 framework:
-    form:
-        csrf_protection:
-            token_id: submit
-
     csrf_protection:
         stateless_token_ids:
-            - submit
             - authenticate
             - logout
             - dispatch-command

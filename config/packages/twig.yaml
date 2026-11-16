@@ -3,7 +3,6 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     strict_variables: false
     cache: true
-    form_themes: ['form/flowbite-layout.html.twig']
     globals:
         appName: '@App\Application\AppName'
         importStatus: '@App\Application\ImportStatus'
