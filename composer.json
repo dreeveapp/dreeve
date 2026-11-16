@@ -61,7 +61,6 @@
         "symfony/clock": "8.1.*",
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
-        "symfony/expression-language": "8.1.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "8.1.*",
         "symfony/http-client": "8.1.*",
