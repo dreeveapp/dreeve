@@ -8,6 +8,7 @@
          displayDetailsOnAllIssues="true"
          failOnRisky="true"
          failOnWarning="true"
+         failOnDeprecation="true"
          failOnNotice="true"
          failOnSkipped="true"
          cacheDirectory=".phpunit.cache"
