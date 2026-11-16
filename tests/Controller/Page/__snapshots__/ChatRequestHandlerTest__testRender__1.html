@@ -267,11 +267,11 @@
       <div class="chat--wrapper w-full flex flex-col gap-6 p-8" data-chat-commands="{&quot;\/review-cardio&quot;:&quot;Don't forget that commute activities are part of my training&quot;}">
               </div>
     </div>
-      <form name="form" method="post" class="[&amp;.disabled]:bg-gray-100 flex gap-x-4 items-center border border-t-0 rounded-b text-gray-900 py-2 px-2">
-        <div class="hidden">Message</div>
-        <input required name="form[message]" id="form_message" value="" placeholder="Ask Mark something..." data-placeholder-idle="Ask Mark something..." data-placeholder-processing="Thinking..." class="message disabled:bg-gray-100 disabled:cursor-not-allowed border-0 w-full px-1 py-2.5 focus:ring-0 focus-visible:outline-0">
+      <form class="[&amp;.disabled]:bg-gray-100 flex gap-x-4 items-center border border-t-0 rounded-b text-gray-900 py-2 px-2">
+        <label for="message" class="hidden">Message</label>
+        <input required name="message" id="message" placeholder="Ask Mark something..." data-placeholder-idle="Ask Mark something..." data-placeholder-processing="Thinking..." class="message disabled:bg-gray-100 disabled:cursor-not-allowed border-0 w-full px-1 py-2.5 focus:ring-0 focus-visible:outline-0">
 
-        <button type="submit" name="form[submit]" id="form_submit" class="send-message disabled:cursor-not-allowed cursor-pointer text-primary hover:bg-primary/30 disabled:hover:bg-white rounded-full text-sm p-2.5 inline-flex items-center">
+        <button type="submit" class="send-message disabled:cursor-not-allowed cursor-pointer text-primary hover:bg-primary/30 disabled:hover:bg-white rounded-full text-sm p-2.5 inline-flex items-center">
             <svg class="size-4 rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewbox="0 0 18 20">
                 <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"></path>
             </svg>
@@ -281,8 +281,7 @@
           <div class="loader loader--sm"></div>
           <span class="sr-only">Loading...</span>
         </div>
-      <input type="hidden" id="form__token" name="form[_token]" data-controller="csrf-protection" class="" value="csrf-token">
-</form>
+      </form>
   </div>
 </div>
 

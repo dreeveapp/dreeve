@@ -27,7 +27,6 @@ use Symfony\AI\Platform\Message\Role;
 use Symfony\AI\Platform\Result\Stream\Delta\TextDelta;
 use Symfony\AI\Platform\Result\StreamResult;
 use Symfony\AI\Platform\Test\InMemoryPlatform;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
@@ -246,7 +245,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             chatRepository: $chatRepository,
             commandBus: $this->getContainer()->get(CommandBus::class),
             settingsRepository: $this->buildSettingsRepository($aiEnabled),
-            formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
             twig: $this->getContainer()->get(Environment::class),
             markdownRenderer: new MarkdownRenderer(),
@@ -263,7 +261,6 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             chatRepository: $chatRepository,
             commandBus: $commandBus,
             settingsRepository: $this->buildSettingsRepository(true),
-            formFactory: $this->getContainer()->get(FormFactoryInterface::class),
             appShell: $this->getContainer()->get(AppShell::class),
             twig: $this->getContainer()->get(Environment::class),
             markdownRenderer: new MarkdownRenderer(),

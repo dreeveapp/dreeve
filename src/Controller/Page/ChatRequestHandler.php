@@ -18,9 +18,6 @@ use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Platform\Message\Message;
 use Symfony\AI\Platform\Message\Role;
 use Symfony\AI\Platform\Result\Stream\Delta\TextDelta;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +35,6 @@ final readonly class ChatRequestHandler
         private ChatRepository $chatRepository,
         private CommandBus $commandBus,
         private SettingsRepository $settingsRepository,
-        private FormFactoryInterface $formFactory,
         private AppShell $appShell,
         private Environment $twig,
         private MarkdownRenderer $markdownRenderer,
@@ -158,17 +154,8 @@ final readonly class ChatRequestHandler
 
     private function renderFor(): string
     {
-        $form = $this->formFactory->createBuilder()
-            ->add('message', TextType::class, [
-                'label' => 'Message',
-                'required' => true,
-            ])
-            ->add('submit', SubmitType::class)
-            ->getForm();
-
         return $this->twig->load('html/chat/chat.html.twig')->render([
             'chatHistory' => $this->chatRepository->findAll(),
-            'form' => $form->createView(),
             'chatCommands' => Json::encode($this->settingsRepository->integrations()->getChatCommands()),
         ]);
     }

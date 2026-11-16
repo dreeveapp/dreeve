@@ -35,13 +35,13 @@
         {% endfor %}
       </div>
     </div>
-      {{ form_start(form, {'attr': {'class': '[&.disabled]:bg-gray-100 flex gap-x-4 items-center border border-t-0 rounded-b text-gray-900 py-2 px-2'}}) }}
-        <div class="hidden">{{ field_label(form.message) }}</div>
-        <input required name="{{ field_name(form.message) }}" id="{{ field_id(form.message) }}" value="{{ field_value(form.message) }}"
+      <form class="[&.disabled]:bg-gray-100 flex gap-x-4 items-center border border-t-0 rounded-b text-gray-900 py-2 px-2">
+        <label for="message" class="hidden">{{ "Message"|trans }}</label>
+        <input required name="message" id="message"
                placeholder="{{ "Ask Mark something..."|trans }}" data-placeholder-idle="{{ "Ask Mark something..."|trans }}" data-placeholder-processing="{{ "Thinking..."|trans }}"
             class="message disabled:bg-gray-100 disabled:cursor-not-allowed border-0 w-full px-1 py-2.5 focus:ring-0 focus-visible:outline-0">
 
-        <button type="submit" name="{{ field_name(form.submit) }}" id="{{ field_id(form.submit) }}"
+        <button type="submit"
                 class="send-message disabled:cursor-not-allowed cursor-pointer text-primary hover:bg-primary/30 disabled:hover:bg-white rounded-full text-sm p-2.5 inline-flex items-center">
             <svg class="size-4 rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                 <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"></path>
@@ -52,7 +52,7 @@
           <div class="loader loader--sm"></div>
           <span class="sr-only">{{ "Loading..."|trans }}</span>
         </div>
-      {{ form_end(form) }}
+      </form>
   </div>
 </div>
 {% endautoescape %}

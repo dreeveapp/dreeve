@@ -109,7 +109,7 @@ export default class Chat {
             e.preventDefault();
             const formData = new FormData(this.form);
             this.toggleElements(true);
-            this.handleSSE(formData.get('form[message]'));
+            this.handleSSE(formData.get('message'));
         });
 
         this.textInput.addEventListener('keydown', e => {
