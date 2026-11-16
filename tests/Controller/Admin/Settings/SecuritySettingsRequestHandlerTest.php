@@ -65,6 +65,17 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[name="data[visitorsCanDownloadOriginalFiles]"][checked]'));
     }
 
+    public function testItChecksTheRequireLoginOptionByDefaultOnManagedInstances(): void
+    {
+        $this->withManagedMode();
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::SECURITY, []);
+        $this->client->loginUser($this->adminUser());
+
+        $crawler = $this->client->request('GET', '/admin/settings/security');
+
+        $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[requiresAuthentication]"][checked]'));
+    }
+
     public function testItRendersTheSecuritySettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
@@ -76,7 +87,8 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
         // The security settings form.
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="security"]'));
-        $this->assertCount(1, $crawler->filter('input[name="data[requiresAuthentication]"]'));
+        $this->assertCount(1, $crawler->filter('input[type="hidden"][name="data[requiresAuthentication]"][value="0"]'));
+        $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[requiresAuthentication]"]:not([checked])'));
         $this->assertCount(1, $crawler->filter('input[name="data[visitorsCanDownloadOriginalFiles]"]:not([checked])'));
 
         // The environment driven credentials, shown for reference only.

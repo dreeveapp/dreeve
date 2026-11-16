@@ -151,6 +151,23 @@ class RequireAuthenticationTest extends AdminWebTestCase
         $this->assertResponseRedirects('http://localhost/admin/login');
     }
 
+    public function testItRequiresALoginByDefaultOnManagedInstancesUntilTurnedOff(): void
+    {
+        $this->withManagedMode();
+        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::SECURITY, []);
+
+        $this->client->request('GET', '/');
+        $this->assertResponseRedirects('http://localhost/admin/login');
+
+        $this->getContainer()->get(CommandBus::class)->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::SECURITY->value,
+            'data' => ['requiresAuthentication' => '0'],
+        ]));
+
+        $this->client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+    }
+
     private function requireAuthentication(): void
     {
         /** @var DbalSettingsRepository $settingsRepository */

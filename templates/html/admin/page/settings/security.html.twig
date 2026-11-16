@@ -26,6 +26,7 @@
             </div>
             <div>
                 <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                    <input type="hidden" name="data[requiresAuthentication]" value="0">
                     <input type="checkbox" name="data[requiresAuthentication]" value="1"
                            {{ (settings.requiresAuthentication ?? false) ? 'checked' : '' }}>
                     <span>{{ "Require a login for the entire app"|trans({}, 'admin') }}</span>

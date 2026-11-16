@@ -6,6 +6,7 @@ namespace App\Tests;
 
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
+use App\Infrastructure\Config\ManagedMode;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\DependencyInjection\Container;
@@ -17,8 +18,9 @@ trait ProvideSettings
     protected function provideSettings(): void
     {
         $settingsRepository = new DbalSettingsRepository(
-            $this->getContainer()->get(Connection::class),
-            new SpyEventBus(),
+            connection: $this->getContainer()->get(Connection::class),
+            eventBus: new SpyEventBus(),
+            managedMode: ManagedMode::fromString('0'),
         );
 
         $settingsRepository->saveGroup(SettingsGroup::GENERAL, [

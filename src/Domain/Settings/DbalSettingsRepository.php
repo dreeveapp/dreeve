@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Settings;
 
+use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
@@ -15,18 +16,14 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
     public function __construct(
         Connection $connection,
         private EventBus $eventBus,
+        private ManagedMode $managedMode,
     ) {
         parent::__construct($connection);
     }
 
     public function find(SettingsName $name): mixed
     {
-        $value = $this->connection->fetchOne(
-            'SELECT value FROM Setting WHERE name = :name',
-            ['name' => $name->value]
-        );
-
-        return $this->applyDefault($name, false === $value ? null : Json::decode((string) $value));
+        return $this->findGroup($name->group())[$name->value] ?? null;
     }
 
     public function findGroup(SettingsGroup $group): array
@@ -41,18 +38,16 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
         );
 
         foreach ($group->getSettingsNames() as $name) {
-            $value = $this->applyDefault($name, $data[$name->value] ?? null);
-            if (null !== $value) {
-                $data[$name->value] = $value;
+            if (empty($data[$name->value] ?? null) && null !== $name->defaultValue()) {
+                $data[$name->value] = $name->defaultValue();
             }
         }
 
-        return $data;
-    }
+        if (SettingsGroup::SECURITY === $group && $this->managedMode->isEnabled()) {
+            $data[SettingsName::REQUIRES_AUTHENTICATION->value] ??= true;
+        }
 
-    private function applyDefault(SettingsName $name, mixed $value): mixed
-    {
-        return empty($value) ? ($name->defaultValue() ?? $value) : $value;
+        return $data;
     }
 
     public function save(SettingsName $name, mixed $value): void
