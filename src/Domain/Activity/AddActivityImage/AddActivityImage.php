@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Domain\Activity\AddActivityImage;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Image\ImagePath;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\DomainCommand;
 
 final readonly class AddActivityImage extends DomainCommand
 {
     public function __construct(
         private ActivityId $activityId,
-        private ImagePath $path,
-        private string $content,
+        private MediaItemId $mediaItemId,
+        private NewMediaItem $newMediaItem,
     ) {
     }
 
@@ -22,13 +23,13 @@ final readonly class AddActivityImage extends DomainCommand
         return $this->activityId;
     }
 
-    public function getPath(): ImagePath
+    public function getMediaItemId(): MediaItemId
     {
-        return $this->path;
+        return $this->mediaItemId;
     }
 
-    public function getContent(): string
+    public function getNewMediaItem(): NewMediaItem
     {
-        return $this->content;
+        return $this->newMediaItem;
     }
 }

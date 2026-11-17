@@ -12,5 +12,7 @@ interface MediaItemRepository
 
     public function delete(MediaItem $mediaItem): void;
 
+    public function find(MediaItemId $mediaItemId): MediaItem;
+
     public function findByIds(MediaItemIds $mediaItemIds): MediaItems;
 }

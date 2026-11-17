@@ -8,11 +8,22 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\AddActivityImage\AddActivityImage;
-use App\Domain\Image\ImagePath;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItems;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Geography\Latitude;
+use App\Infrastructure\ValueObject\Geography\Longitude;
+use App\Infrastructure\ValueObject\String\Path;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use League\Flysystem\FilesystemOperator;
 
 class AddActivityImageCommandHandlerTest extends ContainerTestCase
@@ -32,16 +43,37 @@ class AddActivityImageCommandHandlerTest extends ContainerTestCase
             rawData: [],
         ));
 
+        $content = (string) file_get_contents(dirname(__DIR__, 2).'/Media/Metadata/fixtures/image-with-exif.jpg');
+
         $this->commandBus->dispatch(new AddActivityImage(
             activityId: ActivityId::fromUnprefixed('1'),
-            path: ImagePath::fromFileSystemPath('activities/new.jpg'),
-            content: 'new-content',
+            mediaItemId: MediaItemId::fromUnprefixed('new'),
+            newMediaItem: new NewMediaItem(
+                filename: Path::fromString('photo.jpg'),
+                content: $content,
+            ),
         ));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
         $this->assertSame(['/files/activities/existing.png', '/files/activities/new.jpg'], $activity->getLocalImagePaths());
         $this->assertSame(2, $activity->getTotalImageCount());
-        $this->assertSame('new-content', $this->fileStorage->read('activities/new.jpg'));
+        $this->assertSame($content, $this->fileStorage->read('activities/new.jpg'));
+        $this->assertEquals(
+            MediaItems::fromArray([
+                MediaItemBuilder::fromDefaults()
+                    ->withMediaItemId(MediaItemId::fromUnprefixed('new'))
+                    ->withPath(MediaItemPath::fromLocalPath('files/activities/new.jpg'))
+                    ->withWidth(4)
+                    ->withHeight(3)
+                    ->withCoordinate(Coordinate::createFromLatAndLng(
+                        latitude: Latitude::fromString('-22.9519'),
+                        longitude: Longitude::fromString('-43.2105'),
+                    ))
+                    ->withTakenOn(SerializableDateTime::fromString('2025-06-14 08:42:17'))
+                    ->build(),
+            ]),
+            $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('new')])),
+        );
         $this->assertSame('existing', $this->fileStorage->read('activities/existing.png'));
     }
 
@@ -51,8 +83,11 @@ class AddActivityImageCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(new AddActivityImage(
             activityId: ActivityId::fromUnprefixed('999'),
-            path: ImagePath::fromFileSystemPath('activities/new.jpg'),
-            content: 'new-content',
+            mediaItemId: MediaItemId::fromUnprefixed('new'),
+            newMediaItem: new NewMediaItem(
+                filename: Path::fromString('photo.jpg'),
+                content: 'new-content',
+            ),
         ));
     }
 

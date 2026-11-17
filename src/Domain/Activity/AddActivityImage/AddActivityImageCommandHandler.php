@@ -7,7 +7,8 @@ namespace App\Domain\Activity\AddActivityImage;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Image\ImagePath;
-use App\Domain\Image\ImageStorage;
+use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 
@@ -15,7 +16,7 @@ final readonly class AddActivityImageCommandHandler implements CommandHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
     ) {
     }
 
@@ -26,7 +27,11 @@ final readonly class AddActivityImageCommandHandler implements CommandHandler
         $activityWithRawData = $this->activityRepository->findWithRawData($command->getActivityId());
         $activity = $activityWithRawData->getActivity();
 
-        $this->imageStorage->storeAt($command->getPath(), $command->getContent());
+        $mediaItem = $this->mediaItemStorage->storeWithId(
+            mediaItemId: $command->getMediaItemId(),
+            newMediaItem: $command->getNewMediaItem(),
+            directory: MediaItemDirectory::ACTIVITIES,
+        );
 
         $this->activityRepository->update(ActivityWithRawData::fromState(
             activity: $activity->withLocalImagePaths([
@@ -34,7 +39,7 @@ final readonly class AddActivityImageCommandHandler implements CommandHandler
                     static fn (string $path): string => ImagePath::fromLocalImagePath($path)->toLocalImagePath(),
                     $activity->getLocalImagePaths()
                 ),
-                $command->getPath()->toLocalImagePath(),
+                $mediaItem->getPath()->toLocalPath(),
             ]),
             rawData: $activityWithRawData->getRawData(),
         ));
