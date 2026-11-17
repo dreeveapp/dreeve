@@ -58,10 +58,10 @@ trait ProvideLocalImageFromDropZonePayload
                 );
             }
             if (ImageStatus::REMOVED === $status) {
-                if (!isset($image['path']) || !is_string($image['path']) || '' === trim($image['path'])) {
-                    throw CouldNotDeserializeCommand::invalidPayload('A removed image requires a "path".');
+                if (!isset($image['id']) || !is_string($image['id']) || '' === trim($image['id'])) {
+                    throw CouldNotDeserializeCommand::invalidPayload('A removed image requires an "id".');
                 }
-                $removedImages[] = new RemovedImage(trim($image['path']));
+                $removedImages[] = new RemovedImage(trim($image['id']));
             }
         }
 

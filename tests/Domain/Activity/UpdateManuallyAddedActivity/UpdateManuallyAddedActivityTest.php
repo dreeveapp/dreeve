@@ -86,7 +86,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
             ...$this->validPayload(),
             'images' => json_encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => base64_encode('binary-content')],
-                ['status' => 'removed', 'path' => '/files/activities/existing.png'],
+                ['status' => 'removed', 'id' => 'mediaItem-existing'],
             ]),
         ]);
 
@@ -97,7 +97,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
 
         $removedImages = $command->getRemovedImages();
         $this->assertCount(1, $removedImages);
-        $this->assertSame('files/activities/existing.png', $removedImages[0]->getPath()->toLocalImagePath());
+        $this->assertSame('mediaItem-existing', $removedImages[0]->getId());
     }
 
     /**

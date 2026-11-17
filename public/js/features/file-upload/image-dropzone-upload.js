@@ -44,7 +44,7 @@ class ImageDropzoneUpload {
         const existing = JSON.parse(this.root.getAttribute('data-existing-images') || '[]');
         this.files = existing.map((image) => ({
             status: ImageStatus.Unchanged,
-            path: image.path,
+            id: image.id,
             name: image.name,
             ok: true,
             preview: image.url,
@@ -155,7 +155,7 @@ class ImageDropzoneUpload {
             .filter((f) => f.ok)
             .map((f) => f.status === ImageStatus.New
                 ? {status: f.status, filename: f.name, content: f.content}
-                : {status: f.status, path: f.path});
+                : {status: f.status, id: f.id});
         this.field.value = JSON.stringify(images);
     }
 

@@ -222,15 +222,15 @@
                 </div>
             </section>
         {% endblock mainStatsOnTop %}
-        {% set localImagePaths = activity.getLocalImagePaths() %}
-        {% if localImagePaths %}
+        {% if mediaItems is not empty %}
             <section>
                 <div class="flex items-center gap-2 mb-3">
                     <h3 class="font-bold text-gray-900">{{ "Photos"|trans }}</h3>
-                    <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ localImagePaths|length }}</span>
+                    <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ mediaItems|length }}</span>
                 </div>
                 <div class="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" data-light-gallery>
-                    {% for imagePath in localImagePaths %}
+                    {% for mediaItem in mediaItems %}
+                        {% set imagePath = '/' ~ mediaItem.getPath().toLocalPath() %}
                         {% set lightGalleryElement = {
                             'src': relativeUrl(imagePath),
                             'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>',

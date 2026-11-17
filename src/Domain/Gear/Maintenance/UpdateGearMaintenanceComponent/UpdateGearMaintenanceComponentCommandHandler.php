@@ -8,6 +8,7 @@ use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallationLoopDetected;
 use App\Domain\Image\ImageDirectory;
+use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
@@ -68,7 +69,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
         $this->gearComponentRepository->update($gearComponent);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->imageStorage->remove($removedImage->getPath());
+            $this->imageStorage->remove(ImagePath::fromLocalImagePath($removedImage->getId()));
         }
     }
 }

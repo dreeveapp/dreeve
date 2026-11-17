@@ -81,8 +81,8 @@ class UpdateActivityTest extends TestCase
             'sportType' => 'Ride',
             'images' => json_encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => base64_encode('binary-content')],
-                ['status' => 'unchanged', 'path' => '/files/activities/existing.png'],
-                ['status' => 'removed', 'path' => '/files/activities/gone.png'],
+                ['status' => 'unchanged', 'id' => 'mediaItem-existing'],
+                ['status' => 'removed', 'id' => 'mediaItem-gone'],
             ]),
         ]);
 
@@ -93,7 +93,7 @@ class UpdateActivityTest extends TestCase
 
         $removedImages = $command->getRemovedImages();
         $this->assertCount(1, $removedImages);
-        $this->assertSame('files/activities/gone.png', $removedImages[0]->getPath()->toLocalImagePath());
+        $this->assertSame('mediaItem-gone', $removedImages[0]->getId());
     }
 
     #[DataProvider('provideInvalidImagePayloads')]
@@ -152,11 +152,11 @@ class UpdateActivityTest extends TestCase
             'A new image requires a "filename" and "content".',
         ];
 
-        yield 'removed image missing path' => [
+        yield 'removed image missing id' => [
             json_encode([
                 ['status' => 'removed'],
             ]),
-            'A removed image requires a "path".',
+            'A removed image requires an "id".',
         ];
     }
 

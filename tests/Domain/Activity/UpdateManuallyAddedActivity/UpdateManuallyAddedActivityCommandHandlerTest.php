@@ -171,7 +171,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             'startDateTime' => '2023-10-17T16:15',
             'duration' => ['minutes' => 30],
             'images' => Json::encode([
-                ['status' => 'removed', 'path' => '/files/activities/drop.png'],
+                ['status' => 'removed', 'id' => 'mediaItem-drop'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
         ]));

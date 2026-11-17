@@ -8,11 +8,14 @@ use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\Media\ActivityImageId;
 use App\Domain\Activity\Search\ActivitySearchResult;
-use App\Domain\Image\ImagePath;
+use App\Domain\Media\MediaItem;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItems;
 use App\Infrastructure\Http\Api\ProvidePagination;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\String\Path;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class ActivityResponse extends JsonResponse
@@ -22,14 +25,15 @@ final class ActivityResponse extends JsonResponse
     /**
      * @param Overview<ActivitySearchResult> $overview
      */
-    public static function list(Overview $overview, Pagination $pagination, AppUrl $appUrl): self
+    public static function list(Overview $overview, Pagination $pagination, MediaItems $mediaItems, AppUrl $appUrl): self
     {
         return new self([
             'activities' => array_map(
                 static fn (ActivitySearchResult $result): array => self::activity(
-                    $result->getActivity(),
-                    $result->hasGpx(),
-                    $appUrl,
+                    activity: $result->getActivity(),
+                    hasGpx: $result->hasGpx(),
+                    mediaItems: $mediaItems,
+                    appUrl: $appUrl,
                 ),
                 $overview->getItems()
             ),
@@ -37,16 +41,25 @@ final class ActivityResponse extends JsonResponse
         ]);
     }
 
-    public static function detail(Activity $activity, bool $hasGpx, AppUrl $appUrl): self
+    public static function detail(Activity $activity, bool $hasGpx, MediaItems $mediaItems, AppUrl $appUrl): self
     {
-        return new self(self::activity($activity, $hasGpx, $appUrl));
+        return new self(self::activity(
+            activity: $activity,
+            hasGpx: $hasGpx,
+            mediaItems: $mediaItems,
+            appUrl: $appUrl,
+        ));
     }
 
     /**
      * @return array<string, mixed>
      */
-    private static function activity(Activity $activity, bool $hasGpx, AppUrl $appUrl): array
+    private static function activity(Activity $activity, bool $hasGpx, MediaItems $mediaItems, AppUrl $appUrl): array
     {
+        $mediaItemIds = array_map(
+            static fn (string $localImagePath): string => (string) MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
+            $activity->getLocalImagePaths(),
+        );
         $startingCoordinate = $activity->getStartingCoordinate();
         $routeGeography = $activity->getRouteGeography();
 
@@ -87,13 +100,13 @@ final class ActivityResponse extends JsonResponse
             ] : null,
             'encodedPolyline' => (string) $activity->getEncodedPolyline() ?: null,
             'hasGpx' => $hasGpx,
-            'images' => array_map(
-                static fn (string $path): array => [
-                    'id' => (string) ActivityImageId::fromImagePath(ImagePath::fromLocalImagePath($path)),
-                    'url' => rtrim((string) $appUrl, '/').'/'.ltrim($path, '/'),
+            'images' => array_values(array_map(
+                static fn (MediaItem $mediaItem): array => [
+                    'id' => (string) ActivityImageId::fromUnprefixed($mediaItem->getId()->toUnprefixedString()),
+                    'url' => rtrim((string) $appUrl, '/').'/'.$mediaItem->getPath()->toLocalPath(),
                 ],
-                $activity->getLocalImagePaths()
-            ),
+                $mediaItems->filter(static fn (MediaItem $mediaItem): bool => in_array((string) $mediaItem->getId(), $mediaItemIds, true))->toArray(),
+            )),
         ];
     }
 }

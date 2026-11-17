@@ -7,7 +7,7 @@
     {% set existingImages = [] %}
     {% if component and component.getLocalImagePath() %}
         {% set imgPath = component.getLocalImagePath() %}
-        {% set existingImages = [{url: relativeUrl('/' ~ imgPath), name: imgPath|split('/')|last, path: imgPath}] %}
+        {% set existingImages = [{url: relativeUrl('/' ~ imgPath), name: imgPath|split('/')|last, id: imgPath}] %}
     {% endif %}
     {% set initialTasks = [] %}
     {% if component %}

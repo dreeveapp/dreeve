@@ -13,14 +13,19 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -153,10 +158,15 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withGearId(GearId::fromUnprefixed('custom-gear'))
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
-                ->withLocalImagePaths('activity-1/image.jpg')
+                ->withLocalImagePaths('files/activities/image.jpg')
                 ->build(),
             [],
         ));
+
+        static::getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('image'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/image.jpg'))
+            ->build());
 
         $this->client->loginUser($this->adminUser());
 
@@ -200,7 +210,10 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         // The existing image can be managed.
         $this->assertCount(1, $crawler->filter('[data-image-dropzone]'));
-        $this->assertStringContainsString('image.jpg', (string) $crawler->filter('[data-image-dropzone]')->attr('data-existing-images'));
+        $this->assertSame(
+            [['url' => '/files/activities/image.jpg', 'name' => 'image.jpg', 'id' => 'mediaItem-image']],
+            Json::decode((string) $crawler->filter('[data-image-dropzone]')->attr('data-existing-images')),
+        );
 
         $this->assertSame(
             '/admin/activities/activity-1/delete',
