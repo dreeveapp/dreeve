@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Activity\Image;
+namespace App\Domain\Activity\Media;
 
 use App\Domain\Image\ImagePath;
 use App\Infrastructure\ValueObject\Identifier\Identifier;

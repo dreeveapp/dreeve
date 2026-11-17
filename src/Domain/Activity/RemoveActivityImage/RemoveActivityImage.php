@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\RemoveActivityImage;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\Image\ActivityImageId;
+use App\Domain\Activity\Media\ActivityImageId;
 use App\Infrastructure\CQRS\Command\DomainCommand;
 
 final readonly class RemoveActivityImage extends DomainCommand

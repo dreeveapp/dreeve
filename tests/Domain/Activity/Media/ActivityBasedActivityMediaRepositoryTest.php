@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests\Domain\Activity\Image;
+namespace App\Tests\Domain\Activity\Media;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Activity\Image\ActivityBasedImageRepository;
-use App\Domain\Activity\Image\Image;
-use App\Domain\Activity\Image\ImageRepository;
+use App\Domain\Activity\Media\ActivityBasedActivityMediaRepository;
+use App\Domain\Activity\Media\ActivityMediaItem;
+use App\Domain\Activity\Media\ActivityMediaRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Settings\SettingsGroup;
@@ -21,9 +21,9 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use League\Flysystem\FilesystemOperator;
 
-class ActivityBasedImageRepositoryTest extends ContainerTestCase
+class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
 {
-    private ImageRepository $imageRepository;
+    private ActivityMediaRepository $activityMediaRepository;
     private FilesystemOperator $fileStorage;
 
     public function testFindRandomFor(): void
@@ -64,7 +64,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
 
         $this->assertEquals(
             ActivityId::fromUnprefixed('3'),
-            $this->imageRepository->findRandomFor(
+            $this->activityMediaRepository->findRandomFor(
                 sportTypes: SportTypes::thatSupportImagesForStravaRewind(),
                 years: Years::fromArray([Year::fromInt(2024)]),
             )->getActivity()->getId()
@@ -100,7 +100,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
 
         $this->expectExceptionObject(new EntityNotFound('Random image not found'));
 
-        $this->imageRepository->findRandomFor(
+        $this->activityMediaRepository->findRandomFor(
             sportTypes: SportTypes::thatSupportImagesForStravaRewind(),
             years: Years::fromArray([Year::fromInt(2024)]),
         );
@@ -135,7 +135,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
             []
         ));
 
-        $this->assertEquals(12, $this->imageRepository->count());
+        $this->assertEquals(12, $this->activityMediaRepository->count());
 
         $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::APPEARANCE, [
             'photos' => [
@@ -143,10 +143,10 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
             ],
         ]);
 
-        $this->assertEquals(3, $this->imageRepository->count());
+        $this->assertEquals(3, $this->activityMediaRepository->count());
         $this->assertEquals(
             ['/files/activities/run.jpg'],
-            $this->imageRepository->findAll()->map(static fn (Image $image): string => $image->getImageUrl()),
+            $this->activityMediaRepository->findAll()->map(static fn (ActivityMediaItem $mediaItem): string => $mediaItem->getImageUrl()),
         );
     }
 
@@ -170,7 +170,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
             []
         ));
 
-        $this->imageRepository->deleteForActivity(ActivityId::fromUnprefixed('1'));
+        $this->activityMediaRepository->deleteForActivity(ActivityId::fromUnprefixed('1'));
 
         $this->assertFalse($this->fileStorage->fileExists('activities/one.png'));
         $this->assertTrue($this->fileStorage->fileExists('activities/two.png'));
@@ -180,7 +180,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
     {
         $this->expectNotToPerformAssertions();
 
-        $this->imageRepository->deleteForActivity(ActivityId::fromUnprefixed('1'));
+        $this->activityMediaRepository->deleteForActivity(ActivityId::fromUnprefixed('1'));
     }
 
     #[\Override]
@@ -188,7 +188,7 @@ class ActivityBasedImageRepositoryTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->imageRepository = new ActivityBasedImageRepository(
+        $this->activityMediaRepository = new ActivityBasedActivityMediaRepository(
             $this->getConnection(),
             $this->getContainer()->get(ActivityRepository::class),
             $this->fileStorage = $this->getContainer()->get('file.storage'),

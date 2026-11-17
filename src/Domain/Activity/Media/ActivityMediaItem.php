@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Activity\Image;
+namespace App\Domain\Activity\Media;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Media\ImageOrientation;
 
-final readonly class Image
+final readonly class ActivityMediaItem
 {
     private function __construct(
         private string $imageLocation,

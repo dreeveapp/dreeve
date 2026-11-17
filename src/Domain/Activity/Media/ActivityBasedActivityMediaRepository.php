@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Activity\Image;
+namespace App\Domain\Activity\Media;
 
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\ActivityId;
@@ -19,7 +19,7 @@ use Doctrine\DBAL\Connection;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 
-final readonly class ActivityBasedImageRepository implements ImageRepository
+final readonly class ActivityBasedActivityMediaRepository implements ActivityMediaRepository
 {
     public function __construct(
         private Connection $connection,
@@ -31,17 +31,17 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
     ) {
     }
 
-    public function findAll(): Images
+    public function findAll(): ActivityMediaItems
     {
-        return $this->buildImagesFor($this->activityRepository->findAll());
+        return $this->buildMediaItemsFor($this->activityRepository->findAll());
     }
 
-    public function findByActivityIds(ActivityIds $activityIds): Images
+    public function findByActivityIds(ActivityIds $activityIds): ActivityMediaItems
     {
-        return $this->buildImagesFor($this->activityRepository->findByIds($activityIds));
+        return $this->buildMediaItemsFor($this->activityRepository->findByIds($activityIds));
     }
 
-    public function findRandomFor(SportTypes $sportTypes, Years $years): Image
+    public function findRandomFor(SportTypes $sportTypes, Years $years): ActivityMediaItem
     {
         $activities = $this->activityRepository->findAll()->toArray();
         shuffle($activities);
@@ -67,7 +67,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
                 $imageOrientation = ImageOrientation::fromWidthAndHeight($info[0], $info[1]);
             }
 
-            return Image::create(
+            return ActivityMediaItem::create(
                 imageLocation: $localImagePaths[$randomImageIndex],
                 activity: $activity,
                 orientation: $imageOrientation,
@@ -112,9 +112,9 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
         }
     }
 
-    private function buildImagesFor(Activities $activities): Images
+    private function buildMediaItemsFor(Activities $activities): ActivityMediaItems
     {
-        $images = Images::empty();
+        $mediaItems = ActivityMediaItems::empty();
         foreach ($activities as $activity) {
             if (0 === $activity->getTotalImageCount()) {
                 continue;
@@ -131,7 +131,7 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
                     $imageOrientation = ImageOrientation::fromWidthAndHeight($info[0], $info[1]);
                 }
 
-                $images->add(Image::create(
+                $mediaItems->add(ActivityMediaItem::create(
                     imageLocation: $localImagePath,
                     activity: $activity,
                     orientation: $imageOrientation,
@@ -139,6 +139,6 @@ final readonly class ActivityBasedImageRepository implements ImageRepository
             }
         }
 
-        return $images;
+        return $mediaItems;
     }
 }

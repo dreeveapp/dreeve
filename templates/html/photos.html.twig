@@ -25,10 +25,10 @@
     </div>
     <div class="flex flex-wrap gap-2 p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <div id="images" class="flex flex-wrap gap-2" data-light-gallery>
-            {% for image in images %}
-                {% set activity = image.getActivity() %}
+            {% for mediaItem in mediaItems %}
+                {% set activity = mediaItem.getActivity() %}
                 {% set lightGalleryElement = {
-                    'src': relativeUrl(image.getImageUrl()),
+                    'src': relativeUrl(mediaItem.getImageUrl()),
                     'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>'
                         ~ '<a href="' ~ relativeUrl(path('activity', {'activityId': activity.getId()})) ~ '"'
                         ~ ' class="mt-2 inline-flex items-center gap-x-1.5 rounded-lg bg-primary hover:bg-orange-600 py-2 px-4 text-sm font-medium text-white! no-underline! hover:no-underline! transition-all active:scale-[0.97]">'
@@ -37,11 +37,11 @@
                         ~ '</a>',
                     'alt':  activity.getSanitizedName(),
                 } %}
-                <a data-image data-filterables='{{ image.getFilterables()|json_encode }}' data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}"
-                   class="no-dark grow h-[25vh] max-w-full {{ image.getOrientation() == enum('App\\Domain\\Media\\ImageOrientation').PORTRAIT ? 'aspect-[3/4]' : 'aspect-[3/2]' }} relative group/image overflow-hidden rounded-lg shadow-sm"
-                   href="{{ relativeUrl(image.getImageUrl()) }}">
+                <a data-image data-filterables='{{ mediaItem.getFilterables()|json_encode }}' data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}"
+                   class="no-dark grow h-[25vh] max-w-full {{ mediaItem.getOrientation() == enum('App\\Domain\\Media\\ImageOrientation').PORTRAIT ? 'aspect-[3/4]' : 'aspect-[3/2]' }} relative group/image overflow-hidden rounded-lg shadow-sm"
+                   href="{{ relativeUrl(mediaItem.getImageUrl()) }}">
                     <img class="h-full w-full object-cover align-bottom transition-transform duration-500 group-hover/image:scale-105 lazy"
-                         data-src="{{ relativeUrl(image.getImageUrl()) }}" alt="{{ activity.getName() }}" src="{{ placeholderImage(image.getOrientation()) }}" />
+                         data-src="{{ relativeUrl(mediaItem.getImageUrl()) }}" alt="{{ activity.getName() }}" src="{{ placeholderImage(mediaItem.getOrientation()) }}" />
                     <div class="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-300"></div>
                     <div class="text-white flex flex-col absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/60 to-transparent p-3
                     transition-all duration-300 translate-y-full group-hover/image:opacity-100 group-hover/image:translate-y-0">

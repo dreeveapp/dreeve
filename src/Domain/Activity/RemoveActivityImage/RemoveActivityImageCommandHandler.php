@@ -6,7 +6,7 @@ namespace App\Domain\Activity\RemoveActivityImage;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Activity\Image\ActivityImageId;
+use App\Domain\Activity\Media\ActivityImageId;
 use App\Domain\Image\ImagePath;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;

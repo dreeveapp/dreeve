@@ -112,22 +112,22 @@
                 {% endif %}
             {% endblock %}
         </div>
-        {% if images is not empty %}
+        {% if mediaItems is not empty %}
             <details open class="group/section p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
                 <summary class="list-none cursor-pointer flex items-center justify-between select-none">
                     <div class="flex items-center gap-2">
                         <h3 class="text-lg font-semibold">{{ "Photos"|trans }}</h3>
-                        <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ images|length }}</span>
+                        <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ mediaItems|length }}</span>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m1 1 4 4 4-4"/>
                     </svg>
                 </summary>
                 <div class="mt-4 flex flex-wrap gap-2" data-light-gallery>
-                    {% for image in images %}
-                        {% set activity = image.getActivity() %}
+                    {% for mediaItem in mediaItems %}
+                        {% set activity = mediaItem.getActivity() %}
                         {% set lightGalleryElement = {
-                            'src': relativeUrl(image.getImageUrl()),
+                            'src': relativeUrl(mediaItem.getImageUrl()),
                             'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>'
                                 ~ '<a href="' ~ relativeUrl(path('activity', {'activityId': activity.getId()})) ~ '"'
                                 ~ ' class="mt-2 inline-flex items-center gap-x-1.5 rounded-lg bg-primary hover:bg-orange-600 py-2 px-4 text-sm font-medium text-white! no-underline! hover:no-underline! transition-all active:scale-[0.97]">'
@@ -137,10 +137,10 @@
                             'alt':  activity.getSanitizedName(),
                         } %}
                         <a data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}"
-                           class="no-dark grow h-[25vh] max-w-full {{ image.getOrientation() == enum('App\\Domain\\Media\\ImageOrientation').PORTRAIT ? 'aspect-[3/4]' : 'aspect-[3/2]' }} relative group/image overflow-hidden rounded-lg shadow-sm"
-                           href="{{ relativeUrl(image.getImageUrl()) }}">
+                           class="no-dark grow h-[25vh] max-w-full {{ mediaItem.getOrientation() == enum('App\\Domain\\Media\\ImageOrientation').PORTRAIT ? 'aspect-[3/4]' : 'aspect-[3/2]' }} relative group/image overflow-hidden rounded-lg shadow-sm"
+                           href="{{ relativeUrl(mediaItem.getImageUrl()) }}">
                             <img class="h-full w-full object-cover align-bottom transition-transform duration-500 group-hover/image:scale-105 lazy"
-                                 data-src="{{ relativeUrl(image.getImageUrl()) }}" alt="{{ activity.getName()|e('html_attr') }}" src="{{ placeholderImage(image.getOrientation()) }}" />
+                                 data-src="{{ relativeUrl(mediaItem.getImageUrl()) }}" alt="{{ activity.getName()|e('html_attr') }}" src="{{ placeholderImage(mediaItem.getOrientation()) }}" />
                             <div class="absolute inset-0 bg-black/0 group-hover/image:bg-black/20 transition-colors duration-300"></div>
                             <div class="text-white flex flex-col absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/60 to-transparent p-3
                             transition-all duration-300 translate-y-full group-hover/image:opacity-100 group-hover/image:translate-y-0">
