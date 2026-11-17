@@ -27,7 +27,7 @@
         "deviceName": "Edge 540",
         "connectedSensors": null,
         "totalImageCount": 0,
-        "localImagePaths": "",
+        "mediaItemIds": "[]",
         "polyline": null,
         "routeGeography": "[]",
         "weather": null,

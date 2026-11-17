@@ -27,7 +27,7 @@
         "deviceName": "Runna",
         "connectedSensors": null,
         "totalImageCount": 0,
-        "localImagePaths": "",
+        "mediaItemIds": "[]",
         "polyline": null,
         "routeGeography": "[]",
         "weather": null,

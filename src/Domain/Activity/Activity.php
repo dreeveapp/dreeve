@@ -8,6 +8,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
+use App\Domain\Media\MediaItemIds;
 use App\Domain\Zwift\CouldNotDetermineZwiftMap;
 use App\Domain\Zwift\ZwiftMap;
 use App\Infrastructure\Eventing\RecordsEvents;
@@ -56,9 +57,6 @@ final class Activity
     // @phpstan-ignore-next-line
     private readonly bool $markedForDeletion;
 
-    /**
-     * @param array<string> $localImagePaths
-     */
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
         private readonly ActivityId $activityId,
@@ -110,8 +108,8 @@ final class Activity
         private readonly ?ConnectedSensors $connectedSensors,
         #[ORM\Column(type: 'integer')]
         private readonly int $totalImageCount,
-        #[ORM\Column(type: 'text', nullable: true)]
-        private readonly array $localImagePaths,
+        #[ORM\Column(type: 'json', nullable: true)]
+        private readonly MediaItemIds $mediaItemIds,
         #[ORM\Column(type: 'text', nullable: true)]
         private readonly ?string $polyline,
         #[ORM\Column(type: 'json', nullable: true)]
@@ -173,7 +171,7 @@ final class Activity
             deviceName: $deviceName,
             connectedSensors: null,
             totalImageCount: $rawData['total_photo_count'] ?? 0,
-            localImagePaths: [],
+            mediaItemIds: MediaItemIds::empty(),
             polyline: $rawData['map']['summary_polyline'] ?? null,
             routeGeography: RouteGeography::create([]),
             weather: null,
@@ -184,9 +182,6 @@ final class Activity
         );
     }
 
-    /**
-     * @param array<string> $localImagePaths
-     */
     public static function create(
         ActivityId $activityId,
         SerializableDateTime $startDateTime,
@@ -213,7 +208,7 @@ final class Activity
         ?string $deviceName,
         ?ConnectedSensors $connectedSensors,
         int $totalImageCount,
-        array $localImagePaths,
+        MediaItemIds $mediaItemIds,
         ?string $polyline,
         RouteGeography $routeGeography,
         ?string $weather,
@@ -248,7 +243,7 @@ final class Activity
             deviceName: $deviceName,
             connectedSensors: $connectedSensors,
             totalImageCount: $totalImageCount,
-            localImagePaths: $localImagePaths,
+            mediaItemIds: $mediaItemIds,
             polyline: $polyline,
             routeGeography: $routeGeography,
             weather: $weather,
@@ -266,9 +261,6 @@ final class Activity
         return $activity;
     }
 
-    /**
-     * @param array<string> $localImagePaths
-     */
     public static function fromState(
         ActivityId $activityId,
         SerializableDateTime $startDateTime,
@@ -295,7 +287,7 @@ final class Activity
         ?string $deviceName,
         ?ConnectedSensors $connectedSensors,
         int $totalImageCount,
-        array $localImagePaths,
+        MediaItemIds $mediaItemIds,
         ?string $polyline,
         RouteGeography $routeGeography,
         ?string $weather,
@@ -331,7 +323,7 @@ final class Activity
             deviceName: $deviceName,
             connectedSensors: $connectedSensors,
             totalImageCount: $totalImageCount,
-            localImagePaths: $localImagePaths,
+            mediaItemIds: $mediaItemIds,
             polyline: $polyline,
             routeGeography: $routeGeography,
             weather: $weather,
@@ -458,28 +450,19 @@ final class Activity
         ]));
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getLocalImagePaths(): array
+    public function getMediaItemIds(): MediaItemIds
     {
-        return array_map(
-            fn (string $path): string => str_starts_with($path, '/') ? $path : '/'.$path,
-            $this->localImagePaths
-        );
+        return $this->mediaItemIds;
     }
 
-    /**
-     * @param array<string> $localImagePaths
-     */
-    public function withLocalImagePaths(array $localImagePaths): self
+    public function withMediaItemIds(MediaItemIds $mediaItemIds): self
     {
         $clone = clone ($this, [
-            'localImagePaths' => $localImagePaths,
-            'totalImageCount' => count($localImagePaths),
+            'mediaItemIds' => $mediaItemIds,
+            'totalImageCount' => count($mediaItemIds),
         ]);
 
-        if ($this->getLocalImagePaths() !== $clone->getLocalImagePaths()) {
+        if (Json::encode($this->getMediaItemIds()) !== Json::encode($clone->getMediaItemIds())) {
             $clone->recordThat(new ActivityImagesHaveBeenUpdated($clone->getId(), $clone->getStartDate()));
         }
 

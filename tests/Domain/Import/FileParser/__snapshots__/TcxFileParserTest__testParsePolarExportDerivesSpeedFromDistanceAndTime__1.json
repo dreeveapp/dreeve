@@ -27,7 +27,7 @@
         "deviceName": "Polar M400",
         "connectedSensors": null,
         "totalImageCount": 0,
-        "localImagePaths": "",
+        "mediaItemIds": "[]",
         "polyline": "_atqG_pihC_pR_pR",
         "routeGeography": "[]",
         "weather": null,

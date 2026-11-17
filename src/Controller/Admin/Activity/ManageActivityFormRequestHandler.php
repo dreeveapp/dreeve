@@ -19,12 +19,9 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Import\ImportMode;
-use App\Domain\Media\MediaItemId;
-use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Http\HtmlResponse;
-use App\Infrastructure\ValueObject\String\Path;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -64,10 +61,7 @@ final readonly class ManageActivityFormRequestHandler
     public function handleEdit(string $activityId): HtmlResponse
     {
         $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
-        $mediaItems = $this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_map(
-            static fn (string $localImagePath): MediaItemId => MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
-            $activity->getLocalImagePaths(),
-        )));
+        $mediaItems = $this->mediaItemRepository->findByIds($activity->getMediaItemIds());
 
         if (ImportSource::MANUAL === $activity->getImportSource()) {
             return new HtmlResponse($this->twig->render('html/admin/page/activity/edit-manually-added-activity.html.twig', [

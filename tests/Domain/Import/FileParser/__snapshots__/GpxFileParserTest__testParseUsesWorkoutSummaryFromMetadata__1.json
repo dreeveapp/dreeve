@@ -27,7 +27,7 @@
         "deviceName": "FitoTrack",
         "connectedSensors": null,
         "totalImageCount": 0,
-        "localImagePaths": "",
+        "mediaItemIds": "[]",
         "polyline": "_}gvH_tqUkHkH",
         "routeGeography": "[]",
         "weather": null,

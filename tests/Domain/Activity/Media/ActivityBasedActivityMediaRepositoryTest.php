@@ -55,7 +55,6 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withSportType(SportType::RUN)
                 ->withStartDateTime(SerializableDateTime::fromString('2024-03-01 00:00:00'))
-                ->withoutLocalImagePaths()
                 ->build(),
             []
         ));
@@ -64,7 +63,7 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withSportType(SportType::RUN)
                 ->withStartDateTime(SerializableDateTime::fromString('2024-03-01 00:00:00'))
-                ->withLocalImagePaths('files/activities/test.jpg')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('test'))
                 ->build(),
             []
         ));
@@ -105,7 +104,6 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withSportType(SportType::RUN)
                 ->withStartDateTime(SerializableDateTime::fromString('2024-03-01 00:00:00'))
-                ->withoutLocalImagePaths()
                 ->build(),
             []
         ));
@@ -125,7 +123,7 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withSportType(SportType::RUN)
                 ->withTotalImageCount(3)
-                ->withLocalImagePaths('/files/activities/run.jpg')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('run'))
                 ->build(),
             []
         ));
@@ -145,7 +143,7 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withSportType(SportType::RIDE)
                 ->withTotalImageCount(4)
-                ->withLocalImagePaths('/files/activities/ride.jpg')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('ride'))
                 ->build(),
             []
         ));
@@ -189,18 +187,25 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
     {
         $this->fileStorage->write('activities/one.png', 'one');
         $this->fileStorage->write('activities/two.png', 'two');
+        foreach (['one', 'two'] as $name) {
+            $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+                ->withMediaItemId(MediaItemId::fromUnprefixed($name))
+                ->withPath(MediaItemPath::fromLocalPath('files/activities/'.$name.'.png'))
+                ->build()
+            );
+        }
 
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withLocalImagePaths('files/activities/one.png')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('one'))
                 ->build(),
             []
         ));
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
-                ->withLocalImagePaths('files/activities/two.png')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('two'))
                 ->build(),
             []
         ));

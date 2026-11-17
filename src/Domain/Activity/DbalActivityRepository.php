@@ -138,13 +138,13 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             activityId, startDateTime, sportType, activityType, worldType, importSource, externalReferenceId, name, description, distance,
             elevation, startingCoordinateLatitude, startingCoordinateLongitude, calories, kilojoules,
             averagePower, maxPower, averageSpeed, maxSpeed, averageHeartRate, maxHeartRate,
-            averageCadence,movingTimeInSeconds, elapsedTimeInSeconds, deviceName, connectedSensors, totalImageCount, localImagePaths,
+            averageCadence,movingTimeInSeconds, elapsedTimeInSeconds, deviceName, connectedSensors, totalImageCount, mediaItemIds,
             polyline, routeGeography, weather, gearId, data, isCommute, isGroupActivity, workoutType, excludedFrom
         ) VALUES(
             :activityId, :startDateTime, :sportType, :activityType, :worldType, :importSource, :externalReferenceId, :name, :description, :distance,
             :elevation, :startingCoordinateLatitude, :startingCoordinateLongitude, :calories, :kilojoules,
             :averagePower, :maxPower, :averageSpeed, :maxSpeed, :averageHeartRate, :maxHeartRate,
-            :averageCadence, :movingTimeInSeconds, :elapsedTimeInSeconds, :deviceName, :connectedSensors, :totalImageCount, :localImagePaths,
+            :averageCadence, :movingTimeInSeconds, :elapsedTimeInSeconds, :deviceName, :connectedSensors, :totalImageCount, :mediaItemIds,
             :polyline, :routeGeography, :weather, :gearId, :data, :isCommute, :isGroupActivity, :workoutType, :excludedFrom
         )';
 
@@ -177,7 +177,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'deviceName' => $activity->getDeviceName(),
             'connectedSensors' => $activity->getConnectedSensors() instanceof ConnectedSensors ? Json::encode($activity->getConnectedSensors()) : null,
             'totalImageCount' => $activity->getTotalImageCount(),
-            'localImagePaths' => implode(',', $activity->getLocalImagePaths()),
+            'mediaItemIds' => Json::encode($activity->getMediaItemIds()),
             'polyline' => $activity->getEncodedPolyline(),
             'routeGeography' => Json::encode($activity->getRouteGeography()),
             'weather' => $activity->getWeather() instanceof Weather ? Json::encode($activity->getWeather()) : null,
@@ -219,7 +219,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
                     weather = :weather,
                     gearId = :gearId,
                     totalImageCount = :totalImageCount,
-                    localImagePaths = :localImagePaths,
+                    mediaItemIds = :mediaItemIds,
                     data = :data,
                     isCommute = :isCommute,
                     isGroupActivity = :isGroupActivity,
@@ -254,7 +254,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'weather' => $activity->getWeather() instanceof Weather ? Json::encode($activity->getWeather()) : null,
             'gearId' => $activity->getGearId(),
             'totalImageCount' => $activity->getTotalImageCount(),
-            'localImagePaths' => implode(',', $activity->getLocalImagePaths()),
+            'mediaItemIds' => Json::encode($activity->getMediaItemIds()),
             'isCommute' => (int) $activity->isCommute(),
             'isGroupActivity' => (int) $activity->isGroupActivity(),
             'workoutType' => $activity->getWorkoutType()?->value,

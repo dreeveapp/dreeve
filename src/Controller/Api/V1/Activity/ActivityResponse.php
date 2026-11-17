@@ -15,7 +15,6 @@ use App\Infrastructure\Http\Api\ProvidePagination;
 use App\Infrastructure\Repository\Overview;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
-use App\Infrastructure\ValueObject\String\Path;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class ActivityResponse extends JsonResponse
@@ -56,9 +55,8 @@ final class ActivityResponse extends JsonResponse
      */
     private static function activity(Activity $activity, bool $hasGpx, MediaItems $mediaItems, AppUrl $appUrl): array
     {
-        $mediaItemIds = array_map(
-            static fn (string $localImagePath): string => (string) MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
-            $activity->getLocalImagePaths(),
+        $mediaItemIds = $activity->getMediaItemIds()->map(
+            static fn (MediaItemId $mediaItemId): string => (string) $mediaItemId,
         );
         $startingCoordinate = $activity->getStartingCoordinate();
         $routeGeography = $activity->getRouteGeography();

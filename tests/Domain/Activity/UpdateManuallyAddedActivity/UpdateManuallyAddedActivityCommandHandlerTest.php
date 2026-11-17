@@ -162,7 +162,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             ->withMediaItemId(MediaItemId::fromUnprefixed('drop'))
             ->withPath(MediaItemPath::fromLocalPath('files/activities/drop.png'))
             ->build());
-        $this->addManuallyAddedActivity('files/activities/keep.png', 'files/activities/drop.png');
+        $this->addManuallyAddedActivity(MediaItemId::fromUnprefixed('keep'), MediaItemId::fromUnprefixed('drop'));
 
         $this->commandBus->dispatch(UpdateManuallyAddedActivity::fromPayload([
             'activityId' => 'activity-1',
@@ -178,16 +178,15 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
 
-        $localImagePaths = $activity->getLocalImagePaths();
-        $this->assertCount(2, $localImagePaths);
+        $this->assertEquals(
+            MediaItemIds::fromArray([MediaItemId::fromUnprefixed('keep'), MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')]),
+            $activity->getMediaItemIds(),
+        );
         $this->assertSame(2, $activity->getTotalImageCount());
-        $this->assertSame('/files/activities/keep.png', $localImagePaths[0]);
-        $this->assertStringEndsWith('.jpg', $localImagePaths[1]);
 
         $this->assertFalse($this->fileStorage->fileExists('activities/drop.png'));
         $this->assertTrue($this->fileStorage->fileExists('activities/keep.png'));
-        $newRelativePath = ltrim((string) preg_replace('#^/files/#', '', $localImagePaths[1]), '/');
-        $this->assertSame('new-content', $this->fileStorage->read($newRelativePath));
+        $this->assertSame('new-content', $this->fileStorage->read('activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertEquals(
             MediaItems::fromArray([
                 MediaItemBuilder::fromDefaults()
@@ -205,7 +204,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
     public function testHandleLeavesImagesUntouchedWhenNothingChanged(): void
     {
         $this->fileStorage->write('activities/existing.png', 'binary');
-        $this->addManuallyAddedActivity('files/activities/existing.png');
+        $this->addManuallyAddedActivity(MediaItemId::fromUnprefixed('existing'));
 
         $this->commandBus->dispatch(UpdateManuallyAddedActivity::fromPayload([
             'activityId' => 'activity-1',
@@ -218,7 +217,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
 
-        $this->assertSame(['/files/activities/existing.png'], $activity->getLocalImagePaths());
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('existing')]), $activity->getMediaItemIds());
         $this->assertTrue($this->fileStorage->fileExists('activities/existing.png'));
     }
 
@@ -265,7 +264,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
         ]));
     }
 
-    private function addManuallyAddedActivity(string ...$localImagePaths): void
+    private function addManuallyAddedActivity(MediaItemId ...$mediaItemIds): void
     {
         $activity = ActivityBuilder::fromDefaults()
             ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -279,14 +278,12 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             ->withAverageHeartRate(130)
             ->withMaxHeartRate(160)
             ->withDistance(Kilometer::from(10))
-            ->withElevation(Meter::from(120));
-
-        if ([] !== $localImagePaths) {
-            $activity = $activity->withLocalImagePaths(...$localImagePaths);
-        }
+            ->withElevation(Meter::from(120))
+            ->withMediaItemIds(...$mediaItemIds)
+            ->build();
 
         $this->activityRepository->add(ActivityWithRawData::fromState(
-            activity: $activity->build(),
+            activity: $activity,
             rawData: [],
         ));
     }

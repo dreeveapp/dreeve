@@ -4,6 +4,7 @@ namespace App\Application\Import\StravaImport\ImportActivities\Pipeline;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemRepository;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
@@ -36,17 +37,17 @@ final readonly class DownloadActivityImages implements ActivityImportStep
         $rawStravaData = $context->getRawStravaData();
 
         if (!$totalImageCount = ($rawStravaData['total_photo_count'] ?? 0)) {
-            return $context->withActivity($activity->withLocalImagePaths([]));
+            return $context->withActivity($activity->withMediaItemIds(MediaItemIds::empty()));
         }
 
         $shouldDownloadImages = !$this->settingsRepository->import()->shouldSkipImageDownloadDuringImport()
-            && ($context->isNewActivity() || count($activity->getLocalImagePaths()) !== $totalImageCount);
+            && ($context->isNewActivity() || count($activity->getMediaItemIds()) !== $totalImageCount);
         if (!$shouldDownloadImages) {
-            return $context->withActivity($context->isNewActivity() ? $activity->withLocalImagePaths([]) : $activity);
+            return $context->withActivity($context->isNewActivity() ? $activity->withMediaItemIds(MediaItemIds::empty()) : $activity);
         }
 
         try {
-            $localPaths = [];
+            $mediaItemIds = MediaItemIds::empty();
             $photos = $this->strava->getActivityPhotos($activity->getId());
             foreach ($photos as $photo) {
                 if (empty($photo['urls'][5000])) {
@@ -82,10 +83,10 @@ final readonly class DownloadActivityImages implements ActivityImportStep
                 }
                 $this->mediaItemRepository->update($mediaItem);
 
-                $localPaths[] = $mediaItem->getPath()->toLocalPath();
+                $mediaItemIds->add($mediaItem->getId());
             }
 
-            $activity = $activity->withLocalImagePaths($localPaths);
+            $activity = $activity->withMediaItemIds($mediaItemIds);
         } catch (ClientException|RequestException) {
         }
 

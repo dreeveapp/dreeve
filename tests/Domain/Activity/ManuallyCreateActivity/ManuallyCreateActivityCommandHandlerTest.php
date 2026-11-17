@@ -83,7 +83,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertTrue($activity->isGroupActivity());
         $this->assertNull($activity->getEncodedPolyline());
         $this->assertNull($activity->getStartingCoordinate());
-        $this->assertSame([], $activity->getLocalImagePaths());
+        $this->assertTrue($activity->getMediaItemIds()->isEmpty());
         $this->assertSame(0, $activity->getTotalImageCount());
         $this->assertTrue($this->getContainer()->get(ActivityScanRepository::class)->isScanned(
             activityId: $activity->getId(),
@@ -153,10 +153,9 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         $activity = $this->activityRepository->findAll()->getFirst();
         $this->assertNotNull($activity);
 
-        $localImagePaths = $activity->getLocalImagePaths();
-        $this->assertCount(1, $localImagePaths);
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')]), $activity->getMediaItemIds());
         $this->assertSame(1, $activity->getTotalImageCount());
-        $this->assertTrue($this->fileStorage->fileExists(str_replace('files/', '', $localImagePaths[0])));
+        $this->assertTrue($this->fileStorage->fileExists('activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertEquals(
             MediaItems::fromArray([
                 MediaItemBuilder::fromDefaults()

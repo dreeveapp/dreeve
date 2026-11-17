@@ -14,7 +14,6 @@ use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Temperature\Celsius;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
-use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class ActivityCollectionWithActivities
@@ -64,8 +63,8 @@ final readonly class ActivityCollectionWithActivities
     public function getFallbackCoverMediaItemId(): ?MediaItemId
     {
         foreach ($this->activities as $activity) {
-            if ($localImagePaths = $activity->getLocalImagePaths()) {
-                return MediaItemId::fromUnprefixed(Path::fromString(reset($localImagePaths))->getFilenameWithoutExtension());
+            if ($mediaItemId = $activity->getMediaItemIds()->getFirst()) {
+                return $mediaItemId;
             }
         }
 

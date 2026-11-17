@@ -7,13 +7,10 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\SportType\SportTypes;
-use App\Domain\Image\ImagePath;
-use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\Year;
 use App\Infrastructure\ValueObject\Time\Years;
 use Doctrine\DBAL\ArrayParameterType;
@@ -57,10 +54,7 @@ final readonly class ActivityBasedActivityMediaRepository implements ActivityMed
                 continue;
             }
 
-            $mediaItems = $this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_map(
-                static fn (string $localImagePath): MediaItemId => MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
-                $activity->getLocalImagePaths(),
-            )))->toArray();
+            $mediaItems = $this->mediaItemRepository->findByIds($activity->getMediaItemIds())->toArray();
             if (!$mediaItems) {
                 continue;
             }
@@ -101,8 +95,8 @@ final readonly class ActivityBasedActivityMediaRepository implements ActivityMed
             return;
         }
 
-        foreach ($activity->getLocalImagePaths() as $localImagePath) {
-            $fileSystemPath = ImagePath::fromLocalImagePath($localImagePath)->toFileSystemPath();
+        foreach ($this->mediaItemRepository->findByIds($activity->getMediaItemIds()) as $mediaItem) {
+            $fileSystemPath = $mediaItem->getPath()->toFileSystemPath();
             if ($this->fileStorage->fileExists($fileSystemPath)) {
                 $this->fileStorage->delete($fileSystemPath);
             }
@@ -122,10 +116,7 @@ final readonly class ActivityBasedActivityMediaRepository implements ActivityMed
                 continue;
             }
 
-            $mediaItemIdsPerActivity[(string) $activity->getId()] = array_map(
-                static fn (string $localImagePath): MediaItemId => MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
-                $activity->getLocalImagePaths(),
-            );
+            $mediaItemIdsPerActivity[(string) $activity->getId()] = $activity->getMediaItemIds()->toArray();
         }
 
         $mediaItemsById = [];

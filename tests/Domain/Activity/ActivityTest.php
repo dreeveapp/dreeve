@@ -19,6 +19,8 @@ use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
@@ -86,13 +88,13 @@ class ActivityTest extends TestCase
         );
     }
 
-    public function testWithLocalImagePathsItShouldRecordThatTheImagesWereUpdated(): void
+    public function testWithMediaItemIdsItShouldRecordThatTheImagesWereUpdated(): void
     {
         $activity = ActivityBuilder::fromDefaults()
-            ->withLocalImagePaths('/activities/one.jpg')
+            ->withMediaItemIds(MediaItemId::fromUnprefixed('one'))
             ->build();
 
-        $updatedActivity = $activity->withLocalImagePaths(['/activities/one.jpg', '/activities/two.jpg']);
+        $updatedActivity = $activity->withMediaItemIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('one'), MediaItemId::fromUnprefixed('two')]));
 
         $this->assertEquals(
             [new ActivityImagesHaveBeenUpdated(ActivityId::fromUnprefixed('903645'), SerializableDateTime::fromString('2023-10-10'))],
@@ -101,37 +103,26 @@ class ActivityTest extends TestCase
         $this->assertEmpty($activity->getRecordedEvents());
     }
 
-    public function testWithLocalImagePathsItShouldRecordNothingWhenTheImagesDidNotChange(): void
+    public function testWithMediaItemIdsItShouldRecordNothingWhenTheImagesDidNotChange(): void
     {
         $activity = ActivityBuilder::fromDefaults()
-            ->withLocalImagePaths('/activities/one.jpg')
+            ->withMediaItemIds(MediaItemId::fromUnprefixed('one'))
             ->build();
 
         $this->assertEmpty(
-            $activity->withLocalImagePaths(['/activities/one.jpg'])->getRecordedEvents()
+            $activity->withMediaItemIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('one')]))->getRecordedEvents()
         );
     }
 
-    public function testWithLocalImagePathsItShouldRecordNothingWhenOnlyTheLeadingSlashDiffers(): void
+    public function testWithMediaItemIdsItShouldRecordThatTheImagesWereRemoved(): void
     {
         $activity = ActivityBuilder::fromDefaults()
-            ->withLocalImagePaths('activities/one.jpg')
-            ->build();
-
-        $this->assertEmpty(
-            $activity->withLocalImagePaths(['/activities/one.jpg'])->getRecordedEvents()
-        );
-    }
-
-    public function testWithLocalImagePathsItShouldRecordThatTheImagesWereRemoved(): void
-    {
-        $activity = ActivityBuilder::fromDefaults()
-            ->withLocalImagePaths('/activities/one.jpg')
+            ->withMediaItemIds(MediaItemId::fromUnprefixed('one'))
             ->build();
 
         $this->assertEquals(
             [new ActivityImagesHaveBeenUpdated(ActivityId::fromUnprefixed('903645'), SerializableDateTime::fromString('2023-10-10'))],
-            $activity->withLocalImagePaths([])->getRecordedEvents()
+            $activity->withMediaItemIds(MediaItemIds::empty())->getRecordedEvents()
         );
     }
 

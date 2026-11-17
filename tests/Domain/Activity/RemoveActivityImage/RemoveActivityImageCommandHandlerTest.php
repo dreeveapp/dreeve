@@ -44,7 +44,7 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withLocalImagePaths('files/activities/keep.png', 'files/activities/drop.jpg')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('keep'), MediaItemId::fromUnprefixed('drop'))
                 ->build(),
             rawData: [],
         ));
@@ -55,7 +55,7 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
         ));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
-        $this->assertSame(['/files/activities/keep.png'], $activity->getLocalImagePaths());
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('keep')]), $activity->getMediaItemIds());
         $this->assertSame(1, $activity->getTotalImageCount());
         $this->assertFalse($this->fileStorage->fileExists('activities/drop.jpg'));
         $this->assertTrue($this->fileStorage->fileExists('activities/keep.png'));
@@ -71,7 +71,7 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withLocalImagePaths('files/activities/keep.png')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('keep'))
                 ->build(),
             rawData: [],
         ));
@@ -84,7 +84,7 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
                 activityImageId: ActivityImageId::fromUnprefixed('someone-else'),
             ));
         } finally {
-            $this->assertSame(['/files/activities/keep.png'], $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getLocalImagePaths());
+            $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('keep')]), $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getMediaItemIds());
             $this->assertTrue($this->fileStorage->fileExists('activities/someone-else.png'));
         }
     }

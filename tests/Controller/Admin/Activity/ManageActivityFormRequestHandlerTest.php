@@ -158,7 +158,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withGearId(GearId::fromUnprefixed('custom-gear'))
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
-                ->withLocalImagePaths('files/activities/image.jpg')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('image'))
                 ->build(),
             [],
         ));
@@ -242,7 +242,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withCalories(500)
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
-                ->withLocalImagePaths('activity-1/image.jpg')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('image'))
                 ->withExcludedFrom(ActivityExclusion::PEAK_POWER_OUTPUTS)
                 ->build(),
             [],

@@ -38,7 +38,7 @@ class AddActivityImageCommandHandlerTest extends ContainerTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withLocalImagePaths('files/activities/existing.png')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('existing'))
                 ->build(),
             rawData: [],
         ));
@@ -55,7 +55,7 @@ class AddActivityImageCommandHandlerTest extends ContainerTestCase
         ));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
-        $this->assertSame(['/files/activities/existing.png', '/files/activities/new.jpg'], $activity->getLocalImagePaths());
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('existing'), MediaItemId::fromUnprefixed('new')]), $activity->getMediaItemIds());
         $this->assertSame(2, $activity->getTotalImageCount());
         $this->assertSame($content, $this->fileStorage->read('activities/new.jpg'));
         $this->assertEquals(
