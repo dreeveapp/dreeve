@@ -20,6 +20,7 @@ final readonly class LocalImageRequestHandler
 {
     /** @var list<string> */
     private const array ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'svg'];
+    private const int ANONYMIZED_IMAGE_COUNT = 20;
 
     public function __construct(
         #[Target('file.storage')]
@@ -48,12 +49,11 @@ final readonly class LocalImageRequestHandler
         ];
 
         if ($isActivityPhoto && !$this->visitor->isTrusted()) {
-            // Not a trusted visitor: serve an anonymized, stable random photo instead of the real one.
+            // Not a trusted visitor: serve a stable photo from the bundled anonymized set instead of the real one.
             $seed = Path::fromString($path)->getFilenameWithoutExtension();
-            [$width, $height] = 0 === crc32($seed) % 2 ? [800, 1200] : [1200, 800];
 
             return new RedirectResponse(
-                sprintf('https://picsum.photos/seed/%s/%d/%d', urlencode($seed), $width, $height),
+                sprintf('/assets/images/anonymized/%02d.webp', crc32($seed) % self::ANONYMIZED_IMAGE_COUNT + 1),
                 Response::HTTP_FOUND,
                 $cachingHeaders
             );
