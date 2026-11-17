@@ -8,10 +8,12 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Image\ImagePath;
-use App\Domain\Media\ImageOrientation;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\String\KernelProjectDir;
+use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\Year;
 use App\Infrastructure\ValueObject\Time\Years;
 use Doctrine\DBAL\ArrayParameterType;
@@ -27,7 +29,7 @@ final readonly class ActivityBasedActivityMediaRepository implements ActivityMed
         #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
         private SettingsRepository $settingsRepository,
-        private KernelProjectDir $kernelProjectDir,
+        private MediaItemRepository $mediaItemRepository,
     ) {
     }
 
@@ -55,22 +57,17 @@ final readonly class ActivityBasedActivityMediaRepository implements ActivityMed
                 continue;
             }
 
-            if (!$localImagePaths = $activity->getLocalImagePaths()) {
+            $mediaItems = $this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_map(
+                static fn (string $localImagePath): MediaItemId => MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
+                $activity->getLocalImagePaths(),
+            )))->toArray();
+            if (!$mediaItems) {
                 continue;
             }
 
-            $randomImageIndex = array_rand($localImagePaths);
-
-            $absoluteImagePath = $this->kernelProjectDir.'/storage'.$localImagePaths[$randomImageIndex];
-            $imageOrientation = ImageOrientation::LANDSCAPE;
-            if (file_exists($absoluteImagePath) && ($info = @getimagesize($absoluteImagePath)) !== false) {
-                $imageOrientation = ImageOrientation::fromWidthAndHeight($info[0], $info[1]);
-            }
-
             return ActivityMediaItem::create(
-                imageLocation: $localImagePaths[$randomImageIndex],
+                mediaItem: $mediaItems[array_rand($mediaItems)],
                 activity: $activity,
-                orientation: $imageOrientation,
             );
         }
 
@@ -114,31 +111,42 @@ final readonly class ActivityBasedActivityMediaRepository implements ActivityMed
 
     private function buildMediaItemsFor(Activities $activities): ActivityMediaItems
     {
-        $mediaItems = ActivityMediaItems::empty();
+        $hiddenSportTypes = $this->settingsRepository->appearance()->getHidePhotosForSportTypes();
+        $mediaItemIdsPerActivity = [];
         foreach ($activities as $activity) {
             if (0 === $activity->getTotalImageCount()) {
                 continue;
             }
 
-            if ($this->settingsRepository->appearance()->getHidePhotosForSportTypes()->has($activity->getSportType())) {
+            if ($hiddenSportTypes->has($activity->getSportType())) {
                 continue;
             }
 
-            foreach ($activity->getLocalImagePaths() as $localImagePath) {
-                $absoluteImagePath = $this->kernelProjectDir.'/storage'.$localImagePath;
-                $imageOrientation = ImageOrientation::LANDSCAPE;
-                if (file_exists($absoluteImagePath) && ($info = @getimagesize($absoluteImagePath)) !== false) {
-                    $imageOrientation = ImageOrientation::fromWidthAndHeight($info[0], $info[1]);
+            $mediaItemIdsPerActivity[(string) $activity->getId()] = array_map(
+                static fn (string $localImagePath): MediaItemId => MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
+                $activity->getLocalImagePaths(),
+            );
+        }
+
+        $mediaItemsById = [];
+        foreach ($this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_merge(...array_values($mediaItemIdsPerActivity)))) as $mediaItem) {
+            $mediaItemsById[(string) $mediaItem->getId()] = $mediaItem;
+        }
+
+        $activityMediaItems = ActivityMediaItems::empty();
+        foreach ($activities as $activity) {
+            foreach ($mediaItemIdsPerActivity[(string) $activity->getId()] ?? [] as $mediaItemId) {
+                if (!$mediaItem = $mediaItemsById[(string) $mediaItemId] ?? null) {
+                    continue;
                 }
 
-                $mediaItems->add(ActivityMediaItem::create(
-                    imageLocation: $localImagePath,
+                $activityMediaItems->add(ActivityMediaItem::create(
+                    mediaItem: $mediaItem,
                     activity: $activity,
-                    orientation: $imageOrientation,
                 ));
             }
         }
 
-        return $mediaItems;
+        return $activityMediaItems;
     }
 }

@@ -4,35 +4,30 @@ namespace App\Domain\Activity\Media;
 
 use App\Domain\Activity\Activity;
 use App\Domain\Media\ImageOrientation;
+use App\Domain\Media\MediaItem;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
 
 final readonly class ActivityMediaItem
 {
     private function __construct(
-        private string $imageLocation,
+        private MediaItem $mediaItem,
         private Activity $activity,
-        private ImageOrientation $orientation,
     ) {
     }
 
     public static function create(
-        string $imageLocation,
+        MediaItem $mediaItem,
         Activity $activity,
-        ImageOrientation $orientation,
     ): self {
         return new self(
-            imageLocation: $imageLocation,
+            mediaItem: $mediaItem,
             activity: $activity,
-            orientation: $orientation,
         );
     }
 
     public function getImageUrl(): string
     {
-        if (str_starts_with($this->imageLocation, '/')) {
-            return $this->imageLocation;
-        }
-
-        return '/'.$this->imageLocation;
+        return '/'.$this->mediaItem->getPath()->toLocalPath();
     }
 
     public function getActivity(): Activity
@@ -42,7 +37,12 @@ final readonly class ActivityMediaItem
 
     public function getOrientation(): ImageOrientation
     {
-        return $this->orientation;
+        return $this->mediaItem->getOrientation();
+    }
+
+    public function getCoordinate(): ?Coordinate
+    {
+        return $this->mediaItem->getCoordinate();
     }
 
     /**

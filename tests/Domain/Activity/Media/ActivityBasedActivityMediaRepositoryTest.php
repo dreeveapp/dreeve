@@ -10,15 +10,22 @@ use App\Domain\Activity\Media\ActivityMediaItem;
 use App\Domain\Activity\Media\ActivityMediaRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Media\ImageOrientation;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\String\KernelProjectDir;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Geography\Latitude;
+use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Infrastructure\ValueObject\Time\Year;
 use App\Infrastructure\ValueObject\Time\Years;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use League\Flysystem\FilesystemOperator;
 
 class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
@@ -57,10 +64,15 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
                 ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withSportType(SportType::RUN)
                 ->withStartDateTime(SerializableDateTime::fromString('2024-03-01 00:00:00'))
-                ->withLocalImagePaths('test')
+                ->withLocalImagePaths('files/activities/test.jpg')
                 ->build(),
             []
         ));
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('test'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/test.jpg'))
+            ->build()
+        );
 
         $this->assertEquals(
             ActivityId::fromUnprefixed('3'),
@@ -117,6 +129,17 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
                 ->build(),
             []
         ));
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('run'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/run.jpg'))
+            ->withWidth(600)
+            ->withHeight(800)
+            ->withCoordinate(Coordinate::createFromLatAndLng(
+                latitude: Latitude::fromString('51.2'),
+                longitude: Longitude::fromString('3.2'),
+            ))
+            ->build()
+        );
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
@@ -144,9 +167,21 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
         ]);
 
         $this->assertEquals(3, $this->activityMediaRepository->count());
+        $activityMediaItems = $this->activityMediaRepository->findAll();
         $this->assertEquals(
             ['/files/activities/run.jpg'],
-            $this->activityMediaRepository->findAll()->map(static fn (ActivityMediaItem $mediaItem): string => $mediaItem->getImageUrl()),
+            $activityMediaItems->map(static fn (ActivityMediaItem $mediaItem): string => $mediaItem->getImageUrl()),
+        );
+        $this->assertEquals(
+            [ImageOrientation::PORTRAIT],
+            $activityMediaItems->map(static fn (ActivityMediaItem $mediaItem): ImageOrientation => $mediaItem->getOrientation()),
+        );
+        $this->assertEquals(
+            [Coordinate::createFromLatAndLng(
+                latitude: Latitude::fromString('51.2'),
+                longitude: Longitude::fromString('3.2'),
+            )],
+            $activityMediaItems->map(static fn (ActivityMediaItem $mediaItem): ?Coordinate => $mediaItem->getCoordinate()),
         );
     }
 
@@ -193,7 +228,7 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
             $this->getContainer()->get(ActivityRepository::class),
             $this->fileStorage = $this->getContainer()->get('file.storage'),
             $this->getContainer()->get(SettingsRepository::class),
-            KernelProjectDir::fromString('var/www')
+            $this->getContainer()->get(MediaItemRepository::class),
         );
     }
 }

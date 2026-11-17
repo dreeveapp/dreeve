@@ -32,6 +32,9 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\RecordingDevice\RecordingDevice;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
@@ -57,6 +60,7 @@ use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamBuilder;
 use App\Tests\Domain\Challenge\ChallengeBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
 use Money\Currency;
@@ -101,6 +105,12 @@ trait ProvideTestData
             Key::THEME,
             Value::fromString(Json::encode($this->buildThemeConfig())),
         ));
+
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg'))
+            ->build()
+        );
     }
 
     protected function addGearFixtures(): void
