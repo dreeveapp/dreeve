@@ -57,6 +57,7 @@ final readonly class MediaItemStorage
     {
         $mediaItem = $this->mediaItemRepository->find($mediaItemId);
         $fileSystemPath = $mediaItem->getPath()->toString();
+
         if ($this->fileStorage->fileExists($fileSystemPath)) {
             $this->fileStorage->delete($fileSystemPath);
         }
