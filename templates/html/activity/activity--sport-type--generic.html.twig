@@ -230,7 +230,7 @@
                 </div>
                 <div class="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1" data-light-gallery>
                     {% for mediaItem in mediaItems %}
-                        {% set imagePath = '/' ~ mediaItem.getPath().toLocalPath() %}
+                        {% set imagePath = mediaItem.getPath().toUrlPath() %}
                         {% set lightGalleryElement = {
                             'src': relativeUrl(imagePath),
                             'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>',

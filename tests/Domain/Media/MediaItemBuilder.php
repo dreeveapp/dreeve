@@ -22,7 +22,7 @@ final class MediaItemBuilder
     private function __construct()
     {
         $this->mediaItemId = MediaItemId::fromUnprefixed('1');
-        $this->path = MediaItemPath::fromLocalPath('files/activities/1.jpg');
+        $this->path = MediaItemPath::fromString('activities/1.jpg');
     }
 
     public static function fromDefaults(): self

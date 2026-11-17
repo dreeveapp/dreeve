@@ -21,7 +21,7 @@ final readonly class DbalMediaItemRepository extends DbalRepository implements M
 
         $this->connection->executeStatement($sql, [
             'mediaItemId' => $mediaItem->getId(),
-            'path' => $mediaItem->getPath()->toLocalPath(),
+            'path' => $mediaItem->getPath()->toString(),
             'width' => $mediaItem->getWidth(),
             'height' => $mediaItem->getHeight(),
             'coordinateLatitude' => $mediaItem->getCoordinate()?->getLatitude()->toFloat(),
@@ -43,7 +43,7 @@ final readonly class DbalMediaItemRepository extends DbalRepository implements M
 
         $this->connection->executeStatement($sql, [
             'mediaItemId' => $mediaItem->getId(),
-            'path' => $mediaItem->getPath()->toLocalPath(),
+            'path' => $mediaItem->getPath()->toString(),
             'width' => $mediaItem->getWidth(),
             'height' => $mediaItem->getHeight(),
             'coordinateLatitude' => $mediaItem->getCoordinate()?->getLatitude()->toFloat(),
@@ -102,7 +102,7 @@ final readonly class DbalMediaItemRepository extends DbalRepository implements M
     {
         return MediaItem::fromState(
             mediaItemId: MediaItemId::fromString($result['mediaItemId']),
-            path: MediaItemPath::fromLocalPath($result['path']),
+            path: MediaItemPath::fromString($result['path']),
             width: null !== $result['width'] ? (int) $result['width'] : null,
             height: null !== $result['height'] ? (int) $result['height'] : null,
             coordinate: Coordinate::createFromOptionalLatAndLng(

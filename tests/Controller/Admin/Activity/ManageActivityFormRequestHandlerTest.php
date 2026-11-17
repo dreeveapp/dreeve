@@ -165,7 +165,7 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         static::getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('image'))
-            ->withPath(MediaItemPath::fromLocalPath('files/activities/image.jpg'))
+            ->withPath(MediaItemPath::fromString('activities/image.jpg'))
             ->build());
 
         $this->client->loginUser($this->adminUser());

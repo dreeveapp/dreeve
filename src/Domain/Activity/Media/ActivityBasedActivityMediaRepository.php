@@ -96,7 +96,7 @@ final readonly class ActivityBasedActivityMediaRepository implements ActivityMed
         }
 
         foreach ($this->mediaItemRepository->findByIds($activity->getMediaItemIds()) as $mediaItem) {
-            $fileSystemPath = $mediaItem->getPath()->toFileSystemPath();
+            $fileSystemPath = $mediaItem->getPath()->toString();
             if ($this->fileStorage->fileExists($fileSystemPath)) {
                 $this->fileStorage->delete($fileSystemPath);
             }

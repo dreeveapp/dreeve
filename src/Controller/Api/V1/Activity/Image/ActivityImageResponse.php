@@ -17,7 +17,7 @@ final class ActivityImageResponse extends JsonResponse
     {
         return new self([
             'id' => (string) ActivityImageId::fromUnprefixed($mediaItemId->toUnprefixedString()),
-            'url' => rtrim((string) $appUrl, '/').'/'.$path->toLocalPath(),
+            'url' => rtrim((string) $appUrl, '/').$path->toUrlPath(),
         ], Response::HTTP_CREATED);
     }
 }

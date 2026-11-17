@@ -53,7 +53,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
             MediaItems::fromArray([
                 MediaItemBuilder::fromDefaults()
                     ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
-                    ->withPath(MediaItemPath::fromLocalPath('files/activities/0025176c-5652-11ee-923d-02424dd627d5.png'))
+                    ->withPath(MediaItemPath::fromString('activities/0025176c-5652-11ee-923d-02424dd627d5.png'))
                     ->withCoordinate(Coordinate::createFromLatAndLng(
                         latitude: Latitude::fromString('51.2'),
                         longitude: Longitude::fromString('3.18'),

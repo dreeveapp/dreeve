@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use App\Domain\Media\MediaItemId;
-use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\Metadata\MediaItemMetadataReader;
 use App\Infrastructure\Serialization\Json;
 use Doctrine\DBAL\Schema\Schema;
@@ -35,14 +34,14 @@ final class Version20261117155202 extends AbstractMigration
         foreach ($localImagePathsPerActivity as $activityId => $localImagePaths) {
             $mediaItemIds = [];
             foreach (array_filter(array_map(trim(...), explode(',', (string) $localImagePaths))) as $localImagePath) {
-                $path = MediaItemPath::fromLocalPath($localImagePath);
+                $path = (string) preg_replace('#^/?files/#', '', $localImagePath);
                 $mediaItemId = MediaItemId::fromUnprefixed(pathinfo($localImagePath, PATHINFO_FILENAME));
                 $mediaItemIds[] = (string) $mediaItemId;
                 if (isset($existingMediaItemIds[(string) $mediaItemId])) {
                     continue;
                 }
 
-                $fileSystemPath = $fileStorageDirectory.'/'.$path->toFileSystemPath();
+                $fileSystemPath = $fileStorageDirectory.'/'.$path;
                 $content = is_file($fileSystemPath) ? @file_get_contents($fileSystemPath) : false;
                 $metadata = false !== $content ? $mediaItemMetadataReader->read($content) : null;
 
@@ -51,7 +50,7 @@ final class Version20261117155202 extends AbstractMigration
                      VALUES (:mediaItemId, :path, :width, :height, :coordinateLatitude, :coordinateLongitude, :takenOn)',
                     [
                         'mediaItemId' => (string) $mediaItemId,
-                        'path' => $path->toLocalPath(),
+                        'path' => $path,
                         'width' => $metadata?->getWidth(),
                         'height' => $metadata?->getHeight(),
                         'coordinateLatitude' => $metadata?->getCoordinate()?->getLatitude()->toFloat(),
