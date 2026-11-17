@@ -7,7 +7,7 @@ namespace App\Infrastructure\Twig;
 use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Image\ImageOrientation;
+use App\Domain\Media\ImageOrientation;
 use App\Domain\Segment\Segment;
 use App\Infrastructure\Http\Request\RedirectTo;
 use App\Infrastructure\ValueObject\String\FilteredUrl;

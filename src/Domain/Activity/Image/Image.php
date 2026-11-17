@@ -3,7 +3,7 @@
 namespace App\Domain\Activity\Image;
 
 use App\Domain\Activity\Activity;
-use App\Domain\Image\ImageOrientation;
+use App\Domain\Media\ImageOrientation;
 
 final readonly class Image
 {

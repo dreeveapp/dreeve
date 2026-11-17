@@ -4,7 +4,7 @@ namespace App\Tests\Infrastructure\Twig;
 
 use App\Application\AppUrl;
 use App\Domain\Activity\SportType\SportType;
-use App\Domain\Image\ImageOrientation;
+use App\Domain\Media\ImageOrientation;
 use App\Infrastructure\Twig\StringTwigExtension;
 use App\Infrastructure\Twig\SvgsTwigExtension;
 use App\Infrastructure\Twig\UrlTwigExtension;
