@@ -5,15 +5,18 @@ namespace App\Tests\Domain\Activity\Media;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Activity\Media\ActivityBasedActivityMediaRepository;
 use App\Domain\Activity\Media\ActivityMediaItem;
 use App\Domain\Activity\Media\ActivityMediaRepository;
+use App\Domain\Activity\Media\DbalActivityMediaRepository;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Media\ImageOrientation;
+use App\Domain\Media\MediaItem;
 use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItemStorage;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -28,7 +31,7 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
 use League\Flysystem\FilesystemOperator;
 
-class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
+class DbalActivityMediaRepositoryTest extends ContainerTestCase
 {
     private ActivityMediaRepository $activityMediaRepository;
     private FilesystemOperator $fileStorage;
@@ -122,7 +125,6 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
                 ->withSportType(SportType::RUN)
-                ->withTotalImageCount(3)
                 ->withMediaItemIds(MediaItemId::fromUnprefixed('run'))
                 ->build(),
             []
@@ -142,21 +144,24 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('2'))
                 ->withSportType(SportType::RIDE)
-                ->withTotalImageCount(4)
                 ->withMediaItemIds(MediaItemId::fromUnprefixed('ride'))
                 ->build(),
             []
         ));
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('ride'))
+            ->withPath(MediaItemPath::fromString('activities/ride.jpg'))
+            ->build()
+        );
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('3'))
                 ->withSportType(SportType::WALK)
-                ->withTotalImageCount(5)
                 ->build(),
             []
         ));
 
-        $this->assertEquals(12, $this->activityMediaRepository->count());
+        $this->assertEquals(2, $this->activityMediaRepository->count());
 
         $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::APPEARANCE, [
             'photos' => [
@@ -164,7 +169,7 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
             ],
         ]);
 
-        $this->assertEquals(3, $this->activityMediaRepository->count());
+        $this->assertEquals(1, $this->activityMediaRepository->count());
         $activityMediaItems = $this->activityMediaRepository->findAll();
         $this->assertEquals(
             ['/files/activities/run.jpg'],
@@ -214,6 +219,13 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
 
         $this->assertFalse($this->fileStorage->fileExists('activities/one.png'));
         $this->assertTrue($this->fileStorage->fileExists('activities/two.png'));
+        $this->assertEquals(
+            [MediaItemId::fromUnprefixed('two')],
+            $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([
+                MediaItemId::fromUnprefixed('one'),
+                MediaItemId::fromUnprefixed('two'),
+            ]))->map(static fn (MediaItem $mediaItem): MediaItemId => $mediaItem->getId()),
+        );
     }
 
     public function testDeleteForActivityWhenActivityDoesNotExist(): void
@@ -228,12 +240,13 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->activityMediaRepository = new ActivityBasedActivityMediaRepository(
-            $this->getConnection(),
-            $this->getContainer()->get(ActivityRepository::class),
-            $this->fileStorage = $this->getContainer()->get('file.storage'),
-            $this->getContainer()->get(SettingsRepository::class),
-            $this->getContainer()->get(MediaItemRepository::class),
+        $this->activityMediaRepository = new DbalActivityMediaRepository(
+            connection: $this->getConnection(),
+            activityRepository: $this->getContainer()->get(ActivityRepository::class),
+            mediaItemRepository: $this->getContainer()->get(MediaItemRepository::class),
+            mediaItemStorage: $this->getContainer()->get(MediaItemStorage::class),
+            settingsRepository: $this->getContainer()->get(SettingsRepository::class),
         );
+        $this->fileStorage = $this->getContainer()->get('file.storage');
     }
 }
