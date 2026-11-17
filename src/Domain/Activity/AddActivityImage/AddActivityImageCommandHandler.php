@@ -6,8 +6,8 @@ namespace App\Domain\Activity\AddActivityImage;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Image\ImagePath;
 use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -34,13 +34,10 @@ final readonly class AddActivityImageCommandHandler implements CommandHandler
         );
 
         $this->activityRepository->update(ActivityWithRawData::fromState(
-            activity: $activity->withLocalImagePaths([
-                ...array_map(
-                    static fn (string $path): string => ImagePath::fromLocalImagePath($path)->toLocalImagePath(),
-                    $activity->getLocalImagePaths()
-                ),
-                $mediaItem->getPath()->toLocalPath(),
-            ]),
+            activity: $activity->withMediaItemIds(MediaItemIds::fromArray([
+                ...$activity->getMediaItemIds()->toArray(),
+                $mediaItem->getId(),
+            ])),
             rawData: $activityWithRawData->getRawData(),
         ));
     }

@@ -14,15 +14,12 @@ use App\Domain\Activity\UpdateActivity\UpdateActivity;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Import\ImportMode;
-use App\Domain\Media\MediaItemId;
-use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
-use App\Infrastructure\ValueObject\String\Path;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -102,10 +99,7 @@ final readonly class ActivityUpdateRequestHandler
         return ActivityResponse::detail(
             activity: $updatedActivity,
             hasGpx: $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::LAT_LNG),
-            mediaItems: $this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_map(
-                static fn (string $localImagePath): MediaItemId => MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
-                $updatedActivity->getLocalImagePaths(),
-            ))),
+            mediaItems: $this->mediaItemRepository->findByIds($updatedActivity->getMediaItemIds()),
             appUrl: $this->appUrl,
         );
     }

@@ -6,7 +6,6 @@ namespace App\Domain\Activity\UpdateActivity;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Image\ImagePath;
 use App\Domain\Image\RemovedImage;
 use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemId;
@@ -15,7 +14,6 @@ use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
-use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class UpdateActivityCommandHandler implements CommandHandler
 {
@@ -53,28 +51,27 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
                 $removedImages
             ));
 
-            $retainedPaths = [];
-            foreach ($activity->getLocalImagePaths() as $localImagePath) {
-                $mediaItemId = MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension());
+            $retainedMediaItemIds = MediaItemIds::empty();
+            foreach ($activity->getMediaItemIds() as $mediaItemId) {
                 if ($removedMediaItemIds->has($mediaItemId)) {
                     $mediaItemIdsThatNeedRemoval[] = $mediaItemId;
                     continue;
                 }
 
-                $retainedPaths[] = ImagePath::fromLocalImagePath($localImagePath)->toLocalImagePath();
+                $retainedMediaItemIds->add($mediaItemId);
             }
 
             foreach ($newImages as $newImage) {
-                $retainedPaths[] = $this->mediaItemStorage->store(
+                $retainedMediaItemIds->add($this->mediaItemStorage->store(
                     newMediaItem: new NewMediaItem(
                         filename: $newImage->getFilename(),
                         content: $newImage->getContent(),
                     ),
                     directory: MediaItemDirectory::ACTIVITIES,
-                )->getPath()->toLocalPath();
+                )->getId());
             }
 
-            $activity = $activity->withLocalImagePaths($retainedPaths);
+            $activity = $activity->withMediaItemIds($retainedMediaItemIds);
         }
 
         $this->activityRepository->update(ActivityWithRawData::fromState(

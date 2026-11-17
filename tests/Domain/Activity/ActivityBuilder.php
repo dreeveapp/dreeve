@@ -16,6 +16,8 @@ use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Sensor\ConnectedSensors;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
@@ -50,8 +52,8 @@ final class ActivityBuilder
     private int $totalImageCount = 0;
     private ?string $deviceName = null;
     private ?ConnectedSensors $connectedSensors = null;
-    /** @var array<string> */
-    private array $localImagePaths = [];
+    /** @var array<MediaItemId> */
+    private array $mediaItemIds = [];
     private ?string $polyline = null;
     private RouteGeography $routeGeography;
     private ?GearId $gearId = null;
@@ -107,7 +109,7 @@ final class ActivityBuilder
             deviceName: $this->deviceName,
             connectedSensors: $this->connectedSensors,
             totalImageCount: $this->totalImageCount,
-            localImagePaths: $this->localImagePaths,
+            mediaItemIds: MediaItemIds::fromArray($this->mediaItemIds),
             polyline: $this->polyline,
             routeGeography: $this->routeGeography,
             weather: null,
@@ -146,7 +148,7 @@ final class ActivityBuilder
             deviceName: $this->deviceName,
             connectedSensors: $this->connectedSensors,
             totalImageCount: $this->totalImageCount,
-            localImagePaths: $this->localImagePaths,
+            mediaItemIds: MediaItemIds::fromArray($this->mediaItemIds),
             polyline: $this->polyline,
             routeGeography: $this->routeGeography,
             weather: null,
@@ -333,16 +335,9 @@ final class ActivityBuilder
         return $this;
     }
 
-    public function withLocalImagePaths(string ...$localImagePaths): self
+    public function withMediaItemIds(MediaItemId ...$mediaItemIds): self
     {
-        $this->localImagePaths = $localImagePaths;
-
-        return $this;
-    }
-
-    public function withoutLocalImagePaths(): self
-    {
-        $this->localImagePaths = [];
+        $this->mediaItemIds = $mediaItemIds;
 
         return $this;
     }

@@ -8,6 +8,8 @@ use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Sensor\ConnectedSensors;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Serialization\Json;
@@ -28,7 +30,7 @@ final readonly class ActivityHydrator
         'startingCoordinateLatitude', 'startingCoordinateLongitude', 'calories', 'kilojoules',
         'averagePower', 'maxPower', 'averageSpeed', 'maxSpeed', 'averageHeartRate', 'maxHeartRate',
         'averageCadence', 'movingTimeInSeconds', 'elapsedTimeInSeconds', 'deviceName',
-        'connectedSensors', 'totalImageCount', 'localImagePaths', 'polyline', 'routeGeography',
+        'connectedSensors', 'totalImageCount', 'mediaItemIds', 'polyline', 'routeGeography',
         'weather', 'gearId', 'isCommute', 'isGroupActivity', 'workoutType', 'excludedFrom',
     ];
 
@@ -83,7 +85,10 @@ final readonly class ActivityHydrator
                 ? ConnectedSensors::fromArray(Json::decode($result['connectedSensors']))
                 : null,
             totalImageCount: $result['totalImageCount'] ?: 0,
-            localImagePaths: $result['localImagePaths'] ? explode(',', (string) $result['localImagePaths']) : [],
+            mediaItemIds: MediaItemIds::fromArray(array_map(
+                MediaItemId::fromString(...),
+                Json::decode($result['mediaItemIds'] ?? '[]'),
+            )),
             polyline: $result['polyline'],
             routeGeography: RouteGeography::create(Json::decode($result['routeGeography'] ?? '[]')),
             weather: $result['weather'],

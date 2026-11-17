@@ -15,6 +15,8 @@ use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\ControllerWebTestCase;
@@ -74,7 +76,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
         $this->assertSame('Garmin Edge 540', $activity->getDeviceName());
         $this->assertTrue($activity->isCommute());
         $this->assertTrue($activity->isGroupActivity());
-        $this->assertSame(['/files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg'], $activity->getLocalImagePaths());
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11')]), $activity->getMediaItemIds());
         $this->assertEquals(ActivityExclusions::fromArray([ActivityExclusion::BEST_EFFORTS]), $activity->getExcludedFrom());
     }
 
@@ -229,7 +231,7 @@ class ActivityUpdateRequestHandlerTest extends ControllerWebTestCase
                 ->withDeviceName('Garmin Edge 540')
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
-                ->withLocalImagePaths('files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg')
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11'))
                 ->withExcludedFrom(ActivityExclusion::BEST_EFFORTS)
                 ->withWorkoutType(WorkoutType::RACE)
                 ->build(),

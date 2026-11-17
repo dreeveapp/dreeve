@@ -9,11 +9,8 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
-use App\Domain\Media\MediaItemId;
-use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\String\Path;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -41,10 +38,7 @@ final readonly class ActivityDetailRequestHandler
         return ActivityResponse::detail(
             activity: $activity,
             hasGpx: $this->activityStreamRepository->hasOneForActivityAndStreamType($activity->getId(), StreamType::LAT_LNG),
-            mediaItems: $this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_map(
-                static fn (string $localImagePath): MediaItemId => MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
-                $activity->getLocalImagePaths(),
-            ))),
+            mediaItems: $this->mediaItemRepository->findByIds($activity->getMediaItemIds()),
             appUrl: $this->appUrl,
         );
     }

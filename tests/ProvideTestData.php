@@ -33,6 +33,7 @@ use App\Domain\Gear\RecordingDevice\RecordingDevice;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
 use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
@@ -377,7 +378,7 @@ trait ProvideTestData
         $rawData = Json::decode((string) file_get_contents(__DIR__.'/fixtures/strava/activities/activity-four.json'));
         $activity = Activity::createFromRawStravaData($rawData)
             ->withRouteGeography(RouteGeography::create(['state' => 'watopia']))
-            ->withLocalImagePaths(['files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg']);
+            ->withMediaItemIds(MediaItemIds::fromArray(array_fill(0, 4, MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))));
 
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: $activity,
@@ -577,7 +578,7 @@ trait ProvideTestData
 
         $rawData = Json::decode((string) file_get_contents(__DIR__.'/fixtures/strava/activities/activity-nine.json'));
         $activity = Activity::createFromRawStravaData($rawData)
-                    ->withLocalImagePaths(['files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg']);
+                    ->withMediaItemIds(MediaItemIds::fromArray(array_fill(0, 4, MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))));
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: $activity,
             rawData: $rawData
@@ -609,7 +610,7 @@ trait ProvideTestData
 
         $rawData = Json::decode((string) file_get_contents(__DIR__.'/fixtures/strava/activities/activity-ten.json'));
         $activity = Activity::createFromRawStravaData($rawData)
-                    ->withLocalImagePaths(['files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg']);
+                    ->withMediaItemIds(MediaItemIds::fromArray(array_fill(0, 4, MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))));
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: $activity,
             rawData: $rawData
@@ -641,7 +642,7 @@ trait ProvideTestData
 
         $rawData = Json::decode((string) file_get_contents(__DIR__.'/fixtures/strava/activities/activity-eleven.json'));
         $activity = Activity::createFromRawStravaData($rawData)
-                    ->withLocalImagePaths(['files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg']);
+                    ->withMediaItemIds(MediaItemIds::fromArray(array_fill(0, 4, MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))));
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: $activity,
             rawData: $rawData
@@ -680,7 +681,7 @@ trait ProvideTestData
 
         $rawData = Json::decode((string) file_get_contents(__DIR__.'/fixtures/strava/activities/activity-twelve.json'));
         $activity = Activity::createFromRawStravaData($rawData)
-                    ->withLocalImagePaths(['files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg', 'files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg']);
+                    ->withMediaItemIds(MediaItemIds::fromArray(array_fill(0, 4, MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))));
         $activityRepository->add(ActivityWithRawData::fromState(
             activity: $activity,
             rawData: $rawData

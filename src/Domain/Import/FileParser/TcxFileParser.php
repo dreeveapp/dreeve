@@ -16,6 +16,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Import\SupportedFileExtension;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
@@ -118,7 +119,7 @@ final readonly class TcxFileParser implements ActivityFileParser
             deviceName: $deviceName,
             connectedSensors: null,
             totalImageCount: 0,
-            localImagePaths: [],
+            mediaItemIds: MediaItemIds::empty(),
             polyline: StreamMath::encodePolyline($streams),
             routeGeography: RouteGeography::create([]),
             weather: null,

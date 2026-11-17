@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\ImportMode;
 use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Security\Token\ApiToken;
@@ -48,9 +49,9 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
             ],
             Json::decode((string) $this->client->getResponse()->getContent()),
         );
-        $this->assertSame(
-            ['/'.self::EXISTING_IMAGE, '/files/activities/0025176c-5652-11ee-923d-02424dd627d5.'.$expectedExtension],
-            $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getLocalImagePaths(),
+        $this->assertEquals(
+            MediaItemIds::fromArray([MediaItemId::fromUnprefixed('9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11'), MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')]),
+            $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getMediaItemIds(),
         );
         $this->assertSame(
             file_get_contents(__DIR__.'/fixtures/'.$fixture),
@@ -100,7 +101,7 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertSame('unsupported_file_type', $this->errorCode());
-        $this->assertSame(['/'.self::EXISTING_IMAGE], $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getLocalImagePaths());
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11')]), $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getMediaItemIds());
         $this->assertFalse($this->fileStorage->fileExists('activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
     }
 
@@ -153,7 +154,7 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CONFLICT);
         $this->assertSame('import_mode_not_files', $this->errorCode());
-        $this->assertSame(['/'.self::EXISTING_IMAGE], $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getLocalImagePaths());
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11')]), $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getMediaItemIds());
     }
 
     public function testItRejectsAnUnauthenticatedRequest(): void
@@ -165,7 +166,7 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        $this->assertSame(['/'.self::EXISTING_IMAGE], $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getLocalImagePaths());
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11')]), $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getMediaItemIds());
     }
 
     private function errorCode(): string
@@ -203,7 +204,7 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
-                ->withLocalImagePaths(self::EXISTING_IMAGE)
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11'))
                 ->build(),
             rawData: [],
         ));

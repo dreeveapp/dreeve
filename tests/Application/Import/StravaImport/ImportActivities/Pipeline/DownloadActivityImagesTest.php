@@ -47,7 +47,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
         $activity = $this->downloadActivityImages->process($context)->getActivity();
         $this->assertNotNull($activity);
 
-        $this->assertSame(['/files/activities/0025176c-5652-11ee-923d-02424dd627d5.png'], $activity->getLocalImagePaths());
+        $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')]), $activity->getMediaItemIds());
         $this->assertSame('/tests/cat.webp', $this->fileStorage->read('activities/0025176c-5652-11ee-923d-02424dd627d5.png'));
         $this->assertEquals(
             MediaItems::fromArray([
@@ -76,7 +76,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
         )
             ->withActivity(
                 ActivityBuilder::fromDefaults()
-                    ->withLocalImagePaths('one', 'two', 'three')
+                    ->withMediaItemIds(MediaItemId::fromUnprefixed('one'), MediaItemId::fromUnprefixed('two'), MediaItemId::fromUnprefixed('three'))
                     ->build()
             );
 
@@ -105,7 +105,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
         $this->assertNotNull($activity);
 
         $this->assertSame(0, $activity->getTotalImageCount());
-        $this->assertSame([], $activity->getLocalImagePaths());
+        $this->assertTrue($activity->getMediaItemIds()->isEmpty());
         $this->assertEmpty($this->fileStorage->listContents('', true)->toArray());
     }
 
@@ -120,7 +120,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
         )
             ->withActivity(
                 ActivityBuilder::fromDefaults()
-                    ->withLocalImagePaths('one', 'two', 'three')
+                    ->withMediaItemIds(MediaItemId::fromUnprefixed('one'), MediaItemId::fromUnprefixed('two'), MediaItemId::fromUnprefixed('three'))
                     ->build()
             );
 
@@ -143,7 +143,7 @@ class DownloadActivityImagesTest extends ContainerTestCase
         )
             ->withActivity(
                 ActivityBuilder::fromDefaults()
-                    ->withLocalImagePaths('one', 'two', 'three')
+                    ->withMediaItemIds(MediaItemId::fromUnprefixed('one'), MediaItemId::fromUnprefixed('two'), MediaItemId::fromUnprefixed('three'))
                     ->build()
             );
 

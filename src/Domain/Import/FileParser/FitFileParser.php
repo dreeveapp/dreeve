@@ -23,6 +23,7 @@ use App\Domain\Import\FileParser\Fit\FitProduct;
 use App\Domain\Import\FileParser\Fit\FitSportType;
 use App\Domain\Import\FileParser\Fit\FitStrapHeartRate;
 use App\Domain\Import\SupportedFileExtension;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
@@ -229,7 +230,7 @@ final readonly class FitFileParser implements ActivityFileParser
             deviceName: $deviceName,
             connectedSensors: $this->resolveConnectedSensors($deviceInfoMessages),
             totalImageCount: 0,
-            localImagePaths: [],
+            mediaItemIds: MediaItemIds::empty(),
             polyline: StreamMath::encodePolyline($streamMap),
             routeGeography: RouteGeography::create([]),
             weather: null,

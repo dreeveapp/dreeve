@@ -19,6 +19,7 @@ use App\Domain\Import\FileParser\Gpx\GpxMetadata;
 use App\Domain\Import\FileParser\Gpx\GpxSportType;
 use App\Domain\Import\FileParser\Gpx\GpxWorkoutSummary;
 use App\Domain\Import\SupportedFileExtension;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
@@ -131,7 +132,7 @@ final readonly class GpxFileParser implements ActivityFileParser
             deviceName: $deviceName,
             connectedSensors: null,
             totalImageCount: 0,
-            localImagePaths: [],
+            mediaItemIds: MediaItemIds::empty(),
             polyline: StreamMath::encodePolyline($streams),
             routeGeography: RouteGeography::create([]),
             weather: null,

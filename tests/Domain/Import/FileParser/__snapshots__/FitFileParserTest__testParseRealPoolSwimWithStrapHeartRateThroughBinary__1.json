@@ -27,7 +27,7 @@
         "deviceName": "Garmin fenix 8 Solar",
         "connectedSensors": "[{\"manufacturer\":1,\"product\":3300,\"serialNumber\":3337768824,\"name\":\"Garmin HRM-Pro\",\"sensorTypes\":[\"heartRateMonitor\",\"footPod\"]}]",
         "totalImageCount": 0,
-        "localImagePaths": "",
+        "mediaItemIds": "[]",
         "polyline": null,
         "routeGeography": "[]",
         "weather": null,
