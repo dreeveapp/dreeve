@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Domain\Image;
+namespace App\Tests\Domain\Media;
 
-use App\Domain\Image\ImageOrientation;
+use App\Domain\Media\ImageOrientation;
 use PHPUnit\Framework\TestCase;
 
 class ImageOrientationTest extends TestCase
