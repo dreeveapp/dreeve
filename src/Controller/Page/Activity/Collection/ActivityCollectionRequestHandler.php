@@ -16,7 +16,7 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
-use App\Domain\Activity\Image\ImageRepository;
+use App\Domain\Activity\Media\ActivityMediaRepository;
 use App\Domain\Activity\RealWorldMap;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -41,7 +41,7 @@ final readonly class ActivityCollectionRequestHandler
         private QueryBus $queryBus,
         private Environment $twig,
         private PageRenderer $pageRenderer,
-        private ImageRepository $imageRepository,
+        private ActivityMediaRepository $activityMediaRepository,
         private UrlGeneratorInterface $urlGenerator,
     ) {
     }
@@ -87,7 +87,7 @@ final readonly class ActivityCollectionRequestHandler
         ))->render([
             'activityCollectionWithActivities' => $activityCollectionWithActivities,
             'leafletMap' => $activityCollectionWithActivities->getActivitiesWithARealWorldRoute()->isEmpty() ? null : new RealWorldMap(),
-            'images' => $this->imageRepository->findByActivityIds($activityCollection->getActivityIds())->reverse(),
+            'mediaItems' => $this->activityMediaRepository->findByActivityIds($activityCollection->getActivityIds())->reverse(),
         ]);
     }
 }

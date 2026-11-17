@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Rewind;
 
-use App\Domain\Activity\Image\Image;
-use App\Domain\Activity\Image\ImageRepository;
+use App\Domain\Activity\Media\ActivityMediaItem;
+use App\Domain\Activity\Media\ActivityMediaRepository;
 use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\FindMovingTimePerGear\FindMovingTimePerGear;
 use App\Domain\Gear\GearRepository;
@@ -39,7 +39,7 @@ final readonly class RewindItemsBuilder
 {
     public function __construct(
         private GearRepository $gearRepository,
-        private ImageRepository $imageRepository,
+        private ActivityMediaRepository $activityMediaRepository,
         private QueryBus $queryBus,
         private SettingsRepository $settingsRepository,
         private Environment $twig,
@@ -54,9 +54,9 @@ final readonly class RewindItemsBuilder
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
         $usedGears = $this->gearRepository->findAllUsed();
 
-        $randomImage = null;
+        $randomMediaItem = null;
         try {
-            $randomImage = $this->imageRepository->findRandomFor(
+            $randomMediaItem = $this->activityMediaRepository->findRandomFor(
                 sportTypes: SportTypes::thatSupportImagesForStravaRewind(),
                 years: $yearsToQuery
             );
@@ -312,15 +312,15 @@ final readonly class RewindItemsBuilder
             ));
         }
 
-        if ($randomImage instanceof Image) {
-            $activity = $randomImage->getActivity();
+        if ($randomMediaItem instanceof ActivityMediaItem) {
+            $activity = $randomMediaItem->getActivity();
             $rewindItems->add(RewindItem::from(
                 icon: 'image',
                 title: $this->translator->trans('Photo'),
                 subTitle: $activity->getStartDate()->translatedFormat('M d, Y'),
                 content: $this->twig->render('html/rewind/rewind-random-image.html.twig', [
                     'activity' => $activity,
-                    'image' => $randomImage,
+                    'mediaItem' => $randomMediaItem,
                 ]),
             ));
         } else {

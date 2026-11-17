@@ -7,7 +7,7 @@ namespace App\Tests\Domain\Activity\RemoveActivityImage;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Activity\Image\ActivityImageId;
+use App\Domain\Activity\Media\ActivityImageId;
 use App\Domain\Activity\RemoveActivityImage\RemoveActivityImage;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;

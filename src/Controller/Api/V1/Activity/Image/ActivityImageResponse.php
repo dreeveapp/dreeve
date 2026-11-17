@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api\V1\Activity\Image;
 
 use App\Application\AppUrl;
-use App\Domain\Activity\Image\ActivityImageId;
+use App\Domain\Activity\Media\ActivityImageId;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemPath;
 use Symfony\Component\HttpFoundation\JsonResponse;

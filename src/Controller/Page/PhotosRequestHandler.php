@@ -8,7 +8,7 @@ use App\Application\Countries;
 use App\Application\Navigation\NavigationSection;
 use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
-use App\Domain\Activity\Image\ImageRepository;
+use App\Domain\Activity\Media\ActivityMediaRepository;
 use App\Domain\Activity\SportType\SportTypeRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -25,7 +25,7 @@ use Twig\Environment;
 final readonly class PhotosRequestHandler
 {
     public function __construct(
-        private ImageRepository $imageRepository,
+        private ActivityMediaRepository $activityMediaRepository,
         private SportTypeRepository $sportTypeRepository,
         private Countries $countries,
         private Environment $twig,
@@ -52,13 +52,13 @@ final readonly class PhotosRequestHandler
 
     private function renderFor(): string
     {
-        $images = $this->imageRepository->findAll();
+        $mediaItems = $this->activityMediaRepository->findAll();
 
         return $this->twig->load('html/photos.html.twig')->render([
-            'images' => $images,
+            'mediaItems' => $mediaItems,
             'sportTypes' => $this->sportTypeRepository->findForImages(),
             'countries' => $this->countries->getUsedInPhotos(),
-            'totalPhotoCount' => count($images),
+            'totalPhotoCount' => count($mediaItems),
         ]);
     }
 }

@@ -6,7 +6,7 @@ namespace App\Controller\Api\V1\Activity;
 
 use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
-use App\Domain\Activity\Image\ActivityImageId;
+use App\Domain\Activity\Media\ActivityImageId;
 use App\Domain\Activity\Search\ActivitySearchResult;
 use App\Domain\Image\ImagePath;
 use App\Infrastructure\Http\Api\ProvidePagination;

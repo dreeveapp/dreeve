@@ -6,7 +6,7 @@ namespace App\Controller\Api\V1\Activity\Image;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\Image\ActivityImageId;
+use App\Domain\Activity\Media\ActivityImageId;
 use App\Domain\Activity\RemoveActivityImage\RemoveActivityImage;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
