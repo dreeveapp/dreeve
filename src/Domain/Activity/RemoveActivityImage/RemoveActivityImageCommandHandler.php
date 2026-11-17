@@ -8,7 +8,8 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Image\ActivityImageId;
 use App\Domain\Image\ImagePath;
-use App\Domain\Image\ImageStorage;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -17,7 +18,7 @@ final readonly class RemoveActivityImageCommandHandler implements CommandHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
     ) {
     }
 
@@ -48,7 +49,7 @@ final readonly class RemoveActivityImageCommandHandler implements CommandHandler
         ));
 
         foreach ($removedPaths as $path) {
-            $this->imageStorage->remove($path);
+            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(ActivityImageId::fromImagePath($path)->toUnprefixedString()));
         }
     }
 }

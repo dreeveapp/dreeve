@@ -55,11 +55,7 @@ final readonly class MediaItemStorage
 
     public function remove(MediaItemId $mediaItemId): void
     {
-        $mediaItem = $this->mediaItemRepository->findByIds(MediaItemIds::fromArray([$mediaItemId]))->getFirst();
-        if (null === $mediaItem) {
-            return;
-        }
-
+        $mediaItem = $this->mediaItemRepository->find($mediaItemId);
         $fileSystemPath = $mediaItem->getPath()->toFileSystemPath();
         if ($this->fileStorage->fileExists($fileSystemPath)) {
             $this->fileStorage->delete($fileSystemPath);

@@ -14,7 +14,6 @@ use App\Domain\Activity\UpdateManuallyAddedActivity\UpdateManuallyAddedActivityC
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
-use App\Domain\Image\ImageStorage;
 use App\Domain\Import\ImportMode;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
@@ -159,6 +158,10 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
     {
         $this->fileStorage->write('activities/keep.png', 'keep');
         $this->fileStorage->write('activities/drop.png', 'drop');
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('drop'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/drop.png'))
+            ->build());
         $this->addManuallyAddedActivity('files/activities/keep.png', 'files/activities/drop.png');
 
         $this->commandBus->dispatch(UpdateManuallyAddedActivity::fromPayload([
@@ -192,7 +195,10 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
                     ->withPath(MediaItemPath::fromLocalPath('files/activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
                     ->build(),
             ]),
-            $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')])),
+            $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([
+                MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'),
+                MediaItemId::fromUnprefixed('drop'),
+            ])),
         );
     }
 
@@ -244,7 +250,6 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
         $handler = new UpdateManuallyAddedActivityCommandHandler(
             activityRepository: $this->activityRepository,
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
-            imageStorage: $this->getContainer()->get(ImageStorage::class),
             mediaItemStorage: $this->getContainer()->get(MediaItemStorage::class),
             importMode: ImportMode::STRAVA_API,
         );

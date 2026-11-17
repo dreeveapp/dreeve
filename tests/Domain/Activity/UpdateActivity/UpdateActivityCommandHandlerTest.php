@@ -140,6 +140,11 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
     public function testHandleRemovesImages(): void
     {
         $this->fileStorage->write('activities/existing.png', 'binary');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('existing'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/existing.png'))
+            ->build());
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -160,6 +165,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
         $this->assertSame([], $activity->getLocalImagePaths());
         $this->assertFalse($this->fileStorage->fileExists('activities/existing.png'));
+        $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('existing')]))->isEmpty());
     }
 
     public function testHandleLeavesImagesUntouchedWhenNothingChanged(): void
@@ -190,6 +196,10 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
     {
         $this->fileStorage->write('activities/keep.png', 'keep');
         $this->fileStorage->write('activities/drop.png', 'drop');
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('drop'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/drop.png'))
+            ->build());
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -226,7 +236,10 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
                     ->withPath(MediaItemPath::fromLocalPath('files/activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
                     ->build(),
             ]),
-            $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')])),
+            $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([
+                MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'),
+                MediaItemId::fromUnprefixed('drop'),
+            ])),
         );
     }
 

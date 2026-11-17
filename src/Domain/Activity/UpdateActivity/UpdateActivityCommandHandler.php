@@ -7,19 +7,19 @@ namespace App\Domain\Activity\UpdateActivity;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Image\ImagePath;
-use App\Domain\Image\ImageStorage;
 use App\Domain\Image\RemovedImage;
 use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class UpdateActivityCommandHandler implements CommandHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
-        private ImageStorage $imageStorage,
         private MediaItemStorage $mediaItemStorage,
     ) {
     }
@@ -85,7 +85,7 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
         ));
 
         foreach ($imagePathsThatNeedRemoval as $path) {
-            $this->imageStorage->remove($path);
+            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($path->toLocalImagePath())->getFilenameWithoutExtension()));
         }
     }
 }
