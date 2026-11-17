@@ -106,7 +106,7 @@
                         <label>{{ "Images"|trans({}, 'admin') }}</label>
                         {% set existingImages = [] %}
                         {% for mediaItem in mediaItems %}
-                            {% set existingImages = existingImages|merge([{ url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().toString()|split('/')|last, id: mediaItem.getId() }]) %}
+                            {% set existingImages = existingImages|merge([{ url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId() }]) %}
                         {% endfor %}
                         {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'images', maxImages: 5, existingImages: existingImages } %}
                     </div>

@@ -21,6 +21,11 @@ final readonly class MediaItemPath
         return $this->path;
     }
 
+    public function getFilename(): string
+    {
+        return basename($this->path);
+    }
+
     public function toUrlPath(): string
     {
         return '/files/'.$this->path;
