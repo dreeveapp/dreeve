@@ -34,12 +34,12 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
         $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
         $keep = MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('keep'))
-            ->withPath(MediaItemPath::fromLocalPath('files/activities/keep.png'))
+            ->withPath(MediaItemPath::fromString('activities/keep.png'))
             ->build();
         $mediaItemRepository->add($keep);
         $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('drop'))
-            ->withPath(MediaItemPath::fromLocalPath('files/activities/drop.jpg'))
+            ->withPath(MediaItemPath::fromString('activities/drop.jpg'))
             ->build());
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()

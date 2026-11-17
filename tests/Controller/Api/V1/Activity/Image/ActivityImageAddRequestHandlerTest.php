@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
 {
     private const string PATH = '/api/v1/activities/activity-1/images';
-    private const string EXISTING_IMAGE = 'files/activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg';
+    private const string EXISTING_IMAGE = 'activities/9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11.jpg';
 
     private ApiToken $token;
     private ActivityRepository $activityRepository;
@@ -198,7 +198,7 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
 
         $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11'))
-            ->withPath(MediaItemPath::fromLocalPath(self::EXISTING_IMAGE))
+            ->withPath(MediaItemPath::fromString(self::EXISTING_IMAGE))
             ->build());
 
         $this->activityRepository->add(ActivityWithRawData::fromState(

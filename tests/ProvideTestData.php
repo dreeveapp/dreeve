@@ -109,7 +109,7 @@ trait ProvideTestData
 
         $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))
-            ->withPath(MediaItemPath::fromLocalPath('files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg'))
+            ->withPath(MediaItemPath::fromString('activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg'))
             ->build()
         );
     }

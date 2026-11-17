@@ -62,7 +62,7 @@ class AddActivityImageCommandHandlerTest extends ContainerTestCase
             MediaItems::fromArray([
                 MediaItemBuilder::fromDefaults()
                     ->withMediaItemId(MediaItemId::fromUnprefixed('new'))
-                    ->withPath(MediaItemPath::fromLocalPath('files/activities/new.jpg'))
+                    ->withPath(MediaItemPath::fromString('activities/new.jpg'))
                     ->withWidth(4)
                     ->withHeight(3)
                     ->withCoordinate(Coordinate::createFromLatAndLng(

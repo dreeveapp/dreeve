@@ -160,7 +160,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
         $this->fileStorage->write('activities/drop.png', 'drop');
         $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('drop'))
-            ->withPath(MediaItemPath::fromLocalPath('files/activities/drop.png'))
+            ->withPath(MediaItemPath::fromString('activities/drop.png'))
             ->build());
         $this->addManuallyAddedActivity(MediaItemId::fromUnprefixed('keep'), MediaItemId::fromUnprefixed('drop'));
 
@@ -191,7 +191,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             MediaItems::fromArray([
                 MediaItemBuilder::fromDefaults()
                     ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
-                    ->withPath(MediaItemPath::fromLocalPath('files/activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
+                    ->withPath(MediaItemPath::fromString('activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
                     ->build(),
             ]),
             $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([

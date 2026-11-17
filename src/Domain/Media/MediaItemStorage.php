@@ -31,13 +31,13 @@ final readonly class MediaItemStorage
 
     public function storeWithId(MediaItemId $mediaItemId, NewMediaItem $newMediaItem, MediaItemDirectory $directory): MediaItem
     {
-        $path = MediaItemPath::fromFileSystemPath(sprintf(
+        $path = MediaItemPath::fromString(sprintf(
             '%s/%s.%s',
             $directory->value,
             $mediaItemId->toUnprefixedString(),
             $newMediaItem->getFilename()->getExtension(),
         ));
-        $this->fileStorage->write($path->toFileSystemPath(), $newMediaItem->getContent());
+        $this->fileStorage->write($path->toString(), $newMediaItem->getContent());
 
         $metadata = $this->mediaItemMetadataReader->read($newMediaItem->getContent());
         $mediaItem = MediaItem::create(
@@ -56,7 +56,7 @@ final readonly class MediaItemStorage
     public function remove(MediaItemId $mediaItemId): void
     {
         $mediaItem = $this->mediaItemRepository->find($mediaItemId);
-        $fileSystemPath = $mediaItem->getPath()->toFileSystemPath();
+        $fileSystemPath = $mediaItem->getPath()->toString();
         if ($this->fileStorage->fileExists($fileSystemPath)) {
             $this->fileStorage->delete($fileSystemPath);
         }

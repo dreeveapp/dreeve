@@ -85,7 +85,7 @@ final readonly class ActivityCollectionsRequestHandler
         foreach ($activityCollectionsWithActivities as $activityCollectionWithActivities) {
             $fallbackCoverMediaItem = $fallbackCoverMediaItems[(string) $activityCollectionWithActivities->getFallbackCoverMediaItemId()] ?? null;
             $coverImagePaths[(string) $activityCollectionWithActivities->getActivityCollection()->getId()] = $activityCollectionWithActivities->getCoverImagePath()
-                ?? ($fallbackCoverMediaItem instanceof MediaItem ? '/'.$fallbackCoverMediaItem->getPath()->toLocalPath() : null);
+                ?? ($fallbackCoverMediaItem instanceof MediaItem ? $fallbackCoverMediaItem->getPath()->toUrlPath() : null);
         }
 
         return $this->twig->load('html/activity/collection/activity-collections.html.twig')->render([

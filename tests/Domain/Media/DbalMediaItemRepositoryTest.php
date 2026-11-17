@@ -25,7 +25,7 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
     {
         $mediaItem = MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('1'))
-            ->withPath(MediaItemPath::fromFileSystemPath('activities/1.jpg'))
+            ->withPath(MediaItemPath::fromString('activities/1.jpg'))
             ->withWidth(1200)
             ->withHeight(800)
             ->withCoordinate(Coordinate::createFromLatAndLng(
@@ -37,14 +37,14 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
         $this->mediaItemRepository->add($mediaItem);
         $this->mediaItemRepository->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('2'))
-            ->withPath(MediaItemPath::fromLocalPath('/files/activities/2.m3u8'))
+            ->withPath(MediaItemPath::fromString('activities/2.m3u8'))
             ->build());
 
         $this->assertEquals(
             [
                 [
                     'mediaItemId' => 'mediaItem-1',
-                    'path' => 'files/activities/1.jpg',
+                    'path' => 'activities/1.jpg',
                     'width' => 1200,
                     'height' => 800,
                     'coordinateLatitude' => 51.2,
@@ -53,7 +53,7 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
                 ],
                 [
                     'mediaItemId' => 'mediaItem-2',
-                    'path' => 'files/activities/2.m3u8',
+                    'path' => 'activities/2.m3u8',
                     'width' => null,
                     'height' => null,
                     'coordinateLatitude' => null,
@@ -105,7 +105,7 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
 
         $updated = MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('1'))
-            ->withPath(MediaItemPath::fromLocalPath('files/activities/updated.jpg'))
+            ->withPath(MediaItemPath::fromString('activities/updated.jpg'))
             ->withWidth(600)
             ->withHeight(900)
             ->withCoordinate(Coordinate::createFromLatAndLng(

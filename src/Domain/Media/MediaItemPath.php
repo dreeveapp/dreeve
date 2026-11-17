@@ -7,27 +7,22 @@ namespace App\Domain\Media;
 final readonly class MediaItemPath
 {
     private function __construct(
-        private string $localPath,
+        private string $path,
     ) {
     }
 
-    public static function fromLocalPath(string $localPath): self
+    public static function fromString(string $path): self
     {
-        return new self(ltrim($localPath, '/'));
+        return new self($path);
     }
 
-    public static function fromFileSystemPath(string $fileSystemPath): self
+    public function toString(): string
     {
-        return new self('files/'.ltrim($fileSystemPath, '/'));
+        return $this->path;
     }
 
-    public function toLocalPath(): string
+    public function toUrlPath(): string
     {
-        return $this->localPath;
-    }
-
-    public function toFileSystemPath(): string
-    {
-        return (string) preg_replace('#^files/#', '', $this->localPath);
+        return '/files/'.$this->path;
     }
 }

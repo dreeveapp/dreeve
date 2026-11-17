@@ -122,7 +122,7 @@
                     {% set existingImages = [] %}
                     {% if activity %}
                         {% for mediaItem in mediaItems %}
-                            {% set existingImages = existingImages|merge([{ url: relativeUrl('/' ~ mediaItem.getPath().toLocalPath()), name: mediaItem.getPath().toLocalPath()|split('/')|last, id: mediaItem.getId() }]) %}
+                            {% set existingImages = existingImages|merge([{ url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().toString()|split('/')|last, id: mediaItem.getId() }]) %}
                         {% endfor %}
                     {% endif %}
                     {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'images', maxImages: 5, existingImages: existingImages } %}

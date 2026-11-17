@@ -69,7 +69,7 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
         ));
         $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('test'))
-            ->withPath(MediaItemPath::fromLocalPath('files/activities/test.jpg'))
+            ->withPath(MediaItemPath::fromString('activities/test.jpg'))
             ->build()
         );
 
@@ -129,7 +129,7 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
         ));
         $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('run'))
-            ->withPath(MediaItemPath::fromLocalPath('files/activities/run.jpg'))
+            ->withPath(MediaItemPath::fromString('activities/run.jpg'))
             ->withWidth(600)
             ->withHeight(800)
             ->withCoordinate(Coordinate::createFromLatAndLng(
@@ -190,7 +190,7 @@ class ActivityBasedActivityMediaRepositoryTest extends ContainerTestCase
         foreach (['one', 'two'] as $name) {
             $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
                 ->withMediaItemId(MediaItemId::fromUnprefixed($name))
-                ->withPath(MediaItemPath::fromLocalPath('files/activities/'.$name.'.png'))
+                ->withPath(MediaItemPath::fromString('activities/'.$name.'.png'))
                 ->build()
             );
         }

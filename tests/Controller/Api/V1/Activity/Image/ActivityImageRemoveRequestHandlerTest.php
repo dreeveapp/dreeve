@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ActivityImageRemoveRequestHandlerTest extends ControllerWebTestCase
 {
-    private const string REMOVED_IMAGE = 'files/activities/0025176c-5652-11ee-923d-02424dd627d5.png';
+    private const string REMOVED_IMAGE = 'activities/0025176c-5652-11ee-923d-02424dd627d5.png';
     private const string PATH = '/api/v1/activities/activity-1/images/activityImage-0025176c-5652-11ee-923d-02424dd627d5';
 
     private ApiToken $token;
@@ -151,7 +151,7 @@ class ActivityImageRemoveRequestHandlerTest extends ControllerWebTestCase
         $this->fileStorage->write('activities/0025176c-5652-11ee-923d-02424dd627d5.png', 'removed');
         $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
-            ->withPath(MediaItemPath::fromLocalPath(self::REMOVED_IMAGE))
+            ->withPath(MediaItemPath::fromString(self::REMOVED_IMAGE))
             ->build());
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()

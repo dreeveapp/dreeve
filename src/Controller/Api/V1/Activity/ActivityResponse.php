@@ -101,7 +101,7 @@ final class ActivityResponse extends JsonResponse
             'images' => array_values(array_map(
                 static fn (MediaItem $mediaItem): array => [
                     'id' => (string) ActivityImageId::fromUnprefixed($mediaItem->getId()->toUnprefixedString()),
-                    'url' => rtrim((string) $appUrl, '/').'/'.$mediaItem->getPath()->toLocalPath(),
+                    'url' => rtrim((string) $appUrl, '/').$mediaItem->getPath()->toUrlPath(),
                 ],
                 $mediaItems->filter(static fn (MediaItem $mediaItem): bool => in_array((string) $mediaItem->getId(), $mediaItemIds, true))->toArray(),
             )),

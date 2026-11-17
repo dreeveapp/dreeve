@@ -27,7 +27,7 @@ final readonly class ActivityMediaItem
 
     public function getImageUrl(): string
     {
-        return '/'.$this->mediaItem->getPath()->toLocalPath();
+        return $this->mediaItem->getPath()->toUrlPath();
     }
 
     public function getActivity(): Activity
