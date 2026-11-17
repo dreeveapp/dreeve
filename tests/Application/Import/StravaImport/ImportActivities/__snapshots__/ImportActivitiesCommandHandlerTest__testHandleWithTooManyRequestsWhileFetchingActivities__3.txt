@@ -1,0 +1,1 @@
+/tests/cat.webp

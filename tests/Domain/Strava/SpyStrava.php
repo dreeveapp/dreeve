@@ -211,6 +211,8 @@ class SpyStrava extends Strava
                 'urls' => [
                     5000 => 'https://www.strava.com/path-to-image.png',
                 ],
+                'location' => [51.2, 3.18],
+                'created_at_local' => '2023-09-11T21:20:12Z',
             ],
             [
                 'urls' => [
