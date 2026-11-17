@@ -43,7 +43,8 @@ class LocalImageRequestHandlerTest extends ContainerTestCase
         $response = $handler->handle('activities/photo.png');
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertStringStartsWith('https://picsum.photos/seed/photo/', $response->getTargetUrl());
+        $this->assertEquals('/assets/images/anonymized/05.webp', $response->getTargetUrl());
+        $this->assertFileExists(dirname(__DIR__, 3).'/public'.$response->getTargetUrl());
     }
 
     public function testItReturnsNotFoundWhenTheFileDoesNotExist(): void
@@ -131,27 +132,6 @@ class LocalImageRequestHandlerTest extends ContainerTestCase
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
         $this->assertEquals(self::PNG_BYTES, $this->captureStreamedContent($response));
-    }
-
-    #[DataProvider('provideOrientationSeeds')]
-    public function testItPicksTheAnonymizedImageOrientationBasedOnTheSeed(string $fileName, string $expectedUrl): void
-    {
-        $this->fileStorage->write('activities/'.$fileName, self::PNG_BYTES, []);
-
-        $handler = $this->handler(demoModeIsEnabled: true, loggedIn: false);
-        $response = $handler->handle('activities/'.$fileName);
-
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals($expectedUrl, $response->getTargetUrl());
-    }
-
-    /**
-     * @return iterable<string, array{string, string}>
-     */
-    public static function provideOrientationSeeds(): iterable
-    {
-        yield 'landscape' => ['landscape-photo.png', 'https://picsum.photos/seed/landscape-photo/1200/800'];
-        yield 'portrait' => ['portrait-photo.png', 'https://picsum.photos/seed/portrait-photo/800/1200'];
     }
 
     private function handler(bool $demoModeIsEnabled, bool $loggedIn): LocalImageRequestHandler
