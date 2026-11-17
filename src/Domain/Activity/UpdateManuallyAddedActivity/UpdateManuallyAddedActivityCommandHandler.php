@@ -9,10 +9,10 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\WorldType;
 use App\Domain\Image\ImagePath;
-use App\Domain\Image\ImageStorage;
 use App\Domain\Image\RemovedImage;
 use App\Domain\Import\ImportMode;
 use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Domain\Settings\SettingsRepository;
@@ -20,13 +20,13 @@ use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
+use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class UpdateManuallyAddedActivityCommandHandler implements CommandHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
         private SettingsRepository $settingsRepository,
-        private ImageStorage $imageStorage,
         private MediaItemStorage $mediaItemStorage,
         private ImportMode $importMode,
     ) {
@@ -114,7 +114,7 @@ final readonly class UpdateManuallyAddedActivityCommandHandler implements Comman
         ));
 
         foreach ($imagePathsThatNeedRemoval as $path) {
-            $this->imageStorage->remove($path);
+            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($path->toLocalImagePath())->getFilenameWithoutExtension()));
         }
     }
 }

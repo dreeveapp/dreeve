@@ -9,10 +9,16 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Image\ActivityImageId;
 use App\Domain\Activity\RemoveActivityImage\RemoveActivityImage;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItems;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use League\Flysystem\FilesystemOperator;
 
 class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
@@ -25,6 +31,16 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
     {
         $this->fileStorage->write('activities/keep.png', 'keep');
         $this->fileStorage->write('activities/drop.jpg', 'drop');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $keep = MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('keep'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/keep.png'))
+            ->build();
+        $mediaItemRepository->add($keep);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('drop'))
+            ->withPath(MediaItemPath::fromLocalPath('files/activities/drop.jpg'))
+            ->build());
         $this->activityRepository->add(ActivityWithRawData::fromState(
             activity: ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('1'))
@@ -43,6 +59,10 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
         $this->assertSame(1, $activity->getTotalImageCount());
         $this->assertFalse($this->fileStorage->fileExists('activities/drop.jpg'));
         $this->assertTrue($this->fileStorage->fileExists('activities/keep.png'));
+        $this->assertEquals(
+            MediaItems::fromArray([$keep]),
+            $mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('keep'), MediaItemId::fromUnprefixed('drop')])),
+        );
     }
 
     public function testHandleThrowsWhenImageDoesNotBelongToTheActivity(): void
