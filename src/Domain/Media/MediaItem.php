@@ -94,6 +94,20 @@ final readonly class MediaItem
         return $this->takenOn;
     }
 
+    public function withCoordinate(?Coordinate $coordinate): self
+    {
+        return clone ($this, [
+            'coordinate' => $coordinate,
+        ]);
+    }
+
+    public function withTakenOn(?SerializableDateTime $takenOn): self
+    {
+        return clone ($this, [
+            'takenOn' => $takenOn,
+        ]);
+    }
+
     public function getOrientation(): ImageOrientation
     {
         if (null === $this->width || null === $this->height) {
