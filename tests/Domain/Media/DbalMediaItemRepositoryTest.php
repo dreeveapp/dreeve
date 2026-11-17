@@ -10,6 +10,7 @@ use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -66,6 +67,14 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
             [$mediaItem],
             $this->mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('1')]))->toArray(),
         );
+        $this->assertEquals($mediaItem, $this->mediaItemRepository->find(MediaItemId::fromUnprefixed('1')));
+    }
+
+    public function testFindThrowsWhenNotFound(): void
+    {
+        $this->expectExceptionObject(new EntityNotFound('MediaItem "mediaItem-1" not found'));
+
+        $this->mediaItemRepository->find(MediaItemId::fromUnprefixed('1'));
     }
 
     public function testFindByIdsKeepsTheGivenOrder(): void

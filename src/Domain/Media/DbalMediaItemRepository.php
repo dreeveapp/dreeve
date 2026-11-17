@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Media;
 
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -57,6 +58,18 @@ final readonly class DbalMediaItemRepository extends DbalRepository implements M
             'DELETE FROM MediaItem WHERE mediaItemId = :mediaItemId',
             ['mediaItemId' => $mediaItem->getId()],
         );
+    }
+
+    public function find(MediaItemId $mediaItemId): MediaItem
+    {
+        if (!$result = $this->connection->executeQuery(
+            'SELECT * FROM MediaItem WHERE mediaItemId = :mediaItemId',
+            ['mediaItemId' => $mediaItemId],
+        )->fetchAssociative()) {
+            throw new EntityNotFound(sprintf('MediaItem "%s" not found', $mediaItemId));
+        }
+
+        return $this->hydrate($result);
     }
 
     public function findByIds(MediaItemIds $mediaItemIds): MediaItems

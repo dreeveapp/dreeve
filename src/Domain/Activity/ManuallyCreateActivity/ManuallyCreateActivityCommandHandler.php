@@ -14,10 +14,11 @@ use App\Domain\Activity\Scan\ActivityScan;
 use App\Domain\Activity\Scan\ActivityScanRepository;
 use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\WorldType;
-use App\Domain\Image\ImageDirectory;
-use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemStorage;
+use App\Domain\Media\NewMediaItem;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -31,7 +32,7 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
         private ActivityScanRepository $activityScanRepository,
         private ActivityIdFactory $activityIdFactory,
         private SettingsRepository $settingsRepository,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
         private ImportMode $importMode,
     ) {
     }
@@ -94,10 +95,13 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
         $this->activityScanRepository->add(ActivityScan::create(activityId: $activityId, type: ActivityScanType::STREAMS));
 
         $localImagePaths = array_map(
-            fn (NewImage $newImage): string => $this->imageStorage->store(
-                newImage: $newImage,
-                directory: ImageDirectory::ACTIVITIES
-            )->toLocalImagePath(),
+            fn (NewImage $newImage): string => $this->mediaItemStorage->store(
+                newMediaItem: new NewMediaItem(
+                    filename: $newImage->getFilename(),
+                    content: $newImage->getContent(),
+                ),
+                directory: MediaItemDirectory::ACTIVITIES,
+            )->getPath()->toLocalPath(),
             $command->getNewImages()
         );
 

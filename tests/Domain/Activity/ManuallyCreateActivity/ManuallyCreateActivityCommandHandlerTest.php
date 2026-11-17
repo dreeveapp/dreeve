@@ -15,8 +15,13 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
-use App\Domain\Image\ImageStorage;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItems;
+use App\Domain\Media\MediaItemStorage;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
@@ -25,6 +30,7 @@ use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use League\Flysystem\FilesystemOperator;
 
 class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
@@ -151,6 +157,15 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertCount(1, $localImagePaths);
         $this->assertSame(1, $activity->getTotalImageCount());
         $this->assertTrue($this->fileStorage->fileExists(str_replace('files/', '', $localImagePaths[0])));
+        $this->assertEquals(
+            MediaItems::fromArray([
+                MediaItemBuilder::fromDefaults()
+                    ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
+                    ->withPath(MediaItemPath::fromLocalPath('files/activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
+                    ->build(),
+            ]),
+            $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')])),
+        );
     }
 
     public function testHandleThrowsWhenNotRunningInFileImportMode(): void
@@ -160,7 +175,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
             activityScanRepository: $this->getContainer()->get(ActivityScanRepository::class),
             activityIdFactory: $this->getContainer()->get(ActivityIdFactory::class),
             settingsRepository: $this->getContainer()->get(SettingsRepository::class),
-            imageStorage: $this->getContainer()->get(ImageStorage::class),
+            mediaItemStorage: $this->getContainer()->get(MediaItemStorage::class),
             importMode: ImportMode::STRAVA_API,
         );
 
