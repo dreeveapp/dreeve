@@ -27,6 +27,7 @@ RUN set -eux; \
         ctype \
         curl \
         dom \
+        exif \
         fileinfo \
         gd \
         intl \
