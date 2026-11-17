@@ -8,11 +8,13 @@ use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\WorldType;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Temperature\Celsius;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
+use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class ActivityCollectionWithActivities
@@ -56,13 +58,14 @@ final readonly class ActivityCollectionWithActivities
 
     public function getCoverImagePath(): ?string
     {
-        if ($coverImagePath = $this->activityCollection->getCoverImagePath()) {
-            return $coverImagePath;
-        }
+        return $this->activityCollection->getCoverImagePath();
+    }
 
+    public function getFallbackCoverMediaItemId(): ?MediaItemId
+    {
         foreach ($this->activities as $activity) {
             if ($localImagePaths = $activity->getLocalImagePaths()) {
-                return reset($localImagePaths);
+                return MediaItemId::fromUnprefixed(Path::fromString(reset($localImagePaths))->getFilenameWithoutExtension());
             }
         }
 

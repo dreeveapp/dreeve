@@ -10,7 +10,12 @@ use App\Application\PageRenderer;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionsWithActivities;
+use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\RealWorldMap;
+use App\Domain\Media\MediaItem;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -31,6 +36,7 @@ final readonly class ActivityCollectionsRequestHandler
         private ActivityRepository $activityRepository,
         private Environment $twig,
         private PageRenderer $pageRenderer,
+        private MediaItemRepository $mediaItemRepository,
     ) {
     }
 
@@ -63,12 +69,28 @@ final readonly class ActivityCollectionsRequestHandler
     private function renderFor(): string
     {
         $activityCollections = $this->activityCollectionRepository->findAll();
+        $activityCollectionsWithActivities = ActivityCollectionsWithActivities::create(
+            activityCollections: $activityCollections,
+            activities: $this->activityRepository->findByIds($activityCollections->getActivityIds()),
+        );
+
+        $fallbackCoverMediaItems = [];
+        foreach ($this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_values(array_filter($activityCollectionsWithActivities->map(
+            static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): ?MediaItemId => $activityCollectionWithActivities->getFallbackCoverMediaItemId(),
+        ))))) as $mediaItem) {
+            $fallbackCoverMediaItems[(string) $mediaItem->getId()] = $mediaItem;
+        }
+
+        $coverImagePaths = [];
+        foreach ($activityCollectionsWithActivities as $activityCollectionWithActivities) {
+            $fallbackCoverMediaItem = $fallbackCoverMediaItems[(string) $activityCollectionWithActivities->getFallbackCoverMediaItemId()] ?? null;
+            $coverImagePaths[(string) $activityCollectionWithActivities->getActivityCollection()->getId()] = $activityCollectionWithActivities->getCoverImagePath()
+                ?? ($fallbackCoverMediaItem instanceof MediaItem ? '/'.$fallbackCoverMediaItem->getPath()->toLocalPath() : null);
+        }
 
         return $this->twig->load('html/activity/collection/activity-collections.html.twig')->render([
-            'activityCollectionsWithActivities' => ActivityCollectionsWithActivities::create(
-                activityCollections: $activityCollections,
-                activities: $this->activityRepository->findByIds($activityCollections->getActivityIds()),
-            ),
+            'activityCollectionsWithActivities' => $activityCollectionsWithActivities,
+            'coverImagePaths' => $coverImagePaths,
             'leafletMap' => new RealWorldMap(),
         ]);
     }

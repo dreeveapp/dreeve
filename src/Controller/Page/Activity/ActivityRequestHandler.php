@@ -26,6 +26,9 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\FileImportRepository;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -37,6 +40,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\Security\Visitor;
+use App\Infrastructure\ValueObject\String\Path;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -65,6 +69,7 @@ final readonly class ActivityRequestHandler
         private UrlGeneratorInterface $urlGenerator,
         private Visitor $visitor,
         private FileImportRepository $fileImportRepository,
+        private MediaItemRepository $mediaItemRepository,
         private Environment $twig,
     ) {
     }
@@ -138,6 +143,10 @@ final readonly class ActivityRequestHandler
         return $this->twig->load($templateName)->render(context: [
             'activity' => $activity,
             'enrichedActivity' => $enrichedActivity,
+            'mediaItems' => $this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_map(
+                static fn (string $localImagePath): MediaItemId => MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()),
+                $activity->getLocalImagePaths(),
+            ))),
             'leaflet' => $leafletMap instanceof LeafletMap ? [
                 'polylineUrl' => $this->urlGenerator->generate('activity_polylines', ['activityId' => (string) $activityId]),
                 'map' => $leafletMap,

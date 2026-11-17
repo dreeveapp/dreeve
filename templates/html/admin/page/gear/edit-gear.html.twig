@@ -55,7 +55,7 @@
                 {% set existingImages = [] %}
                 {% if gear and gear.getLocalImagePath() %}
                     {% set path = gear.getLocalImagePath() %}
-                    {% set existingImages = [{ url: path, name: path|split('/')|last, path: path }] %}
+                    {% set existingImages = [{ url: path, name: path|split('/')|last, id: path }] %}
                 {% endif %}
                 {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'localImagePath', maxImages: 1, existingImages: existingImages } %}
             </div>

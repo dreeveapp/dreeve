@@ -13,6 +13,7 @@ use App\Domain\Image\RemovedImage;
 use App\Domain\Import\ImportMode;
 use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Domain\Settings\SettingsRepository;
@@ -76,36 +77,35 @@ final readonly class UpdateManuallyAddedActivityCommandHandler implements Comman
         $newImages = $command->getNewImages();
         $removedImages = $command->getRemovedImages();
 
-        $imagePathsThatNeedRemoval = [];
+        $mediaItemIdsThatNeedRemoval = [];
         if ([] !== $newImages || [] !== $removedImages) {
-            $removedLocalImagePaths = array_map(
-                static fn (RemovedImage $removedImage): string => $removedImage->getPath()->toLocalImagePath(),
+            $removedMediaItemIds = MediaItemIds::fromArray(array_map(
+                static fn (RemovedImage $removedImage): MediaItemId => MediaItemId::fromString($removedImage->getId()),
                 $removedImages
-            );
-            $isRemoved = static fn (ImagePath $path): bool => in_array($path->toLocalImagePath(), $removedLocalImagePaths, true);
+            ));
 
-            $currentPaths = array_map(
-                ImagePath::fromLocalImagePath(...),
-                $activity->getLocalImagePaths()
-            );
+            $retainedPaths = [];
+            foreach ($activity->getLocalImagePaths() as $localImagePath) {
+                $mediaItemId = MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension());
+                if ($removedMediaItemIds->has($mediaItemId)) {
+                    $mediaItemIdsThatNeedRemoval[] = $mediaItemId;
+                    continue;
+                }
 
-            $retainedPaths = array_values(array_filter($currentPaths, static fn (ImagePath $path): bool => !$isRemoved($path)));
-            $imagePathsThatNeedRemoval = array_values(array_filter($currentPaths, $isRemoved));
+                $retainedPaths[] = ImagePath::fromLocalImagePath($localImagePath)->toLocalImagePath();
+            }
 
             foreach ($newImages as $newImage) {
-                $retainedPaths[] = ImagePath::fromLocalImagePath($this->mediaItemStorage->store(
+                $retainedPaths[] = $this->mediaItemStorage->store(
                     newMediaItem: new NewMediaItem(
                         filename: $newImage->getFilename(),
                         content: $newImage->getContent(),
                     ),
                     directory: MediaItemDirectory::ACTIVITIES,
-                )->getPath()->toLocalPath());
+                )->getPath()->toLocalPath();
             }
 
-            $activity = $activity->withLocalImagePaths(array_map(
-                static fn (ImagePath $path): string => $path->toLocalImagePath(),
-                $retainedPaths
-            ));
+            $activity = $activity->withLocalImagePaths($retainedPaths);
         }
 
         $this->activityRepository->update(ActivityWithRawData::fromState(
@@ -113,8 +113,8 @@ final readonly class UpdateManuallyAddedActivityCommandHandler implements Comman
             rawData: $activityWithRawData->getRawData(),
         ));
 
-        foreach ($imagePathsThatNeedRemoval as $path) {
-            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($path->toLocalImagePath())->getFilenameWithoutExtension()));
+        foreach ($mediaItemIdsThatNeedRemoval as $mediaItemId) {
+            $this->mediaItemStorage->remove($mediaItemId);
         }
     }
 }

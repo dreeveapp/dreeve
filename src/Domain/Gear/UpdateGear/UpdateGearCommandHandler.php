@@ -6,6 +6,7 @@ namespace App\Domain\Gear\UpdateGear;
 
 use App\Domain\Gear\GearRepository;
 use App\Domain\Image\ImageDirectory;
+use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
@@ -51,7 +52,7 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
         $this->gearRepository->update($gear);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->imageStorage->remove($removedImage->getPath());
+            $this->imageStorage->remove(ImagePath::fromLocalImagePath($removedImage->getId()));
         }
     }
 }

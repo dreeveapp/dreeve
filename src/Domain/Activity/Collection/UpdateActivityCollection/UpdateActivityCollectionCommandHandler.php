@@ -10,6 +10,7 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Image\ImageDirectory;
+use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
@@ -72,7 +73,7 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
         $this->activityCollectionRepository->update($activityCollection);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->imageStorage->remove($removedImage->getPath());
+            $this->imageStorage->remove(ImagePath::fromLocalImagePath($removedImage->getId()));
         }
     }
 }

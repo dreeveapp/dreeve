@@ -158,7 +158,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'name' => 'Updated activity',
             'sportType' => 'Ride',
             'images' => json_encode([
-                ['status' => 'removed', 'path' => '/files/activities/existing.png'],
+                ['status' => 'removed', 'id' => 'mediaItem-existing'],
             ]),
         ]));
 
@@ -213,7 +213,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'name' => 'Updated activity',
             'sportType' => 'Ride',
             'images' => json_encode([
-                ['status' => 'removed', 'path' => '/files/activities/drop.png'],
+                ['status' => 'removed', 'id' => 'mediaItem-drop'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
         ]));
@@ -258,7 +258,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'name' => 'Updated activity',
             'sportType' => 'Ride',
             'images' => json_encode([
-                ['status' => 'removed', 'path' => '/files/activities/someone-else.png'],
+                ['status' => 'removed', 'id' => 'mediaItem-someone-else'],
             ]),
         ]));
 

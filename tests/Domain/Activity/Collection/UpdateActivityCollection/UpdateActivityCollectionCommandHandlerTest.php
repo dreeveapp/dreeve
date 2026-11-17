@@ -63,7 +63,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'addActivitiesBy' => 'activity',
             'useRouteMapAsCover' => 'true',
             'coverImagePath' => json_encode([
-                ['status' => 'removed', 'path' => '/files/activity-collections/old.jpg'],
+                ['status' => 'removed', 'id' => '/files/activity-collections/old.jpg'],
             ]),
         ]));
 
@@ -117,7 +117,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'name' => 'Mallorca',
             'type' => 'trip',
             'coverImagePath' => json_encode([
-                ['status' => 'removed', 'path' => '/files/activity-collections/old.jpg'],
+                ['status' => 'removed', 'id' => '/files/activity-collections/old.jpg'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
         ]));

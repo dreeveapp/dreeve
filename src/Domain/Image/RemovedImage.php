@@ -7,12 +7,12 @@ namespace App\Domain\Image;
 final readonly class RemovedImage
 {
     public function __construct(
-        private string $path,
+        private string $id,
     ) {
     }
 
-    public function getPath(): ImagePath
+    public function getId(): string
     {
-        return ImagePath::fromLocalImagePath($this->path);
+        return $this->id;
     }
 }

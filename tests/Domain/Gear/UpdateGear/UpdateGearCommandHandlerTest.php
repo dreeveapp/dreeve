@@ -84,7 +84,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'path' => '/files/gear/old.jpg'],
+                ['status' => 'removed', 'id' => '/files/gear/old.jpg'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
         ]));
@@ -111,7 +111,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'path' => '/files/gear/old.jpg'],
+                ['status' => 'removed', 'id' => '/files/gear/old.jpg'],
             ]),
         ]));
 
@@ -135,7 +135,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
             'localImagePath' => json_encode([
-                ['status' => 'unchanged', 'path' => '/files/gear/old.jpg'],
+                ['status' => 'unchanged', 'id' => '/files/gear/old.jpg'],
             ]),
         ]));
 

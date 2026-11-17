@@ -161,7 +161,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'label' => 'Chain',
             'installations' => [['parent' => 'gear:gear-b1']],
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
+                ['status' => 'removed', 'id' => '/files/gear-maintenance/old.png'],
                 ['status' => 'new', 'filename' => 'new.png', 'content' => base64_encode('new-content')],
             ]),
             'maintenanceTasks' => [
@@ -187,7 +187,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'label' => 'Chain',
             'installations' => [['parent' => 'gear:gear-b1']],
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'path' => '/files/gear-maintenance/old.png'],
+                ['status' => 'removed', 'id' => '/files/gear-maintenance/old.png'],
             ]),
             'maintenanceTasks' => [
                 ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],

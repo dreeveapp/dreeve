@@ -65,13 +65,13 @@ class UpdateGearTest extends TestCase
             'gearId' => 'gear-1',
             'name' => 'My custom gear',
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'path' => '/files/gear/old.jpg'],
+                ['status' => 'removed', 'id' => '/files/gear/old.jpg'],
             ]),
         ]);
 
         $this->assertNull($command->getNewImage());
         $this->assertNotNull($command->getRemovedImage());
-        $this->assertSame('files/gear/old.jpg', $command->getRemovedImage()->getPath()->toLocalImagePath());
+        $this->assertSame('/files/gear/old.jpg', $command->getRemovedImage()->getId());
     }
 
     public function testFromPayloadTrimsName(): void
