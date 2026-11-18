@@ -1,72 +1,68 @@
-{
-  "enabled": true,
-  "ignoreRetiredGear": false,
-  "components": [
-    {
-      "id": "gearComponent-new-chain",
-      "label": "New chain",
-      "mediaItemId": null,
-      "isRetired": false,
-      "notes": null,
-      "installations": [
-        {
-          "parent": "gear:gear-bike-a",
-          "from": "2025-01-01",
-          "until": null,
-          "sportTypes": []
+[
+  {
+    "id": "gearComponent-new-chain",
+    "label": "New chain",
+    "mediaItemId": null,
+    "isRetired": false,
+    "notes": null,
+    "installations": [
+      {
+        "parent": "gear:gear-bike-a",
+        "from": "2025-01-01",
+        "until": null,
+        "sportTypes": []
+      }
+    ],
+    "maintenance": [
+      {
+        "id": "maintenanceTask-new-chain-replace",
+        "label": "Replace",
+        "interval": {
+          "value": 1000,
+          "unit": "km"
         }
-      ],
-      "maintenance": [
-        {
-          "id": "maintenanceTask-new-chain-replace",
-          "label": "Replace",
-          "interval": {
-            "value": 1000,
-            "unit": "km"
-          }
-        },
-        {
-          "id": "maintenanceTask-new-chain-inspect",
-          "label": "Inspect",
-          "interval": {
-            "value": 365,
-            "unit": "days"
-          }
+      },
+      {
+        "id": "maintenanceTask-new-chain-inspect",
+        "label": "Inspect",
+        "interval": {
+          "value": 365,
+          "unit": "days"
         }
-      ]
-    },
-    {
-      "id": "gearComponent-old-cassette",
-      "label": "Old cassette",
-      "mediaItemId": null,
-      "isRetired": false,
-      "notes": null,
-      "installations": [
-        {
-          "parent": "gear:gear-bike-a",
-          "from": null,
-          "until": null,
-          "sportTypes": []
+      }
+    ]
+  },
+  {
+    "id": "gearComponent-old-cassette",
+    "label": "Old cassette",
+    "mediaItemId": null,
+    "isRetired": false,
+    "notes": null,
+    "installations": [
+      {
+        "parent": "gear:gear-bike-a",
+        "from": null,
+        "until": null,
+        "sportTypes": []
+      }
+    ],
+    "maintenance": [
+      {
+        "id": "maintenanceTask-old-cassette-replace",
+        "label": "Replace",
+        "interval": {
+          "value": 1000,
+          "unit": "km"
         }
-      ],
-      "maintenance": [
-        {
-          "id": "maintenanceTask-old-cassette-replace",
-          "label": "Replace",
-          "interval": {
-            "value": 1000,
-            "unit": "km"
-          }
-        },
-        {
-          "id": "maintenanceTask-old-cassette-inspect",
-          "label": "Inspect",
-          "interval": {
-            "value": 365,
-            "unit": "days"
-          }
+      },
+      {
+        "id": "maintenanceTask-old-cassette-inspect",
+        "label": "Inspect",
+        "interval": {
+          "value": 365,
+          "unit": "days"
         }
-      ]
-    }
-  ]
-}
+      }
+    ]
+  }
+]

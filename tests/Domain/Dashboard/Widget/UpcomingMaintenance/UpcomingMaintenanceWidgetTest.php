@@ -5,24 +5,33 @@ namespace App\Tests\Domain\Dashboard\Widget\UpcomingMaintenance;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\Widget\UpcomingMaintenance\UpcomingMaintenanceWidget;
 use App\Domain\Dashboard\Widget\WidgetConfiguration;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearComponentId;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
+use App\Domain\Gear\Maintenance\Task\IntervalUnit;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
-use Symfony\Component\Yaml\Yaml;
 
 class UpcomingMaintenanceWidgetTest extends ContainerTestCase
 {
@@ -105,7 +114,26 @@ class UpcomingMaintenanceWidgetTest extends ContainerTestCase
 
     public function testRenderWhenTheOnlyComponentIsAttachedToRetiredGear(): void
     {
-        $this->importGearMaintenanceConfigAttachedToRetiredGearOnly();
+        $this->getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: true,
+        );
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('retired')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
         $this->provideMaintenanceHistory();
 
         $render = $this->widget->render(
@@ -165,27 +193,6 @@ class UpcomingMaintenanceWidgetTest extends ContainerTestCase
                 ->build(),
             []
         ));
-    }
-
-    private function importGearMaintenanceConfigAttachedToRetiredGearOnly(): void
-    {
-        $this->importGearMaintenanceConfigFromArray(Yaml::parse(<<<YML
-enabled: true
-ignoreRetiredGear: true
-components:
-  - id: gearComponent-chain
-    label: Some cool chain
-    isRetired: false
-    notes: null
-    installations:
-      - { parent: 'gear:gear-retired', from: null, until: null, sportTypes: [] }
-    maintenance:
-      - id: maintenanceTask-chain-lubed
-        label: Lube
-        interval:
-          value: 500
-          unit: km
-YML));
     }
 
     #[\Override]

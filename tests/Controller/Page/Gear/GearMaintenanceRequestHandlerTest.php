@@ -7,6 +7,9 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearComponent;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
@@ -51,7 +54,14 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
 
     public function testRenderWithAComponentThatIsNotFitted(): void
     {
-        $this->importGearMaintenanceConfigFromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance-with-not-fitted-component.json')));
+        $this->getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: false,
+        );
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        foreach (Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance-with-not-fitted-component.json')) as $component) {
+            $gearComponentRepository->add(GearComponent::fromArray($component));
+        }
         $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
             ->withPath(MediaItemPath::fromString('gear/bike.jpg'))
