@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Media;
+namespace App\Domain\Media\DropZone;
 
 enum DropZoneItemStatus: string
 {
