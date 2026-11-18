@@ -108,7 +108,7 @@
                         {% for mediaItem in mediaItems %}
                             {% set existingImages = existingImages|merge([{ url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId() }]) %}
                         {% endfor %}
-                        {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'images', maxImages: 5, existingImages: existingImages } %}
+                        {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'mediaItems', maxImages: 5, existingImages: existingImages } %}
                     </div>
                 {% endif %}
                 <div>

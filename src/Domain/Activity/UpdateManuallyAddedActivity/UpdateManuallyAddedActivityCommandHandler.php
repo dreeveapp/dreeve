@@ -71,14 +71,14 @@ final readonly class UpdateManuallyAddedActivityCommandHandler implements Comman
             ->withCommute($command->isCommute())
             ->withGroupActivity($command->isGroupActivity());
 
-        $newImages = $command->getNewImages();
-        $removedImages = $command->getRemovedImages();
+        $newMediaItems = $command->getNewMediaItems();
+        $removedMediaItems = $command->getRemovedMediaItems();
 
         $mediaItemIdsThatNeedRemoval = [];
-        if ([] !== $newImages || [] !== $removedImages) {
+        if ([] !== $newMediaItems || [] !== $removedMediaItems) {
             $removedMediaItemIds = MediaItemIds::fromArray(array_map(
-                static fn (RemovedImage $removedImage): MediaItemId => MediaItemId::fromString($removedImage->getId()),
-                $removedImages
+                static fn (RemovedImage $removedMediaItem): MediaItemId => MediaItemId::fromString($removedMediaItem->getId()),
+                $removedMediaItems
             ));
 
             $retainedMediaItemIds = MediaItemIds::empty();
@@ -91,9 +91,9 @@ final readonly class UpdateManuallyAddedActivityCommandHandler implements Comman
                 $retainedMediaItemIds->add($mediaItemId);
             }
 
-            foreach ($newImages as $newImage) {
+            foreach ($newMediaItems as $newMediaItem) {
                 $retainedMediaItemIds->add($this->mediaItemStorage->store(
-                    newMediaItem: $newImage,
+                    newMediaItem: $newMediaItem,
                     directory: MediaItemDirectory::ACTIVITIES,
                 )->getId());
             }

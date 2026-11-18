@@ -25,7 +25,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
         private string $name,
         private ?string $description,
         private ActivityCollectionType $type,
-        private ?NewMediaItem $newImage,
+        private ?NewMediaItem $newMediaItem,
         private bool $useRouteMapAsCover,
         private ActivityIds $activityIds,
     ) {
@@ -66,14 +66,14 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
             throw CouldNotDeserializeCommand::invalidPayload('The "activityIds" contain an invalid activity id.');
         }
 
-        [$newImages] = self::parseImages($payload, 'coverImagePath');
+        [$newMediaItems] = self::parseImages($payload, 'coverMediaItem');
 
         return new self(
             activityCollectionId: ActivityCollectionId::fromString($payload['activityCollectionId']),
             name: $name,
             description: '' === $description ? null : $description,
             type: $activityCollectionType,
-            newImage: $newImages[0] ?? null,
+            newMediaItem: $newMediaItems[0] ?? null,
             useRouteMapAsCover: filter_var($payload['useRouteMapAsCover'] ?? false, FILTER_VALIDATE_BOOLEAN),
             activityIds: $activityIds,
         );
@@ -99,9 +99,9 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
         return $this->type;
     }
 
-    public function getNewImage(): ?NewMediaItem
+    public function getNewMediaItem(): ?NewMediaItem
     {
-        return $this->newImage;
+        return $this->newMediaItem;
     }
 
     public function useRouteMapAsCover(): bool

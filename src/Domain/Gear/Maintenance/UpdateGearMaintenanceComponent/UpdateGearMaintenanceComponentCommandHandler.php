@@ -43,15 +43,15 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
             ->withNotes($command->getNotes())
             ->withMaintenanceTasks($command->getMaintenanceTasks());
 
-        $newImage = $command->getNewImage();
-        $removedImage = $command->getRemovedImage();
+        $newMediaItem = $command->getNewMediaItem();
+        $removedMediaItem = $command->getRemovedMediaItem();
 
-        if ($newImage instanceof NewMediaItem) {
+        if ($newMediaItem instanceof NewMediaItem) {
             $gearComponent = $gearComponent->withMediaItemId($this->mediaItemStorage->store(
-                newMediaItem: $newImage,
+                newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::GEAR_MAINTENANCE,
             )->getId());
-        } elseif ($removedImage instanceof RemovedImage) {
+        } elseif ($removedMediaItem instanceof RemovedImage) {
             $gearComponent = $gearComponent->withMediaItemId(null);
         }
 
@@ -66,8 +66,8 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
 
         $this->gearComponentRepository->update($gearComponent);
 
-        if ($removedImage instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromString($removedImage->getId()));
+        if ($removedMediaItem instanceof RemovedImage) {
+            $this->mediaItemStorage->remove(MediaItemId::fromString($removedMediaItem->getId()));
         }
     }
 }

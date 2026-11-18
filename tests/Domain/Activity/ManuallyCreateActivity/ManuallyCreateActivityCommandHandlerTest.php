@@ -145,7 +145,7 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
             'sportType' => 'Run',
             'startDateTime' => '2023-10-17T16:15',
             'duration' => ['minutes' => 30],
-            'images' => Json::encode([
+            'mediaItems' => Json::encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => base64_encode('binary-content')],
             ]),
         ]));

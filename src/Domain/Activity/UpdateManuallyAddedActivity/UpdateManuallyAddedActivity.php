@@ -28,8 +28,8 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
     use ProvidesCommandName;
 
     /**
-     * @param array<NewMediaItem> $newImages
-     * @param array<RemovedImage> $removedImages
+     * @param array<NewMediaItem> $newMediaItems
+     * @param array<RemovedImage> $removedMediaItems
      */
     private function __construct(
         private ActivityId $activityId,
@@ -47,8 +47,8 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
         private ?int $maxHeartRate,
         private bool $isCommute,
         private bool $isGroupActivity,
-        private array $newImages,
-        private array $removedImages,
+        private array $newMediaItems,
+        private array $removedMediaItems,
     ) {
     }
 
@@ -58,7 +58,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
             throw CouldNotDeserializeCommand::invalidPayload('An "activityId" is required.');
         }
 
-        [$newImages, $removedImages] = self::parseImages($payload, 'images');
+        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'mediaItems');
         [$averageHeartRate, $maxHeartRate] = self::parseHeartRates($payload);
 
         return new self(
@@ -77,8 +77,8 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
             maxHeartRate: $maxHeartRate,
             isCommute: self::parseIsCommute($payload),
             isGroupActivity: self::parseIsGroupActivity($payload),
-            newImages: $newImages,
-            removedImages: $removedImages,
+            newMediaItems: $newMediaItems,
+            removedMediaItems: $removedMediaItems,
         );
     }
 
@@ -160,16 +160,16 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
     /**
      * @return array<NewMediaItem>
      */
-    public function getNewImages(): array
+    public function getNewMediaItems(): array
     {
-        return $this->newImages;
+        return $this->newMediaItems;
     }
 
     /**
      * @return array<RemovedImage>
      */
-    public function getRemovedImages(): array
+    public function getRemovedMediaItems(): array
     {
-        return $this->removedImages;
+        return $this->removedMediaItems;
     }
 }

@@ -28,7 +28,7 @@ class CreateGearMaintenanceComponentTest extends TestCase
         ]);
 
         $this->assertSame('Chain', (string) $command->getLabel());
-        $this->assertNull($command->getNewImage());
+        $this->assertNull($command->getNewMediaItem());
         $this->assertEquals(Money::EUR(12345), $command->getPurchasePrice());
         $this->assertEquals(
             GearIds::fromArray([GearId::fromUnprefixed('b1'), GearId::fromUnprefixed('g2')]),
@@ -51,12 +51,12 @@ class CreateGearMaintenanceComponentTest extends TestCase
         $this->assertTrue($command->isRetired());
     }
 
-    public function testFromPayloadWithNewImage(): void
+    public function testFromPayloadWithNewMediaItem(): void
     {
         $command = CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Chain',
             'installations' => [['parent' => 'gear:gear-b1']],
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'new', 'filename' => 'chain.png', 'content' => base64_encode('image-content')],
             ]),
             'maintenanceTasks' => [
@@ -64,9 +64,9 @@ class CreateGearMaintenanceComponentTest extends TestCase
             ],
         ]);
 
-        $this->assertNotNull($command->getNewImage());
-        $this->assertSame('chain.png', (string) $command->getNewImage()->getFilename());
-        $this->assertSame('image-content', $command->getNewImage()->getContent());
+        $this->assertNotNull($command->getNewMediaItem());
+        $this->assertSame('chain.png', (string) $command->getNewMediaItem()->getFilename());
+        $this->assertSame('image-content', $command->getNewMediaItem()->getContent());
     }
 
     /**
@@ -89,7 +89,7 @@ class CreateGearMaintenanceComponentTest extends TestCase
             [
                 'label' => 'Chain',
                 'installations' => [['parent' => 'gear:gear-b1']],
-                'localImagePath' => json_encode([
+                'mediaItem' => json_encode([
                     ['status' => 'new', 'filename' => 'chain.gif', 'content' => base64_encode('image-content')],
                 ]),
                 'maintenanceTasks' => [

@@ -171,7 +171,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
             'installations' => [['parent' => 'gear:gear-b1']],
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-old'],
                 ['status' => 'new', 'filename' => 'new.png', 'content' => base64_encode('new-content')],
             ]),
@@ -214,7 +214,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'gearComponentId' => 'gearComponent-chain',
             'label' => 'Chain',
             'installations' => [['parent' => 'gear:gear-b1']],
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-old'],
             ]),
             'maintenanceTasks' => [

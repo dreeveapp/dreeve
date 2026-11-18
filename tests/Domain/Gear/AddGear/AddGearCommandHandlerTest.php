@@ -67,7 +67,7 @@ class AddGearCommandHandlerTest extends ContainerTestCase
     {
         $this->commandBus->dispatch(AddGear::fromPayload([
             'name' => 'My custom gear',
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'new', 'filename' => 'gear.jpg', 'content' => base64_encode('image-content')],
             ]),
         ]));

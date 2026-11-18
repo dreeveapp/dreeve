@@ -55,8 +55,8 @@ class UpdateActivityTest extends TestCase
             'sportType' => 'Ride',
         ]);
 
-        $this->assertSame([], $command->getNewImages());
-        $this->assertSame([], $command->getRemovedImages());
+        $this->assertSame([], $command->getNewMediaItems());
+        $this->assertSame([], $command->getRemovedMediaItems());
         $this->assertEquals(ActivityExclusions::empty(), $command->getExcludedFrom());
     }
 
@@ -66,34 +66,34 @@ class UpdateActivityTest extends TestCase
             'activityId' => 'activity-1',
             'name' => 'My custom activity',
             'sportType' => 'Ride',
-            'images' => '[]',
+            'mediaItems' => '[]',
         ]);
 
-        $this->assertSame([], $command->getNewImages());
-        $this->assertSame([], $command->getRemovedImages());
+        $this->assertSame([], $command->getNewMediaItems());
+        $this->assertSame([], $command->getRemovedMediaItems());
     }
 
-    public function testFromPayloadParsesNewAndRemovedImagesAndIgnoresUnchanged(): void
+    public function testFromPayloadParsesNewAndRemovedMediaItemsAndIgnoresUnchanged(): void
     {
         $command = UpdateActivity::fromPayload([
             'activityId' => 'activity-1',
             'name' => 'My custom activity',
             'sportType' => 'Ride',
-            'images' => json_encode([
+            'mediaItems' => json_encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => base64_encode('binary-content')],
                 ['status' => 'unchanged', 'id' => 'mediaItem-existing'],
                 ['status' => 'removed', 'id' => 'mediaItem-gone'],
             ]),
         ]);
 
-        $newImages = $command->getNewImages();
-        $this->assertCount(1, $newImages);
-        $this->assertSame('jpg', $newImages[0]->getFilename()->getExtension());
-        $this->assertSame('binary-content', $newImages[0]->getContent());
+        $newMediaItems = $command->getNewMediaItems();
+        $this->assertCount(1, $newMediaItems);
+        $this->assertSame('jpg', $newMediaItems[0]->getFilename()->getExtension());
+        $this->assertSame('binary-content', $newMediaItems[0]->getContent());
 
-        $removedImages = $command->getRemovedImages();
-        $this->assertCount(1, $removedImages);
-        $this->assertSame('mediaItem-gone', $removedImages[0]->getId());
+        $removedMediaItems = $command->getRemovedMediaItems();
+        $this->assertCount(1, $removedMediaItems);
+        $this->assertSame('mediaItem-gone', $removedMediaItems[0]->getId());
     }
 
     #[DataProvider('provideInvalidImagePayloads')]
@@ -105,7 +105,7 @@ class UpdateActivityTest extends TestCase
             'activityId' => 'activity-1',
             'name' => 'My custom activity',
             'sportType' => 'Ride',
-            'images' => $images,
+            'mediaItems' => $images,
         ]);
     }
 
@@ -137,12 +137,12 @@ class UpdateActivityTest extends TestCase
 
         yield 'images is not a string' => [
             ['not', 'a', 'string'],
-            'The "images" field is invalid.',
+            'The "mediaItems" field is invalid.',
         ];
 
         yield 'images does not decode to an array' => [
             '123',
-            'The "images" field is invalid.',
+            'The "mediaItems" field is invalid.',
         ];
 
         yield 'new image missing filename and content' => [

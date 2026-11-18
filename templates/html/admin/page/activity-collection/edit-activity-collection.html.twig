@@ -34,7 +34,7 @@
                         {% set coverMediaItem = activityCollection.getCoverMediaItem() %}
                         {% set existingImages = [{ url: relativeUrl(coverMediaItem.getPath().toUrlPath()), name: coverMediaItem.getPath().getFilename(), id: coverMediaItem.getId() }] %}
                     {% endif %}
-                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'coverImagePath', maxImages: 1, existingImages: existingImages } %}
+                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'coverMediaItem', maxImages: 1, existingImages: existingImages } %}
                     <p class="description">{{ "Without a cover image, the first photo of the collection's activities is used."|trans({}, 'admin') }}</p>
                 </div>
                 <div class="flex items-start gap-2">

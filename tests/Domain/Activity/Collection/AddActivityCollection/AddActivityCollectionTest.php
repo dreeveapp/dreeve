@@ -67,7 +67,7 @@ class AddActivityCollectionTest extends TestCase
                 'activityCollectionId' => 'activityCollection-1',
                 'name' => 'Mallorca',
                 'type' => 'trip',
-                'coverImagePath' => json_encode([
+                'coverMediaItem' => json_encode([
                     ['status' => 'new', 'filename' => 'cover.gif', 'content' => base64_encode('image-content')],
                 ]),
             ],

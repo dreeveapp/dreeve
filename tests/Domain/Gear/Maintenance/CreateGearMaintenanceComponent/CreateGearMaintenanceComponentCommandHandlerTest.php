@@ -78,7 +78,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
             'installations' => [['parent' => 'gear:gear-b1']],
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'new', 'filename' => 'brakes.png', 'content' => base64_encode('image-content')],
             ]),
             'maintenanceTasks' => [

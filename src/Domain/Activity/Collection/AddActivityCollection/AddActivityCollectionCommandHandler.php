@@ -26,10 +26,10 @@ final readonly class AddActivityCollectionCommandHandler implements CommandHandl
     {
         assert($command instanceof AddActivityCollection);
 
-        $newImage = $command->getNewImage();
-        $coverMediaItemId = $newImage instanceof NewMediaItem
+        $newMediaItem = $command->getNewMediaItem();
+        $coverMediaItemId = $newMediaItem instanceof NewMediaItem
             ? $this->mediaItemStorage->store(
-                newMediaItem: $newImage,
+                newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::ACTIVITY_COLLECTIONS,
             )->getId()
             : null;

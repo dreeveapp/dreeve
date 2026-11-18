@@ -157,7 +157,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'activityId' => 'activity-1',
             'name' => 'Updated activity',
             'sportType' => 'Ride',
-            'images' => json_encode([
+            'mediaItems' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-existing'],
             ]),
         ]));
@@ -184,7 +184,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'activityId' => 'activity-1',
             'name' => 'Updated activity',
             'sportType' => 'Ride',
-            'images' => '[]',
+            'mediaItems' => '[]',
         ]));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
@@ -212,7 +212,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'activityId' => 'activity-1',
             'name' => 'Updated activity',
             'sportType' => 'Ride',
-            'images' => json_encode([
+            'mediaItems' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-drop'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
@@ -256,7 +256,7 @@ class UpdateActivityCommandHandlerTest extends ContainerTestCase
             'activityId' => 'activity-1',
             'name' => 'Updated activity',
             'sportType' => 'Ride',
-            'images' => json_encode([
+            'mediaItems' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-someone-else'],
             ]),
         ]));

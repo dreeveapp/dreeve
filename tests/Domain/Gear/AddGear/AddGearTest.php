@@ -37,31 +37,31 @@ class AddGearTest extends TestCase
         $this->assertSame('My custom gear', $command->getName());
         $this->assertFalse($command->isRetired());
         $this->assertNull($command->getPurchasePrice());
-        $this->assertNull($command->getNewImage());
+        $this->assertNull($command->getNewMediaItem());
     }
 
     public function testFromPayloadWithImage(): void
     {
         $command = AddGear::fromPayload([
             'name' => 'My custom gear',
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'new', 'filename' => 'gear.jpg', 'content' => base64_encode('image-content')],
             ]),
         ]);
 
-        $this->assertNotNull($command->getNewImage());
-        $this->assertSame('gear.jpg', (string) $command->getNewImage()->getFilename());
-        $this->assertSame('image-content', $command->getNewImage()->getContent());
+        $this->assertNotNull($command->getNewMediaItem());
+        $this->assertSame('gear.jpg', (string) $command->getNewMediaItem()->getFilename());
+        $this->assertSame('image-content', $command->getNewMediaItem()->getContent());
     }
 
     public function testFromPayloadWithEmptyImageList(): void
     {
         $command = AddGear::fromPayload([
             'name' => 'My custom gear',
-            'localImagePath' => '[]',
+            'mediaItem' => '[]',
         ]);
 
-        $this->assertNull($command->getNewImage());
+        $this->assertNull($command->getNewMediaItem());
     }
 
     public function testFromPayloadTrimsName(): void
@@ -92,7 +92,7 @@ class AddGearTest extends TestCase
         yield 'unsupported image type' => [
             [
                 'name' => 'My custom gear',
-                'localImagePath' => json_encode([
+                'mediaItem' => json_encode([
                     ['status' => 'new', 'filename' => 'gear.gif', 'content' => base64_encode('image-content')],
                 ]),
             ],

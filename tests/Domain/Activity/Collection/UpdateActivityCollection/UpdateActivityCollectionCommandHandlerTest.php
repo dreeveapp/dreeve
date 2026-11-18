@@ -73,7 +73,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'activityIdToAdd' => 'Col du Tourmalet (activity-2)',
             'addActivitiesBy' => 'activity',
             'useRouteMapAsCover' => 'true',
-            'coverImagePath' => json_encode([
+            'coverMediaItem' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-old'],
             ]),
         ]));
@@ -133,7 +133,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'activityCollectionId' => 'activityCollection-1',
             'name' => 'Mallorca',
             'type' => 'trip',
-            'coverImagePath' => json_encode([
+            'coverMediaItem' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-old'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
