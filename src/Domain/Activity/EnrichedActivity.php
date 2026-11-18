@@ -109,7 +109,7 @@ final readonly class EnrichedActivity implements SupportsAITooling
             'averageCadence' => $this->activity->getAverageCadence(),
             'movingTimeInSeconds' => $this->activity->getMovingTimeInSeconds(),
             'recordedOnDevice' => $this->activity->getDeviceName(),
-            'totalImageCount' => $this->activity->getTotalImageCount(),
+            'totalImageCount' => count($this->activity->getMediaItemIds()),
             'startingPointCountryCode' => $this->activity->getRouteGeography()->getStartingPointCountryCode(),
             'startingPointState' => $this->activity->getRouteGeography()->getStartingPointState(),
             'weather' => $this->activity->getWeather(),

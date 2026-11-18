@@ -182,7 +182,6 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             MediaItemIds::fromArray([MediaItemId::fromUnprefixed('keep'), MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')]),
             $activity->getMediaItemIds(),
         );
-        $this->assertSame(2, $activity->getTotalImageCount());
 
         $this->assertFalse($this->fileStorage->fileExists('activities/drop.png'));
         $this->assertTrue($this->fileStorage->fileExists('activities/keep.png'));

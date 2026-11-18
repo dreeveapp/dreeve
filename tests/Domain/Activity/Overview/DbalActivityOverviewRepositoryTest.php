@@ -20,6 +20,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\Pagination;
@@ -59,7 +60,11 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                 ->withGearId(GearId::fromUnprefixed('99'))
                 ->withDeviceName('Garmin Forerunner')
                 ->withIsCommute(true)
-                ->withTotalImageCount(3)
+                ->withMediaItemIds(
+                    MediaItemId::fromUnprefixed('1'),
+                    MediaItemId::fromUnprefixed('2'),
+                    MediaItemId::fromUnprefixed('3'),
+                )
                 ->build(),
             ['raw' => 'data'],
         ));
@@ -205,7 +210,11 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
                 ->withGearId(GearId::fromUnprefixed('99'))
                 ->withDeviceName('Garmin Forerunner')
                 ->withIsCommute(true)
-                ->withTotalImageCount(3)
+                ->withMediaItemIds(
+                    MediaItemId::fromUnprefixed('1'),
+                    MediaItemId::fromUnprefixed('2'),
+                    MediaItemId::fromUnprefixed('3'),
+                )
                 ->build(),
             ['raw' => 'data'],
         ));

@@ -55,7 +55,6 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
         $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('keep')]), $activity->getMediaItemIds());
-        $this->assertSame(1, $activity->getTotalImageCount());
         $this->assertFalse($this->fileStorage->fileExists('activities/drop.jpg'));
         $this->assertTrue($this->fileStorage->fileExists('activities/keep.png'));
         $this->assertEquals(

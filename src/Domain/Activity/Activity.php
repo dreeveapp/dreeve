@@ -106,8 +106,6 @@ final class Activity
         private readonly ?string $deviceName,
         #[ORM\Column(type: 'json', nullable: true)]
         private readonly ?ConnectedSensors $connectedSensors,
-        #[ORM\Column(type: 'integer')]
-        private readonly int $totalImageCount,
         #[ORM\Column(type: 'json', nullable: true)]
         private readonly MediaItemIds $mediaItemIds,
         #[ORM\Column(type: 'text', nullable: true)]
@@ -170,7 +168,6 @@ final class Activity
             elapsedTimeInSeconds: $rawData['elapsed_time'] ?? 0,
             deviceName: $deviceName,
             connectedSensors: null,
-            totalImageCount: $rawData['total_photo_count'] ?? 0,
             mediaItemIds: MediaItemIds::empty(),
             polyline: $rawData['map']['summary_polyline'] ?? null,
             routeGeography: RouteGeography::create([]),
@@ -207,7 +204,6 @@ final class Activity
         int $elapsedTimeInSeconds,
         ?string $deviceName,
         ?ConnectedSensors $connectedSensors,
-        int $totalImageCount,
         MediaItemIds $mediaItemIds,
         ?string $polyline,
         RouteGeography $routeGeography,
@@ -242,7 +238,6 @@ final class Activity
             elapsedTimeInSeconds: $elapsedTimeInSeconds,
             deviceName: $deviceName,
             connectedSensors: $connectedSensors,
-            totalImageCount: $totalImageCount,
             mediaItemIds: $mediaItemIds,
             polyline: $polyline,
             routeGeography: $routeGeography,
@@ -286,7 +281,6 @@ final class Activity
         int $elapsedTimeInSeconds,
         ?string $deviceName,
         ?ConnectedSensors $connectedSensors,
-        int $totalImageCount,
         MediaItemIds $mediaItemIds,
         ?string $polyline,
         RouteGeography $routeGeography,
@@ -322,7 +316,6 @@ final class Activity
             elapsedTimeInSeconds: $elapsedTimeInSeconds,
             deviceName: $deviceName,
             connectedSensors: $connectedSensors,
-            totalImageCount: $totalImageCount,
             mediaItemIds: $mediaItemIds,
             polyline: $polyline,
             routeGeography: $routeGeography,
@@ -459,7 +452,6 @@ final class Activity
     {
         $clone = clone ($this, [
             'mediaItemIds' => $mediaItemIds,
-            'totalImageCount' => count($mediaItemIds),
         ]);
 
         if (Json::encode($this->getMediaItemIds()) !== Json::encode($clone->getMediaItemIds())) {
@@ -467,11 +459,6 @@ final class Activity
         }
 
         return $clone;
-    }
-
-    public function getTotalImageCount(): int
-    {
-        return $this->totalImageCount;
     }
 
     public function getOriginalName(): string

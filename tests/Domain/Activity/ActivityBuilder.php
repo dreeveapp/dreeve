@@ -49,7 +49,6 @@ final class ActivityBuilder
     private ?int $averageCadence = null;
     private int $movingTimeInSeconds = 10;
     private int $elapsedTimeInSeconds = 10;
-    private int $totalImageCount = 0;
     private ?string $deviceName = null;
     private ?ConnectedSensors $connectedSensors = null;
     /** @var array<MediaItemId> */
@@ -108,7 +107,6 @@ final class ActivityBuilder
             elapsedTimeInSeconds: $this->elapsedTimeInSeconds,
             deviceName: $this->deviceName,
             connectedSensors: $this->connectedSensors,
-            totalImageCount: $this->totalImageCount,
             mediaItemIds: MediaItemIds::fromArray($this->mediaItemIds),
             polyline: $this->polyline,
             routeGeography: $this->routeGeography,
@@ -147,7 +145,6 @@ final class ActivityBuilder
             elapsedTimeInSeconds: $this->elapsedTimeInSeconds,
             deviceName: $this->deviceName,
             connectedSensors: $this->connectedSensors,
-            totalImageCount: $this->totalImageCount,
             mediaItemIds: MediaItemIds::fromArray($this->mediaItemIds),
             polyline: $this->polyline,
             routeGeography: $this->routeGeography,
@@ -310,13 +307,6 @@ final class ActivityBuilder
     public function withPolyline(?string $polyline): self
     {
         $this->polyline = $polyline;
-
-        return $this;
-    }
-
-    public function withTotalImageCount(int $totalImageCount): self
-    {
-        $this->totalImageCount = $totalImageCount;
 
         return $this;
     }

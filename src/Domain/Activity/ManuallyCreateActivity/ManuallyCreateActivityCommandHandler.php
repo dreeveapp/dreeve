@@ -78,7 +78,6 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
             elapsedTimeInSeconds: $durationInSeconds,
             deviceName: null,
             connectedSensors: null,
-            totalImageCount: 0,
             mediaItemIds: MediaItemIds::empty(),
             polyline: null,
             routeGeography: RouteGeography::create([]),

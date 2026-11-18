@@ -46,10 +46,10 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
         $this->getConnection()->executeStatement(
             'INSERT INTO Activity (activityId, data, startDateTime, sportType, name, distance,
                                     elevation, averageSpeed, maxSpeed, movingTimeInSeconds, elapsedTimeInSeconds,
-                                    totalImageCount, worldType, importSource)
+                                    worldType, importSource)
                 VALUES (:activityId, :data, :startDateTime, :sportType, :name, :distance,
                         :elevation, :averageSpeed, :maxSpeed, :movingTimeInSeconds, :elapsedTimeInSeconds,
-                        :totalImageCount, :worldType, :importSource)',
+                        :worldType, :importSource)',
             [
                 'activityId' => 'activity-test',
                 'data' => '{"name": "Ride", "distance": 42,}',
@@ -62,7 +62,6 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
                 'maxSpeed' => 4200,
                 'movingTimeInSeconds' => 4200,
                 'elapsedTimeInSeconds' => 4200,
-                'totalImageCount' => 1,
                 'worldType' => WorldType::REAL_WORLD->value,
                 'importSource' => ImportSource::STRAVA_API->value,
             ]
@@ -92,10 +91,10 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
         $this->getConnection()->executeStatement(
             'INSERT INTO Activity (activityId, data, startDateTime, sportType, name, distance,
                                     elevation, averageSpeed, maxSpeed, movingTimeInSeconds, elapsedTimeInSeconds,
-                                    totalImageCount, worldType, importSource)
+                                    worldType, importSource)
                 VALUES (:activityId, :data, :startDateTime, :sportType, :name, :distance,
                         :elevation, :averageSpeed, :maxSpeed, :movingTimeInSeconds, :elapsedTimeInSeconds,
-                        :totalImageCount, :worldType, :importSource)',
+                        :worldType, :importSource)',
             [
                 'activityId' => 'activity-test',
                 'data' => '{"name": "Ride", "distance": 42,}',
@@ -108,7 +107,6 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
                 'maxSpeed' => 4200,
                 'movingTimeInSeconds' => 4200,
                 'elapsedTimeInSeconds' => 4200,
-                'totalImageCount' => 1,
                 'worldType' => WorldType::REAL_WORLD->value,
                 'importSource' => ImportSource::STRAVA_API->value,
             ]
