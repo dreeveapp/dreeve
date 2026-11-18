@@ -21,6 +21,7 @@ final class Version20261117155202 extends AbstractMigration
     {
         $this->addSql('CREATE TABLE MediaItem (mediaItemId VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, width INTEGER DEFAULT NULL, height INTEGER DEFAULT NULL, takenOn DATETIME DEFAULT NULL, coordinateLatitude DOUBLE PRECISION DEFAULT NULL, coordinateLongitude DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY (mediaItemId))');
         $this->addSql('ALTER TABLE Activity RENAME COLUMN localImagePaths TO mediaItemIds');
+        $this->addSql('ALTER TABLE Activity DROP COLUMN totalImageCount');
         $this->addSql('ALTER TABLE ActivityCollection RENAME COLUMN coverImagePath TO coverMediaItemId');
         $this->addSql('ALTER TABLE Gear RENAME COLUMN localImagePath TO mediaItemId');
         $this->addSql('ALTER TABLE GearComponent RENAME COLUMN localImagePath TO mediaItemId');

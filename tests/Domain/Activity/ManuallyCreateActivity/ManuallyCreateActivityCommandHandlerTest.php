@@ -84,7 +84,6 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activity->getEncodedPolyline());
         $this->assertNull($activity->getStartingCoordinate());
         $this->assertTrue($activity->getMediaItemIds()->isEmpty());
-        $this->assertSame(0, $activity->getTotalImageCount());
         $this->assertTrue($this->getContainer()->get(ActivityScanRepository::class)->isScanned(
             activityId: $activity->getId(),
             type: ActivityScanType::STREAMS,
@@ -154,7 +153,6 @@ class ManuallyCreateActivityCommandHandlerTest extends ContainerTestCase
         $this->assertNotNull($activity);
 
         $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')]), $activity->getMediaItemIds());
-        $this->assertSame(1, $activity->getTotalImageCount());
         $this->assertTrue($this->fileStorage->fileExists('activities/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertEquals(
             MediaItems::fromArray([

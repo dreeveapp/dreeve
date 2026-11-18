@@ -62,14 +62,14 @@ final readonly class Countries
             SELECT DISTINCT countryCode
             FROM (
                  SELECT JSON_EXTRACT(routeGeography, '$.country_code') AS countryCode
-                 FROM Activity WHERE totalImageCount > 0
+                 FROM Activity WHERE JSON_ARRAY_LENGTH(mediaItemIds) > 0
 
                  UNION ALL
 
                  SELECT value AS countryCode
                  FROM Activity,
                      JSON_EACH(JSON_EXTRACT(routeGeography, '{$passedThroughCountries}'))
-                 WHERE totalImageCount > 0
+                 WHERE JSON_ARRAY_LENGTH(mediaItemIds) > 0
                  )
             WHERE countryCode IS NOT NULL
             SQL

@@ -229,7 +229,6 @@ final readonly class FitFileParser implements ActivityFileParser
             elapsedTimeInSeconds: is_numeric($session['total_elapsed_time'] ?? null) ? (int) round((float) $session['total_elapsed_time']) : 0,
             deviceName: $deviceName,
             connectedSensors: $this->resolveConnectedSensors($deviceInfoMessages),
-            totalImageCount: 0,
             mediaItemIds: MediaItemIds::empty(),
             polyline: StreamMath::encodePolyline($streamMap),
             routeGeography: RouteGeography::create([]),

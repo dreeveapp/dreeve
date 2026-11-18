@@ -33,7 +33,7 @@ final readonly class DbalSportTypeRepository extends DbalRepository implements S
         return SportTypes::fromValues(
             $this->connection->executeQuery(
                 sprintf(
-                    'SELECT DISTINCT sportType FROM Activity WHERE totalImageCount > 0 AND sportType NOT IN (%s) ORDER BY CASE sportType %s END',
+                    'SELECT DISTINCT sportType FROM Activity WHERE JSON_ARRAY_LENGTH(mediaItemIds) > 0 AND sportType NOT IN (%s) ORDER BY CASE sportType %s END',
                     "'".implode("','", $notInSportTypes)."'",
                     $this->buildOrderByStatement()
                 )

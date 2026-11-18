@@ -30,7 +30,7 @@ final readonly class ActivityHydrator
         'startingCoordinateLatitude', 'startingCoordinateLongitude', 'calories', 'kilojoules',
         'averagePower', 'maxPower', 'averageSpeed', 'maxSpeed', 'averageHeartRate', 'maxHeartRate',
         'averageCadence', 'movingTimeInSeconds', 'elapsedTimeInSeconds', 'deviceName',
-        'connectedSensors', 'totalImageCount', 'mediaItemIds', 'polyline', 'routeGeography',
+        'connectedSensors', 'mediaItemIds', 'polyline', 'routeGeography',
         'weather', 'gearId', 'isCommute', 'isGroupActivity', 'workoutType', 'excludedFrom',
     ];
 
@@ -84,7 +84,6 @@ final readonly class ActivityHydrator
             connectedSensors: null !== ($result['connectedSensors'] ?? null)
                 ? ConnectedSensors::fromArray(Json::decode($result['connectedSensors']))
                 : null,
-            totalImageCount: $result['totalImageCount'] ?: 0,
             mediaItemIds: MediaItemIds::fromArray(array_map(
                 MediaItemId::fromString(...),
                 Json::decode($result['mediaItemIds'] ?? '[]'),

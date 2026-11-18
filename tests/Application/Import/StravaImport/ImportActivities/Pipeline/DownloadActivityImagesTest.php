@@ -99,14 +99,12 @@ class DownloadActivityImagesTest extends ContainerTestCase
         )
             ->withActivity(
                 ActivityBuilder::fromDefaults()
-                    ->withTotalImageCount(3)
                     ->build()
             );
 
         $activity = $this->downloadActivityImages->process($context)->getActivity();
         $this->assertNotNull($activity);
 
-        $this->assertSame(0, $activity->getTotalImageCount());
         $this->assertTrue($activity->getMediaItemIds()->isEmpty());
         $this->assertEmpty($this->fileStorage->listContents('', true)->toArray());
     }

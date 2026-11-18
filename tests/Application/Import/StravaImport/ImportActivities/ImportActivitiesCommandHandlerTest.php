@@ -88,7 +88,6 @@ class ImportActivitiesCommandHandlerTest extends ContainerTestCase
                     Latitude::fromString('51.2'),
                     Longitude::fromString('3.18')
                 ))
-                ->withTotalImageCount(0)
                 ->build(),
             [
                 'start_date_local' => '2024-01-01T02:58:29Z',
