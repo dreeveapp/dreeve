@@ -12,6 +12,7 @@ use App\Domain\Activity\Collection\ActivityCollections;
 use App\Domain\Activity\Collection\ActivityCollectionsWithActivities;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\TestCase;
@@ -66,5 +67,9 @@ class ActivityCollectionsWithActivitiesTest extends TestCase
             ),
         );
         $this->assertEquals(MediaItemId::fromUnprefixed('cover'), $activityCollectionsWithActivities->getFirst()?->getCoverMediaItemId());
+        $this->assertEquals(
+            MediaItemIds::fromArray([MediaItemId::fromUnprefixed('cover')]),
+            $activityCollectionsWithActivities->getCoverMediaItemIds(),
+        );
     }
 }

@@ -6,6 +6,8 @@ namespace App\Domain\Activity\Collection;
 
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
 use App\Infrastructure\ValueObject\Collection;
 
 /**
@@ -35,6 +37,13 @@ final class ActivityCollectionsWithActivities extends Collection
         return $activityCollectionsWithActivities->usort(
             static fn (ActivityCollectionWithActivities $a, ActivityCollectionWithActivities $b): int => $b->getStartDate() <=> $a->getStartDate(),
         );
+    }
+
+    public function getCoverMediaItemIds(): MediaItemIds
+    {
+        return MediaItemIds::fromArray(array_values(array_filter($this->map(
+            static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): ?MediaItemId => $activityCollectionWithActivities->getCoverMediaItemId(),
+        ))));
     }
 
     public function getItemClassName(): string

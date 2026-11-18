@@ -12,8 +12,6 @@ use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionsWithActivities;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\RealWorldMap;
-use App\Domain\Media\MediaItemId;
-use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -74,9 +72,7 @@ final readonly class ActivityCollectionsRequestHandler
         );
 
         $coverMediaItems = [];
-        foreach ($this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_values(array_filter($activityCollectionsWithActivities->map(
-            static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): ?MediaItemId => $activityCollectionWithActivities->getCoverMediaItemId(),
-        ))))) as $mediaItem) {
+        foreach ($this->mediaItemRepository->findByIds($activityCollectionsWithActivities->getCoverMediaItemIds()) as $mediaItem) {
             $coverMediaItems[(string) $mediaItem->getId()] = $mediaItem;
         }
 
