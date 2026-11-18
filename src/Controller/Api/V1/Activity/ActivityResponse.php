@@ -65,7 +65,7 @@ final class ActivityResponse extends JsonResponse
             }
             $images[] = [
                 'id' => (string) $mediaItem->getId(),
-                'url' => rtrim((string) $appUrl, '/').$mediaItem->getPath()->toUrlPath(),
+                'url' => (string) $appUrl->withPath($mediaItem->getPath()->toUrlPath()),
             ];
         }
         $startingCoordinate = $activity->getStartingCoordinate();
