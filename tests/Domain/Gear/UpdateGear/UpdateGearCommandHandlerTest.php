@@ -7,10 +7,16 @@ namespace App\Tests\Domain\Gear\UpdateGear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\UpdateGear\UpdateGear;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItems;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use League\Flysystem\FilesystemOperator;
 use Money\Money;
 
@@ -71,6 +77,11 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
     public function testHandleReplacesImageAndDeletesPreviousFile(): void
     {
         $this->fileStorage->write('gear/old.jpg', 'old-content');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withPath(MediaItemPath::fromString('gear/old.jpg'))
+            ->build());
         $this->gearRepository->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
@@ -94,11 +105,28 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
         $this->assertFalse($this->fileStorage->fileExists('gear/old.jpg'));
         $this->assertTrue($this->fileStorage->fileExists('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertSame('new-content', $this->fileStorage->read('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
+        $this->assertEquals(
+            MediaItems::fromArray([
+                MediaItemBuilder::fromDefaults()
+                    ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
+                    ->withPath(MediaItemPath::fromString('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
+                    ->build(),
+            ]),
+            $mediaItemRepository->findByIds(MediaItemIds::fromArray([
+                MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'),
+                MediaItemId::fromUnprefixed('old'),
+            ])),
+        );
     }
 
     public function testHandleRemovesImageAndDeletesFile(): void
     {
         $this->fileStorage->write('gear/old.jpg', 'old-content');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withPath(MediaItemPath::fromString('gear/old.jpg'))
+            ->build());
         $this->gearRepository->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
@@ -118,6 +146,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
         $gear = $this->gearRepository->find(GearId::fromUnprefixed('1'));
         $this->assertNull($gear->getLocalImagePath());
         $this->assertFalse($this->fileStorage->fileExists('gear/old.jpg'));
+        $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('old')]))->isEmpty());
     }
 
     public function testHandleKeepsImageWhenUnchanged(): void

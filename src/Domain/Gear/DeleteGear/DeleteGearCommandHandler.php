@@ -6,19 +6,20 @@ namespace App\Domain\Gear\DeleteGear;
 
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearUsage;
-use App\Domain\Image\ImagePath;
-use App\Domain\Image\ImageStorage;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
+use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class DeleteGearCommandHandler implements CommandHandler
 {
     public function __construct(
         private GearRepository $gearRepository,
         private GearUsage $gearUsage,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
         private ImportMode $importMode,
     ) {
     }
@@ -40,7 +41,7 @@ final readonly class DeleteGearCommandHandler implements CommandHandler
         $this->gearRepository->delete($gear);
 
         if (null !== $localImagePath = $gear->getLocalImagePath()) {
-            $this->imageStorage->remove(ImagePath::fromLocalImagePath($localImagePath));
+            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()));
         }
     }
 }

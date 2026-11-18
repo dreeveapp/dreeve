@@ -8,9 +8,8 @@ use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
-use App\Domain\Image\ImageDirectory;
-use App\Domain\Image\ImageStorage;
-use App\Domain\Image\NewImage;
+use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -22,7 +21,7 @@ final readonly class AddGearCommandHandler implements CommandHandler
     public function __construct(
         private GearRepository $gearRepository,
         private Clock $clock,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
     ) {
     }
 
@@ -45,15 +44,10 @@ final readonly class AddGearCommandHandler implements CommandHandler
 
         $newImage = $command->getNewImage();
         if ($newImage instanceof NewMediaItem) {
-            $gear = $gear->withLocalImagePath(
-                $this->imageStorage->store(
-                    newImage: new NewImage(
-                        filename: $newImage->getFilename(),
-                        content: $newImage->getContent(),
-                    ),
-                    directory: ImageDirectory::GEAR
-                )->toLocalImagePath()
-            );
+            $gear = $gear->withLocalImagePath(ltrim($this->mediaItemStorage->store(
+                newMediaItem: $newImage,
+                directory: MediaItemDirectory::GEAR,
+            )->getPath()->toUrlPath(), '/'));
         }
 
         $this->gearRepository->add($gear);

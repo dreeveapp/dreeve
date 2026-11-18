@@ -7,9 +7,13 @@ namespace App\Tests\Domain\Gear\AddGear;
 use App\Domain\Gear\AddGear\AddGear;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use League\Flysystem\FilesystemOperator;
 use Money\Money;
 
@@ -73,6 +77,13 @@ class AddGearCommandHandlerTest extends ContainerTestCase
         $this->assertSame('/files/gear/0025176c-5652-11ee-923d-02424dd627d5.jpg', $gear->getLocalImagePath());
         $this->assertTrue($this->fileStorage->fileExists('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertSame('image-content', $this->fileStorage->read('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
+        $this->assertEquals(
+            MediaItemBuilder::fromDefaults()
+                ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
+                ->withPath(MediaItemPath::fromString('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
+                ->build(),
+            $this->getContainer()->get(MediaItemRepository::class)->find(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')),
+        );
     }
 
     #[\Override]

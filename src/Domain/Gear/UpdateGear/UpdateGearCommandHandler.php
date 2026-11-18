@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace App\Domain\Gear\UpdateGear;
 
 use App\Domain\Gear\GearRepository;
-use App\Domain\Image\ImageDirectory;
-use App\Domain\Image\ImagePath;
-use App\Domain\Image\ImageStorage;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
+use App\Infrastructure\ValueObject\String\Path;
 use Money\Money;
 
 final readonly class UpdateGearCommandHandler implements CommandHandler
 {
     public function __construct(
         private GearRepository $gearRepository,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
     ) {
     }
 
@@ -40,15 +40,10 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
         $removedImage = $command->getRemovedImage();
 
         if ($newImage instanceof NewMediaItem) {
-            $gear = $gear->withLocalImagePath(
-                $this->imageStorage->store(
-                    newImage: new NewImage(
-                        filename: $newImage->getFilename(),
-                        content: $newImage->getContent(),
-                    ),
-                    directory: ImageDirectory::GEAR
-                )->toLocalImagePath()
-            );
+            $gear = $gear->withLocalImagePath(ltrim($this->mediaItemStorage->store(
+                newMediaItem: $newImage,
+                directory: MediaItemDirectory::GEAR,
+            )->getPath()->toUrlPath(), '/'));
         } elseif ($removedImage instanceof RemovedImage) {
             $gear = $gear->withLocalImagePath(null);
         }
@@ -56,7 +51,7 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
         $this->gearRepository->update($gear);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->imageStorage->remove(ImagePath::fromLocalImagePath($removedImage->getId()));
+            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($removedImage->getId())->getFilenameWithoutExtension()));
         }
     }
 }
