@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Infrastructure\Http\Response;
 
-use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
 use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Http\Response\SvgResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -31,10 +30,6 @@ class ResponsesTest extends TestCase
     {
         yield 'html' => [
             new HtmlResponse('<p>html</p>', ['X-Dreeve-Cache' => 'HIT', 'Cache-Control' => 'private, no-store']),
-            ['Content-Type' => 'text/html; charset=UTF-8', 'X-Dreeve-Cache' => 'HIT', 'Cache-Control' => 'no-store, private'],
-        ];
-        yield 'private no store html is never stored by the browser' => [
-            new PrivateNoStoreHtmlResponse('<p>html</p>', ['X-Dreeve-Cache' => 'HIT', 'Cache-Control' => 'public, max-age=3600']),
             ['Content-Type' => 'text/html; charset=UTF-8', 'X-Dreeve-Cache' => 'HIT', 'Cache-Control' => 'no-store, private'],
         ];
         yield 'svg' => [
