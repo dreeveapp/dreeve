@@ -49,7 +49,7 @@ class ManuallyCreateActivityTest extends TestCase
         $this->assertSame(171, $command->getMaxHeartRate());
         $this->assertTrue($command->isCommute());
         $this->assertTrue($command->isGroupActivity());
-        $this->assertSame([], $command->getNewImages());
+        $this->assertSame([], $command->getNewMediaItems());
     }
 
     public function testFromPayloadWithSecondsInStartDateTime(): void
@@ -96,19 +96,19 @@ class ManuallyCreateActivityTest extends TestCase
         $this->assertSame(3000, $command->getDurationInSeconds());
     }
 
-    public function testFromPayloadParsesNewImages(): void
+    public function testFromPayloadParsesNewMediaItems(): void
     {
         $command = ManuallyCreateActivity::fromPayload([
             ...$this->validPayload(),
-            'images' => json_encode([
+            'mediaItems' => json_encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => base64_encode('binary-content')],
             ]),
         ]);
 
-        $newImages = $command->getNewImages();
-        $this->assertCount(1, $newImages);
-        $this->assertSame('jpg', $newImages[0]->getFilename()->getExtension());
-        $this->assertSame('binary-content', $newImages[0]->getContent());
+        $newMediaItems = $command->getNewMediaItems();
+        $this->assertCount(1, $newMediaItems);
+        $this->assertSame('jpg', $newMediaItems[0]->getFilename()->getExtension());
+        $this->assertSame('binary-content', $newMediaItems[0]->getContent());
     }
 
     /**

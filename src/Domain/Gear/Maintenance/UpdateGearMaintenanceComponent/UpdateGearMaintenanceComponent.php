@@ -32,8 +32,8 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
         private GearComponentId $gearComponentId,
         private Name $label,
         private GearComponentInstallations $installations,
-        private ?NewMediaItem $newImage,
-        private ?RemovedImage $removedImage,
+        private ?NewMediaItem $newMediaItem,
+        private ?RemovedImage $removedMediaItem,
         private ?Money $purchasePrice,
         private MaintenanceTasks $maintenanceTasks,
         private bool $isRetired,
@@ -47,14 +47,14 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
             throw CouldNotDeserializeCommand::invalidPayload('A "gearComponentId" is required.');
         }
 
-        [$newImages, $removedImages] = self::parseImages($payload, 'localImagePath');
+        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'mediaItem');
 
         return new self(
             gearComponentId: GearComponentId::fromString(trim($payload['gearComponentId'])),
             label: self::parseLabel($payload),
             installations: self::parseInstallations($payload),
-            newImage: $newImages[0] ?? null,
-            removedImage: $removedImages[0] ?? null,
+            newMediaItem: $newMediaItems[0] ?? null,
+            removedMediaItem: $removedMediaItems[0] ?? null,
             purchasePrice: self::parsePurchasePrice($payload),
             maintenanceTasks: self::parseMaintenanceTasks($payload, generateMissingIds: true),
             isRetired: filter_var($payload['isRetired'] ?? false, FILTER_VALIDATE_BOOLEAN),
@@ -77,14 +77,14 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
         return $this->installations;
     }
 
-    public function getNewImage(): ?NewMediaItem
+    public function getNewMediaItem(): ?NewMediaItem
     {
-        return $this->newImage;
+        return $this->newMediaItem;
     }
 
-    public function getRemovedImage(): ?RemovedImage
+    public function getRemovedMediaItem(): ?RemovedImage
     {
-        return $this->removedImage;
+        return $this->removedMediaItem;
     }
 
     public function getPurchasePrice(): ?Money

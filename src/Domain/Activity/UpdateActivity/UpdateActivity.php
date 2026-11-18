@@ -27,8 +27,8 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
     use ProvidesCommandName;
 
     /**
-     * @param array<NewMediaItem> $newImages
-     * @param array<RemovedImage> $removedImages
+     * @param array<NewMediaItem> $newMediaItems
+     * @param array<RemovedImage> $removedMediaItems
      */
     private function __construct(
         private ActivityId $activityId,
@@ -42,8 +42,8 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
         private bool $isCommute,
         private bool $isGroupActivity,
         private ActivityExclusions $excludedFrom,
-        private array $newImages,
-        private array $removedImages,
+        private array $newMediaItems,
+        private array $removedMediaItems,
     ) {
     }
 
@@ -77,7 +77,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
             ? GearId::fromString(trim($payload['gearId']))
             : null;
 
-        [$newImages, $removedImages] = self::parseImages($payload, 'images');
+        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'mediaItems');
 
         $excludedFrom = is_array($payload['excludedFrom'] ?? null) ? $payload['excludedFrom'] : [];
         $exclusions = array_values(array_filter(
@@ -97,8 +97,8 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
             isCommute: filter_var($payload['isCommute'] ?? false, FILTER_VALIDATE_BOOLEAN),
             isGroupActivity: filter_var($payload['isGroupActivity'] ?? false, FILTER_VALIDATE_BOOLEAN),
             excludedFrom: ActivityExclusions::fromArray($exclusions),
-            newImages: $newImages,
-            removedImages: $removedImages,
+            newMediaItems: $newMediaItems,
+            removedMediaItems: $removedMediaItems,
         );
     }
 
@@ -160,16 +160,16 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
     /**
      * @return array<NewMediaItem>
      */
-    public function getNewImages(): array
+    public function getNewMediaItems(): array
     {
-        return $this->newImages;
+        return $this->newMediaItems;
     }
 
     /**
      * @return array<RemovedImage>
      */
-    public function getRemovedImages(): array
+    public function getRemovedMediaItems(): array
     {
-        return $this->removedImages;
+        return $this->removedMediaItems;
     }
 }

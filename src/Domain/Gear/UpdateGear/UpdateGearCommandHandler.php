@@ -35,22 +35,22 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
             $gear = $gear->withPurchasePrice($command->getPurchasePrice());
         }
 
-        $newImage = $command->getNewImage();
-        $removedImage = $command->getRemovedImage();
+        $newMediaItem = $command->getNewMediaItem();
+        $removedMediaItem = $command->getRemovedMediaItem();
 
-        if ($newImage instanceof NewMediaItem) {
+        if ($newMediaItem instanceof NewMediaItem) {
             $gear = $gear->withMediaItemId($this->mediaItemStorage->store(
-                newMediaItem: $newImage,
+                newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::GEAR,
             )->getId());
-        } elseif ($removedImage instanceof RemovedImage) {
+        } elseif ($removedMediaItem instanceof RemovedImage) {
             $gear = $gear->withMediaItemId(null);
         }
 
         $this->gearRepository->update($gear);
 
-        if ($removedImage instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromString($removedImage->getId()));
+        if ($removedMediaItem instanceof RemovedImage) {
+            $this->mediaItemStorage->remove(MediaItemId::fromString($removedMediaItem->getId()));
         }
     }
 }

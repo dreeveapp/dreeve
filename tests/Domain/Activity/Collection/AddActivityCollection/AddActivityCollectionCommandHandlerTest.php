@@ -29,7 +29,7 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
             'description' => '  Spring cycling week  ',
             'activityIds' => ['activity-1', 'Morning ride (activity-2)'],
             'useRouteMapAsCover' => 'true',
-            'coverImagePath' => json_encode([
+            'coverMediaItem' => json_encode([
                 ['status' => 'new', 'filename' => 'cover.jpg', 'content' => base64_encode('image-content')],
             ]),
         ]));

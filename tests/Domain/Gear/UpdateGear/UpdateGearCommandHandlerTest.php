@@ -94,7 +94,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGear::fromPayload([
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-old'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
@@ -138,7 +138,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGear::fromPayload([
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'removed', 'id' => 'mediaItem-old'],
             ]),
         ]));
@@ -167,7 +167,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(UpdateGear::fromPayload([
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'unchanged', 'id' => 'mediaItem-old'],
             ]),
         ]));

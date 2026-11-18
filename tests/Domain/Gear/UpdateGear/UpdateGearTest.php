@@ -40,38 +40,38 @@ class UpdateGearTest extends TestCase
 
         $this->assertFalse($command->isRetired());
         $this->assertNull($command->getPurchasePrice());
-        $this->assertNull($command->getNewImage());
-        $this->assertNull($command->getRemovedImage());
+        $this->assertNull($command->getNewMediaItem());
+        $this->assertNull($command->getRemovedMediaItem());
     }
 
-    public function testFromPayloadWithNewImage(): void
+    public function testFromPayloadWithNewMediaItem(): void
     {
         $command = UpdateGear::fromPayload([
             'gearId' => 'gear-1',
             'name' => 'My custom gear',
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'new', 'filename' => 'gear.png', 'content' => base64_encode('image-content')],
             ]),
         ]);
 
-        $this->assertNotNull($command->getNewImage());
-        $this->assertSame('gear.png', (string) $command->getNewImage()->getFilename());
-        $this->assertNull($command->getRemovedImage());
+        $this->assertNotNull($command->getNewMediaItem());
+        $this->assertSame('gear.png', (string) $command->getNewMediaItem()->getFilename());
+        $this->assertNull($command->getRemovedMediaItem());
     }
 
-    public function testFromPayloadWithRemovedImage(): void
+    public function testFromPayloadWithRemovedMediaItem(): void
     {
         $command = UpdateGear::fromPayload([
             'gearId' => 'gear-1',
             'name' => 'My custom gear',
-            'localImagePath' => json_encode([
+            'mediaItem' => json_encode([
                 ['status' => 'removed', 'id' => '/files/gear/old.jpg'],
             ]),
         ]);
 
-        $this->assertNull($command->getNewImage());
-        $this->assertNotNull($command->getRemovedImage());
-        $this->assertSame('/files/gear/old.jpg', $command->getRemovedImage()->getId());
+        $this->assertNull($command->getNewMediaItem());
+        $this->assertNotNull($command->getRemovedMediaItem());
+        $this->assertSame('/files/gear/old.jpg', $command->getRemovedMediaItem()->getId());
     }
 
     public function testFromPayloadTrimsName(): void

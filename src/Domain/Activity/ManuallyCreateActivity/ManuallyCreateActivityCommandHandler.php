@@ -100,7 +100,7 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
                 newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::ACTIVITIES,
             )->getId(),
-            $command->getNewImages()
+            $command->getNewMediaItems()
         ));
 
         if ($mediaItemIds->isEmpty()) {

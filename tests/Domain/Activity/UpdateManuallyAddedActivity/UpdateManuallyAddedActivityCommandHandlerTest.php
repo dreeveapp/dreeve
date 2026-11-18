@@ -170,7 +170,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             'sportType' => 'Run',
             'startDateTime' => '2023-10-17T16:15',
             'duration' => ['minutes' => 30],
-            'images' => Json::encode([
+            'mediaItems' => Json::encode([
                 ['status' => 'removed', 'id' => 'mediaItem-drop'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
@@ -212,7 +212,7 @@ class UpdateManuallyAddedActivityCommandHandlerTest extends ContainerTestCase
             'sportType' => 'Run',
             'startDateTime' => '2023-10-17T16:15',
             'duration' => ['minutes' => 30],
-            'images' => '[]',
+            'mediaItems' => '[]',
         ]));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));

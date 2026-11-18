@@ -52,8 +52,8 @@ class UpdateManuallyAddedActivityTest extends TestCase
         $this->assertSame(171, $command->getMaxHeartRate());
         $this->assertTrue($command->isCommute());
         $this->assertTrue($command->isGroupActivity());
-        $this->assertSame([], $command->getNewImages());
-        $this->assertSame([], $command->getRemovedImages());
+        $this->assertSame([], $command->getNewMediaItems());
+        $this->assertSame([], $command->getRemovedMediaItems());
     }
 
     public function testFromPayloadWithEmptyOptionalFields(): void
@@ -80,24 +80,24 @@ class UpdateManuallyAddedActivityTest extends TestCase
         $this->assertFalse($command->isGroupActivity());
     }
 
-    public function testFromPayloadParsesNewAndRemovedImages(): void
+    public function testFromPayloadParsesNewAndRemovedMediaItems(): void
     {
         $command = UpdateManuallyAddedActivity::fromPayload([
             ...$this->validPayload(),
-            'images' => json_encode([
+            'mediaItems' => json_encode([
                 ['status' => 'new', 'filename' => 'photo.jpg', 'content' => base64_encode('binary-content')],
                 ['status' => 'removed', 'id' => 'mediaItem-existing'],
             ]),
         ]);
 
-        $newImages = $command->getNewImages();
-        $this->assertCount(1, $newImages);
-        $this->assertSame('jpg', $newImages[0]->getFilename()->getExtension());
-        $this->assertSame('binary-content', $newImages[0]->getContent());
+        $newMediaItems = $command->getNewMediaItems();
+        $this->assertCount(1, $newMediaItems);
+        $this->assertSame('jpg', $newMediaItems[0]->getFilename()->getExtension());
+        $this->assertSame('binary-content', $newMediaItems[0]->getContent());
 
-        $removedImages = $command->getRemovedImages();
-        $this->assertCount(1, $removedImages);
-        $this->assertSame('mediaItem-existing', $removedImages[0]->getId());
+        $removedMediaItems = $command->getRemovedMediaItems();
+        $this->assertCount(1, $removedMediaItems);
+        $this->assertSame('mediaItem-existing', $removedMediaItems[0]->getId());
     }
 
     /**

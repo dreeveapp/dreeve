@@ -45,7 +45,7 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(0, $form->filter('input[name="activityIdToAdd"]'));
         $this->assertCount(0, $form->filter('input[name="addActivitiesFrom"]'));
         $this->assertSame('[]', $form->filter('[data-image-dropzone]')->attr('data-existing-images'));
-        $this->assertCount(1, $form->filter('input[data-images-field][name="coverImagePath"]'));
+        $this->assertCount(1, $form->filter('input[data-images-field][name="coverMediaItem"]'));
         $this->assertCount(1, $form->filter('input[type="checkbox"][name="useRouteMapAsCover"]:not([checked])'));
         $this->assertStringContainsString("Without a cover image, the first photo of the collection's activities is used.", $form->text());
         $this->assertSame('Save and add activities', trim($form->filter('button[type="submit"] .label')->text()));

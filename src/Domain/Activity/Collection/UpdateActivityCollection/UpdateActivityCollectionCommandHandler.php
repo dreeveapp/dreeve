@@ -56,22 +56,22 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
             ->withActivityIds($activityIds)
             ->withUseRouteMapAsCover($command->useRouteMapAsCover());
 
-        $newImage = $command->getNewImage();
-        $removedImage = $command->getRemovedImage();
+        $newMediaItem = $command->getNewMediaItem();
+        $removedMediaItem = $command->getRemovedMediaItem();
 
-        if ($newImage instanceof NewMediaItem) {
+        if ($newMediaItem instanceof NewMediaItem) {
             $activityCollection = $activityCollection->withCoverMediaItemId($this->mediaItemStorage->store(
-                newMediaItem: $newImage,
+                newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::ACTIVITY_COLLECTIONS,
             )->getId());
-        } elseif ($removedImage instanceof RemovedImage) {
+        } elseif ($removedMediaItem instanceof RemovedImage) {
             $activityCollection = $activityCollection->withCoverMediaItemId(null);
         }
 
         $this->activityCollectionRepository->update($activityCollection);
 
-        if ($removedImage instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromString($removedImage->getId()));
+        if ($removedMediaItem instanceof RemovedImage) {
+            $this->mediaItemStorage->remove(MediaItemId::fromString($removedMediaItem->getId()));
         }
     }
 }

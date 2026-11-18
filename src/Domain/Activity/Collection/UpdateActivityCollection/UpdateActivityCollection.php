@@ -29,8 +29,8 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         private string $name,
         private ?string $description,
         private ActivityCollectionType $type,
-        private ?NewMediaItem $newImage,
-        private ?RemovedImage $removedImage,
+        private ?NewMediaItem $newMediaItem,
+        private ?RemovedImage $removedMediaItem,
         private bool $useRouteMapAsCover,
         private ActivityIds $activityIds,
         private ?ActivityId $activityIdToAdd,
@@ -102,15 +102,15 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
             throw CouldNotDeserializeCommand::invalidPayload('The start date must be on or before the end date.');
         }
 
-        [$newImages, $removedImages] = self::parseImages($payload, 'coverImagePath');
+        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'coverMediaItem');
 
         return new self(
             activityCollectionId: ActivityCollectionId::fromString($payload['activityCollectionId']),
             name: $name,
             description: '' === $description ? null : $description,
             type: $activityCollectionType,
-            newImage: $newImages[0] ?? null,
-            removedImage: $removedImages[0] ?? null,
+            newMediaItem: $newMediaItems[0] ?? null,
+            removedMediaItem: $removedMediaItems[0] ?? null,
             useRouteMapAsCover: filter_var($payload['useRouteMapAsCover'] ?? false, FILTER_VALIDATE_BOOLEAN),
             activityIds: $activityIds,
             activityIdToAdd: $activityIdToAdd,
@@ -138,14 +138,14 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         return $this->type;
     }
 
-    public function getNewImage(): ?NewMediaItem
+    public function getNewMediaItem(): ?NewMediaItem
     {
-        return $this->newImage;
+        return $this->newMediaItem;
     }
 
-    public function getRemovedImage(): ?RemovedImage
+    public function getRemovedMediaItem(): ?RemovedImage
     {
-        return $this->removedImage;
+        return $this->removedMediaItem;
     }
 
     public function useRouteMapAsCover(): bool

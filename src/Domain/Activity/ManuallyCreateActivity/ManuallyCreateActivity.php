@@ -25,7 +25,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
     use ProvidesCommandName;
 
     /**
-     * @param array<NewMediaItem> $newImages
+     * @param array<NewMediaItem> $newMediaItems
      */
     private function __construct(
         private ActivityName $name,
@@ -42,13 +42,13 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
         private ?int $maxHeartRate,
         private bool $isCommute,
         private bool $isGroupActivity,
-        private array $newImages,
+        private array $newMediaItems,
     ) {
     }
 
     public static function fromPayload(array $payload): self
     {
-        [$newImages] = self::parseImages($payload, 'images');
+        [$newMediaItems] = self::parseImages($payload, 'mediaItems');
         [$averageHeartRate, $maxHeartRate] = self::parseHeartRates($payload);
 
         return new self(
@@ -66,7 +66,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
             maxHeartRate: $maxHeartRate,
             isCommute: self::parseIsCommute($payload),
             isGroupActivity: self::parseIsGroupActivity($payload),
-            newImages: $newImages,
+            newMediaItems: $newMediaItems,
         );
     }
 
@@ -143,8 +143,8 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
     /**
      * @return array<NewMediaItem>
      */
-    public function getNewImages(): array
+    public function getNewMediaItems(): array
     {
-        return $this->newImages;
+        return $this->newMediaItems;
     }
 }

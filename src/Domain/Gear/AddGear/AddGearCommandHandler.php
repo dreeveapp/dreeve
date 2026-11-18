@@ -29,7 +29,7 @@ final readonly class AddGearCommandHandler implements CommandHandler
     {
         assert($command instanceof AddGear);
 
-        $newImage = $command->getNewImage();
+        $newMediaItem = $command->getNewMediaItem();
         $gear = Gear::create(
             gearId: GearId::random(),
             createdOn: $this->clock->now(),
@@ -37,9 +37,9 @@ final readonly class AddGearCommandHandler implements CommandHandler
             isRetired: $command->isRetired(),
             type: GearType::CUSTOM,
             notes: $command->getNotes(),
-            mediaItemId: $newImage instanceof NewMediaItem
+            mediaItemId: $newMediaItem instanceof NewMediaItem
                 ? $this->mediaItemStorage->store(
-                    newMediaItem: $newImage,
+                    newMediaItem: $newMediaItem,
                     directory: MediaItemDirectory::GEAR,
                 )->getId()
                 : null,

@@ -26,7 +26,7 @@ final readonly class AddGear extends DomainCommand implements DeserializableComm
         private string $name,
         private bool $isRetired,
         private ?Money $purchasePrice,
-        private ?NewMediaItem $newImage,
+        private ?NewMediaItem $newMediaItem,
         private ?string $notes,
     ) {
     }
@@ -47,13 +47,13 @@ final readonly class AddGear extends DomainCommand implements DeserializableComm
             throw CouldNotDeserializeCommand::invalidPayload('The status is invalid.');
         }
 
-        [$newImages] = self::parseImages($payload, 'localImagePath');
+        [$newMediaItems] = self::parseImages($payload, 'mediaItem');
 
         return new self(
             name: $name,
             isRetired: GearStatus::RETIRED === $gearStatus,
             purchasePrice: self::parsePurchasePrice($payload),
-            newImage: $newImages[0] ?? null,
+            newMediaItem: $newMediaItems[0] ?? null,
             notes: self::parseNotes($payload),
         );
     }
@@ -73,9 +73,9 @@ final readonly class AddGear extends DomainCommand implements DeserializableComm
         return $this->purchasePrice;
     }
 
-    public function getNewImage(): ?NewMediaItem
+    public function getNewMediaItem(): ?NewMediaItem
     {
-        return $this->newImage;
+        return $this->newMediaItem;
     }
 
     public function getNotes(): ?string

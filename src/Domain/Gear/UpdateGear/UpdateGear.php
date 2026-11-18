@@ -29,8 +29,8 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
         private string $name,
         private bool $isRetired,
         private ?Money $purchasePrice,
-        private ?NewMediaItem $newImage,
-        private ?RemovedImage $removedImage,
+        private ?NewMediaItem $newMediaItem,
+        private ?RemovedImage $removedMediaItem,
         private ?string $notes,
     ) {
     }
@@ -53,15 +53,15 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
             throw CouldNotDeserializeCommand::invalidPayload('The status is invalid.');
         }
 
-        [$newImages, $removedImages] = self::parseImages($payload, 'localImagePath');
+        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'mediaItem');
 
         return new self(
             gearId: GearId::fromString($payload['gearId']),
             name: $name,
             isRetired: GearStatus::RETIRED === $gearStatus,
             purchasePrice: self::parsePurchasePrice($payload),
-            newImage: $newImages[0] ?? null,
-            removedImage: $removedImages[0] ?? null,
+            newMediaItem: $newMediaItems[0] ?? null,
+            removedMediaItem: $removedMediaItems[0] ?? null,
             notes: self::parseNotes($payload),
         );
     }
@@ -86,14 +86,14 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
         return $this->purchasePrice;
     }
 
-    public function getNewImage(): ?NewMediaItem
+    public function getNewMediaItem(): ?NewMediaItem
     {
-        return $this->newImage;
+        return $this->newMediaItem;
     }
 
-    public function getRemovedImage(): ?RemovedImage
+    public function getRemovedMediaItem(): ?RemovedImage
     {
-        return $this->removedImage;
+        return $this->removedMediaItem;
     }
 
     public function getNotes(): ?string
