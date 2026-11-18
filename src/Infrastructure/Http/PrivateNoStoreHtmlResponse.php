@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http;
 
+use App\Infrastructure\Http\Response\HtmlResponse;
+
 class PrivateNoStoreHtmlResponse extends HtmlResponse
 {
     /**

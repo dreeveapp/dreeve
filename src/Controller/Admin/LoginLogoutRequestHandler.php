@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Security\Oidc\OidcConfig;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;

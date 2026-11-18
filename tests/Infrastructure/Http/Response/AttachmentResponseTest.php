@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Http;
+namespace App\Tests\Infrastructure\Http\Response;
 
-use App\Infrastructure\Http\AttachmentResponse;
+use App\Infrastructure\Http\Response\AttachmentResponse;
 use PHPUnit\Framework\TestCase;
 
 class AttachmentResponseTest extends TestCase

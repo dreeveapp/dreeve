@@ -10,7 +10,7 @@ use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
 use App\Infrastructure\Config\AdminAllowedIpAddresses;
 use App\Infrastructure\Http\ClientIpResolver;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Security\Admin\AdminUserName;
 use App\Infrastructure\Security\Oidc\OidcCaFilePath;
 use App\Infrastructure\Security\Oidc\OidcConfig;

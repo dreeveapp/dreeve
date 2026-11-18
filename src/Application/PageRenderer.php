@@ -8,8 +8,8 @@ use App\Application\Navigation\NavigationSection;
 use App\Application\PageMetadata\PageMetadata;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
-use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 
 final readonly class PageRenderer
 {

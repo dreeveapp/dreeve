@@ -12,7 +12,7 @@ use App\Domain\Automation\Condition\Conditions;
 use App\Domain\Automation\DryRun\AutomationRuleDryRunner;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

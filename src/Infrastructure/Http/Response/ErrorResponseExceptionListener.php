@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http;
+namespace App\Infrastructure\Http\Response;
 
 use App\Infrastructure\Config\PlatformEnvironment;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\Http\HttpStatusCode;
+use App\Infrastructure\Http\ServerErrorLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Response;

@@ -8,7 +8,7 @@ use App\Domain\Activity\ActivityIdRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;

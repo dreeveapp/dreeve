@@ -11,7 +11,7 @@ use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent\UpdateGearMaintenanceComponent;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;

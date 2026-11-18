@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Http;
+namespace App\Tests\Infrastructure\Http\Response;
 
-use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
-use App\Infrastructure\Http\SvgResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
+use App\Infrastructure\Http\Response\SvgResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;

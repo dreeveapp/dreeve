@@ -10,7 +10,7 @@ use App\Domain\Dashboard\Widget\ConfiguredWidgets;
 use App\Domain\Dashboard\Widget\DependsOnCurrentDay;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;

@@ -6,7 +6,7 @@ namespace App\Controller\File\Activity;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Import\FileImportRepository;
-use App\Infrastructure\Http\AttachmentResponse;
+use App\Infrastructure\Http\Response\AttachmentResponse;
 use App\Infrastructure\Security\Visitor;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
