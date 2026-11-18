@@ -8,9 +8,9 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearStatus;
 use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
+use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -21,7 +21,7 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
 {
     use ProvideNotesFromPayload;
     use ProvidePurchasePriceFromPayload;
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
     use ProvidesCommandName;
 
     private function __construct(
@@ -30,7 +30,7 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
         private bool $isRetired,
         private ?Money $purchasePrice,
         private ?NewMediaItem $newMediaItem,
-        private ?RemovedImage $removedMediaItem,
+        private ?RemovedMediaItem $removedMediaItem,
         private ?string $notes,
     ) {
     }
@@ -53,7 +53,7 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
             throw CouldNotDeserializeCommand::invalidPayload('The status is invalid.');
         }
 
-        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'mediaItem');
+        [$newMediaItems, $removedMediaItems] = self::parseMediaItems($payload, 'mediaItem');
 
         return new self(
             gearId: GearId::fromString($payload['gearId']),
@@ -91,7 +91,7 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
         return $this->newMediaItem;
     }
 
-    public function getRemovedMediaItem(): ?RemovedImage
+    public function getRemovedMediaItem(): ?RemovedMediaItem
     {
         return $this->removedMediaItem;
     }

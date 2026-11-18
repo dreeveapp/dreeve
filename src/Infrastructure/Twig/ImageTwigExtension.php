@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Twig;
 
-use App\Domain\Image\ImageExtension;
+use App\Domain\Media\ImageExtension;
 use Twig\Attribute\AsTwigFunction;
 
 final readonly class ImageTwigExtension

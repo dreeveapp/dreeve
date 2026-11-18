@@ -10,8 +10,8 @@ use App\Domain\Activity\ProvideManuallyAddedActivityPayload;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
@@ -20,7 +20,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 final readonly class ManuallyCreateActivity extends DomainCommand implements DeserializableCommand
 {
     use ProvideCaloriesFromPayload;
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
     use ProvideManuallyAddedActivityPayload;
     use ProvidesCommandName;
 
@@ -48,7 +48,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
 
     public static function fromPayload(array $payload): self
     {
-        [$newMediaItems] = self::parseImages($payload, 'mediaItems');
+        [$newMediaItems] = self::parseMediaItems($payload, 'mediaItems');
         [$averageHeartRate, $maxHeartRate] = self::parseHeartRates($payload);
 
         return new self(

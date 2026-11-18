@@ -8,8 +8,8 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -17,7 +17,7 @@ use App\Infrastructure\CQRS\Command\DomainCommand;
 
 final readonly class AddActivityCollection extends DomainCommand implements DeserializableCommand
 {
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
     use ProvidesCommandName;
 
     private function __construct(
@@ -66,7 +66,7 @@ final readonly class AddActivityCollection extends DomainCommand implements Dese
             throw CouldNotDeserializeCommand::invalidPayload('The "activityIds" contain an invalid activity id.');
         }
 
-        [$newMediaItems] = self::parseImages($payload, 'coverMediaItem');
+        [$newMediaItems] = self::parseMediaItems($payload, 'coverMediaItem');
 
         return new self(
             activityCollectionId: ActivityCollectionId::fromString($payload['activityCollectionId']),

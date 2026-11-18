@@ -7,10 +7,10 @@ namespace App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallationLoopDetected;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
@@ -50,7 +50,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
                 newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::GEAR_MAINTENANCE,
             )->getId());
-        } elseif ($removedMediaItem instanceof RemovedImage) {
+        } elseif ($removedMediaItem instanceof RemovedMediaItem) {
             $gearComponent = $gearComponent->withMediaItemId(null);
         }
 
@@ -65,7 +65,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
 
         $this->gearComponentRepository->update($gearComponent);
 
-        if ($removedMediaItem instanceof RemovedImage) {
+        if ($removedMediaItem instanceof RemovedMediaItem) {
             $this->mediaItemStorage->remove($removedMediaItem->getId());
         }
     }

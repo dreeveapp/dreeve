@@ -9,10 +9,10 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
@@ -63,13 +63,13 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
                 newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::ACTIVITY_COLLECTIONS,
             )->getId());
-        } elseif ($removedMediaItem instanceof RemovedImage) {
+        } elseif ($removedMediaItem instanceof RemovedMediaItem) {
             $activityCollection = $activityCollection->withCoverMediaItemId(null);
         }
 
         $this->activityCollectionRepository->update($activityCollection);
 
-        if ($removedMediaItem instanceof RemovedImage) {
+        if ($removedMediaItem instanceof RemovedMediaItem) {
             $this->mediaItemStorage->remove($removedMediaItem->getId());
         }
     }

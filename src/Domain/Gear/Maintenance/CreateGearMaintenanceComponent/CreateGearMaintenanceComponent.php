@@ -9,8 +9,8 @@ use App\Domain\Gear\Maintenance\ProvideGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
@@ -23,7 +23,7 @@ final readonly class CreateGearMaintenanceComponent extends DomainCommand implem
     use ProvideGearMaintenanceComponentPayload;
     use ProvideNotesFromPayload;
     use ProvidePurchasePriceFromPayload;
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
 
     private function __construct(
         private Name $label,
@@ -38,7 +38,7 @@ final readonly class CreateGearMaintenanceComponent extends DomainCommand implem
 
     public static function fromPayload(array $payload): self
     {
-        [$newMediaItems] = self::parseImages($payload, 'mediaItem');
+        [$newMediaItems] = self::parseMediaItems($payload, 'mediaItem');
 
         return new self(
             label: self::parseLabel($payload),

@@ -11,9 +11,9 @@ use App\Domain\Activity\ProvideManuallyAddedActivityPayload;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
+use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -23,13 +23,13 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 final readonly class UpdateManuallyAddedActivity extends DomainCommand implements DeserializableCommand
 {
     use ProvideCaloriesFromPayload;
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
     use ProvideManuallyAddedActivityPayload;
     use ProvidesCommandName;
 
     /**
-     * @param array<NewMediaItem> $newMediaItems
-     * @param array<RemovedImage> $removedMediaItems
+     * @param array<NewMediaItem>     $newMediaItems
+     * @param array<RemovedMediaItem> $removedMediaItems
      */
     private function __construct(
         private ActivityId $activityId,
@@ -58,7 +58,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
             throw CouldNotDeserializeCommand::invalidPayload('An "activityId" is required.');
         }
 
-        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'mediaItems');
+        [$newMediaItems, $removedMediaItems] = self::parseMediaItems($payload, 'mediaItems');
         [$averageHeartRate, $maxHeartRate] = self::parseHeartRates($payload);
 
         return new self(
@@ -166,7 +166,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
     }
 
     /**
-     * @return array<RemovedImage>
+     * @return array<RemovedMediaItem>
      */
     public function getRemovedMediaItems(): array
     {

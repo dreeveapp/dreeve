@@ -10,9 +10,9 @@ use App\Domain\Gear\Maintenance\ProvideGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
+use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -26,14 +26,14 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
     use ProvideGearMaintenanceComponentPayload;
     use ProvideNotesFromPayload;
     use ProvidePurchasePriceFromPayload;
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
 
     private function __construct(
         private GearComponentId $gearComponentId,
         private Name $label,
         private GearComponentInstallations $installations,
         private ?NewMediaItem $newMediaItem,
-        private ?RemovedImage $removedMediaItem,
+        private ?RemovedMediaItem $removedMediaItem,
         private ?Money $purchasePrice,
         private MaintenanceTasks $maintenanceTasks,
         private bool $isRetired,
@@ -47,7 +47,7 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
             throw CouldNotDeserializeCommand::invalidPayload('A "gearComponentId" is required.');
         }
 
-        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'mediaItem');
+        [$newMediaItems, $removedMediaItems] = self::parseMediaItems($payload, 'mediaItem');
 
         return new self(
             gearComponentId: GearComponentId::fromString(trim($payload['gearComponentId'])),
@@ -82,7 +82,7 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
         return $this->newMediaItem;
     }
 
-    public function getRemovedMediaItem(): ?RemovedImage
+    public function getRemovedMediaItem(): ?RemovedMediaItem
     {
         return $this->removedMediaItem;
     }
