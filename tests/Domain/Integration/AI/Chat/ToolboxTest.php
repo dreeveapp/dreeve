@@ -18,6 +18,7 @@ use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Integration\AI\Chat\Toolbox;
 use App\Domain\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
@@ -85,7 +86,10 @@ class ToolboxTest extends ContainerTestCase
 
     public function testItListsNoGearMaintenanceTasksWhenTheFeatureIsDisabled(): void
     {
-        $this->importGearMaintenanceConfigFromArray(['enabled' => false]);
+        $this->getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: false,
+            ignoreRetiredGear: false,
+        );
 
         $this->assertSame('{"maintenanceTasks":[]}', $this->executeTool('list_gear_maintenance_tasks', []));
     }

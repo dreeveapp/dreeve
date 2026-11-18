@@ -7,6 +7,9 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearComponent;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
@@ -17,7 +20,6 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,13 +27,19 @@ use Symfony\Component\HttpFoundation\Response;
 class GearMaintenanceTaskSearchRequestHandlerTest extends ControllerWebTestCase
 {
     use MatchesSnapshots;
-    use ProvideGearMaintenanceConfig;
 
     private ApiToken $token;
 
     public function testItListsMaintenanceTasksMostUrgentFirst(): void
     {
-        $this->importGearMaintenanceConfigFromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance.json')));
+        static::getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: true,
+        );
+        $gearComponentRepository = static::getContainer()->get(GearComponentRepository::class);
+        foreach (Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance.json')) as $component) {
+            $gearComponentRepository->add(GearComponent::fromArray($component));
+        }
 
         $gearRepository = static::getContainer()->get(GearRepository::class);
         $gearRepository->add(GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('bike-a'))->build());
@@ -79,7 +87,14 @@ class GearMaintenanceTaskSearchRequestHandlerTest extends ControllerWebTestCase
     #[DataProvider('provideGearFilters')]
     public function testItFiltersMaintenanceTasksByGear(string $gearId, array $expectedMaintenanceTaskIds): void
     {
-        $this->importGearMaintenanceConfigFromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance.json')));
+        static::getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: true,
+        );
+        $gearComponentRepository = static::getContainer()->get(GearComponentRepository::class);
+        foreach (Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance.json')) as $component) {
+            $gearComponentRepository->add(GearComponent::fromArray($component));
+        }
 
         $gearRepository = static::getContainer()->get(GearRepository::class);
         $gearRepository->add(GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('bike-a'))->build());

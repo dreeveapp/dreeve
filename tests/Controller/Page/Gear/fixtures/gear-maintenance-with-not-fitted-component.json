@@ -1,115 +1,111 @@
-{
-  "enabled": true,
-  "ignoreRetiredGear": false,
-  "components": [
-    {
-      "id": "gearComponent-summer-wheelset",
-      "label": "Summer wheelset",
-      "mediaItemId": null,
-      "isRetired": false,
-      "notes": null,
-      "installations": [
-        {
-          "parent": "gear:gear-g10130856",
-          "from": null,
-          "until": "2023-01-01",
-          "sportTypes": []
+[
+  {
+    "id": "gearComponent-summer-wheelset",
+    "label": "Summer wheelset",
+    "mediaItemId": null,
+    "isRetired": false,
+    "notes": null,
+    "installations": [
+      {
+        "parent": "gear:gear-g10130856",
+        "from": null,
+        "until": "2023-01-01",
+        "sportTypes": []
+      }
+    ],
+    "maintenance": [
+      {
+        "id": "maintenanceTask-summer-wheelset-hub-service",
+        "label": "Hub service",
+        "interval": {
+          "value": 5000,
+          "unit": "km"
         }
-      ],
-      "maintenance": [
-        {
-          "id": "maintenanceTask-summer-wheelset-hub-service",
-          "label": "Hub service",
-          "interval": {
-            "value": 5000,
-            "unit": "km"
-          }
+      }
+    ]
+  },
+  {
+    "id": "gearComponent-winter-wheelset",
+    "label": "Winter wheelset",
+    "mediaItemId": null,
+    "isRetired": false,
+    "notes": "28mm tyres\nTubeless",
+    "installations": [
+      {
+        "parent": "gear:gear-g10130856",
+        "from": "2023-01-01",
+        "until": null,
+        "sportTypes": []
+      }
+    ],
+    "maintenance": [
+      {
+        "id": "maintenanceTask-winter-wheelset-hub-service",
+        "label": "Hub service",
+        "interval": {
+          "value": 5000,
+          "unit": "km"
         }
-      ]
-    },
-    {
-      "id": "gearComponent-winter-wheelset",
-      "label": "Winter wheelset",
-      "mediaItemId": null,
-      "isRetired": false,
-      "notes": "28mm tyres\nTubeless",
-      "installations": [
-        {
-          "parent": "gear:gear-g10130856",
-          "from": "2023-01-01",
-          "until": null,
-          "sportTypes": []
+      }
+    ]
+  },
+  {
+    "id": "gearComponent-winter-tyres",
+    "label": "Winter tyres",
+    "mediaItemId": null,
+    "isRetired": false,
+    "notes": null,
+    "installations": [
+      {
+        "parent": "component:gearComponent-winter-wheelset",
+        "from": null,
+        "until": null,
+        "sportTypes": []
+      }
+    ],
+    "maintenance": [
+      {
+        "id": "maintenanceTask-winter-tyres-replace",
+        "label": "Replace",
+        "interval": {
+          "value": 3000,
+          "unit": "km"
         }
-      ],
-      "maintenance": [
-        {
-          "id": "maintenanceTask-winter-wheelset-hub-service",
-          "label": "Hub service",
-          "interval": {
-            "value": 5000,
-            "unit": "km"
-          }
+      }
+    ]
+  },
+  {
+    "id": "gearComponent-spare-wheelset",
+    "label": "Spare wheelset",
+    "mediaItemId": null,
+    "isRetired": false,
+    "notes": null,
+    "installations": [],
+    "maintenance": []
+  },
+  {
+    "id": "gearComponent-old-chain",
+    "label": "Old chain",
+    "mediaItemId": null,
+    "isRetired": true,
+    "notes": null,
+    "installations": [
+      {
+        "parent": "gear:gear-g10130856",
+        "from": null,
+        "until": null,
+        "sportTypes": []
+      }
+    ],
+    "maintenance": [
+      {
+        "id": "maintenanceTask-old-chain-lube",
+        "label": "Lube",
+        "interval": {
+          "value": 500,
+          "unit": "km"
         }
-      ]
-    },
-    {
-      "id": "gearComponent-winter-tyres",
-      "label": "Winter tyres",
-      "mediaItemId": null,
-      "isRetired": false,
-      "notes": null,
-      "installations": [
-        {
-          "parent": "component:gearComponent-winter-wheelset",
-          "from": null,
-          "until": null,
-          "sportTypes": []
-        }
-      ],
-      "maintenance": [
-        {
-          "id": "maintenanceTask-winter-tyres-replace",
-          "label": "Replace",
-          "interval": {
-            "value": 3000,
-            "unit": "km"
-          }
-        }
-      ]
-    },
-    {
-      "id": "gearComponent-spare-wheelset",
-      "label": "Spare wheelset",
-      "mediaItemId": null,
-      "isRetired": false,
-      "notes": null,
-      "installations": [],
-      "maintenance": []
-    },
-    {
-      "id": "gearComponent-old-chain",
-      "label": "Old chain",
-      "mediaItemId": null,
-      "isRetired": true,
-      "notes": null,
-      "installations": [
-        {
-          "parent": "gear:gear-g10130856",
-          "from": null,
-          "until": null,
-          "sportTypes": []
-        }
-      ],
-      "maintenance": [
-        {
-          "id": "maintenanceTask-old-chain-lube",
-          "label": "Lube",
-          "interval": {
-            "value": 500,
-            "unit": "km"
-          }
-        }
-      ]
-    }
-  ]
-}
+      }
+    ]
+  }
+]

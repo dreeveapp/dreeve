@@ -36,7 +36,7 @@ download-database:
 	@make dc cmd="up -d --build"
 
 download-assets:
-	scp -r $(user)@$(server):/home/docker/stacks/dreeve/storage/files ./storage/
+	scp -r $(user)@$(server):/home/docker/volumes/dreeve/storage/files ./storage/
 
 build-countries-asset:
 	@make dcr cmd="bin/console app:geography:build-countries-asset"

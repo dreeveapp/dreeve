@@ -4,7 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 
+use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Gear\GearId;
+use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
+use App\Domain\Gear\Maintenance\Task\IntervalUnit;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent\UpdateGearMaintenanceComponent;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
@@ -14,7 +23,9 @@ use App\Domain\Media\MediaItems;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
 use League\Flysystem\FilesystemOperator;
@@ -159,7 +170,26 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
     public function testItReplacesImageAndDeletesPreviousFile(): void
     {
-        $this->seedComponentWithImage('mediaItem-old');
+        $this->getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: false,
+        );
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('b1')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
         $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
         $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
@@ -202,7 +232,26 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
     public function testItRemovesImageAndDeletesFile(): void
     {
-        $this->seedComponentWithImage('mediaItem-old');
+        $this->getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: false,
+        );
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('b1')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
         $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
         $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
@@ -227,24 +276,6 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertNull($components[0]['mediaItemId']);
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
         $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('old')]))->isEmpty());
-    }
-
-    private function seedComponentWithImage(string $mediaItemId): void
-    {
-        $this->importGearMaintenanceConfigFromArray([
-            'enabled' => true,
-            'components' => [[
-                'id' => 'gearComponent-chain',
-                'label' => 'Chain',
-                'mediaItemId' => $mediaItemId,
-                'isRetired' => false,
-                'notes' => null,
-                'installations' => [['parent' => 'gear:gear-b1', 'from' => null, 'until' => null, 'sportTypes' => []]],
-                'maintenance' => [
-                    ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
-                ],
-            ]],
-        ]);
     }
 
     /**
