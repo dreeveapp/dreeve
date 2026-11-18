@@ -12,7 +12,7 @@ use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\Response\CachePolicy;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\Http\Response\PngResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,7 +29,7 @@ final readonly class ActivityCollectionOgImageRequestHandler
     }
 
     #[Route(path: '/collections/{activityCollectionId}/og-image.png', name: 'activity_collection_og_image', requirements: ['activityCollectionId' => 'activityCollection-[^/]+'], methods: ['GET'])]
-    public function handle(string $activityCollectionId): Response
+    public function handle(string $activityCollectionId): PngResponse
     {
         $activityCollection = $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId));
         if (0 === $this->queryBus->ask(new FindNumberOfActivitiesPerActivityCollection())->getNumberOfActivitiesFor($activityCollection->getId())) {
@@ -41,8 +41,8 @@ final readonly class ActivityCollectionOgImageRequestHandler
             activities: $this->activityRepository->findByIds($activityCollection->getActivityIds()),
         );
 
-        return CachePolicy::public()->maxAge(3600)->applyTo(new Response($this->activityCollectionOpenGraphImage->render($activityCollectionWithActivities), Response::HTTP_OK, [
-            'Content-Type' => 'image/png',
-        ]));
+        return CachePolicy::public()->maxAge(3600)->applyTo(
+            new PngResponse($this->activityCollectionOpenGraphImage->render($activityCollectionWithActivities)),
+        );
     }
 }

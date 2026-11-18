@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Infrastructure\Http\Response;
 
 use App\Infrastructure\Http\Response\HtmlResponse;
+use App\Infrastructure\Http\Response\PngResponse;
 use App\Infrastructure\Http\Response\SvgResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -35,6 +36,10 @@ class ResponsesTest extends TestCase
         yield 'svg' => [
             new SvgResponse('<svg></svg>', ['X-Dreeve-Cache' => 'MISS']),
             ['Content-Type' => 'image/svg+xml; charset=UTF-8', 'X-Dreeve-Cache' => 'MISS'],
+        ];
+        yield 'png' => [
+            new PngResponse('png', ['X-Dreeve-Cache' => 'MISS']),
+            ['Content-Type' => 'image/png', 'X-Dreeve-Cache' => 'MISS'],
         ];
     }
 }
