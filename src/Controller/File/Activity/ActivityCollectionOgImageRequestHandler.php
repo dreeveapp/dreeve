@@ -11,6 +11,7 @@ use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
+use App\Infrastructure\Http\Response\CachePolicy;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -40,9 +41,8 @@ final readonly class ActivityCollectionOgImageRequestHandler
             activities: $this->activityRepository->findByIds($activityCollection->getActivityIds()),
         );
 
-        return new Response($this->activityCollectionOpenGraphImage->render($activityCollectionWithActivities), Response::HTTP_OK, [
+        return CachePolicy::public()->maxAge(3600)->applyTo(new Response($this->activityCollectionOpenGraphImage->render($activityCollectionWithActivities), Response::HTTP_OK, [
             'Content-Type' => 'image/png',
-            'Cache-Control' => 'public, max-age=3600',
-        ]);
+        ]));
     }
 }

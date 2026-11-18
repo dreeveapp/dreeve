@@ -12,6 +12,8 @@ final readonly class CachePolicy
         private bool $isPublic,
         private bool $noStore = false,
         private bool $revalidate = false,
+        private ?int $maxAge = null,
+        private bool $immutable = false,
     ) {
     }
 
@@ -35,6 +37,16 @@ final readonly class CachePolicy
         return clone ($this, ['revalidate' => true]);
     }
 
+    public function maxAge(int $seconds): self
+    {
+        return clone ($this, ['maxAge' => $seconds]);
+    }
+
+    public function immutable(): self
+    {
+        return clone ($this, ['immutable' => true]);
+    }
+
     /**
      * @template T of Response
      *
@@ -48,6 +60,8 @@ final readonly class CachePolicy
             'public' => $this->isPublic,
             'no_store' => $this->noStore,
             'no_cache' => $this->revalidate,
+            'max_age' => $this->maxAge,
+            'immutable' => $this->immutable,
         ]);
 
         if ($this->revalidate) {

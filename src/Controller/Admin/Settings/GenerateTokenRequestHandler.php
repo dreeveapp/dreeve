@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Settings;
 
+use App\Infrastructure\Http\Response\CachePolicy;
 use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Security\Token\McpToken;
@@ -29,12 +30,8 @@ final readonly class GenerateTokenRequestHandler
             default => throw new NotFoundHttpException(),
         };
 
-        $response = new HtmlResponse($this->twig->render(sprintf('html/admin/page/settings/token/generate-%s.html.twig', $type), [
+        return CachePolicy::private()->noStore()->applyTo(new HtmlResponse($this->twig->render(sprintf('html/admin/page/settings/token/generate-%s.html.twig', $type), [
             'key' => $token,
-        ]));
-
-        $response->headers->set('Cache-Control', 'no-store');
-
-        return $response;
+        ])));
     }
 }
