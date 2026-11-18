@@ -6,9 +6,13 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ManageGearOverviewRequestHandlerTest extends AdminWebTestCase
@@ -114,12 +118,16 @@ class ManageGearOverviewRequestHandlerTest extends AdminWebTestCase
 
     public function testRendersTheGearImageWithPlaceholderFallback(): void
     {
+        static::getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('image'))
+            ->withPath(MediaItemPath::fromString('gear/image.jpg'))
+            ->build());
         $gearRepository = static::getContainer()->get(GearRepository::class);
         $gearRepository->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
                 ->withName('Gear with image')
-                ->withLocalImagePath('files/gear/image.jpg')
+                ->withMediaItemId(MediaItemId::fromUnprefixed('image'))
                 ->build()
         );
         $gearRepository->add(

@@ -86,7 +86,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
                 ->withName('Original gear')
-                ->withLocalImagePath('files/gear/old.jpg')
+                ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
                 ->build()
         );
 
@@ -95,13 +95,13 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'id' => '/files/gear/old.jpg'],
+                ['status' => 'removed', 'id' => 'mediaItem-old'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
         ]));
 
         $gear = $this->gearRepository->find(GearId::fromUnprefixed('1'));
-        $this->assertSame('/files/gear/0025176c-5652-11ee-923d-02424dd627d5.jpg', $gear->getLocalImagePath());
+        $this->assertEquals(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'), $gear->getMediaItemId());
         $this->assertFalse($this->fileStorage->fileExists('gear/old.jpg'));
         $this->assertTrue($this->fileStorage->fileExists('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertSame('new-content', $this->fileStorage->read('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
@@ -131,7 +131,7 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
                 ->withName('Original gear')
-                ->withLocalImagePath('files/gear/old.jpg')
+                ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
                 ->build()
         );
 
@@ -139,12 +139,12 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'id' => '/files/gear/old.jpg'],
+                ['status' => 'removed', 'id' => 'mediaItem-old'],
             ]),
         ]));
 
         $gear = $this->gearRepository->find(GearId::fromUnprefixed('1'));
-        $this->assertNull($gear->getLocalImagePath());
+        $this->assertNull($gear->getMediaItemId());
         $this->assertFalse($this->fileStorage->fileExists('gear/old.jpg'));
         $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('old')]))->isEmpty());
     }
@@ -152,11 +152,15 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
     public function testHandleKeepsImageWhenUnchanged(): void
     {
         $this->fileStorage->write('gear/old.jpg', 'old-content');
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withPath(MediaItemPath::fromString('gear/old.jpg'))
+            ->build());
         $this->gearRepository->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
                 ->withName('Original gear')
-                ->withLocalImagePath('files/gear/old.jpg')
+                ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
                 ->build()
         );
 
@@ -164,12 +168,12 @@ class UpdateGearCommandHandlerTest extends ContainerTestCase
             'gearId' => 'gear-1',
             'name' => 'Updated gear',
             'localImagePath' => json_encode([
-                ['status' => 'unchanged', 'id' => '/files/gear/old.jpg'],
+                ['status' => 'unchanged', 'id' => 'mediaItem-old'],
             ]),
         ]));
 
         $gear = $this->gearRepository->find(GearId::fromUnprefixed('1'));
-        $this->assertSame('/files/gear/old.jpg', $gear->getLocalImagePath());
+        $this->assertEquals(MediaItemId::fromUnprefixed('old'), $gear->getMediaItemId());
         $this->assertTrue($this->fileStorage->fileExists('gear/old.jpg'));
     }
 

@@ -7,12 +7,10 @@ namespace App\Domain\Gear\DeleteGear;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearUsage;
 use App\Domain\Import\ImportMode;
-use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
-use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class DeleteGearCommandHandler implements CommandHandler
 {
@@ -40,8 +38,8 @@ final readonly class DeleteGearCommandHandler implements CommandHandler
         $gear->delete();
         $this->gearRepository->delete($gear);
 
-        if (null !== $localImagePath = $gear->getLocalImagePath()) {
-            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()));
+        if ($mediaItemId = $gear->getMediaItemId()) {
+            $this->mediaItemStorage->remove($mediaItemId);
         }
     }
 }

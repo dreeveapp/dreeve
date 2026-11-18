@@ -9,9 +9,13 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use Money\Money;
 
 class ManageGearFormRequestHandlerTest extends AdminWebTestCase
@@ -36,6 +40,10 @@ class ManageGearFormRequestHandlerTest extends AdminWebTestCase
 
     public function testRendersTheEditFormPrefilledWithTheGear(): void
     {
+        static::getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
+            ->withPath(MediaItemPath::fromString('gear/bike.jpg'))
+            ->build());
         static::getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
@@ -43,6 +51,7 @@ class ManageGearFormRequestHandlerTest extends AdminWebTestCase
                 ->withIsRetired(true)
                 ->withPurchasePrice(Money::EUR(150000))
                 ->withNotes('Size 56, bought second hand')
+                ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
                 ->build()
         );
 
@@ -62,6 +71,10 @@ class ManageGearFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('EUR', $form->filter('select[name="purchasePriceCurrency"] option[selected]')->attr('value'));
         $this->assertSame('retired', $form->filter('select[name="status"] option[selected]')->attr('value'));
         $this->assertSame('Size 56, bought second hand', $form->filter('textarea[name="notes"]')->text());
+        $this->assertSame(
+            [['url' => '/files/gear/bike.jpg', 'name' => 'bike.jpg', 'id' => 'mediaItem-bike']],
+            json_decode((string) $form->filter('[data-image-dropzone]')->attr('data-existing-images'), true),
+        );
 
         $this->client->request('GET', '/admin/gear/'.GearId::fromUnprefixed('unknown').'/edit');
         $this->assertResponseStatusCodeSame(404);

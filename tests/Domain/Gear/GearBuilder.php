@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Gear;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearType;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -24,7 +25,7 @@ final class GearBuilder
     private Meter $elevation;
     private int $numberOfActivities = 0;
     private int $totalCalories = 0;
-    private ?string $localImagePath = null;
+    private ?MediaItemId $mediaItemId = null;
     private ?Money $purchasePrice = null;
     private ?string $notes = null;
 
@@ -51,7 +52,7 @@ final class GearBuilder
             name: $this->name,
             isRetired: $this->isRetired,
             type: $this->type,
-            localImagePath: $this->localImagePath,
+            mediaItemId: $this->mediaItemId,
             movingTime: $this->movingTime,
             elevation: $this->elevation,
             numberOfActivities: $this->numberOfActivities,
@@ -70,7 +71,7 @@ final class GearBuilder
             isRetired: $this->isRetired,
             type: $this->type,
             notes: $this->notes,
-            localImagePath: $this->localImagePath,
+            mediaItemId: $this->mediaItemId,
         );
     }
 
@@ -81,9 +82,9 @@ final class GearBuilder
         return $this;
     }
 
-    public function withLocalImagePath(?string $localImagePath): self
+    public function withMediaItemId(?MediaItemId $mediaItemId): self
     {
-        $this->localImagePath = $localImagePath;
+        $this->mediaItemId = $mediaItemId;
 
         return $this;
     }

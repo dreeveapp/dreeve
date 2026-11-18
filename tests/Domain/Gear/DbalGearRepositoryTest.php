@@ -14,6 +14,9 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Gears;
 use App\Domain\Gear\GearType;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Kilometer;
@@ -21,6 +24,7 @@ use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use Money\Money;
 
 class DbalGearRepositoryTest extends ContainerTestCase
@@ -31,11 +35,18 @@ class DbalGearRepositoryTest extends ContainerTestCase
     {
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
 
+        $mediaItem = MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
+            ->withPath(MediaItemPath::fromString('gear/bike.jpg'))
+            ->build();
+        $this->getContainer()->get(MediaItemRepository::class)->add($mediaItem);
+
         // The stored column value (1230) must be ignored: distance is derived from activities.
         $gear = GearBuilder::fromDefaults()
             ->withGearId(GearId::fromUnprefixed('1'))
             ->withDistanceInMeter(Meter::from(1230))
             ->withNotes("Serial 123\nBought in Ghent")
+            ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
             ->build();
         $this->gearRepository->add($gear);
 
@@ -71,9 +82,11 @@ class DbalGearRepositoryTest extends ContainerTestCase
                 ->withNumberOfActivities(2)
                 ->withTotalCalories(1000)
                 ->withNotes("Serial 123\nBought in Ghent")
+                ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
                 ->build()
                 ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE]))
-                ->withMainActivityType(ActivityType::RIDE),
+                ->withMainActivityType(ActivityType::RIDE)
+                ->withMediaItem($mediaItem),
             $this->gearRepository->find($gear->getId())
         );
     }
@@ -122,6 +135,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('2'))
                 ->withGearType(GearType::CUSTOM)
+                ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
                 ->build()
         );
 
@@ -133,7 +147,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     'name' => 'Existing gear',
                     'isRetired' => 0,
                     'type' => 'imported',
-                    'localImagePath' => null,
+                    'mediaItemId' => null,
                     'purchasePriceAmount' => null,
                     'purchasePriceCurrency' => null,
                     'notes' => null,
@@ -144,7 +158,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     'name' => 'Existing gear',
                     'isRetired' => 0,
                     'type' => 'custom',
-                    'localImagePath' => null,
+                    'mediaItemId' => 'mediaItem-bike',
                     'purchasePriceAmount' => null,
                     'purchasePriceCurrency' => null,
                     'notes' => null,
@@ -166,6 +180,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
             $gear->withName('Updated gear')
                 ->withIsRetired(true)
                 ->withNotes('Some notes')
+                ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
         );
 
         $this->assertEquals(
@@ -176,7 +191,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     'name' => 'Updated gear',
                     'isRetired' => 1,
                     'type' => 'imported',
-                    'localImagePath' => null,
+                    'mediaItemId' => 'mediaItem-bike',
                     'purchasePriceAmount' => 150000,
                     'purchasePriceCurrency' => 'EUR',
                     'notes' => 'Some notes',
@@ -190,15 +205,28 @@ class DbalGearRepositoryTest extends ContainerTestCase
     {
         $activityRepository = $this->getContainer()->get(ActivityRepository::class);
 
+        $mediaItemOne = MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('one'))
+            ->withPath(MediaItemPath::fromString('gear/one.jpg'))
+            ->build();
+        $mediaItemTwo = MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('two'))
+            ->withPath(MediaItemPath::fromString('gear/two.jpg'))
+            ->build();
+        $this->getContainer()->get(MediaItemRepository::class)->add($mediaItemOne);
+        $this->getContainer()->get(MediaItemRepository::class)->add($mediaItemTwo);
+
         $gearOne = GearBuilder::fromDefaults()
             ->withGearId(GearId::fromUnprefixed('1'))
             ->withDistanceInMeter(Meter::from(1230))
+            ->withMediaItemId(MediaItemId::fromUnprefixed('one'))
             ->build();
         $this->gearRepository->add($gearOne);
         $gearTwo = GearBuilder::fromDefaults()
             ->withGearId(GearId::fromUnprefixed('2'))
             ->withGearType(GearType::CUSTOM)
             ->withDistanceInMeter(Meter::from(10230))
+            ->withMediaItemId(MediaItemId::fromUnprefixed('two'))
             ->build();
         $this->gearRepository->add($gearTwo);
         $gearThree = GearBuilder::fromDefaults()
@@ -275,9 +303,11 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     ->withMovingTime(Seconds::from(10800))
                     ->withElevation(Meter::from(300))
                     ->withNumberOfActivities(2)
+                    ->withMediaItemId(MediaItemId::fromUnprefixed('one'))
                     ->build()
                     ->withActivityTypes(ActivityTypes::fromArray([ActivityType::RIDE]))
-                    ->withMainActivityType(ActivityType::RIDE),
+                    ->withMainActivityType(ActivityType::RIDE)
+                    ->withMediaItem($mediaItemOne),
                 GearBuilder::fromDefaults()
                     ->withGearId(GearId::fromUnprefixed('2'))
                     ->withGearType(GearType::CUSTOM)
@@ -285,9 +315,11 @@ class DbalGearRepositoryTest extends ContainerTestCase
                     ->withMovingTime(Seconds::from(3000))
                     ->withElevation(Meter::from(50))
                     ->withNumberOfActivities(3)
+                    ->withMediaItemId(MediaItemId::fromUnprefixed('two'))
                     ->build()
                     ->withActivityTypes(ActivityTypes::fromArray([ActivityType::WALK, ActivityType::RIDE]))
-                    ->withMainActivityType(ActivityType::WALK),
+                    ->withMainActivityType(ActivityType::WALK)
+                    ->withMediaItem($mediaItemTwo),
                 GearBuilder::fromDefaults()
                     ->withGearId(GearId::fromUnprefixed('3'))
                     ->withDistanceInMeter(Meter::zero())
@@ -335,6 +367,7 @@ class DbalGearRepositoryTest extends ContainerTestCase
         $this->gearRepository = new DbalGearRepository(
             $this->getConnection(),
             $this->getContainer()->get(EventBus::class),
+            $this->getContainer()->get(MediaItemRepository::class),
         );
     }
 }

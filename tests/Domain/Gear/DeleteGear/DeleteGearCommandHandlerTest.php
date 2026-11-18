@@ -45,7 +45,7 @@ class DeleteGearCommandHandlerTest extends ContainerTestCase
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
                 ->withGearType(GearType::CUSTOM)
-                ->withLocalImagePath('files/gear/bike.jpg')
+                ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
                 ->build()
         );
 

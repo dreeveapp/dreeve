@@ -29,6 +29,7 @@ final readonly class AddGearCommandHandler implements CommandHandler
     {
         assert($command instanceof AddGear);
 
+        $newImage = $command->getNewImage();
         $gear = Gear::create(
             gearId: GearId::random(),
             createdOn: $this->clock->now(),
@@ -36,18 +37,16 @@ final readonly class AddGearCommandHandler implements CommandHandler
             isRetired: $command->isRetired(),
             type: GearType::CUSTOM,
             notes: $command->getNotes(),
+            mediaItemId: $newImage instanceof NewMediaItem
+                ? $this->mediaItemStorage->store(
+                    newMediaItem: $newImage,
+                    directory: MediaItemDirectory::GEAR,
+                )->getId()
+                : null,
         );
 
         if ($command->getPurchasePrice() instanceof Money) {
             $gear = $gear->withPurchasePrice($command->getPurchasePrice());
-        }
-
-        $newImage = $command->getNewImage();
-        if ($newImage instanceof NewMediaItem) {
-            $gear = $gear->withLocalImagePath(ltrim($this->mediaItemStorage->store(
-                newMediaItem: $newImage,
-                directory: MediaItemDirectory::GEAR,
-            )->getPath()->toUrlPath(), '/'));
         }
 
         $this->gearRepository->add($gear);

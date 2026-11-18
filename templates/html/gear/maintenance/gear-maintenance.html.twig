@@ -51,7 +51,7 @@
                             <div>
                                 <img class="w-auto h-8 rounded-sm object-cover lazy"
                                      src="{{ placeholderImage() }}"
-                                     data-src="{{ gear.getLocalImagePath() }}"
+                                     data-src="{{ gear.getMediaItem() ? gear.getMediaItem().getPath().toUrlPath() }}"
                                      alt="{{ gear.getName() }}"/>
                             </div>
                             <div class="min-w-0 flex items-center">

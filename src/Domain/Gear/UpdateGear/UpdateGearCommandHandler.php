@@ -12,7 +12,6 @@ use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
-use App\Infrastructure\ValueObject\String\Path;
 use Money\Money;
 
 final readonly class UpdateGearCommandHandler implements CommandHandler
@@ -40,18 +39,18 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
         $removedImage = $command->getRemovedImage();
 
         if ($newImage instanceof NewMediaItem) {
-            $gear = $gear->withLocalImagePath(ltrim($this->mediaItemStorage->store(
+            $gear = $gear->withMediaItemId($this->mediaItemStorage->store(
                 newMediaItem: $newImage,
                 directory: MediaItemDirectory::GEAR,
-            )->getPath()->toUrlPath(), '/'));
+            )->getId());
         } elseif ($removedImage instanceof RemovedImage) {
-            $gear = $gear->withLocalImagePath(null);
+            $gear = $gear->withMediaItemId(null);
         }
 
         $this->gearRepository->update($gear);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($removedImage->getId())->getFilenameWithoutExtension()));
+            $this->mediaItemStorage->remove(MediaItemId::fromString($removedImage->getId()));
         }
     }
 }
