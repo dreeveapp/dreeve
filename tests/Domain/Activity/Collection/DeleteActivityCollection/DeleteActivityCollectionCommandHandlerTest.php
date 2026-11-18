@@ -33,7 +33,7 @@ class DeleteActivityCollectionCommandHandlerTest extends ContainerTestCase
         $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
-            ->withCoverImagePath('/files/activity-collections/cover.jpg')
+            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('cover'))
             ->build());
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('2'))

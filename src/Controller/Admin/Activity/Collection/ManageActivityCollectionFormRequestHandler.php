@@ -11,6 +11,7 @@ use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
 use App\Domain\Activity\Collection\DeleteActivityCollection\DeleteActivityCollection;
 use App\Domain\Activity\Collection\UpdateActivityCollection\UpdateActivityCollection;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Http\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,6 +24,7 @@ final readonly class ManageActivityCollectionFormRequestHandler
         private Environment $twig,
         private ActivityCollectionRepository $activityCollectionRepository,
         private ActivityRepository $activityRepository,
+        private MediaItemRepository $mediaItemRepository,
     ) {
     }
 
@@ -40,6 +42,9 @@ final readonly class ManageActivityCollectionFormRequestHandler
     public function handleEdit(string $activityCollectionId): HtmlResponse
     {
         $activityCollection = $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId));
+        if ($coverMediaItemId = $activityCollection->getCoverMediaItemId()) {
+            $activityCollection = $activityCollection->withCoverMediaItem($this->mediaItemRepository->find($coverMediaItemId));
+        }
 
         return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/edit-activity-collection.html.twig', [
             'dispatchCommand' => UpdateActivityCollection::getCommandName(),

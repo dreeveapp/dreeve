@@ -6,6 +6,8 @@ namespace App\Domain\Activity\Collection;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Media\MediaItem;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 final class ActivityCollection
 {
     use RecordsEvents;
+
+    private ?MediaItem $coverMediaItem = null;
 
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
@@ -28,7 +32,7 @@ final class ActivityCollection
         #[ORM\Column(type: 'json')]
         private readonly ActivityIds $activityIds,
         #[ORM\Column(type: 'string', nullable: true)]
-        private readonly ?string $coverImagePath,
+        private readonly ?MediaItemId $coverMediaItemId,
         #[ORM\Column(type: 'boolean')]
         private readonly bool $useRouteMapAsCover,
         #[ORM\Column(type: 'datetime_immutable')]
@@ -42,7 +46,7 @@ final class ActivityCollection
         ?string $description,
         ActivityCollectionType $type,
         ActivityIds $activityIds,
-        ?string $coverImagePath,
+        ?MediaItemId $coverMediaItemId,
         bool $useRouteMapAsCover,
         SerializableDateTime $createdOn,
     ): self {
@@ -52,7 +56,7 @@ final class ActivityCollection
             description: $description,
             type: $type,
             activityIds: $activityIds,
-            coverImagePath: $coverImagePath,
+            coverMediaItemId: $coverMediaItemId,
             useRouteMapAsCover: $useRouteMapAsCover,
             createdOn: $createdOn,
         );
@@ -67,7 +71,7 @@ final class ActivityCollection
         ?string $description,
         ActivityCollectionType $type,
         ActivityIds $activityIds,
-        ?string $coverImagePath,
+        ?MediaItemId $coverMediaItemId,
         bool $useRouteMapAsCover,
         SerializableDateTime $createdOn,
     ): self {
@@ -77,7 +81,7 @@ final class ActivityCollection
             description: $description,
             type: $type,
             activityIds: $activityIds,
-            coverImagePath: $coverImagePath,
+            coverMediaItemId: $coverMediaItemId,
             useRouteMapAsCover: $useRouteMapAsCover,
             createdOn: $createdOn,
         );
@@ -165,27 +169,35 @@ final class ActivityCollection
         return $activityCollection;
     }
 
-    public function getCoverImagePath(): ?string
+    public function getCoverMediaItemId(): ?MediaItemId
     {
-        if (null === $this->coverImagePath) {
-            return null;
-        }
-
-        return str_starts_with($this->coverImagePath, '/') ? $this->coverImagePath : '/'.$this->coverImagePath;
+        return $this->coverMediaItemId;
     }
 
-    public function withCoverImagePath(?string $coverImagePath): self
+    public function withCoverMediaItemId(?MediaItemId $coverMediaItemId): self
     {
-        if ($coverImagePath === $this->coverImagePath) {
+        if ((string) $coverMediaItemId === (string) $this->coverMediaItemId) {
             return $this;
         }
 
         $activityCollection = clone ($this, [
-            'coverImagePath' => $coverImagePath,
+            'coverMediaItemId' => $coverMediaItemId,
         ]);
         $activityCollection->recordOnlyOnce(new ActivityCollectionWasUpdated($this->activityCollectionId));
 
         return $activityCollection;
+    }
+
+    public function getCoverMediaItem(): ?MediaItem
+    {
+        return $this->coverMediaItem;
+    }
+
+    public function withCoverMediaItem(?MediaItem $coverMediaItem): self
+    {
+        return clone ($this, [
+            'coverMediaItem' => $coverMediaItem,
+        ]);
     }
 
     public function useRouteMapAsCover(): bool

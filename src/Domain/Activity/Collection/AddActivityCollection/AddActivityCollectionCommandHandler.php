@@ -27,11 +27,11 @@ final readonly class AddActivityCollectionCommandHandler implements CommandHandl
         assert($command instanceof AddActivityCollection);
 
         $newImage = $command->getNewImage();
-        $coverImagePath = $newImage instanceof NewMediaItem
-            ? ltrim($this->mediaItemStorage->store(
+        $coverMediaItemId = $newImage instanceof NewMediaItem
+            ? $this->mediaItemStorage->store(
                 newMediaItem: $newImage,
                 directory: MediaItemDirectory::ACTIVITY_COLLECTIONS,
-            )->getPath()->toUrlPath(), '/')
+            )->getId()
             : null;
 
         $this->activityCollectionRepository->add(ActivityCollection::create(
@@ -40,7 +40,7 @@ final readonly class AddActivityCollectionCommandHandler implements CommandHandl
             description: $command->getDescription(),
             type: $command->getType(),
             activityIds: $command->getActivityIds(),
-            coverImagePath: $coverImagePath,
+            coverMediaItemId: $coverMediaItemId,
             useRouteMapAsCover: $command->useRouteMapAsCover(),
             createdOn: $this->clock->now(),
         ));

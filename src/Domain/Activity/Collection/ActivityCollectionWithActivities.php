@@ -8,6 +8,7 @@ use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\WorldType;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
+use App\Domain\Media\MediaItem;
 use App\Domain\Media\MediaItemId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -16,11 +17,13 @@ use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final readonly class ActivityCollectionWithActivities
+final class ActivityCollectionWithActivities
 {
+    private ?MediaItem $coverMediaItem = null;
+
     private function __construct(
-        private ActivityCollection $activityCollection,
-        private Activities $activities,
+        private readonly ActivityCollection $activityCollection,
+        private readonly Activities $activities,
     ) {
     }
 
@@ -55,13 +58,12 @@ final readonly class ActivityCollectionWithActivities
         return $this->activityCollection->useRouteMapAsCover() && !$this->getActivitiesWithARealWorldRoute()->isEmpty();
     }
 
-    public function getCoverImagePath(): ?string
+    public function getCoverMediaItemId(): ?MediaItemId
     {
-        return $this->activityCollection->getCoverImagePath();
-    }
+        if ($coverMediaItemId = $this->activityCollection->getCoverMediaItemId()) {
+            return $coverMediaItemId;
+        }
 
-    public function getFallbackCoverMediaItemId(): ?MediaItemId
-    {
         foreach ($this->activities as $activity) {
             if ($mediaItemId = $activity->getMediaItemIds()->getFirst()) {
                 return $mediaItemId;
@@ -69,6 +71,18 @@ final readonly class ActivityCollectionWithActivities
         }
 
         return null;
+    }
+
+    public function getCoverMediaItem(): ?MediaItem
+    {
+        return $this->coverMediaItem;
+    }
+
+    public function withCoverMediaItem(?MediaItem $coverMediaItem): self
+    {
+        return clone ($this, [
+            'coverMediaItem' => $coverMediaItem,
+        ]);
     }
 
     public function getStartDate(): SerializableDateTime

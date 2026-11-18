@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\Collection\ActivityCollection;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class ActivityCollectionBuilder
@@ -17,7 +18,7 @@ final class ActivityCollectionBuilder
     private ?string $description = null;
     private ActivityCollectionType $type = ActivityCollectionType::TRIP;
     private ActivityIds $activityIds;
-    private ?string $coverImagePath = null;
+    private ?MediaItemId $coverMediaItemId = null;
     private bool $useRouteMapAsCover = false;
     private SerializableDateTime $createdOn;
 
@@ -41,7 +42,7 @@ final class ActivityCollectionBuilder
             description: $this->description,
             type: $this->type,
             activityIds: $this->activityIds,
-            coverImagePath: $this->coverImagePath,
+            coverMediaItemId: $this->coverMediaItemId,
             useRouteMapAsCover: $this->useRouteMapAsCover,
             createdOn: $this->createdOn,
         );
@@ -82,9 +83,9 @@ final class ActivityCollectionBuilder
         return $this;
     }
 
-    public function withCoverImagePath(?string $coverImagePath): self
+    public function withCoverMediaItemId(?MediaItemId $coverMediaItemId): self
     {
-        $this->coverImagePath = $coverImagePath;
+        $this->coverMediaItemId = $coverMediaItemId;
 
         return $this;
     }

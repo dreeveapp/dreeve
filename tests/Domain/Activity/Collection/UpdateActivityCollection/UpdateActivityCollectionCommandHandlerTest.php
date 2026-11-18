@@ -61,7 +61,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             ->withDescription('Spring cycling week')
             ->withType(ActivityCollectionType::TRIP)
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1'), ActivityId::fromUnprefixed('2')]))
-            ->withCoverImagePath('/files/activity-collections/old.jpg')
+            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('old'))
             ->build());
 
         $this->getContainer()->get(CommandBus::class)->dispatch(UpdateActivityCollection::fromPayload([
@@ -74,7 +74,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'addActivitiesBy' => 'activity',
             'useRouteMapAsCover' => 'true',
             'coverImagePath' => json_encode([
-                ['status' => 'removed', 'id' => '/files/activity-collections/old.jpg'],
+                ['status' => 'removed', 'id' => 'mediaItem-old'],
             ]),
         ]));
 
@@ -86,7 +86,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             ActivityIds::fromArray([ActivityId::fromUnprefixed('3'), ActivityId::fromUnprefixed('2')]),
             $activityCollection->getActivityIds(),
         );
-        $this->assertNull($activityCollection->getCoverImagePath());
+        $this->assertNull($activityCollection->getCoverMediaItemId());
         $this->assertTrue($activityCollection->useRouteMapAsCover());
         $this->assertFalse($fileStorage->fileExists('activity-collections/old.jpg'));
         $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('old')]))->isEmpty());
@@ -126,7 +126,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
         $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
-            ->withCoverImagePath('/files/activity-collections/old.jpg')
+            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('old'))
             ->build());
 
         $this->getContainer()->get(CommandBus::class)->dispatch(UpdateActivityCollection::fromPayload([
@@ -134,14 +134,14 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
             'name' => 'Mallorca',
             'type' => 'trip',
             'coverImagePath' => json_encode([
-                ['status' => 'removed', 'id' => '/files/activity-collections/old.jpg'],
+                ['status' => 'removed', 'id' => 'mediaItem-old'],
                 ['status' => 'new', 'filename' => 'new.jpg', 'content' => base64_encode('new-content')],
             ]),
         ]));
 
-        $this->assertSame(
-            '/files/activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg',
-            $activityCollectionRepository->find(ActivityCollectionId::fromUnprefixed('1'))->getCoverImagePath(),
+        $this->assertEquals(
+            MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'),
+            $activityCollectionRepository->find(ActivityCollectionId::fromUnprefixed('1'))->getCoverMediaItemId(),
         );
         $this->assertFalse($fileStorage->fileExists('activity-collections/old.jpg'));
         $this->assertSame('new-content', $fileStorage->read('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'));

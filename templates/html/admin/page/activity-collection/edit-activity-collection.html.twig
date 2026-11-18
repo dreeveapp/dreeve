@@ -30,9 +30,9 @@
                 <div>
                     <label>{{ "Cover image"|trans({}, 'admin') }}</label>
                     {% set existingImages = [] %}
-                    {% if activityCollection and activityCollection.getCoverImagePath() %}
-                        {% set path = activityCollection.getCoverImagePath() %}
-                        {% set existingImages = [{ url: path, name: path|split('/')|last, id: path }] %}
+                    {% if activityCollection and activityCollection.getCoverMediaItem() %}
+                        {% set coverMediaItem = activityCollection.getCoverMediaItem() %}
+                        {% set existingImages = [{ url: relativeUrl(coverMediaItem.getPath().toUrlPath()), name: coverMediaItem.getPath().getFilename(), id: coverMediaItem.getId() }] %}
                     {% endif %}
                     {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'coverImagePath', maxImages: 1, existingImages: existingImages } %}
                     <p class="description">{{ "Without a cover image, the first photo of the collection's activities is used."|trans({}, 'admin') }}</p>
