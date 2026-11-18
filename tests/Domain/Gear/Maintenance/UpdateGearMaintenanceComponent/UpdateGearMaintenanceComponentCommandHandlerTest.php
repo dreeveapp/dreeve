@@ -6,10 +6,16 @@ namespace App\Tests\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent\UpdateGearMaintenanceComponent;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItems;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
 use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -155,6 +161,11 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     {
         $this->seedComponentWithImage('files/gear-maintenance/old.png');
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/old.png'))
+            ->build());
 
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
@@ -175,12 +186,29 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
         $this->assertTrue($this->fileStorage->fileExists('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
         $this->assertSame('new-content', $this->fileStorage->read('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
+        $this->assertEquals(
+            MediaItems::fromArray([
+                MediaItemBuilder::fromDefaults()
+                    ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
+                    ->withPath(MediaItemPath::fromString('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'))
+                    ->build(),
+            ]),
+            $mediaItemRepository->findByIds(MediaItemIds::fromArray([
+                MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'),
+                MediaItemId::fromUnprefixed('old'),
+            ])),
+        );
     }
 
     public function testItRemovesImageAndDeletesFile(): void
     {
         $this->seedComponentWithImage('files/gear-maintenance/old.png');
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/old.png'))
+            ->build());
 
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
@@ -198,6 +226,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
         $this->assertNull($components[0]['localImagePath']);
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
+        $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('old')]))->isEmpty());
     }
 
     private function seedComponentWithImage(string $localImagePath): void

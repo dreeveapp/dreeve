@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\GearComponentRepository;
-use App\Domain\Image\ImagePath;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Exception\EntityNotFound;
-use League\Flysystem\FilesystemOperator;
-use Symfony\Component\DependencyInjection\Attribute\Target;
+use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class DeleteGearMaintenanceComponentCommandHandler implements CommandHandler
 {
     public function __construct(
         private GearComponentRepository $gearComponentRepository,
-        #[Target('file.storage')]
-        private FilesystemOperator $fileStorage,
+        private MediaItemStorage $mediaItemStorage,
     ) {
     }
 
@@ -40,10 +39,7 @@ final readonly class DeleteGearMaintenanceComponentCommandHandler implements Com
         $this->gearComponentRepository->delete($gearComponent);
 
         if (null !== $localImagePath = $gearComponent->getLocalImagePath()) {
-            $fileSystemPath = ImagePath::fromLocalImagePath($localImagePath)->toFileSystemPath();
-            if ($this->fileStorage->fileExists($fileSystemPath)) {
-                $this->fileStorage->delete($fileSystemPath);
-            }
+            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()));
         }
     }
 }
