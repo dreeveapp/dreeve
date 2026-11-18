@@ -24,7 +24,7 @@ final readonly class Json
     public static function decode(string $json, bool $assoc = true, int $depth = 512): mixed
     {
         try {
-            return json_decode($json ?: '', $assoc, max(1, $depth), JSON_THROW_ON_ERROR);
+            return json_decode($json ?: '', $assoc, max(1, $depth), JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
         } catch (\JsonException) {
             throw new CorruptedData('Invalid JSON detected. This is usually caused by corrupted activity data.
 Please see the troubleshooting guide for steps to resolve the issue: https://docs.dreeve.app/troubleshooting/import-build-fails/ for more information.');
