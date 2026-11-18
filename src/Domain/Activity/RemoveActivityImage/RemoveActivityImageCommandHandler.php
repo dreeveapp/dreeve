@@ -6,7 +6,6 @@ namespace App\Domain\Activity\RemoveActivityImage;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -27,9 +26,9 @@ final readonly class RemoveActivityImageCommandHandler implements CommandHandler
         $activityWithRawData = $this->activityRepository->findWithRawData($command->getActivityId());
         $activity = $activityWithRawData->getActivity();
 
-        $mediaItemId = MediaItemId::fromUnprefixed($command->getActivityImageId()->toUnprefixedString());
+        $mediaItemId = $command->getMediaItemId();
         if (!$activity->getMediaItemIds()->has($mediaItemId)) {
-            throw new EntityNotFound(sprintf('Image "%s" not found', $command->getActivityImageId()));
+            throw new EntityNotFound(sprintf('Image "%s" not found', $mediaItemId));
         }
 
         $this->activityRepository->update(ActivityWithRawData::fromState(

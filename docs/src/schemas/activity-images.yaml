@@ -115,7 +115,7 @@ paths:
                   summary: No such image on this activity
                   value:
                     error: not_found
-                    message: 'Image "activityImage-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753" not found'
+                    message: 'Image "mediaItem-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753" not found'
         '409':
           description: >-
             This instance runs with `IMPORT_MODE=stravaApi`
@@ -135,7 +135,7 @@ schemas:
     properties:
       id:
         type: string
-        examples: ['activityImage-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753']
+        examples: ['mediaItem-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753']
       url:
         type: string
         format: uri

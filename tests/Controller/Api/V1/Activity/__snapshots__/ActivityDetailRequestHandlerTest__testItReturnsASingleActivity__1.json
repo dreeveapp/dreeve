@@ -37,19 +37,19 @@
     "hasGpx": false,
     "images": [
         {
-            "id": "activityImage-aea2d7b4-53a7-11ee-a5e1-9a34a3268d74",
+            "id": "mediaItem-aea2d7b4-53a7-11ee-a5e1-9a34a3268d74",
             "url": "http://localhost:8080/files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg"
         },
         {
-            "id": "activityImage-aea2d7b4-53a7-11ee-a5e1-9a34a3268d74",
+            "id": "mediaItem-aea2d7b4-53a7-11ee-a5e1-9a34a3268d74",
             "url": "http://localhost:8080/files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg"
         },
         {
-            "id": "activityImage-aea2d7b4-53a7-11ee-a5e1-9a34a3268d74",
+            "id": "mediaItem-aea2d7b4-53a7-11ee-a5e1-9a34a3268d74",
             "url": "http://localhost:8080/files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg"
         },
         {
-            "id": "activityImage-aea2d7b4-53a7-11ee-a5e1-9a34a3268d74",
+            "id": "mediaItem-aea2d7b4-53a7-11ee-a5e1-9a34a3268d74",
             "url": "http://localhost:8080/files/activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg"
         }
     ]
