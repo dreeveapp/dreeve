@@ -2,7 +2,7 @@
     <div class="relative w-48 h-full">
         <img class="absolute inset-0 lazy object-cover size-full rounded-t-lg md:rounded-none md:rounded-s-lg"
              src="{{ placeholderImage() }}"
-             data-src="{{ relativeUrl('/' ~ gearComponent.getLocalImagePath()) }}"
+             data-src="{{ gearComponent.getMediaItem() ? relativeUrl(gearComponent.getMediaItem().getPath().toUrlPath()) }}"
              alt="{{ gearComponent.getLabel() }}">
     </div>
     <div class="w-full flex flex-col justify-between p-4 leading-normal">

@@ -6,11 +6,15 @@ namespace App\Tests;
 
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValue;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\KeyValue\Value;
 use App\Infrastructure\Serialization\Json;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Yaml\Yaml;
 
@@ -42,13 +46,24 @@ trait ProvideGearMaintenanceConfig
 
     protected function importGearMaintenanceConfig(): void
     {
+        /** @var MediaItemRepository $mediaItemRepository */
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('chain'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/chain.png'))
+            ->build());
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('battery'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/battery.png'))
+            ->build());
+
         $this->importGearMaintenanceConfigFromArray(Yaml::parse(<<<YML
 enabled: true
 ignoreRetiredGear: true
 components:
   - id: gearComponent-chain
     label: Some cool chain
-    localImagePath: files/gear-maintenance/chain.png
+    mediaItemId: mediaItem-chain
     isRetired: false
     notes: null
     installations:
@@ -76,7 +91,7 @@ components:
           unit: km
   - id: gearComponent-di-2
     label: DI2 Battery
-    localImagePath: files/gear-maintenance/battery.png
+    mediaItemId: mediaItem-battery
     isRetired: false
     notes: null
     installations:

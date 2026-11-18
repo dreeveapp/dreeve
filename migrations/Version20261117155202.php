@@ -24,6 +24,7 @@ final class Version20261117155202 extends AbstractMigration
         $this->addSql('ALTER TABLE Activity RENAME COLUMN localImagePaths TO mediaItemIds');
         $this->addSql('ALTER TABLE ActivityCollection RENAME COLUMN coverImagePath TO coverMediaItemId');
         $this->addSql('ALTER TABLE Gear RENAME COLUMN localImagePath TO mediaItemId');
+        $this->addSql('ALTER TABLE GearComponent RENAME COLUMN localImagePath TO mediaItemId');
     }
 
     public function postUp(Schema $schema): void
@@ -81,6 +82,11 @@ final class Version20261117155202 extends AbstractMigration
         $this->migrateSingleMediaItemColumn(
             table: 'Gear',
             primaryKey: 'gearId',
+            column: 'mediaItemId',
+        );
+        $this->migrateSingleMediaItemColumn(
+            table: 'GearComponent',
+            primaryKey: 'gearComponentId',
             column: 'mediaItemId',
         );
     }

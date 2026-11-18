@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Gear\Maintenance;
 
+use App\Domain\Media\MediaItem;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
@@ -15,19 +19,20 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
     public function __construct(
         Connection $connection,
         private EventBus $eventBus,
+        private MediaItemRepository $mediaItemRepository,
     ) {
         parent::__construct($connection);
     }
 
     public function add(GearComponent $gearComponent): void
     {
-        $sql = 'INSERT INTO GearComponent (gearComponentId, label, localImagePath, purchasePriceAmount, purchasePriceCurrency, isRetired, notes, installations, maintenanceTasks)
-                VALUES (:gearComponentId, :label, :localImagePath, :purchasePriceAmount, :purchasePriceCurrency, :isRetired, :notes, :installations, :maintenanceTasks)';
+        $sql = 'INSERT INTO GearComponent (gearComponentId, label, mediaItemId, purchasePriceAmount, purchasePriceCurrency, isRetired, notes, installations, maintenanceTasks)
+                VALUES (:gearComponentId, :label, :mediaItemId, :purchasePriceAmount, :purchasePriceCurrency, :isRetired, :notes, :installations, :maintenanceTasks)';
 
         $this->connection->executeStatement($sql, [
             'gearComponentId' => (string) $gearComponent->getId(),
             'label' => (string) $gearComponent->getLabel(),
-            'localImagePath' => $gearComponent->getLocalImagePath(),
+            'mediaItemId' => $gearComponent->getMediaItemId(),
             'purchasePriceAmount' => $gearComponent->getPurchasePrice()?->getAmount(),
             'purchasePriceCurrency' => $gearComponent->getPurchasePrice()?->getCurrency()->getCode(),
             'isRetired' => (int) $gearComponent->isRetired(),
@@ -42,7 +47,7 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
     {
         $sql = 'UPDATE GearComponent SET
                     label = :label,
-                    localImagePath = :localImagePath,
+                    mediaItemId = :mediaItemId,
                     purchasePriceAmount = :purchasePriceAmount,
                     purchasePriceCurrency = :purchasePriceCurrency,
                     isRetired = :isRetired,
@@ -54,7 +59,7 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
         $this->connection->executeStatement($sql, [
             'gearComponentId' => (string) $gearComponent->getId(),
             'label' => (string) $gearComponent->getLabel(),
-            'localImagePath' => $gearComponent->getLocalImagePath(),
+            'mediaItemId' => $gearComponent->getMediaItemId(),
             'purchasePriceAmount' => $gearComponent->getPurchasePrice()?->getAmount(),
             'purchasePriceCurrency' => $gearComponent->getPurchasePrice()?->getCurrency()->getCode(),
             'isRetired' => (int) $gearComponent->isRetired(),
@@ -85,26 +90,46 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
             throw new EntityNotFound(sprintf('GearComponent "%s" not found', $gearComponentId));
         }
 
-        return $this->hydrate($result);
+        $mediaItemId = MediaItemId::fromOptionalString($result['mediaItemId']);
+
+        return $this->hydrate(
+            result: $result,
+            mediaItem: $mediaItemId ? $this->mediaItemRepository->findByIds(MediaItemIds::fromArray([$mediaItemId]))->getFirst() : null,
+        );
     }
 
     public function findAll(): GearComponents
     {
+        $results = $this->connection->executeQuery('SELECT * FROM GearComponent ORDER BY label ASC')->fetchAllAssociative();
+
+        $mediaItemIds = MediaItemIds::fromArray(array_map(
+            MediaItemId::fromString(...),
+            array_values(array_filter(array_column($results, 'mediaItemId'))),
+        ));
+        $mediaItems = $this->mediaItemRepository->findByIds($mediaItemIds);
+        $mediaItemsById = [];
+        foreach ($mediaItems as $mediaItem) {
+            $mediaItemsById[(string) $mediaItem->getId()] = $mediaItem;
+        }
+
         return GearComponents::fromArray(array_map(
-            $this->hydrate(...),
-            $this->connection->executeQuery('SELECT * FROM GearComponent ORDER BY label ASC')->fetchAllAssociative(),
+            fn (array $result): GearComponent => $this->hydrate(
+                result: $result,
+                mediaItem: $mediaItemsById[$result['mediaItemId'] ?? ''] ?? null,
+            ),
+            $results,
         ));
     }
 
     /**
      * @param array<string, mixed> $result
      */
-    private function hydrate(array $result): GearComponent
+    private function hydrate(array $result, ?MediaItem $mediaItem): GearComponent
     {
         return GearComponent::fromArray([
             'id' => $result['gearComponentId'],
             'label' => $result['label'],
-            'localImagePath' => $result['localImagePath'],
+            'mediaItemId' => $result['mediaItemId'],
             'purchasePrice' => null === $result['purchasePriceAmount'] ? null : [
                 'amountInCents' => (int) $result['purchasePriceAmount'],
                 'currency' => $result['purchasePriceCurrency'],
@@ -113,6 +138,6 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
             'notes' => $result['notes'],
             'installations' => Json::decode($result['installations']),
             'maintenance' => Json::decode($result['maintenanceTasks']),
-        ]);
+        ])->withMediaItem($mediaItem);
     }
 }

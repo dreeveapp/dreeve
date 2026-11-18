@@ -45,6 +45,10 @@ class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
         $this->assertStringContainsString('Some cool chain', $tableText);
         $this->assertStringContainsString('DI2 Battery', $tableText);
         $this->assertStringNotContainsString('No components yet.', $tableText);
+        $this->assertSame(
+            ['/files/gear-maintenance/battery.png', '/files/gear-maintenance/chain.png'],
+            $crawler->filter('table.data-table tbody img')->each(static fn (Crawler $image): ?string => $image->attr('src')),
+        );
 
         $this->assertCount(1, $crawler->filter('.alert.alert--warning'));
         $warningText = $crawler->filter('.alert.alert--warning')->text();

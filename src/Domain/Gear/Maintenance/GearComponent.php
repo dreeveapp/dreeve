@@ -12,6 +12,8 @@ use App\Domain\Gear\Maintenance\Task\IntervalUnit;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
+use App\Domain\Media\MediaItem;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -28,6 +30,8 @@ final class GearComponent implements \JsonSerializable
     #[ORM\Column(type: 'json')]
     private readonly MaintenanceTasks $maintenanceTasks;
 
+    private ?MediaItem $mediaItem = null;
+
     private function __construct(
         #[ORM\Id, ORM\Column(name: 'gearComponentId', type: 'string', unique: true)]
         private readonly GearComponentId $id,
@@ -36,7 +40,7 @@ final class GearComponent implements \JsonSerializable
         #[ORM\Column(type: 'json')]
         private readonly GearComponentInstallations $installations,
         #[ORM\Column(type: 'string', nullable: true)]
-        private readonly ?string $localImagePath,
+        private readonly ?MediaItemId $mediaItemId,
         #[ORM\Embedded(class: Money::class)]
         private readonly ?Money $purchasePrice,
         #[ORM\Column(type: 'boolean')]
@@ -51,7 +55,7 @@ final class GearComponent implements \JsonSerializable
         GearComponentId $id,
         Name $label,
         GearComponentInstallations $installations,
-        ?string $localImagePath,
+        ?MediaItemId $mediaItemId,
         ?Money $purchasePrice,
         bool $isRetired,
         ?string $notes,
@@ -60,7 +64,7 @@ final class GearComponent implements \JsonSerializable
             id: $id,
             label: $label,
             installations: $installations,
-            localImagePath: $localImagePath,
+            mediaItemId: $mediaItemId,
             purchasePrice: $purchasePrice,
             isRetired: $isRetired,
             notes: $notes,
@@ -95,7 +99,7 @@ final class GearComponent implements \JsonSerializable
                 ),
                 $component['installations']
             )),
-            localImagePath: $component['localImagePath'] ?? null,
+            mediaItemId: MediaItemId::fromOptionalString($component['mediaItemId'] ?? null),
             purchasePrice: $purchasePrice,
             isRetired: (bool) $component['isRetired'],
             notes: $component['notes'],
@@ -162,21 +166,33 @@ final class GearComponent implements \JsonSerializable
         return $clone;
     }
 
-    public function getLocalImagePath(): ?string
+    public function getMediaItemId(): ?MediaItemId
     {
-        return $this->localImagePath;
+        return $this->mediaItemId;
     }
 
-    public function withLocalImagePath(?string $localImagePath): self
+    public function withMediaItemId(?MediaItemId $mediaItemId): self
     {
         $clone = clone ($this, [
-            'localImagePath' => $localImagePath,
+            'mediaItemId' => $mediaItemId,
         ]);
-        if ($this->localImagePath !== $localImagePath) {
+        if ((string) $this->mediaItemId !== (string) $mediaItemId) {
             $clone->recordThat(new GearComponentWasUpdated());
         }
 
         return $clone;
+    }
+
+    public function getMediaItem(): ?MediaItem
+    {
+        return $this->mediaItem;
+    }
+
+    public function withMediaItem(?MediaItem $mediaItem): self
+    {
+        return clone ($this, [
+            'mediaItem' => $mediaItem,
+        ]);
     }
 
     public function getPurchasePrice(): ?Money
@@ -258,7 +274,7 @@ final class GearComponent implements \JsonSerializable
         $component = [
             'id' => (string) $this->id,
             'label' => (string) $this->label,
-            'localImagePath' => $this->localImagePath,
+            'mediaItemId' => $this->mediaItemId,
             'isRetired' => $this->isRetired,
             'notes' => $this->notes,
             'installations' => $this->installations,

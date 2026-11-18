@@ -25,20 +25,17 @@ final readonly class CreateGearMaintenanceComponentCommandHandler implements Com
     {
         assert($command instanceof CreateGearMaintenanceComponent);
 
-        $localImagePath = null;
         $newImage = $command->getNewImage();
-        if ($newImage instanceof NewMediaItem) {
-            $localImagePath = ltrim($this->mediaItemStorage->store(
-                newMediaItem: $newImage,
-                directory: MediaItemDirectory::GEAR_MAINTENANCE,
-            )->getPath()->toUrlPath(), '/');
-        }
-
         $gearComponent = GearComponent::create(
             id: GearComponentId::random(),
             label: $command->getLabel(),
             installations: $command->getInstallations(),
-            localImagePath: $localImagePath,
+            mediaItemId: $newImage instanceof NewMediaItem
+                ? $this->mediaItemStorage->store(
+                    newMediaItem: $newImage,
+                    directory: MediaItemDirectory::GEAR_MAINTENANCE,
+                )->getId()
+                : null,
             purchasePrice: $command->getPurchasePrice(),
             isRetired: $command->isRetired(),
             notes: $command->getNotes(),

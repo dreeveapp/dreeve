@@ -89,9 +89,9 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
         $this->assertStringContainsString('Lube', $initialTasks);
         $this->assertStringContainsString('chain-lubed', $initialTasks);
 
-        $this->assertStringContainsString(
-            'chain.png',
-            (string) $form->filter('[data-image-dropzone]')->attr('data-existing-images')
+        $this->assertSame(
+            [['url' => '/files/gear-maintenance/chain.png', 'name' => 'chain.png', 'id' => 'mediaItem-chain']],
+            json_decode((string) $form->filter('[data-image-dropzone]')->attr('data-existing-images'), true),
         );
     }
 

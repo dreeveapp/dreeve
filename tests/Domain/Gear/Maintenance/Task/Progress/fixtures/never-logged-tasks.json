@@ -5,7 +5,7 @@
     {
       "id": "gearComponent-new-chain",
       "label": "New chain",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -38,7 +38,7 @@
     {
       "id": "gearComponent-old-cassette",
       "label": "Old cassette",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [

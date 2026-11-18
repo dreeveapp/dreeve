@@ -5,7 +5,7 @@
     {
       "id": "gearComponent-winter-wheelset",
       "label": "Winter wheelset",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": "Serial WH-123\nTubeless ready",
       "installations": [
@@ -51,7 +51,7 @@
     {
       "id": "gearComponent-winter-tyres",
       "label": "Winter tyres",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": true,
       "notes": null,
       "installations": [

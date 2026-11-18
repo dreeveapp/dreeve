@@ -11,6 +11,7 @@ use App\Domain\Gear\Maintenance\GearComponentWasUpdated;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Installation\InstallationParent;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Money\Money;
@@ -87,7 +88,7 @@ class GearComponentTest extends TestCase
         $this->assertSame([], $gearComponent
             ->withLabel($unchanged->getLabel())
             ->withInstallations($unchanged->getInstallations())
-            ->withLocalImagePath($unchanged->getLocalImagePath())
+            ->withMediaItemId($unchanged->getMediaItemId())
             ->withPurchasePrice($unchanged->getPurchasePrice())
             ->withIsRetired($unchanged->isRetired())
             ->withNotes($unchanged->getNotes())
@@ -103,7 +104,7 @@ class GearComponentTest extends TestCase
         $updated = $gearComponent
             ->withLabel($other->getLabel())
             ->withInstallations($other->getInstallations())
-            ->withLocalImagePath('files/gear-maintenance/other.png')
+            ->withMediaItemId(MediaItemId::fromUnprefixed('other'))
             ->withPurchasePrice(Money::EUR(12345))
             ->withIsRetired($other->isRetired())
             ->withNotes('Other notes')
@@ -111,7 +112,7 @@ class GearComponentTest extends TestCase
 
         $this->assertEquals($other->getLabel(), $updated->getLabel());
         $this->assertEquals($other->getInstallations(), $updated->getInstallations());
-        $this->assertSame('files/gear-maintenance/other.png', $updated->getLocalImagePath());
+        $this->assertEquals(MediaItemId::fromUnprefixed('other'), $updated->getMediaItemId());
         $this->assertEquals(Money::EUR(12345), $updated->getPurchasePrice());
         $this->assertTrue($updated->isRetired());
         $this->assertSame('Other notes', $updated->getNotes());
