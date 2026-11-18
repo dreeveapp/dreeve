@@ -16,3 +16,20 @@ updates:
       - dependency-name: '*'
         update-types:
           ['version-update:semver-patch', 'version-update:semver-minor']
+  - package-ecosystem: 'composer'
+    directory: '/'
+    open-pull-requests-limit: 10
+    schedule:
+      interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: 'Europe/Brussels'
+    assignees:
+      - "robiningelbrecht"
+    labels:
+      - "tech debt"
+    ignore:
+      - dependency-name: 'symfony/*'
+      - dependency-name: '*'
+        update-types:
+          ['version-update:semver-patch', 'version-update:semver-minor']
