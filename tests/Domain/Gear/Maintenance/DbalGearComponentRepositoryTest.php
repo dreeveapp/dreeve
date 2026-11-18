@@ -6,6 +6,7 @@ use App\Domain\Gear\Maintenance\DbalGearComponentRepository;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Media\MediaItem;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
@@ -14,6 +15,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Media\MediaItemBuilder;
+use Override;
 
 class DbalGearComponentRepositoryTest extends ContainerTestCase
 {
@@ -43,7 +45,7 @@ class DbalGearComponentRepositoryTest extends ContainerTestCase
         );
         $this->assertEquals(
             [null, $mediaItem],
-            $this->gearComponentRepository->findAll()->map(static fn (GearComponent $gearComponent) => $gearComponent->getMediaItem()),
+            $this->gearComponentRepository->findAll()->map(static fn (GearComponent $gearComponent): ?MediaItem => $gearComponent->getMediaItem()),
         );
     }
 
@@ -113,7 +115,7 @@ class DbalGearComponentRepositoryTest extends ContainerTestCase
         return Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-installations.json'))['components'];
     }
 
-    #[\Override]
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

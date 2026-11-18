@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -36,7 +37,7 @@ final readonly class DeleteGearMaintenanceComponentCommandHandler implements Com
         $gearComponent->delete();
         $this->gearComponentRepository->delete($gearComponent);
 
-        if ($mediaItemId = $gearComponent->getMediaItemId()) {
+        if (($mediaItemId = $gearComponent->getMediaItemId()) instanceof MediaItemId) {
             $this->mediaItemStorage->remove($mediaItemId);
         }
     }

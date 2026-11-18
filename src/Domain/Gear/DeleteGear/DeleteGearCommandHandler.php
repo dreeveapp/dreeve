@@ -7,6 +7,7 @@ namespace App\Domain\Gear\DeleteGear;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearUsage;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -38,7 +39,7 @@ final readonly class DeleteGearCommandHandler implements CommandHandler
         $gear->delete();
         $this->gearRepository->delete($gear);
 
-        if ($mediaItemId = $gear->getMediaItemId()) {
+        if (($mediaItemId = $gear->getMediaItemId()) instanceof MediaItemId) {
             $this->mediaItemStorage->remove($mediaItemId);
         }
     }
