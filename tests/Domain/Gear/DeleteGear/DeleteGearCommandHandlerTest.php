@@ -12,14 +12,19 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\GearType;
 use App\Domain\Gear\GearUsage;
-use App\Domain\Image\ImageStorage;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use League\Flysystem\FilesystemOperator;
 
 class DeleteGearCommandHandlerTest extends ContainerTestCase
@@ -31,6 +36,11 @@ class DeleteGearCommandHandlerTest extends ContainerTestCase
     public function testItDeletesUnusedCustomGearAndItsImage(): void
     {
         $this->fileStorage->write('gear/bike.jpg', 'content');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
+            ->withPath(MediaItemPath::fromString('gear/bike.jpg'))
+            ->build());
         $this->gearRepository->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('1'))
@@ -42,6 +52,7 @@ class DeleteGearCommandHandlerTest extends ContainerTestCase
         $this->commandBus->dispatch(DeleteGear::fromPayload(['gearId' => 'gear-1']));
 
         $this->assertFalse($this->fileStorage->fileExists('gear/bike.jpg'));
+        $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('bike')]))->isEmpty());
         $this->expectExceptionObject(new EntityNotFound('Gear "gear-1" not found'));
         $this->gearRepository->find(GearId::fromUnprefixed('1'));
     }
@@ -92,7 +103,7 @@ class DeleteGearCommandHandlerTest extends ContainerTestCase
         new DeleteGearCommandHandler(
             gearRepository: $this->gearRepository,
             gearUsage: $this->getContainer()->get(GearUsage::class),
-            imageStorage: $this->getContainer()->get(ImageStorage::class),
+            mediaItemStorage: $this->getContainer()->get(MediaItemStorage::class),
             importMode: ImportMode::FILES,
         )->handle(DeleteGear::fromPayload(['gearId' => 'gear-1']));
 
