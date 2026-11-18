@@ -8,7 +8,6 @@ use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\Search\ActivitySearchResult;
 use App\Domain\Media\MediaItem;
-use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItems;
 use App\Infrastructure\Http\Api\ProvidePagination;
 use App\Infrastructure\Repository\Overview;
@@ -25,12 +24,14 @@ final class ActivityResponse extends JsonResponse
      */
     public static function list(Overview $overview, Pagination $pagination, MediaItems $mediaItems, AppUrl $appUrl): self
     {
+        $mediaItemsById = $mediaItems->keyById();
+
         return new self([
             'activities' => array_map(
                 static fn (ActivitySearchResult $result): array => self::activity(
                     activity: $result->getActivity(),
                     hasGpx: $result->hasGpx(),
-                    mediaItems: $mediaItems,
+                    mediaItemsById: $mediaItemsById,
                     appUrl: $appUrl,
                 ),
                 $overview->getItems()
@@ -44,19 +45,29 @@ final class ActivityResponse extends JsonResponse
         return new self(self::activity(
             activity: $activity,
             hasGpx: $hasGpx,
-            mediaItems: $mediaItems,
+            mediaItemsById: $mediaItems->keyById(),
             appUrl: $appUrl,
         ));
     }
 
     /**
+     * @param array<string, MediaItem> $mediaItemsById
+     *
      * @return array<string, mixed>
      */
-    private static function activity(Activity $activity, bool $hasGpx, MediaItems $mediaItems, AppUrl $appUrl): array
+    private static function activity(Activity $activity, bool $hasGpx, array $mediaItemsById, AppUrl $appUrl): array
     {
-        $mediaItemIds = $activity->getMediaItemIds()->map(
-            static fn (MediaItemId $mediaItemId): string => (string) $mediaItemId,
-        );
+        $images = [];
+        foreach ($activity->getMediaItemIds() as $mediaItemId) {
+            $mediaItem = $mediaItemsById[(string) $mediaItemId] ?? null;
+            if (null === $mediaItem) {
+                continue;
+            }
+            $images[] = [
+                'id' => (string) $mediaItem->getId(),
+                'url' => rtrim((string) $appUrl, '/').$mediaItem->getPath()->toUrlPath(),
+            ];
+        }
         $startingCoordinate = $activity->getStartingCoordinate();
         $routeGeography = $activity->getRouteGeography();
 
@@ -97,13 +108,7 @@ final class ActivityResponse extends JsonResponse
             ] : null,
             'encodedPolyline' => (string) $activity->getEncodedPolyline() ?: null,
             'hasGpx' => $hasGpx,
-            'images' => array_values(array_map(
-                static fn (MediaItem $mediaItem): array => [
-                    'id' => (string) $mediaItem->getId(),
-                    'url' => rtrim((string) $appUrl, '/').$mediaItem->getPath()->toUrlPath(),
-                ],
-                $mediaItems->filter(static fn (MediaItem $mediaItem): bool => in_array((string) $mediaItem->getId(), $mediaItemIds, true))->toArray(),
-            )),
+            'images' => $images,
         ];
     }
 }

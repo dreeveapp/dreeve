@@ -154,11 +154,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             MediaItemId::fromString(...),
             array_values(array_filter(array_column($results, 'mediaItemId'))),
         ));
-        $mediaItems = $this->mediaItemRepository->findByIds($mediaItemIds);
-        $mediaItemsById = [];
-        foreach ($mediaItems as $mediaItem) {
-            $mediaItemsById[(string) $mediaItem->getId()] = $mediaItem;
-        }
+        $mediaItemsById = $this->mediaItemRepository->findByIds($mediaItemIds)->keyById();
 
         return Gears::fromArray(array_map(
             fn (array $result): Gear => $this->hydrate(
