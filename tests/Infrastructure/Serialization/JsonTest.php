@@ -19,6 +19,7 @@ class JsonTest extends TestCase
 
         $this->assertEquals($array, Json::decode($encoded));
         $this->assertEquals($array, Json::encodeAndDecode($array));
+        $this->assertSame(['id' => '18446744073709551615'], Json::decode('{"id":18446744073709551615}'));
     }
 
     public function testEncodePretty(): void
