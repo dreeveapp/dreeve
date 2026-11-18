@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Activity\Collection\DeleteActivityCollection;
 
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
+use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -25,7 +26,7 @@ final readonly class DeleteActivityCollectionCommandHandler implements CommandHa
         $activityCollection->delete();
         $this->activityCollectionRepository->delete($activityCollection);
 
-        if ($coverMediaItemId = $activityCollection->getCoverMediaItemId()) {
+        if (($coverMediaItemId = $activityCollection->getCoverMediaItemId()) instanceof MediaItemId) {
             $this->mediaItemStorage->remove($coverMediaItemId);
         }
     }

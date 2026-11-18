@@ -56,9 +56,15 @@ final readonly class MediaItemMetadataReader
             }
         }
 
+        $width = false !== $imageSize && $imageSize[0] > 0 ? $imageSize[0] : null;
+        $height = false !== $imageSize && $imageSize[1] > 0 ? $imageSize[1] : null;
+        if (in_array($exif['Orientation'] ?? null, [5, 6, 7, 8], true)) {
+            [$width, $height] = [$height, $width];
+        }
+
         return new MediaItemMetadata(
-            width: false !== $imageSize && $imageSize[0] > 0 ? $imageSize[0] : null,
-            height: false !== $imageSize && $imageSize[1] > 0 ? $imageSize[1] : null,
+            width: $width,
+            height: $height,
             coordinate: $coordinate,
             takenOn: $takenOn,
         );

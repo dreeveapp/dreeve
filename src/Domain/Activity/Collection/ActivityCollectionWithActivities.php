@@ -60,7 +60,7 @@ final class ActivityCollectionWithActivities
 
     public function getCoverMediaItemId(): ?MediaItemId
     {
-        if ($coverMediaItemId = $this->activityCollection->getCoverMediaItemId()) {
+        if (($coverMediaItemId = $this->activityCollection->getCoverMediaItemId()) instanceof MediaItemId) {
             return $coverMediaItemId;
         }
 

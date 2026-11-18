@@ -17,8 +17,8 @@ class MediaItemMetadataReaderTest extends TestCase
     {
         $metadata = new MediaItemMetadataReader()->read((string) file_get_contents(__DIR__.'/fixtures/image-with-exif.jpg'));
 
-        $this->assertSame(4, $metadata->getWidth());
-        $this->assertSame(3, $metadata->getHeight());
+        $this->assertSame(3, $metadata->getWidth());
+        $this->assertSame(4, $metadata->getHeight());
         $this->assertEquals(
             Coordinate::createFromLatAndLng(
                 latitude: Latitude::fromString('-22.9519'),
