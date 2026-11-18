@@ -10,6 +10,7 @@ use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 
@@ -27,9 +28,12 @@ final readonly class CreateGearMaintenanceComponentCommandHandler implements Com
 
         $localImagePath = null;
         $newImage = $command->getNewImage();
-        if ($newImage instanceof NewImage) {
+        if ($newImage instanceof NewMediaItem) {
             $localImagePath = $this->imageStorage->store(
-                newImage: $newImage,
+                newImage: new NewImage(
+                    filename: $newImage->getFilename(),
+                    content: $newImage->getContent(),
+                ),
                 directory: ImageDirectory::GEAR_MAINTENANCE
             )->toLocalImagePath();
         }

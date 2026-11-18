@@ -12,6 +12,7 @@ use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
@@ -46,10 +47,13 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
         $newImage = $command->getNewImage();
         $removedImage = $command->getRemovedImage();
 
-        if ($newImage instanceof NewImage) {
+        if ($newImage instanceof NewMediaItem) {
             $gearComponent = $gearComponent->withLocalImagePath(
                 $this->imageStorage->store(
-                    newImage: $newImage,
+                    newImage: new NewImage(
+                        filename: $newImage->getFilename(),
+                        content: $newImage->getContent(),
+                    ),
                     directory: ImageDirectory::GEAR_MAINTENANCE
                 )->toLocalImagePath()
             );

@@ -14,7 +14,6 @@ use App\Domain\Activity\Scan\ActivityScan;
 use App\Domain\Activity\Scan\ActivityScanRepository;
 use App\Domain\Activity\Scan\ActivityScanType;
 use App\Domain\Activity\WorldType;
-use App\Domain\Image\NewImage;
 use App\Domain\Import\ImportMode;
 use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemId;
@@ -97,11 +96,8 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
         $this->activityScanRepository->add(ActivityScan::create(activityId: $activityId, type: ActivityScanType::STREAMS));
 
         $mediaItemIds = MediaItemIds::fromArray(array_map(
-            fn (NewImage $newImage): MediaItemId => $this->mediaItemStorage->store(
-                newMediaItem: new NewMediaItem(
-                    filename: $newImage->getFilename(),
-                    content: $newImage->getContent(),
-                ),
+            fn (NewMediaItem $newMediaItem): MediaItemId => $this->mediaItemStorage->store(
+                newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::ACTIVITIES,
             )->getId(),
             $command->getNewImages()

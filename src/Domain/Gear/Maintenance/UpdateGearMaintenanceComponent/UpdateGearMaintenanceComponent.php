@@ -10,9 +10,9 @@ use App\Domain\Gear\Maintenance\ProvideGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -32,7 +32,7 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
         private GearComponentId $gearComponentId,
         private Name $label,
         private GearComponentInstallations $installations,
-        private ?NewImage $newImage,
+        private ?NewMediaItem $newImage,
         private ?RemovedImage $removedImage,
         private ?Money $purchasePrice,
         private MaintenanceTasks $maintenanceTasks,
@@ -77,7 +77,7 @@ final readonly class UpdateGearMaintenanceComponent extends DomainCommand implem
         return $this->installations;
     }
 
-    public function getNewImage(): ?NewImage
+    public function getNewImage(): ?NewMediaItem
     {
         return $this->newImage;
     }

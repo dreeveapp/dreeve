@@ -9,8 +9,8 @@ use App\Domain\Gear\Maintenance\ProvideGearMaintenanceComponentPayload;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTasks;
 use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
@@ -28,7 +28,7 @@ final readonly class CreateGearMaintenanceComponent extends DomainCommand implem
     private function __construct(
         private Name $label,
         private GearComponentInstallations $installations,
-        private ?NewImage $newImage,
+        private ?NewMediaItem $newImage,
         private ?Money $purchasePrice,
         private MaintenanceTasks $maintenanceTasks,
         private bool $isRetired,
@@ -61,7 +61,7 @@ final readonly class CreateGearMaintenanceComponent extends DomainCommand implem
         return $this->installations;
     }
 
-    public function getNewImage(): ?NewImage
+    public function getNewImage(): ?NewMediaItem
     {
         return $this->newImage;
     }

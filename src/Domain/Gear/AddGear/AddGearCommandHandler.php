@@ -11,6 +11,7 @@ use App\Domain\Gear\GearType;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Time\Clock\Clock;
@@ -43,10 +44,13 @@ final readonly class AddGearCommandHandler implements CommandHandler
         }
 
         $newImage = $command->getNewImage();
-        if ($newImage instanceof NewImage) {
+        if ($newImage instanceof NewMediaItem) {
             $gear = $gear->withLocalImagePath(
                 $this->imageStorage->store(
-                    newImage: $newImage,
+                    newImage: new NewImage(
+                        filename: $newImage->getFilename(),
+                        content: $newImage->getContent(),
+                    ),
                     directory: ImageDirectory::GEAR
                 )->toLocalImagePath()
             );

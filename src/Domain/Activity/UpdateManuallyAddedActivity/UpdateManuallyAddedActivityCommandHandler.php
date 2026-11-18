@@ -14,7 +14,6 @@ use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemStorage;
-use App\Domain\Media\NewMediaItem;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -94,10 +93,7 @@ final readonly class UpdateManuallyAddedActivityCommandHandler implements Comman
 
             foreach ($newImages as $newImage) {
                 $retainedMediaItemIds->add($this->mediaItemStorage->store(
-                    newMediaItem: new NewMediaItem(
-                        filename: $newImage->getFilename(),
-                        content: $newImage->getContent(),
-                    ),
+                    newMediaItem: $newImage,
                     directory: MediaItemDirectory::ACTIVITIES,
                 )->getId());
             }
