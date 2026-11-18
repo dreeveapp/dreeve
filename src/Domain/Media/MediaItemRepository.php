@@ -14,5 +14,7 @@ interface MediaItemRepository
 
     public function find(MediaItemId $mediaItemId): MediaItem;
 
+    public function findOptional(?MediaItemId $mediaItemId): ?MediaItem;
+
     public function findByIds(MediaItemIds $mediaItemIds): MediaItems;
 }

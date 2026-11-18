@@ -68,10 +68,14 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
             $this->mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('1')]))->toArray(),
         );
         $this->assertEquals($mediaItem, $this->mediaItemRepository->find(MediaItemId::fromUnprefixed('1')));
+        $this->assertEquals($mediaItem, $this->mediaItemRepository->findOptional(MediaItemId::fromUnprefixed('1')));
     }
 
-    public function testFindThrowsWhenNotFound(): void
+    public function testFindWhenNotFound(): void
     {
+        $this->assertNull($this->mediaItemRepository->findOptional(MediaItemId::fromUnprefixed('1')));
+        $this->assertNull($this->mediaItemRepository->findOptional(null));
+
         $this->expectExceptionObject(new EntityNotFound('MediaItem "mediaItem-1" not found'));
 
         $this->mediaItemRepository->find(MediaItemId::fromUnprefixed('1'));

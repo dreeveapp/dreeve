@@ -72,6 +72,22 @@ final readonly class DbalMediaItemRepository extends DbalRepository implements M
         return $this->hydrate($result);
     }
 
+    public function findOptional(?MediaItemId $mediaItemId): ?MediaItem
+    {
+        if (!$mediaItemId instanceof MediaItemId) {
+            return null;
+        }
+
+        if (!$result = $this->connection->executeQuery(
+            'SELECT * FROM MediaItem WHERE mediaItemId = :mediaItemId',
+            ['mediaItemId' => $mediaItemId],
+        )->fetchAssociative()) {
+            return null;
+        }
+
+        return $this->hydrate($result);
+    }
+
     public function findByIds(MediaItemIds $mediaItemIds): MediaItems
     {
         if ($mediaItemIds->isEmpty()) {

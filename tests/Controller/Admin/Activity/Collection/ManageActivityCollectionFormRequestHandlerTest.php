@@ -144,6 +144,14 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
             $crawler->filter('button[type="submit"].btn--secondary')->extract(['data-redirect']),
         );
 
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('missing-cover'))
+            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('missing'))
+            ->build());
+        $crawler = $this->client->request('GET', '/admin/collections/activityCollection-missing-cover/edit');
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('[]', $crawler->filter('[data-image-dropzone]')->attr('data-existing-images'));
+
         $this->client->request('GET', '/admin/collections/activityCollection-unknown/edit');
         $this->assertResponseStatusCodeSame(404);
     }
