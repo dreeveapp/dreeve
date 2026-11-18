@@ -41,21 +41,28 @@ final readonly class RenderCache
 
         $item = $this->cache->getItem($prefixedCacheKey);
         if ($item->isHit()) {
-            /** @var string|null $cached */
+            /** @var array{content: ?string, etag?: string|null}|string|null $cached */
             $cached = $item->get();
+            $content = is_array($cached) ? ($cached['content'] ?? null) : (is_string($cached) ? $cached : null);
+            $etag = is_array($cached) ? ($cached['etag'] ?? null) : null;
 
             return Render::servedFromCache(
-                content: $cached,
+                content: $content,
                 cacheKey: $prefixedCacheKey,
                 cacheTags: $this->storedCacheTags($item) ?? $cacheability->getCacheTags()->toTagStrings(),
                 ttlInSeconds: $this->remainingTtlInSeconds($item),
+                etag: $etag,
             );
         }
 
         $rendered = $callback();
         $ttlInSeconds = $cacheability->getTtlInSeconds();
+        $etag = !is_null($rendered) ? hash('sha256', $rendered) : null;
 
-        $item->set($rendered);
+        $item->set([
+            'content' => $rendered,
+            'etag' => $etag,
+        ]);
         if (!$cacheability->getCacheTags()->isEmpty()) {
             $item->tag($cacheability->getCacheTags()->toTagStrings());
         }

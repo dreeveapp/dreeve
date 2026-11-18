@@ -15,6 +15,7 @@ final readonly class Render
         private ?string $cacheKey,
         private array $cacheTags,
         private ?int $ttlInSeconds,
+        private ?string $etag = null,
     ) {
     }
 
@@ -25,34 +26,47 @@ final readonly class Render
         ?string $content,
         string $cacheKey,
         array $cacheTags = [],
-        ?int $ttlInSeconds = null): self
-    {
+        ?int $ttlInSeconds = null,
+        ?string $etag = null,
+    ): self {
         return new self(
             content: $content,
             cacheStatus: CacheStatus::HIT,
             cacheKey: $cacheKey,
             cacheTags: $cacheTags,
             ttlInSeconds: $ttlInSeconds,
+            etag: $etag ?? (!is_null($content) ? hash('sha256', $content) : null),
         );
     }
 
     /**
      * @param string[] $cacheTags
      */
-    public static function freshlyRendered(?string $content, string $cacheKey, array $cacheTags = [], ?int $ttlInSeconds = null): self
-    {
+    public static function freshlyRendered(
+        ?string $content,
+        string $cacheKey,
+        array $cacheTags = [],
+        ?int $ttlInSeconds = null,
+        ?string $etag = null,
+    ): self {
         return new self(
             content: $content,
             cacheStatus: CacheStatus::MISS,
             cacheKey: $cacheKey,
             cacheTags: $cacheTags,
             ttlInSeconds: $ttlInSeconds,
+            etag: $etag ?? (!is_null($content) ? hash('sha256', $content) : null),
         );
     }
 
     public function getContent(): ?string
     {
         return $this->content;
+    }
+
+    public function getEtag(): ?string
+    {
+        return $this->etag;
     }
 
     public function getCacheStatus(): CacheStatus

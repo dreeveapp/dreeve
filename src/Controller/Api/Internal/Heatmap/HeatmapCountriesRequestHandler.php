@@ -10,8 +10,9 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\Http\ConditionalJsonResponse;
 use App\Infrastructure\Serialization\Json;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -26,7 +27,7 @@ final readonly class HeatmapCountriesRequestHandler
     }
 
     #[Route(path: '/api/internal/heatmap/countries', name: 'heatmap_countries', methods: ['GET'])]
-    public function handle(): JsonResponse
+    public function handle(Request $request): ConditionalJsonResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
@@ -36,7 +37,7 @@ final readonly class HeatmapCountriesRequestHandler
             render: fn (): string => $this->renderFor(),
         );
 
-        return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
+        return new ConditionalJsonResponse($render, $request, '[]');
     }
 
     private function renderFor(): string

@@ -38,6 +38,8 @@ class HeatmapTilesRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $this->assertResponseHasHeader('ETag');
+        $this->assertResponseHeaderSame('Cache-Control', 'no-cache, private');
         $this->assertStringEndsWith(
             'heatmap.tiles',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
@@ -61,6 +63,18 @@ class HeatmapTilesRequestHandlerTest extends ControllerWebTestCase
             ],
             Json::decode((string) $this->client->getResponse()->getContent()),
         );
+
+        $etag = (string) $this->client->getResponse()->headers->get('ETag');
+        $this->assertNotEmpty($etag);
+
+        $this->client->request('GET', '/api/internal/heatmap/tiles', server: [
+            'HTTP_IF_NONE_MATCH' => $etag,
+        ]);
+
+        $this->assertResponseStatusCodeSame(304);
+        $this->assertSame('', (string) $this->client->getResponse()->getContent());
+        $this->assertResponseHeaderSame('ETag', $etag);
+        $this->assertResponseHeaderSame('Cache-Control', 'no-cache, private');
     }
 
     #[\Override]
