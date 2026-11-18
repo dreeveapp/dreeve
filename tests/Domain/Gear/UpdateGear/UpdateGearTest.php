@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Gear\UpdateGear;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\UpdateGear\UpdateGear;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use Money\Money;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -65,13 +66,13 @@ class UpdateGearTest extends TestCase
             'gearId' => 'gear-1',
             'name' => 'My custom gear',
             'mediaItem' => json_encode([
-                ['status' => 'removed', 'id' => '/files/gear/old.jpg'],
+                ['status' => 'removed', 'id' => 'mediaItem-old'],
             ]),
         ]);
 
         $this->assertNull($command->getNewMediaItem());
         $this->assertNotNull($command->getRemovedMediaItem());
-        $this->assertSame('/files/gear/old.jpg', $command->getRemovedMediaItem()->getId());
+        $this->assertEquals(MediaItemId::fromString('mediaItem-old'), $command->getRemovedMediaItem()->getId());
     }
 
     public function testFromPayloadTrimsName(): void

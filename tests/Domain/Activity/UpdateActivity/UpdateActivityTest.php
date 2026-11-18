@@ -12,6 +12,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\UpdateActivity\UpdateActivity;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -93,7 +94,7 @@ class UpdateActivityTest extends TestCase
 
         $removedMediaItems = $command->getRemovedMediaItems();
         $this->assertCount(1, $removedMediaItems);
-        $this->assertSame('mediaItem-gone', $removedMediaItems[0]->getId());
+        $this->assertEquals(MediaItemId::fromString('mediaItem-gone'), $removedMediaItems[0]->getId());
     }
 
     #[DataProvider('provideInvalidImagePayloads')]

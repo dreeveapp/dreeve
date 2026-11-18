@@ -10,6 +10,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\UpdateManuallyAddedActivity\UpdateManuallyAddedActivity;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -97,7 +98,7 @@ class UpdateManuallyAddedActivityTest extends TestCase
 
         $removedMediaItems = $command->getRemovedMediaItems();
         $this->assertCount(1, $removedMediaItems);
-        $this->assertSame('mediaItem-existing', $removedMediaItems[0]->getId());
+        $this->assertEquals(MediaItemId::fromString('mediaItem-existing'), $removedMediaItems[0]->getId());
     }
 
     /**

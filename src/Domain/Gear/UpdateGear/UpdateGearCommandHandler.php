@@ -7,7 +7,6 @@ namespace App\Domain\Gear\UpdateGear;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Image\RemovedImage;
 use App\Domain\Media\MediaItemDirectory;
-use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
@@ -50,7 +49,7 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
         $this->gearRepository->update($gear);
 
         if ($removedMediaItem instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromString($removedMediaItem->getId()));
+            $this->mediaItemStorage->remove($removedMediaItem->getId());
         }
     }
 }

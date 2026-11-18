@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Image;
 
+use App\Domain\Media\MediaItemId;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Serialization\Json;
@@ -62,7 +63,7 @@ trait ProvideLocalImageFromDropZonePayload
                 if (!isset($image['id']) || !is_string($image['id']) || '' === trim($image['id'])) {
                     throw CouldNotDeserializeCommand::invalidPayload('A removed image requires an "id".');
                 }
-                $removedImages[] = new RemovedImage(trim($image['id']));
+                $removedImages[] = new RemovedImage(MediaItemId::fromString(trim($image['id'])));
             }
         }
 
