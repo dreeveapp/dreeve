@@ -6,7 +6,6 @@ namespace App\Controller\Api\V1\Activity;
 
 use App\Application\AppUrl;
 use App\Domain\Activity\Activity;
-use App\Domain\Activity\Media\ActivityImageId;
 use App\Domain\Activity\Search\ActivitySearchResult;
 use App\Domain\Media\MediaItem;
 use App\Domain\Media\MediaItemId;
@@ -100,7 +99,7 @@ final class ActivityResponse extends JsonResponse
             'hasGpx' => $hasGpx,
             'images' => array_values(array_map(
                 static fn (MediaItem $mediaItem): array => [
-                    'id' => (string) ActivityImageId::fromUnprefixed($mediaItem->getId()->toUnprefixedString()),
+                    'id' => (string) $mediaItem->getId(),
                     'url' => rtrim((string) $appUrl, '/').$mediaItem->getPath()->toUrlPath(),
                 ],
                 $mediaItems->filter(static fn (MediaItem $mediaItem): bool => in_array((string) $mediaItem->getId(), $mediaItemIds, true))->toArray(),

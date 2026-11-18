@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ActivityImageRemoveRequestHandlerTest extends ControllerWebTestCase
 {
     private const string REMOVED_IMAGE = 'activities/0025176c-5652-11ee-923d-02424dd627d5.png';
-    private const string PATH = '/api/v1/activities/activity-1/images/activityImage-0025176c-5652-11ee-923d-02424dd627d5';
+    private const string PATH = '/api/v1/activities/activity-1/images/mediaItem-0025176c-5652-11ee-923d-02424dd627d5';
 
     private ApiToken $token;
     private ActivityRepository $activityRepository;
@@ -56,7 +56,7 @@ class ActivityImageRemoveRequestHandlerTest extends ControllerWebTestCase
      */
     public static function provideUnknownImages(): iterable
     {
-        yield 'unknown image' => ['activityImage-6f1c2a9e-0000-4000-8000-000000000000'];
+        yield 'unknown image' => ['mediaItem-6f1c2a9e-0000-4000-8000-000000000000'];
         yield 'malformed image id' => ['0025176c-5652-11ee-923d-02424dd627d5'];
     }
 
@@ -71,7 +71,7 @@ class ActivityImageRemoveRequestHandlerTest extends ControllerWebTestCase
 
         $this->client->request(
             'DELETE',
-            '/api/v1/activities/activity-2/images/activityImage-0025176c-5652-11ee-923d-02424dd627d5',
+            '/api/v1/activities/activity-2/images/mediaItem-0025176c-5652-11ee-923d-02424dd627d5',
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token],
         );
 
@@ -84,7 +84,7 @@ class ActivityImageRemoveRequestHandlerTest extends ControllerWebTestCase
     {
         $this->client->request(
             'DELETE',
-            '/api/v1/activities/'.$activityId.'/images/activityImage-0025176c-5652-11ee-923d-02424dd627d5',
+            '/api/v1/activities/'.$activityId.'/images/mediaItem-0025176c-5652-11ee-923d-02424dd627d5',
             server: ['HTTP_AUTHORIZATION' => 'Bearer '.$this->token],
         );
 

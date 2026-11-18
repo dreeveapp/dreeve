@@ -49,10 +49,10 @@ parameters:
     name: imageId
     in: path
     required: true
-    description: The prefixed image identifier, `activityImage-` included, as listed in the activity's `images`.
+    description: The prefixed image identifier, `mediaItem-` included, as listed in the activity's `images`.
     schema:
       type: string
-      examples: ['activityImage-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753']
+      examples: ['mediaItem-0a8cdfbb-63b4-4f0f-a09d-faedd5a00753']
   FileImportId:
     name: fileImportId
     in: path

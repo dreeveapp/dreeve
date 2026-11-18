@@ -44,7 +44,7 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertSame(
             [
-                'id' => 'activityImage-0025176c-5652-11ee-923d-02424dd627d5',
+                'id' => 'mediaItem-0025176c-5652-11ee-923d-02424dd627d5',
                 'url' => 'http://localhost:8080/files/activities/0025176c-5652-11ee-923d-02424dd627d5.'.$expectedExtension,
             ],
             Json::decode((string) $this->client->getResponse()->getContent()),
@@ -83,8 +83,8 @@ class ActivityImageAddRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertSame(
             [
-                'activityImage-9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11',
-                'activityImage-0025176c-5652-11ee-923d-02424dd627d5',
+                'mediaItem-9b1d1f3e-3c7a-4a52-8f6e-2f0b8c6d4a11',
+                'mediaItem-0025176c-5652-11ee-923d-02424dd627d5',
             ],
             array_column(Json::decode((string) $this->client->getResponse()->getContent())['images'], 'id'),
         );

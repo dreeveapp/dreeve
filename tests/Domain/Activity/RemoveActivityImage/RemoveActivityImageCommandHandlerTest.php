@@ -7,7 +7,6 @@ namespace App\Tests\Domain\Activity\RemoveActivityImage;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
-use App\Domain\Activity\Media\ActivityImageId;
 use App\Domain\Activity\RemoveActivityImage\RemoveActivityImage;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
@@ -51,7 +50,7 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(new RemoveActivityImage(
             activityId: ActivityId::fromUnprefixed('1'),
-            activityImageId: ActivityImageId::fromUnprefixed('drop'),
+            mediaItemId: MediaItemId::fromUnprefixed('drop'),
         ));
 
         $activity = $this->activityRepository->find(ActivityId::fromUnprefixed('1'));
@@ -76,12 +75,12 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
             rawData: [],
         ));
 
-        $this->expectExceptionObject(new EntityNotFound('Image "activityImage-someone-else" not found'));
+        $this->expectExceptionObject(new EntityNotFound('Image "mediaItem-someone-else" not found'));
 
         try {
             $this->commandBus->dispatch(new RemoveActivityImage(
                 activityId: ActivityId::fromUnprefixed('1'),
-                activityImageId: ActivityImageId::fromUnprefixed('someone-else'),
+                mediaItemId: MediaItemId::fromUnprefixed('someone-else'),
             ));
         } finally {
             $this->assertEquals(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('keep')]), $this->activityRepository->find(ActivityId::fromUnprefixed('1'))->getMediaItemIds());
@@ -95,7 +94,7 @@ class RemoveActivityImageCommandHandlerTest extends ContainerTestCase
 
         $this->commandBus->dispatch(new RemoveActivityImage(
             activityId: ActivityId::fromUnprefixed('999'),
-            activityImageId: ActivityImageId::fromUnprefixed('drop'),
+            mediaItemId: MediaItemId::fromUnprefixed('drop'),
         ));
     }
 

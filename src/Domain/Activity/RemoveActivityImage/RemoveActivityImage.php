@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Domain\Activity\RemoveActivityImage;
 
 use App\Domain\Activity\ActivityId;
-use App\Domain\Activity\Media\ActivityImageId;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\CQRS\Command\DomainCommand;
 
 final readonly class RemoveActivityImage extends DomainCommand
 {
     public function __construct(
         private ActivityId $activityId,
-        private ActivityImageId $activityImageId,
+        private MediaItemId $mediaItemId,
     ) {
     }
 
@@ -21,8 +21,8 @@ final readonly class RemoveActivityImage extends DomainCommand
         return $this->activityId;
     }
 
-    public function getActivityImageId(): ActivityImageId
+    public function getMediaItemId(): MediaItemId
     {
-        return $this->activityImageId;
+        return $this->mediaItemId;
     }
 }
