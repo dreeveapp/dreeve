@@ -22,6 +22,8 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\Domain\Strava\SpyStrava;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use League\Flysystem\FilesystemOperator;
 
 class DownloadActivityImagesTest extends ContainerTestCase
@@ -151,6 +153,44 @@ class DownloadActivityImagesTest extends ContainerTestCase
             $context,
             $this->downloadActivityImages->process($context)
         );
+    }
+
+    public function testProcessRemovesStoredMediaItemsWhenTheDownloadFailsPartWay(): void
+    {
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429(1000);
+
+        $mediaItemRepository = $this->createMock(MediaItemRepository::class);
+        $mediaItemRepository
+            ->expects($this->once())
+            ->method('update')
+            ->willThrowException(new RequestException('The error', new Request('GET', 'uri')));
+
+        $downloadActivityImages = new DownloadActivityImages(
+            strava: $this->strava,
+            mediaItemStorage: $this->getContainer()->get(MediaItemStorage::class),
+            mediaItemRepository: $mediaItemRepository,
+            settingsRepository: $this->settingsRepository,
+        );
+
+        $context = ActivityImportContext::create(
+            activityId: ActivityId::fromUnprefixed('1'),
+            rawStravaData: ['total_photo_count' => 2],
+            isNewActivity: false,
+        )
+            ->withActivity(
+                ActivityBuilder::fromDefaults()
+                    ->withMediaItemIds(MediaItemId::fromUnprefixed('one'))
+                    ->build()
+            );
+
+        $this->assertEquals(
+            $context,
+            $downloadActivityImages->process($context)
+        );
+        $this->assertFalse($this->fileStorage->fileExists('activities/0025176c-5652-11ee-923d-02424dd627d5.png'));
+        $this->assertTrue($this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([
+            MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'),
+        ]))->isEmpty());
     }
 
     #[\Override]
