@@ -8,9 +8,9 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearStatus;
 use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -29,7 +29,7 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
         private string $name,
         private bool $isRetired,
         private ?Money $purchasePrice,
-        private ?NewImage $newImage,
+        private ?NewMediaItem $newImage,
         private ?RemovedImage $removedImage,
         private ?string $notes,
     ) {
@@ -86,7 +86,7 @@ final readonly class UpdateGear extends DomainCommand implements DeserializableC
         return $this->purchasePrice;
     }
 
-    public function getNewImage(): ?NewImage
+    public function getNewImage(): ?NewMediaItem
     {
         return $this->newImage;
     }

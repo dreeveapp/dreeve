@@ -10,6 +10,7 @@ use App\Domain\Image\ImagePath;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use Money\Money;
@@ -38,10 +39,13 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
         $newImage = $command->getNewImage();
         $removedImage = $command->getRemovedImage();
 
-        if ($newImage instanceof NewImage) {
+        if ($newImage instanceof NewMediaItem) {
             $gear = $gear->withLocalImagePath(
                 $this->imageStorage->store(
-                    newImage: $newImage,
+                    newImage: new NewImage(
+                        filename: $newImage->getFilename(),
+                        content: $newImage->getContent(),
+                    ),
                     directory: ImageDirectory::GEAR
                 )->toLocalImagePath()
             );

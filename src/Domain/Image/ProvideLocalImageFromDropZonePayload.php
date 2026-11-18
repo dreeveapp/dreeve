@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Image;
 
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\Path;
@@ -13,7 +14,7 @@ trait ProvideLocalImageFromDropZonePayload
     /**
      * @param array<string, mixed> $payload
      *
-     * @return array{0: array<NewImage>, 1: array<RemovedImage>}
+     * @return array{0: array<NewMediaItem>, 1: array<RemovedImage>}
      */
     private static function parseImages(array $payload, string $payloadKey): array
     {
@@ -52,9 +53,9 @@ trait ProvideLocalImageFromDropZonePayload
                     throw CouldNotDeserializeCommand::invalidPayload('A new image has invalid "content".');
                 }
 
-                $newImages[] = new NewImage(
+                $newImages[] = new NewMediaItem(
                     filename: $filename,
-                    content: $content
+                    content: $content,
                 );
             }
             if (ImageStatus::REMOVED === $status) {

@@ -11,9 +11,9 @@ use App\Domain\Activity\ProvideManuallyAddedActivityPayload;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -28,7 +28,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
     use ProvidesCommandName;
 
     /**
-     * @param array<NewImage>     $newImages
+     * @param array<NewMediaItem> $newImages
      * @param array<RemovedImage> $removedImages
      */
     private function __construct(
@@ -158,7 +158,7 @@ final readonly class UpdateManuallyAddedActivity extends DomainCommand implement
     }
 
     /**
-     * @return array<NewImage>
+     * @return array<NewMediaItem>
      */
     public function getNewImages(): array
     {

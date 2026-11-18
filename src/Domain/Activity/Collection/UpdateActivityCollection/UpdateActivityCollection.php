@@ -9,9 +9,9 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -29,7 +29,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         private string $name,
         private ?string $description,
         private ActivityCollectionType $type,
-        private ?NewImage $newImage,
+        private ?NewMediaItem $newImage,
         private ?RemovedImage $removedImage,
         private bool $useRouteMapAsCover,
         private ActivityIds $activityIds,
@@ -138,7 +138,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         return $this->type;
     }
 
-    public function getNewImage(): ?NewImage
+    public function getNewImage(): ?NewMediaItem
     {
         return $this->newImage;
     }

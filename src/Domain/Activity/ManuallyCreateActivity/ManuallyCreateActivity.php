@@ -10,8 +10,8 @@ use App\Domain\Activity\ProvideManuallyAddedActivityPayload;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
 use App\Infrastructure\CQRS\Command\DomainCommand;
@@ -25,7 +25,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
     use ProvidesCommandName;
 
     /**
-     * @param array<NewImage> $newImages
+     * @param array<NewMediaItem> $newImages
      */
     private function __construct(
         private ActivityName $name,
@@ -141,7 +141,7 @@ final readonly class ManuallyCreateActivity extends DomainCommand implements Des
     }
 
     /**
-     * @return array<NewImage>
+     * @return array<NewMediaItem>
      */
     public function getNewImages(): array
     {

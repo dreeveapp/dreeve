@@ -9,6 +9,7 @@ use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Image\ImageDirectory;
 use App\Domain\Image\ImageStorage;
 use App\Domain\Image\NewImage;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Time\Clock\Clock;
@@ -27,9 +28,12 @@ final readonly class AddActivityCollectionCommandHandler implements CommandHandl
         assert($command instanceof AddActivityCollection);
 
         $newImage = $command->getNewImage();
-        $coverImagePath = $newImage instanceof NewImage
+        $coverImagePath = $newImage instanceof NewMediaItem
             ? $this->imageStorage->store(
-                newImage: $newImage,
+                newImage: new NewImage(
+                    filename: $newImage->getFilename(),
+                    content: $newImage->getContent(),
+                ),
                 directory: ImageDirectory::ACTIVITY_COLLECTIONS,
             )->toLocalImagePath()
             : null;
