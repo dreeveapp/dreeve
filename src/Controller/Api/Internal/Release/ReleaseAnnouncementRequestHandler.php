@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\Internal\Release;
 
-use App\Infrastructure\Http\PrivateNoStoreHtmlResponse;
+use App\Infrastructure\Http\Response\CachePolicy;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Security\Visitor;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -20,12 +21,14 @@ final readonly class ReleaseAnnouncementRequestHandler
     }
 
     #[Route(path: '/api/internal/release-announcement', name: 'release_announcement', methods: ['GET'])]
-    public function handle(): PrivateNoStoreHtmlResponse
+    public function handle(): HtmlResponse
     {
         if (!$this->visitor->isAuthenticated()) {
-            return new PrivateNoStoreHtmlResponse('');
+            return CachePolicy::private()->noStore()->applyTo(new HtmlResponse(''));
         }
 
-        return new PrivateNoStoreHtmlResponse($this->twig->load('html/component/release-announcement.html.twig')->render());
+        return CachePolicy::private()->noStore()->applyTo(
+            new HtmlResponse($this->twig->load('html/component/release-announcement.html.twig')->render()),
+        );
     }
 }

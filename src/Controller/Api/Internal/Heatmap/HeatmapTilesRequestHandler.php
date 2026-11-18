@@ -10,7 +10,7 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
-use App\Infrastructure\Http\PrivateNoCacheJsonResponse;
+use App\Infrastructure\Http\Response\CachePolicy;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,10 +54,11 @@ final readonly class HeatmapTilesRequestHandler
             },
         );
 
-        $response = new PrivateNoCacheJsonResponse(
-            json: $render->getContent() ?? '{}',
+        $response = CachePolicy::private()->revalidate()->applyTo(new JsonResponse(
+            $render->getContent() ?? '{}',
             headers: $render->getCacheHeaders(),
-        );
+            json: true,
+        ));
         $response->isNotModified($request);
 
         return $response;
