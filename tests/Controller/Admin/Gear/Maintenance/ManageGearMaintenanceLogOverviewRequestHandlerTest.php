@@ -4,18 +4,21 @@ namespace App\Tests\Controller\Admin\Gear\Maintenance;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearComponentId;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
+use App\Domain\Gear\Maintenance\Task\IntervalUnit;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 
 class ManageGearMaintenanceLogOverviewRequestHandlerTest extends AdminWebTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     public function testRendersTheEmptyStateWhenThereAreNoLogs(): void
     {
         $this->client->loginUser($this->adminUser());
@@ -31,8 +34,16 @@ class ManageGearMaintenanceLogOverviewRequestHandlerTest extends AdminWebTestCas
 
     public function testRendersTheTableWithLogs(): void
     {
-        $this->importGearMaintenanceConfig();
-
+        static::getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
         static::getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('g10130856'))

@@ -2,30 +2,47 @@
 
 namespace App\Tests\Controller\Admin\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
+use App\Domain\Gear\Maintenance\Task\IntervalUnit;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestWith;
 
 class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     public function testRendersTheDeleteConfirmation(): void
     {
-        $this->seedConfigAndGear();
+        static::getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $log = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g10130856'),
@@ -56,7 +73,16 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
     #[TestWith(['edit'])]
     public function testCannotManageALogWhoseGearWasDeleted(string $action): void
     {
-        $this->importGearMaintenanceConfig();
+        static::getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
         $log = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g999'),
             maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
@@ -73,7 +99,28 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
 
     public function testRendersTheRegisterForm(): void
     {
-        $this->seedConfigAndGear();
+        static::getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('g10130856')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $this->client->loginUser($this->adminUser());
 
@@ -100,10 +147,46 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
 
     public function testTheRegisterFormDoesNotOfferRetiredComponents(): void
     {
-        $this->seedConfigAndGear();
         $gearComponentRepository = static::getContainer()->get(GearComponentRepository::class);
-        $chain = Json::decode(Json::encode($gearComponentRepository->find(GearComponentId::fromString('gearComponent-chain'))));
-        $gearComponentRepository->update(GearComponent::fromArray([...$chain, 'isRetired' => true]));
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withIsRetired(true)
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('g10130856')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('g10130856')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('di-2-charged'),
+                label: Name::fromString('Charge'),
+                intervalValue: 11,
+                intervalUnit: IntervalUnit::EVERY_X_HOURS_USED,
+            ))
+            ->build());
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $this->client->loginUser($this->adminUser());
 
@@ -117,7 +200,22 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
 
     public function testRendersTheEditFormPrefilledWithTheLog(): void
     {
-        $this->seedConfigAndGear();
+        static::getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $log = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g10130856'),
@@ -149,7 +247,22 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
 
     public function testCannotEditALogWhoseMaintenanceTaskWasDeleted(): void
     {
-        $this->seedConfigAndGear();
+        static::getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        static::getContainer()->get(GearRepository::class)->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
         $log = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g10130856'),
             maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-removed'),
@@ -164,21 +277,9 @@ class ManageGearMaintenanceLogFormRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/admin/gear/maintenance-logs/'.$log->getId().'/edit');
     }
 
-    private function seedConfigAndGear(): void
-    {
-        $this->importGearMaintenanceConfig();
-        static::getContainer()->get(GearRepository::class)->add(
-            GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed('g10130856'))
-                ->withName('Race bike')
-                ->build()
-        );
-    }
-
     #[DataProvider('provideRedirectToQueryParams')]
     public function testItHonoursASafeRedirectToOnEveryExit(string $redirectTo, string $expected): void
     {
-        $this->importGearMaintenanceConfig();
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request(

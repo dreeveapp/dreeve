@@ -2,24 +2,65 @@
 
 namespace App\Tests\Controller\Admin\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\GearComponent;
+use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ManageGearMaintenanceConfigRequestHandlerTest extends AdminWebTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     public function testItRendersTheConfigReflectingTheCurrentSettings(): void
     {
-        $this->importGearMaintenanceConfig();
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('chain'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/chain.png'))
+            ->build());
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('battery'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/battery.png'))
+            ->build());
+        $this->getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: true,
+        );
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMediaItemId(MediaItemId::fromUnprefixed('chain'))
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('g1233776')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('g10130856')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->withMediaItemId(MediaItemId::fromUnprefixed('battery'))
+            ->build());
         $this->getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('g10130856'))
