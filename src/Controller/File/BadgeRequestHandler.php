@@ -18,6 +18,7 @@ use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
+use App\Infrastructure\Http\Response\CachePolicy;
 use App\Infrastructure\Http\Response\SvgResponse;
 use App\Infrastructure\Time\Clock\Clock;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -64,9 +65,8 @@ final readonly class BadgeRequestHandler
             ]),
         );
 
-        return new SvgResponse(
-            $render->getContent() ?? '',
-            headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'no-cache, no-store, must-revalidate'],
+        return CachePolicy::private()->noStore()->applyTo(
+            new SvgResponse($render->getContent() ?? '', headers: $render->getCacheHeaders()),
         );
     }
 
@@ -90,9 +90,8 @@ final readonly class BadgeRequestHandler
             ]),
         );
 
-        return new SvgResponse(
-            $render->getContent() ?? '',
-            headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'no-cache, no-store, must-revalidate'],
+        return CachePolicy::private()->noStore()->applyTo(
+            new SvgResponse($render->getContent() ?? '', headers: $render->getCacheHeaders()),
         );
     }
 
@@ -120,9 +119,8 @@ final readonly class BadgeRequestHandler
             ]),
         );
 
-        return new SvgResponse(
-            $render->getContent() ?? '',
-            headers: [...$render->getCacheHeaders(), 'Cache-Control' => 'no-cache, no-store, must-revalidate'],
+        return CachePolicy::private()->noStore()->applyTo(
+            new SvgResponse($render->getContent() ?? '', headers: $render->getCacheHeaders()),
         );
     }
 }

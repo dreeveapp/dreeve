@@ -37,7 +37,7 @@ class BadgeRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'image/svg+xml; charset=UTF-8');
-        $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
+        $this->assertResponseHeaderSame('Cache-Control', 'no-store, private');
         $this->assertStringEndsWith(
             'badge.dreeve',
             (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'),
