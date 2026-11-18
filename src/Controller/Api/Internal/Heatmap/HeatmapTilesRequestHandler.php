@@ -10,8 +10,10 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\Http\PrivateNoCacheJsonResponse;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -25,7 +27,7 @@ final readonly class HeatmapTilesRequestHandler
     }
 
     #[Route(path: '/api/internal/heatmap/tiles', name: 'heatmap_tiles', methods: ['GET'])]
-    public function handle(): JsonResponse
+    public function handle(Request $request): JsonResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
@@ -52,6 +54,12 @@ final readonly class HeatmapTilesRequestHandler
             },
         );
 
-        return new JsonResponse($render->getContent() ?? '{}', headers: $render->getCacheHeaders(), json: true);
+        $response = new PrivateNoCacheJsonResponse(
+            json: $render->getContent() ?? '{}',
+            headers: $render->getCacheHeaders(),
+        );
+        $response->isNotModified($request);
+
+        return $response;
     }
 }

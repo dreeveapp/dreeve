@@ -10,9 +10,11 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\Http\PrivateNoCacheJsonResponse;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Twig\UrlTwigExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,7 +32,7 @@ final readonly class HeatmapRoutesRequestHandler
     }
 
     #[Route(path: '/api/internal/heatmap/routes', name: 'heatmap_routes', methods: ['GET'])]
-    public function handle(): JsonResponse
+    public function handle(Request $request): JsonResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
@@ -40,7 +42,13 @@ final readonly class HeatmapRoutesRequestHandler
             render: fn (): string => $this->renderFor(),
         );
 
-        return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
+        $response = new PrivateNoCacheJsonResponse(
+            json: $render->getContent() ?? '[]',
+            headers: $render->getCacheHeaders(),
+        );
+        $response->isNotModified($request);
+
+        return $response;
     }
 
     private function renderFor(): string
