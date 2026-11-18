@@ -99,7 +99,7 @@ final readonly class GearStatsRequestHandler
                 name: 'Unspecified',
                 isRetired: false,
                 type: GearType::IMPORTED,
-                localImagePath: null,
+                mediaItemId: null,
                 movingTime: Seconds::from((int) $activitiesWithoutGear->sum(fn (Activity $activity): int => $activity->getMovingTimeInSeconds())),
                 elevation: Meter::from($activitiesWithoutGear->sum(fn (Activity $activity): float => $activity->getElevation()->toFloat())),
                 numberOfActivities: count($activitiesWithoutGear),

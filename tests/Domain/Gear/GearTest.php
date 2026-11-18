@@ -6,6 +6,7 @@ use App\Domain\Activity\ActivityTypes;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearType;
 use App\Domain\Import\ImportMode;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
@@ -160,7 +161,7 @@ class GearTest extends TestCase
         $gear = GearBuilder::fromDefaults()
             ->withName('Existing gear')
             ->withIsRetired(false)
-            ->withLocalImagePath('/gear/bike.jpg')
+            ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
             ->withPurchasePrice(Money::EUR(10000))
             ->build();
 
@@ -173,7 +174,7 @@ class GearTest extends TestCase
         $gear = GearBuilder::fromDefaults()
             ->withName('Existing gear')
             ->withIsRetired(false)
-            ->withLocalImagePath('/gear/bike.jpg')
+            ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
             ->withPurchasePrice(Money::EUR(10000))
             ->build();
 
@@ -194,7 +195,7 @@ class GearTest extends TestCase
     {
         yield 'name' => [fn (Gear $gear): Gear => $gear->withName('Existing gear')];
         yield 'isRetired' => [fn (Gear $gear): Gear => $gear->withIsRetired(false)];
-        yield 'localImagePath' => [fn (Gear $gear): Gear => $gear->withLocalImagePath('/gear/bike.jpg')];
+        yield 'mediaItemId' => [fn (Gear $gear): Gear => $gear->withMediaItemId(MediaItemId::fromUnprefixed('bike'))];
         yield 'purchasePrice' => [fn (Gear $gear): Gear => $gear->withPurchasePrice(Money::EUR(10000))];
         yield 'all of them, like a no-op import' => [fn (Gear $gear): Gear => $gear
             ->withName('Existing gear')
@@ -208,8 +209,8 @@ class GearTest extends TestCase
     {
         yield 'name' => [fn (Gear $gear): Gear => $gear->withName('Renamed gear')];
         yield 'isRetired' => [fn (Gear $gear): Gear => $gear->withIsRetired(true)];
-        yield 'localImagePath' => [fn (Gear $gear): Gear => $gear->withLocalImagePath('/gear/other.jpg')];
-        yield 'localImagePath removed' => [fn (Gear $gear): Gear => $gear->withLocalImagePath(null)];
+        yield 'mediaItemId' => [fn (Gear $gear): Gear => $gear->withMediaItemId(MediaItemId::fromUnprefixed('other'))];
+        yield 'mediaItemId removed' => [fn (Gear $gear): Gear => $gear->withMediaItemId(null)];
         yield 'purchasePrice amount' => [fn (Gear $gear): Gear => $gear->withPurchasePrice(Money::EUR(20000))];
         yield 'purchasePrice currency' => [fn (Gear $gear): Gear => $gear->withPurchasePrice(Money::USD(10000))];
     }

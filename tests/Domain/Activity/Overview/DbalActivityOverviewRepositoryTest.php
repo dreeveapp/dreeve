@@ -20,6 +20,7 @@ use App\Domain\Activity\SportType\SportType;
 use App\Domain\Gear\DbalGearRepository;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Repository\Pagination;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -519,6 +520,7 @@ class DbalActivityOverviewRepositoryTest extends ContainerTestCase
         $this->gearRepository = new DbalGearRepository(
             $this->getConnection(),
             $this->getContainer()->get(EventBus::class),
+            $this->getContainer()->get(MediaItemRepository::class),
         );
     }
 }

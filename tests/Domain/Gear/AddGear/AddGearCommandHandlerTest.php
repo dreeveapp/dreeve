@@ -74,7 +74,7 @@ class AddGearCommandHandlerTest extends ContainerTestCase
 
         $gear = $this->gearRepository->findAll()->getFirst();
         $this->assertNotNull($gear);
-        $this->assertSame('/files/gear/0025176c-5652-11ee-923d-02424dd627d5.jpg', $gear->getLocalImagePath());
+        $this->assertEquals(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'), $gear->getMediaItemId());
         $this->assertTrue($this->fileStorage->fileExists('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertSame('image-content', $this->fileStorage->read('gear/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertEquals(

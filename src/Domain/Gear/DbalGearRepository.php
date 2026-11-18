@@ -6,6 +6,10 @@ namespace App\Domain\Gear;
 
 use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypes;
+use App\Domain\Media\MediaItem;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Meter;
@@ -21,14 +25,15 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
     public function __construct(
         Connection $connection,
         private EventBus $eventBus,
+        private MediaItemRepository $mediaItemRepository,
     ) {
         parent::__construct($connection);
     }
 
     public function add(Gear $gear): void
     {
-        $sql = 'INSERT INTO Gear (gearId, createdOn, name, isRetired, `type`, localImagePath, purchasePriceAmount, purchasePriceCurrency, notes)
-        VALUES (:gearId, :createdOn, :name, :isRetired, :type, :localImagePath, :purchasePriceAmount, :purchasePriceCurrency, :notes)';
+        $sql = 'INSERT INTO Gear (gearId, createdOn, name, isRetired, `type`, mediaItemId, purchasePriceAmount, purchasePriceCurrency, notes)
+        VALUES (:gearId, :createdOn, :name, :isRetired, :type, :mediaItemId, :purchasePriceAmount, :purchasePriceCurrency, :notes)';
 
         $purchasePrice = $gear->getPurchasePrice();
         $this->connection->executeStatement($sql, [
@@ -37,7 +42,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             'name' => $gear->getOriginalName(),
             'isRetired' => (int) $gear->isRetired(),
             'type' => $gear->getType()->value,
-            'localImagePath' => $gear->getLocalImagePath(),
+            'mediaItemId' => $gear->getMediaItemId(),
             'purchasePriceAmount' => $purchasePrice?->getAmount(),
             'purchasePriceCurrency' => $purchasePrice?->getCurrency()->getCode(),
             'notes' => $gear->getNotes(),
@@ -52,7 +57,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
                     name = :name,
                     isRetired = :isRetired,
                     `type` = :type,
-                    localImagePath = :localImagePath,
+                    mediaItemId = :mediaItemId,
                     purchasePriceAmount = :purchasePriceAmount,
                     purchasePriceCurrency = :purchasePriceCurrency,
                     notes = :notes
@@ -64,7 +69,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             'name' => $gear->getOriginalName(),
             'isRetired' => (int) $gear->isRetired(),
             'type' => $gear->getType()->value,
-            'localImagePath' => $gear->getLocalImagePath(),
+            'mediaItemId' => $gear->getMediaItemId(),
             'purchasePriceAmount' => $purchasePrice?->getAmount(),
             'purchasePriceCurrency' => $purchasePrice?->getCurrency()->getCode(),
             'notes' => $gear->getNotes(),
@@ -121,9 +126,12 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             throw new EntityNotFound(sprintf('Gear "%s" not found', $gearId));
         }
 
+        $mediaItemId = MediaItemId::fromOptionalString($result['mediaItemId']);
+
         return $this->hydrate(
             result: $result,
             activityTypes: $this->findActivityTypesPerGear($gearId)[(string) $gearId] ?? ActivityTypes::empty(),
+            mediaItem: $mediaItemId ? $this->mediaItemRepository->find($mediaItemId) : null,
         );
     }
 
@@ -144,10 +152,21 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
 
         $activityTypesPerGear = $this->findActivityTypesPerGear();
 
+        $mediaItemIds = MediaItemIds::fromArray(array_map(
+            MediaItemId::fromString(...),
+            array_values(array_filter(array_column($results, 'mediaItemId'))),
+        ));
+        $mediaItems = $this->mediaItemRepository->findByIds($mediaItemIds);
+        $mediaItemsById = [];
+        foreach ($mediaItems as $mediaItem) {
+            $mediaItemsById[(string) $mediaItem->getId()] = $mediaItem;
+        }
+
         return Gears::fromArray(array_map(
             fn (array $result): Gear => $this->hydrate(
                 result: $result,
                 activityTypes: $activityTypesPerGear[$result['gearId']] ?? ActivityTypes::empty(),
+                mediaItem: $mediaItemsById[$result['mediaItemId'] ?? ''] ?? null,
             ),
             $results
         ));
@@ -184,7 +203,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
     /**
      * @param array<string, mixed> $result
      */
-    private function hydrate(array $result, ActivityTypes $activityTypes): Gear
+    private function hydrate(array $result, ActivityTypes $activityTypes, ?MediaItem $mediaItem): Gear
     {
         $purchasePrice = null;
         $purchasePriceCurrency = (string) ($result['purchasePriceCurrency'] ?? '');
@@ -202,7 +221,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             name: $result['name'],
             isRetired: (bool) $result['isRetired'],
             type: GearType::from($result['type']),
-            localImagePath: $result['localImagePath'] ?? null,
+            mediaItemId: MediaItemId::fromOptionalString($result['mediaItemId']),
             movingTime: Seconds::from((float) ($result['totalMovingTime'] ?? 0)),
             elevation: Meter::from((float) ($result['totalElevation'] ?? 0)),
             numberOfActivities: (int) ($result['numberOfActivities'] ?? 0),
@@ -213,6 +232,7 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
 
         return $gear
             ->withActivityTypes($activityTypes)
-            ->withMainActivityType($activityTypes->getFirst());
+            ->withMainActivityType($activityTypes->getFirst())
+            ->withMediaItem($mediaItem);
     }
 }

@@ -10,12 +10,16 @@ use App\Domain\Gear\GearRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -48,9 +52,14 @@ class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
     public function testRenderWithAComponentThatIsNotFitted(): void
     {
         $this->importGearMaintenanceConfigFromArray(Json::decode((string) file_get_contents(__DIR__.'/fixtures/gear-maintenance-with-not-fitted-component.json')));
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
+            ->withPath(MediaItemPath::fromString('gear/bike.jpg'))
+            ->build());
         $this->getContainer()->get(GearRepository::class)->add(
             GearBuilder::fromDefaults()
                 ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withMediaItemId(MediaItemId::fromUnprefixed('bike'))
                 ->build()
         );
         $this->seedActivity();
