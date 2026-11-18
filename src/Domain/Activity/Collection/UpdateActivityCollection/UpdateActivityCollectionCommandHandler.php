@@ -17,7 +17,6 @@ use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
-use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\DateRange;
 
 final readonly class UpdateActivityCollectionCommandHandler implements CommandHandler
@@ -61,18 +60,18 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
         $removedImage = $command->getRemovedImage();
 
         if ($newImage instanceof NewMediaItem) {
-            $activityCollection = $activityCollection->withCoverImagePath(ltrim($this->mediaItemStorage->store(
+            $activityCollection = $activityCollection->withCoverMediaItemId($this->mediaItemStorage->store(
                 newMediaItem: $newImage,
                 directory: MediaItemDirectory::ACTIVITY_COLLECTIONS,
-            )->getPath()->toUrlPath(), '/'));
+            )->getId());
         } elseif ($removedImage instanceof RemovedImage) {
-            $activityCollection = $activityCollection->withCoverImagePath(null);
+            $activityCollection = $activityCollection->withCoverMediaItemId(null);
         }
 
         $this->activityCollectionRepository->update($activityCollection);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($removedImage->getId())->getFilenameWithoutExtension()));
+            $this->mediaItemStorage->remove(MediaItemId::fromString($removedImage->getId()));
         }
     }
 }

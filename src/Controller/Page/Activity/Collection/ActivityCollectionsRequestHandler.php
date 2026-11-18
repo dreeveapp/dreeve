@@ -12,7 +12,6 @@ use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionsWithActivities;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\RealWorldMap;
-use App\Domain\Media\MediaItem;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemRepository;
@@ -74,23 +73,19 @@ final readonly class ActivityCollectionsRequestHandler
             activities: $this->activityRepository->findByIds($activityCollections->getActivityIds()),
         );
 
-        $fallbackCoverMediaItems = [];
+        $coverMediaItems = [];
         foreach ($this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_values(array_filter($activityCollectionsWithActivities->map(
-            static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): ?MediaItemId => $activityCollectionWithActivities->getFallbackCoverMediaItemId(),
+            static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): ?MediaItemId => $activityCollectionWithActivities->getCoverMediaItemId(),
         ))))) as $mediaItem) {
-            $fallbackCoverMediaItems[(string) $mediaItem->getId()] = $mediaItem;
-        }
-
-        $coverImagePaths = [];
-        foreach ($activityCollectionsWithActivities as $activityCollectionWithActivities) {
-            $fallbackCoverMediaItem = $fallbackCoverMediaItems[(string) $activityCollectionWithActivities->getFallbackCoverMediaItemId()] ?? null;
-            $coverImagePaths[(string) $activityCollectionWithActivities->getActivityCollection()->getId()] = $activityCollectionWithActivities->getCoverImagePath()
-                ?? ($fallbackCoverMediaItem instanceof MediaItem ? $fallbackCoverMediaItem->getPath()->toUrlPath() : null);
+            $coverMediaItems[(string) $mediaItem->getId()] = $mediaItem;
         }
 
         return $this->twig->load('html/activity/collection/activity-collections.html.twig')->render([
-            'activityCollectionsWithActivities' => $activityCollectionsWithActivities,
-            'coverImagePaths' => $coverImagePaths,
+            'activityCollectionsWithActivities' => ActivityCollectionsWithActivities::fromArray($activityCollectionsWithActivities->map(
+                static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): ActivityCollectionWithActivities => $activityCollectionWithActivities->withCoverMediaItem(
+                    $coverMediaItems[(string) $activityCollectionWithActivities->getCoverMediaItemId()] ?? null,
+                ),
+            )),
             'leafletMap' => new RealWorldMap(),
         ]);
     }

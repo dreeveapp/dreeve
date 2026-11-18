@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Media\MediaItemId;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
 use App\Tests\ProvideTestData;
@@ -40,7 +41,7 @@ class ActivityCollectionsRequestHandlerTest extends AdminWebTestCase
             ->withType(ActivityCollectionType::EVENT)
             ->withUseRouteMapAsCover(true)
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('9830227112')]))
-            ->withCoverImagePath('files/activity-collections/cover.jpg')
+            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('cover'))
             ->build());
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('3'))

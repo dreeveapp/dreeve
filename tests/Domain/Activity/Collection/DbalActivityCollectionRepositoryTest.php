@@ -12,6 +12,7 @@ use App\Domain\Activity\Collection\ActivityCollection;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\DbalActivityCollectionRepository;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -33,7 +34,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
                 ActivityId::fromUnprefixed('2'),
                 ActivityId::fromUnprefixed('1'),
             ]))
-            ->withCoverImagePath('/files/activity-collections/cover.jpg')
+            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('cover'))
             ->withUseRouteMapAsCover(true)
             ->build();
         $this->repository->add($activityCollection);
@@ -47,7 +48,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
                     'description' => 'Four stages from Austria to Italy.',
                     'type' => 'event',
                     'activityIds' => '["activity-2","activity-1"]',
-                    'coverImagePath' => '/files/activity-collections/cover.jpg',
+                    'coverMediaItemId' => 'mediaItem-cover',
                     'useRouteMapAsCover' => 1,
                     'createdOn' => '2025-04-20 10:00:00',
                 ],
@@ -91,7 +92,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withName('Before')
             ->withDescription('Before')
             ->withType(ActivityCollectionType::TRIP)
-            ->withCoverImagePath('/files/activity-collections/before.jpg')
+            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('before'))
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]))
             ->build();
         $this->repository->add($activityCollection);
@@ -101,7 +102,7 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ->withDescription(null)
             ->withType(ActivityCollectionType::EVENT)
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('2'), ActivityId::fromUnprefixed('3')]))
-            ->withCoverImagePath(null)
+            ->withCoverMediaItemId(null)
             ->withUseRouteMapAsCover(true);
         $this->repository->update($updated);
 

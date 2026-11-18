@@ -10,10 +10,14 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
@@ -50,11 +54,15 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
 
     public function testRendersTheEditFormPrefilledWithTheCollection(): void
     {
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('cover'))
+            ->withPath(MediaItemPath::fromString('activity-collections/cover.jpg'))
+            ->build());
         $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
             ->withName('Transalp 2025')
             ->withDescription('Four days across the Alps')
-            ->withCoverImagePath('/files/activity-collections/cover.jpg')
+            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('cover'))
             ->withType(ActivityCollectionType::EVENT)
             ->withUseRouteMapAsCover(true)
             ->withActivityIds(ActivityIds::fromArray([
@@ -91,7 +99,7 @@ class ManageActivityCollectionFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('event', $form->filter('select[name="type"] option[selected]')->attr('value'));
         $this->assertSame('Four days across the Alps', $form->filter('textarea[name="description"]')->text());
         $this->assertSame(
-            [['url' => '/files/activity-collections/cover.jpg', 'name' => 'cover.jpg', 'id' => '/files/activity-collections/cover.jpg']],
+            [['url' => '/files/activity-collections/cover.jpg', 'name' => 'cover.jpg', 'id' => 'mediaItem-cover']],
             json_decode((string) $form->filter('[data-image-dropzone]')->attr('data-existing-images'), true),
         );
         $this->assertCount(1, $form->filter('input[type="checkbox"][name="useRouteMapAsCover"][checked]'));

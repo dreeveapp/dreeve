@@ -11,6 +11,7 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollections;
 use App\Domain\Activity\Collection\ActivityCollectionsWithActivities;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use PHPUnit\Framework\TestCase;
@@ -45,6 +46,7 @@ class ActivityCollectionsWithActivitiesTest extends TestCase
             ActivityCollectionBuilder::fromDefaults()
                 ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('transalp'))
                 ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('3')]))
+                ->withCoverMediaItemId(MediaItemId::fromUnprefixed('cover'))
                 ->build(),
             ActivityCollectionBuilder::fromDefaults()
                 ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('without-activities'))
@@ -63,6 +65,6 @@ class ActivityCollectionsWithActivitiesTest extends TestCase
                 static fn (ActivityCollectionWithActivities $activityCollectionWithActivities): string => (string) $activityCollectionWithActivities->getActivityCollection()->getId(),
             ),
         );
-        $this->assertNull($activityCollectionsWithActivities->getFirst()?->getCoverImagePath());
+        $this->assertEquals(MediaItemId::fromUnprefixed('cover'), $activityCollectionsWithActivities->getFirst()?->getCoverMediaItemId());
     }
 }

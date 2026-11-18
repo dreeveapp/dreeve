@@ -40,7 +40,7 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
         $this->assertSame(ActivityCollectionType::TRIP, $activityCollection->getType());
         $this->assertEquals(ActivityIds::fromArray([ActivityId::fromUnprefixed('1'), ActivityId::fromUnprefixed('2')]), $activityCollection->getActivityIds());
         $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:04'), $activityCollection->getCreatedOn());
-        $this->assertSame('/files/activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg', $activityCollection->getCoverImagePath());
+        $this->assertEquals(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'), $activityCollection->getCoverMediaItemId());
         $this->assertTrue($activityCollection->useRouteMapAsCover());
         $this->assertSame('image-content', $this->getContainer()->get('file.storage')->read('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
         $this->assertEquals(
@@ -63,7 +63,7 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
 
         $activityCollection = $this->getContainer()->get(ActivityCollectionRepository::class)->find(ActivityCollectionId::fromUnprefixed('1'));
         $this->assertNull($activityCollection->getDescription());
-        $this->assertNull($activityCollection->getCoverImagePath());
+        $this->assertNull($activityCollection->getCoverMediaItemId());
         $this->assertSame(ActivityCollectionType::EVENT, $activityCollection->getType());
         $this->assertEquals(ActivityIds::empty(), $activityCollection->getActivityIds());
         $this->assertFalse($activityCollection->useRouteMapAsCover());

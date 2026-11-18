@@ -32,7 +32,7 @@
                     {% else %}
                         <img class="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover/image:scale-105 lazy"
                              src="{{ placeholderImage() }}"
-                             data-src="{{ coverImagePaths[activityCollection.getId() ~ ''] ? relativeUrl(coverImagePaths[activityCollection.getId() ~ '']) : placeholderImage() }}"
+                             data-src="{{ activityCollectionWithActivities.getCoverMediaItem() ? relativeUrl(activityCollectionWithActivities.getCoverMediaItem().getPath().toUrlPath()) : placeholderImage() }}"
                              alt="{{ activityCollection.getName()|e('html_attr') }}"/>
                     {% endif %}
                     <div class="absolute top-3 left-3">
