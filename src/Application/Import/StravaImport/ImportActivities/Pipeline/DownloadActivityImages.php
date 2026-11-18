@@ -15,7 +15,6 @@ use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Uri\Rfc3986\Uri;
@@ -46,8 +45,8 @@ final readonly class DownloadActivityImages implements ActivityImportStep
             return $context->withActivity($context->isNewActivity() ? $activity->withMediaItemIds(MediaItemIds::empty()) : $activity);
         }
 
+        $mediaItemIds = MediaItemIds::empty();
         try {
-            $mediaItemIds = MediaItemIds::empty();
             $photos = $this->strava->getActivityPhotos($activity->getId());
             foreach ($photos as $photo) {
                 if (empty($photo['urls'][5000])) {
@@ -62,6 +61,7 @@ final readonly class DownloadActivityImages implements ActivityImportStep
                     ),
                     directory: MediaItemDirectory::ACTIVITIES,
                 );
+                $mediaItemIds->add($mediaItem->getId());
 
                 if (is_array($photo['location'] ?? null) && 2 === count($photo['location'])) {
                     try {
@@ -82,12 +82,17 @@ final readonly class DownloadActivityImages implements ActivityImportStep
                     }
                 }
                 $this->mediaItemRepository->update($mediaItem);
-
-                $mediaItemIds->add($mediaItem->getId());
             }
 
             $activity = $activity->withMediaItemIds($mediaItemIds);
-        } catch (ClientException|RequestException) {
+        } catch (\Throwable $exception) {
+            foreach ($mediaItemIds as $mediaItemId) {
+                $this->mediaItemStorage->remove($mediaItemId);
+            }
+
+            if (!$exception instanceof RequestException) {
+                throw $exception;
+            }
         }
 
         return $context->withActivity($activity);
