@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Gear\UpdateGear;
 
 use App\Domain\Gear\GearRepository;
+use App\Domain\Media\DropZone\RemovedMediaItem;
 use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
-use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use Money\Money;

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Media;
+namespace App\Domain\Media\DropZone;
+
+use App\Domain\Media\MediaItemId;
 
 final readonly class RemovedMediaItem
 {

@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Media;
+namespace App\Domain\Media\DropZone;
 
+use App\Domain\Media\ImageExtension;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\Path;
