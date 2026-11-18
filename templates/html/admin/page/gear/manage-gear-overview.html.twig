@@ -42,7 +42,7 @@
                     <tr class="group/row">
                         <td class="narrow w-px">
                             <img class="size-10 max-w-none rounded-md object-cover bg-gray-100"
-                                 src="{{ gear.getMediaItem() ? gear.getMediaItem().getPath().toUrlPath() : placeholderImage() }}"
+                                 src="{{ gear.getMediaItem() ? relativeUrl(gear.getMediaItem().getPath().toUrlPath()) : placeholderImage() }}"
                                  alt="{{ gear.getName() }}"/>
                         </td>
                         <td class="whitespace-nowrap text-left font-medium text-gray-800">
