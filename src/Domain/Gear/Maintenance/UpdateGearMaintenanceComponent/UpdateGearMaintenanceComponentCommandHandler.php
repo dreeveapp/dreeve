@@ -9,7 +9,6 @@ use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallationLoopDetected;
 use App\Domain\Image\RemovedImage;
 use App\Domain\Media\MediaItemDirectory;
-use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
@@ -67,7 +66,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
         $this->gearComponentRepository->update($gearComponent);
 
         if ($removedMediaItem instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromString($removedMediaItem->getId()));
+            $this->mediaItemStorage->remove($removedMediaItem->getId());
         }
     }
 }

@@ -46,7 +46,7 @@ final readonly class UpdateActivityCommandHandler implements CommandHandler
         $mediaItemIdsThatNeedRemoval = [];
         if ([] !== $newMediaItems || [] !== $removedMediaItems) {
             $removedMediaItemIds = MediaItemIds::fromArray(array_map(
-                static fn (RemovedImage $removedMediaItem): MediaItemId => MediaItemId::fromString($removedMediaItem->getId()),
+                static fn (RemovedImage $removedMediaItem): MediaItemId => $removedMediaItem->getId(),
                 $removedMediaItems
             ));
 

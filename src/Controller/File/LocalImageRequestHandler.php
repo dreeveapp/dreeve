@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\File;
 
-use App\Domain\Image\ImageDirectory;
+use App\Domain\Media\MediaItemDirectory;
 use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\ValueObject\String\Path;
 use League\Flysystem\FilesystemOperator;
@@ -38,7 +38,7 @@ final readonly class LocalImageRequestHandler
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $isActivityPhoto = str_starts_with($path, ImageDirectory::ACTIVITIES->value.'/');
+        $isActivityPhoto = str_starts_with($path, MediaItemDirectory::ACTIVITIES->value.'/');
         $cachingHeaders = [
             // Activity photos are the only ones that get anonymized, so the same URL can answer with
             // the real photo or with a placeholder depending on state the browser cannot observe.

@@ -11,7 +11,6 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Image\RemovedImage;
 use App\Domain\Media\MediaItemDirectory;
-use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
@@ -71,7 +70,7 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
         $this->activityCollectionRepository->update($activityCollection);
 
         if ($removedMediaItem instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromString($removedMediaItem->getId()));
+            $this->mediaItemStorage->remove($removedMediaItem->getId());
         }
     }
 }
