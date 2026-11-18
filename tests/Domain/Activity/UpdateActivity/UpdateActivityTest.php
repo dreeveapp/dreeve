@@ -159,6 +159,13 @@ class UpdateActivityTest extends TestCase
             ]),
             'A removed image requires an "id".',
         ];
+
+        yield 'removed image with an invalid id' => [
+            json_encode([
+                ['status' => 'removed', 'id' => 'activityImage-1'],
+            ]),
+            'A removed image has an invalid "id".',
+        ];
     }
 
     public function testFromPayloadWithEmptyOptionalFields(): void
