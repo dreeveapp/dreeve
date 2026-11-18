@@ -7,22 +7,22 @@ namespace App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Installation\GearComponentInstallationLoopDetected;
-use App\Domain\Image\ImageDirectory;
-use App\Domain\Image\ImagePath;
-use App\Domain\Image\ImageStorage;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Exception\EntityNotFound;
+use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class UpdateGearMaintenanceComponentCommandHandler implements CommandHandler
 {
     public function __construct(
         private GearComponentRepository $gearComponentRepository,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
     ) {
     }
 
@@ -48,15 +48,10 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
         $removedImage = $command->getRemovedImage();
 
         if ($newImage instanceof NewMediaItem) {
-            $gearComponent = $gearComponent->withLocalImagePath(
-                $this->imageStorage->store(
-                    newImage: new NewImage(
-                        filename: $newImage->getFilename(),
-                        content: $newImage->getContent(),
-                    ),
-                    directory: ImageDirectory::GEAR_MAINTENANCE
-                )->toLocalImagePath()
-            );
+            $gearComponent = $gearComponent->withLocalImagePath(ltrim($this->mediaItemStorage->store(
+                newMediaItem: $newImage,
+                directory: MediaItemDirectory::GEAR_MAINTENANCE,
+            )->getPath()->toUrlPath(), '/'));
         } elseif ($removedImage instanceof RemovedImage) {
             $gearComponent = $gearComponent->withLocalImagePath(null);
         }
@@ -73,7 +68,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
         $this->gearComponentRepository->update($gearComponent);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->imageStorage->remove(ImagePath::fromLocalImagePath($removedImage->getId()));
+            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($removedImage->getId())->getFilenameWithoutExtension()));
         }
     }
 }

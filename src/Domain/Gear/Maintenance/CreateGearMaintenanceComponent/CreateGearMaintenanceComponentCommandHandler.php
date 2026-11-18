@@ -7,9 +7,8 @@ namespace App\Domain\Gear\Maintenance\CreateGearMaintenanceComponent;
 use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
-use App\Domain\Image\ImageDirectory;
-use App\Domain\Image\ImageStorage;
-use App\Domain\Image\NewImage;
+use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -18,7 +17,7 @@ final readonly class CreateGearMaintenanceComponentCommandHandler implements Com
 {
     public function __construct(
         private GearComponentRepository $gearComponentRepository,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
     ) {
     }
 
@@ -29,13 +28,10 @@ final readonly class CreateGearMaintenanceComponentCommandHandler implements Com
         $localImagePath = null;
         $newImage = $command->getNewImage();
         if ($newImage instanceof NewMediaItem) {
-            $localImagePath = $this->imageStorage->store(
-                newImage: new NewImage(
-                    filename: $newImage->getFilename(),
-                    content: $newImage->getContent(),
-                ),
-                directory: ImageDirectory::GEAR_MAINTENANCE
-            )->toLocalImagePath();
+            $localImagePath = ltrim($this->mediaItemStorage->store(
+                newMediaItem: $newImage,
+                directory: MediaItemDirectory::GEAR_MAINTENANCE,
+            )->getPath()->toUrlPath(), '/');
         }
 
         $gearComponent = GearComponent::create(

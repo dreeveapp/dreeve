@@ -9,4 +9,5 @@ enum MediaItemDirectory: string
     case ACTIVITIES = 'activities';
     case ACTIVITY_COLLECTIONS = 'activity-collections';
     case GEAR = 'gear';
+    case GEAR_MAINTENANCE = 'gear-maintenance';
 }

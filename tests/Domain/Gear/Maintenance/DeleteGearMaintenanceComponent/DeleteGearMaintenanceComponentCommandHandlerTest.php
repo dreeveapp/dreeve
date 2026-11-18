@@ -7,10 +7,15 @@ namespace App\Tests\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent;
 use App\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent\DeleteGearMaintenanceComponent;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\UpdateGearMaintenanceComponent\UpdateGearMaintenanceComponent;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\ProvideGearMaintenanceConfig;
 use League\Flysystem\FilesystemOperator;
 
@@ -24,6 +29,10 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     public function testItDeletesComponentAndLeavesOthersUntouched(): void
     {
         $this->importGearMaintenanceConfig();
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('chain'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/chain.png'))
+            ->build());
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
@@ -86,6 +95,11 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ]],
         ]);
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/old.png'))
+            ->build());
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
@@ -94,6 +108,7 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
         $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
         $this->assertCount(0, $components);
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
+        $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('old')]))->isEmpty());
     }
 
     #[\Override]
