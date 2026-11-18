@@ -29,10 +29,6 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     public function testItDeletesComponentAndLeavesOthersUntouched(): void
     {
         $this->importGearMaintenanceConfig();
-        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
-            ->withMediaItemId(MediaItemId::fromUnprefixed('chain'))
-            ->withPath(MediaItemPath::fromString('gear-maintenance/chain.png'))
-            ->build());
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
@@ -85,7 +81,7 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'components' => [[
                 'id' => 'gearComponent-chain',
                 'label' => 'Chain',
-                'localImagePath' => 'files/gear-maintenance/old.png',
+                'mediaItemId' => 'mediaItem-old',
                 'isRetired' => false,
                 'notes' => null,
                 'installations' => [['parent' => 'gear:gear-b1', 'from' => null, 'until' => null, 'sportTypes' => []]],

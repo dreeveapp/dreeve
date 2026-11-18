@@ -5,9 +5,9 @@
     {% set purchasePrice = component ? component.getPurchasePrice() : null %}
     {% set purchasePriceCurrency = purchasePrice ? purchasePrice.getCurrency().getCode() : 'EUR' %}
     {% set existingImages = [] %}
-    {% if component and component.getLocalImagePath() %}
-        {% set imgPath = component.getLocalImagePath() %}
-        {% set existingImages = [{url: relativeUrl('/' ~ imgPath), name: imgPath|split('/')|last, id: imgPath}] %}
+    {% if component and component.getMediaItem() %}
+        {% set mediaItem = component.getMediaItem() %}
+        {% set existingImages = [{url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId()}] %}
     {% endif %}
     {% set initialTasks = [] %}
     {% if component %}

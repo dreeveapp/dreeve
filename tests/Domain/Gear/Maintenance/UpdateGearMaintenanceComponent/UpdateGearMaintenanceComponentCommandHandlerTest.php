@@ -51,7 +51,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ['parent' => 'gear:gear-b9', 'from' => null, 'until' => null, 'sportTypes' => []],
         ], $chain['installations']);
 
-        $this->assertSame('files/gear-maintenance/chain.png', $chain['localImagePath']);
+        $this->assertSame('mediaItem-chain', $chain['mediaItemId']);
         $this->assertCount(1, $chain['maintenance']);
         $this->assertSame('maintenanceTask-chain-lubed', $chain['maintenance'][0]['id']);
         $this->assertSame(600, $chain['maintenance'][0]['interval']['value']);
@@ -159,7 +159,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
     public function testItReplacesImageAndDeletesPreviousFile(): void
     {
-        $this->seedComponentWithImage('files/gear-maintenance/old.png');
+        $this->seedComponentWithImage('mediaItem-old');
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
         $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
         $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
@@ -172,7 +172,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'label' => 'Chain',
             'installations' => [['parent' => 'gear:gear-b1']],
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'id' => '/files/gear-maintenance/old.png'],
+                ['status' => 'removed', 'id' => 'mediaItem-old'],
                 ['status' => 'new', 'filename' => 'new.png', 'content' => base64_encode('new-content')],
             ]),
             'maintenanceTasks' => [
@@ -182,7 +182,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
         $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
-        $this->assertSame('files/gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png', $components[0]['localImagePath']);
+        $this->assertSame('mediaItem-0025176c-5652-11ee-923d-02424dd627d5', $components[0]['mediaItemId']);
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
         $this->assertTrue($this->fileStorage->fileExists('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
         $this->assertSame('new-content', $this->fileStorage->read('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
@@ -202,7 +202,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
     public function testItRemovesImageAndDeletesFile(): void
     {
-        $this->seedComponentWithImage('files/gear-maintenance/old.png');
+        $this->seedComponentWithImage('mediaItem-old');
         $this->fileStorage->write('gear-maintenance/old.png', 'old-content');
         $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
         $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
@@ -215,7 +215,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'label' => 'Chain',
             'installations' => [['parent' => 'gear:gear-b1']],
             'localImagePath' => json_encode([
-                ['status' => 'removed', 'id' => '/files/gear-maintenance/old.png'],
+                ['status' => 'removed', 'id' => 'mediaItem-old'],
             ]),
             'maintenanceTasks' => [
                 ['id' => 'maintenanceTask-chain-lubed', 'label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
@@ -224,19 +224,19 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
         $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
-        $this->assertNull($components[0]['localImagePath']);
+        $this->assertNull($components[0]['mediaItemId']);
         $this->assertFalse($this->fileStorage->fileExists('gear-maintenance/old.png'));
         $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('old')]))->isEmpty());
     }
 
-    private function seedComponentWithImage(string $localImagePath): void
+    private function seedComponentWithImage(string $mediaItemId): void
     {
         $this->importGearMaintenanceConfigFromArray([
             'enabled' => true,
             'components' => [[
                 'id' => 'gearComponent-chain',
                 'label' => 'Chain',
-                'localImagePath' => $localImagePath,
+                'mediaItemId' => $mediaItemId,
                 'isRetired' => false,
                 'notes' => null,
                 'installations' => [['parent' => 'gear:gear-b1', 'from' => null, 'until' => null, 'sportTypes' => []]],

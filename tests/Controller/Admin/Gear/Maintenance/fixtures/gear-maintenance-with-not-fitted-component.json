@@ -5,7 +5,7 @@
     {
       "id": "gearComponent-summer-wheelset",
       "label": "Summer wheelset",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -30,7 +30,7 @@
     {
       "id": "gearComponent-winter-wheelset",
       "label": "Winter wheelset",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -55,7 +55,7 @@
     {
       "id": "gearComponent-old-chain",
       "label": "Old chain",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": true,
       "notes": null,
       "installations": [

@@ -4,7 +4,7 @@
     {
       "id": "gearComponent-wheelset",
       "label": "wheelset",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -23,7 +23,7 @@
     {
       "id": "gearComponent-tyres",
       "label": "tyres",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -39,7 +39,7 @@
     {
       "id": "gearComponent-race-tyres",
       "label": "race-tyres",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -55,7 +55,7 @@
     {
       "id": "gearComponent-spare-tyres",
       "label": "spare-tyres",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -71,7 +71,7 @@
     {
       "id": "gearComponent-gravel-tyres",
       "label": "gravel-tyres",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -90,7 +90,7 @@
     {
       "id": "gearComponent-indoor-tyres",
       "label": "indoor-tyres",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -108,7 +108,7 @@
     {
       "id": "gearComponent-tube",
       "label": "tube",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -124,7 +124,7 @@
     {
       "id": "gearComponent-trainer",
       "label": "trainer",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -150,7 +150,7 @@
     {
       "id": "gearComponent-cassette",
       "label": "cassette",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -166,7 +166,7 @@
     {
       "id": "gearComponent-orphan",
       "label": "orphan",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -182,7 +182,7 @@
     {
       "id": "gearComponent-loop-a",
       "label": "loop-a",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [
@@ -198,7 +198,7 @@
     {
       "id": "gearComponent-loop-b",
       "label": "loop-b",
-      "localImagePath": null,
+      "mediaItemId": null,
       "isRetired": false,
       "notes": null,
       "installations": [

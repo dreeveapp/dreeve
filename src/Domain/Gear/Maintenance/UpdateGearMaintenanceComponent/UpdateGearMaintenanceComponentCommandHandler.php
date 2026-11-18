@@ -16,7 +16,6 @@ use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class UpdateGearMaintenanceComponentCommandHandler implements CommandHandler
 {
@@ -48,12 +47,12 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
         $removedImage = $command->getRemovedImage();
 
         if ($newImage instanceof NewMediaItem) {
-            $gearComponent = $gearComponent->withLocalImagePath(ltrim($this->mediaItemStorage->store(
+            $gearComponent = $gearComponent->withMediaItemId($this->mediaItemStorage->store(
                 newMediaItem: $newImage,
                 directory: MediaItemDirectory::GEAR_MAINTENANCE,
-            )->getPath()->toUrlPath(), '/'));
+            )->getId());
         } elseif ($removedImage instanceof RemovedImage) {
-            $gearComponent = $gearComponent->withLocalImagePath(null);
+            $gearComponent = $gearComponent->withMediaItemId(null);
         }
 
         $gearComponents = $this->gearComponentRepository->findAll()
@@ -68,7 +67,7 @@ final readonly class UpdateGearMaintenanceComponentCommandHandler implements Com
         $this->gearComponentRepository->update($gearComponent);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($removedImage->getId())->getFilenameWithoutExtension()));
+            $this->mediaItemStorage->remove(MediaItemId::fromString($removedImage->getId()));
         }
     }
 }

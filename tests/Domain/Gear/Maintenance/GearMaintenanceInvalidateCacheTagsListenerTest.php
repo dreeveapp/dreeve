@@ -12,6 +12,7 @@ use App\Domain\Gear\Maintenance\Installation\GearComponentInstallations;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Render\RenderCache;
 use App\Infrastructure\Cache\Tag\CacheTags;
@@ -69,7 +70,7 @@ class GearMaintenanceInvalidateCacheTagsListenerTest extends ContainerTestCase
             id: GearComponentId::fromUnprefixed('chain'),
             label: Name::fromString('Chain'),
             installations: GearComponentInstallations::empty(),
-            localImagePath: null,
+            mediaItemId: null,
             purchasePrice: null,
             isRetired: false,
             notes: null,
@@ -84,7 +85,7 @@ class GearMaintenanceInvalidateCacheTagsListenerTest extends ContainerTestCase
             id: GearComponentId::fromUnprefixed('chain'),
             label: Name::fromString('Chain'),
             installations: GearComponentInstallations::empty(),
-            localImagePath: null,
+            mediaItemId: null,
             purchasePrice: null,
             isRetired: false,
             notes: null,
@@ -143,8 +144,9 @@ class GearMaintenanceInvalidateCacheTagsListenerTest extends ContainerTestCase
         $this->gearMaintenanceRepository = $this->getContainer()->get(GearMaintenanceRepository::class);
         $this->gearMaintenanceLogRepository = $this->getContainer()->get(GearMaintenanceLogRepository::class);
         $this->gearComponentRepository = new DbalGearComponentRepository(
-            $this->getConnection(),
-            $this->getContainer()->get(EventBus::class),
+            connection: $this->getConnection(),
+            eventBus: $this->getContainer()->get(EventBus::class),
+            mediaItemRepository: $this->getContainer()->get(MediaItemRepository::class),
         );
         $this->renderCache = $this->getContainer()->get(RenderCache::class);
         $this->renderCache->clear();

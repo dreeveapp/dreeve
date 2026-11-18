@@ -49,7 +49,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ['parent' => 'gear:gear-b1', 'from' => '2025-01-01', 'until' => '2025-03-15', 'sportTypes' => ['Ride', 'VirtualRide']],
             ['parent' => 'gear:gear-g2', 'from' => '2025-03-15', 'until' => null, 'sportTypes' => []],
         ], $created['installations']);
-        $this->assertNull($created['localImagePath']);
+        $this->assertNull($created['mediaItemId']);
         $this->assertFalse($created['isRetired']);
         $this->assertSame('Shimano B05S', $created['notes']);
         $this->assertSame(4999, $created['purchasePrice']['amountInCents']);
@@ -88,7 +88,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
         $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
 
-        $this->assertSame('files/gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png', $components[0]['localImagePath']);
+        $this->assertSame('mediaItem-0025176c-5652-11ee-923d-02424dd627d5', $components[0]['mediaItemId']);
         $this->assertTrue($this->fileStorage->fileExists('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
         $this->assertSame('image-content', $this->fileStorage->read('gear-maintenance/0025176c-5652-11ee-923d-02424dd627d5.png'));
         $this->assertEquals(
@@ -114,7 +114,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
         $this->assertCount(1, $components);
         $this->assertSame('Brake pads', $components[0]['label']);
-        $this->assertNull($components[0]['localImagePath']);
+        $this->assertNull($components[0]['mediaItemId']);
         $this->assertArrayNotHasKey('purchasePrice', $components[0]);
     }
 

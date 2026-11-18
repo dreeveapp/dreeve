@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Domain\Gear\Maintenance\DeleteGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\GearComponentRepository;
-use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemStorage;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\ValueObject\String\Path;
 
 final readonly class DeleteGearMaintenanceComponentCommandHandler implements CommandHandler
 {
@@ -38,8 +36,8 @@ final readonly class DeleteGearMaintenanceComponentCommandHandler implements Com
         $gearComponent->delete();
         $this->gearComponentRepository->delete($gearComponent);
 
-        if (null !== $localImagePath = $gearComponent->getLocalImagePath()) {
-            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($localImagePath)->getFilenameWithoutExtension()));
+        if ($mediaItemId = $gearComponent->getMediaItemId()) {
+            $this->mediaItemStorage->remove($mediaItemId);
         }
     }
 }
