@@ -9,17 +9,17 @@ use App\Infrastructure\KeyValue\Key;
 use App\Infrastructure\KeyValue\KeyValueStore;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
-use App\Tests\ProvideGearMaintenanceConfig;
 
 class KeyValueBasedGearMaintenanceRepositoryTest extends ContainerTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     private GearMaintenanceRepository $gearMaintenanceRepository;
 
     public function testFindReturnsTheConfiguredConfig(): void
     {
-        $this->importGearMaintenanceConfig();
+        $this->gearMaintenanceRepository->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: true,
+        );
 
         $config = $this->gearMaintenanceRepository->find();
 
@@ -34,7 +34,10 @@ class KeyValueBasedGearMaintenanceRepositoryTest extends ContainerTestCase
 
     public function testUpdateConfigOnlyStoresTheSettings(): void
     {
-        $this->importGearMaintenanceConfig();
+        $this->gearMaintenanceRepository->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: true,
+        );
 
         $this->gearMaintenanceRepository->updateConfig(isFeatureEnabled: false, ignoreRetiredGear: false);
 

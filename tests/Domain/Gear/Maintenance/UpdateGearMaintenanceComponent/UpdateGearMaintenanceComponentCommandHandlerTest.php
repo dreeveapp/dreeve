@@ -27,20 +27,32 @@ use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
 use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     private CommandBus $commandBus;
     private FilesystemOperator $fileStorage;
 
     public function testItUpdatesExistingComponentAndLeavesOthersUntouched(): void
     {
-        $this->importGearMaintenanceConfig();
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMediaItemId(MediaItemId::fromUnprefixed('chain'))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->build());
 
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
@@ -51,7 +63,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ],
         ]));
 
-        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $components = Json::decode(Json::encode($gearComponentRepository->findAll()));
 
         $this->assertCount(2, $components);
 
@@ -74,7 +86,17 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
     public function testItRemovesAllMaintenanceTasks(): void
     {
-        $this->importGearMaintenanceConfig();
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
 
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
@@ -82,7 +104,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             'installations' => [['parent' => 'gear:gear-b9']],
         ]));
 
-        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $components = Json::decode(Json::encode($gearComponentRepository->findAll()));
 
         $chain = $this->findComponentById($components, 'gearComponent-chain');
         $this->assertNotNull($chain);
@@ -105,7 +127,15 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
     public function testItInstallsAComponentOnAnotherComponent(): void
     {
-        $this->importGearMaintenanceConfig();
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->build());
 
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-di-2',
@@ -116,7 +146,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ],
         ]));
 
-        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $components = Json::decode(Json::encode($gearComponentRepository->findAll()));
         $di2 = $this->findComponentById($components, 'gearComponent-di-2');
         $this->assertNotNull($di2);
         $this->assertSame(
@@ -131,7 +161,15 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
     #[DataProvider('provideInstallationLoops')]
     public function testItRejectsInstallationLoops(array $chainInstallations): void
     {
-        $this->importGearMaintenanceConfig();
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->build());
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-di-2',
             'label' => 'DI2 Battery',
@@ -140,7 +178,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
                 ['id' => 'maintenanceTask-di-2-charged', 'label' => 'Charge', 'interval' => ['value' => 11, 'unit' => 'hours']],
             ],
         ]));
-        $componentsBefore = Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll());
+        $componentsBefore = Json::encode($gearComponentRepository->findAll());
 
         try {
             $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
@@ -156,7 +194,7 @@ class UpdateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             $this->assertSame('A component cannot be installed on itself or on one of its own parts.', $exception->getMessage());
         }
 
-        $this->assertSame($componentsBefore, Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $this->assertSame($componentsBefore, Json::encode($gearComponentRepository->findAll()));
     }
 
     /**
