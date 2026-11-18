@@ -7,7 +7,7 @@ namespace App\Controller\Admin\FileImport;
 use App\Domain\Import\DeleteFileImport\DeleteFileImport;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\Overview\FileImportOverviewRepository;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;

@@ -13,7 +13,7 @@ use App\Domain\Activity\Collection\FindTripSuggestions\FindTripSuggestions;
 use App\Domain\Activity\Collection\FindTripSuggestions\TripSuggestion;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;

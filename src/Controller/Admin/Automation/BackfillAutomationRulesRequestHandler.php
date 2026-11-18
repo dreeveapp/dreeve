@@ -14,7 +14,7 @@ use App\Domain\Automation\Backfill\AutomationRulesBackfillQueue;
 use App\Domain\Automation\Backfill\MatchedActivity;
 use App\Domain\Automation\Backfill\QueueAutomationRulesBackfill\QueueAutomationRulesBackfill;
 use App\Domain\Import\ImportMode;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

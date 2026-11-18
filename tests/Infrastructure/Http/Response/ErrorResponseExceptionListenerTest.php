@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Infrastructure\Http;
+namespace App\Tests\Infrastructure\Http\Response;
 
 use App\Infrastructure\Config\PlatformEnvironment;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\ErrorResponseExceptionListener;
 use App\Infrastructure\Http\HttpStatusCode;
+use App\Infrastructure\Http\Response\ErrorResponseExceptionListener;
 use App\Infrastructure\Http\ServerErrorLogger;
 use App\Tests\ContainerTestCase;
 use App\Tests\Infrastructure\ValueObject\Identifier\FakeUuidFactory;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Gear\RecordingDevice;
 
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;

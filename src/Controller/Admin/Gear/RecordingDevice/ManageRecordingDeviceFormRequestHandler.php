@@ -7,7 +7,7 @@ namespace App\Controller\Admin\Gear\RecordingDevice;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceRepository;
 use App\Domain\Gear\RecordingDevice\UpdateRecordingDevice\UpdateRecordingDevice;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin\FileImport;
 
 use App\Domain\Import\SupportedFileExtension;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;

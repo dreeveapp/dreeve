@@ -6,7 +6,7 @@ namespace App\Controller\Admin\Backup;
 
 use App\Domain\Backup\AvailableBackups;
 use App\Infrastructure\Config\ManagedMode;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Settings;
 
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Security\Token\ApiToken;
 use App\Infrastructure\Security\Token\McpToken;
 use Symfony\Component\HttpKernel\Attribute\AsController;

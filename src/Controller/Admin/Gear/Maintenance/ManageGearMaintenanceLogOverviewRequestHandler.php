@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Gear\Maintenance;
 
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogOverviewRepository;
-use App\Infrastructure\Http\HtmlResponse;
 use App\Infrastructure\Http\Request\PaginationFromRequest;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;

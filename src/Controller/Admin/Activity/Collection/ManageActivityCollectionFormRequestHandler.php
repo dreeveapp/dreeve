@@ -12,7 +12,7 @@ use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
 use App\Domain\Activity\Collection\DeleteActivityCollection\DeleteActivityCollection;
 use App\Domain\Activity\Collection\UpdateActivityCollection\UpdateActivityCollection;
 use App\Domain\Media\MediaItemRepository;
-use App\Infrastructure\Http\HtmlResponse;
+use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;

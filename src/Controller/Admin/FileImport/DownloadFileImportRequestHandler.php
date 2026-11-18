@@ -7,7 +7,7 @@ namespace App\Controller\Admin\FileImport;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Http\AttachmentResponse;
+use App\Infrastructure\Http\Response\AttachmentResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
