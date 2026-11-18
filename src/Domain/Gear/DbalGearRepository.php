@@ -126,12 +126,10 @@ final readonly class DbalGearRepository extends DbalRepository implements GearRe
             throw new EntityNotFound(sprintf('Gear "%s" not found', $gearId));
         }
 
-        $mediaItemId = MediaItemId::fromOptionalString($result['mediaItemId']);
-
         return $this->hydrate(
             result: $result,
             activityTypes: $this->findActivityTypesPerGear($gearId)[(string) $gearId] ?? ActivityTypes::empty(),
-            mediaItem: $mediaItemId ? $this->mediaItemRepository->find($mediaItemId) : null,
+            mediaItem: $this->mediaItemRepository->findOptional(MediaItemId::fromOptionalString($result['mediaItemId'])),
         );
     }
 

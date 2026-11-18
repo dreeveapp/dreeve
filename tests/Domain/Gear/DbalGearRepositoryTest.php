@@ -166,6 +166,10 @@ class DbalGearRepositoryTest extends ContainerTestCase
             ],
             $this->getConnection()->executeQuery('SELECT * FROM Gear ORDER BY gearId')->fetchAllAssociative(),
         );
+
+        $gearWithMissingMediaItem = $this->gearRepository->find(GearId::fromUnprefixed('2'));
+        $this->assertEquals(MediaItemId::fromUnprefixed('bike'), $gearWithMissingMediaItem->getMediaItemId());
+        $this->assertNull($gearWithMissingMediaItem->getMediaItem());
     }
 
     public function testUpdate(): void

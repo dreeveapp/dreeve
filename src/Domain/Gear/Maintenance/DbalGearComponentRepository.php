@@ -90,11 +90,9 @@ final readonly class DbalGearComponentRepository extends DbalRepository implemen
             throw new EntityNotFound(sprintf('GearComponent "%s" not found', $gearComponentId));
         }
 
-        $mediaItemId = MediaItemId::fromOptionalString($result['mediaItemId']);
-
         return $this->hydrate(
             result: $result,
-            mediaItem: $mediaItemId ? $this->mediaItemRepository->findByIds(MediaItemIds::fromArray([$mediaItemId]))->getFirst() : null,
+            mediaItem: $this->mediaItemRepository->findOptional(MediaItemId::fromOptionalString($result['mediaItemId'])),
         );
     }
 

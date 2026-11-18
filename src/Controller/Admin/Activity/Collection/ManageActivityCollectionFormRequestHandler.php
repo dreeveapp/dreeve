@@ -42,9 +42,7 @@ final readonly class ManageActivityCollectionFormRequestHandler
     public function handleEdit(string $activityCollectionId): HtmlResponse
     {
         $activityCollection = $this->activityCollectionRepository->find(ActivityCollectionId::fromString($activityCollectionId));
-        if ($coverMediaItemId = $activityCollection->getCoverMediaItemId()) {
-            $activityCollection = $activityCollection->withCoverMediaItem($this->mediaItemRepository->find($coverMediaItemId));
-        }
+        $activityCollection = $activityCollection->withCoverMediaItem($this->mediaItemRepository->findOptional($activityCollection->getCoverMediaItemId()));
 
         return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/edit-activity-collection.html.twig', [
             'dispatchCommand' => UpdateActivityCollection::getCommandName(),
