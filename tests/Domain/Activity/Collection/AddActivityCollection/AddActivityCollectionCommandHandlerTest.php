@@ -10,9 +10,13 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Media\MediaItemBuilder;
 
 class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
 {
@@ -39,6 +43,13 @@ class AddActivityCollectionCommandHandlerTest extends ContainerTestCase
         $this->assertSame('/files/activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg', $activityCollection->getCoverImagePath());
         $this->assertTrue($activityCollection->useRouteMapAsCover());
         $this->assertSame('image-content', $this->getContainer()->get('file.storage')->read('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
+        $this->assertEquals(
+            MediaItemBuilder::fromDefaults()
+                ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
+                ->withPath(MediaItemPath::fromString('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
+                ->build(),
+            $this->getContainer()->get(MediaItemRepository::class)->find(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5')),
+        );
     }
 
     public function testHandleWithoutDescription(): void

@@ -12,6 +12,11 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\UpdateActivityCollection\UpdateActivityCollection;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemIds;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItems;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
@@ -20,6 +25,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
@@ -43,6 +49,11 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
         }
         $fileStorage = $this->getContainer()->get('file.storage');
         $fileStorage->write('activity-collections/old.jpg', 'old-content');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withPath(MediaItemPath::fromString('activity-collections/old.jpg'))
+            ->build());
         $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
@@ -78,6 +89,7 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activityCollection->getCoverImagePath());
         $this->assertTrue($activityCollection->useRouteMapAsCover());
         $this->assertFalse($fileStorage->fileExists('activity-collections/old.jpg'));
+        $this->assertTrue($mediaItemRepository->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('old')]))->isEmpty());
 
         $this->getContainer()->get(CommandBus::class)->dispatch(UpdateActivityCollection::fromPayload([
             'activityCollectionId' => 'activityCollection-1',
@@ -106,6 +118,11 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
     {
         $fileStorage = $this->getContainer()->get('file.storage');
         $fileStorage->write('activity-collections/old.jpg', 'old-content');
+        $mediaItemRepository = $this->getContainer()->get(MediaItemRepository::class);
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('old'))
+            ->withPath(MediaItemPath::fromString('activity-collections/old.jpg'))
+            ->build());
         $activityCollectionRepository = $this->getContainer()->get(ActivityCollectionRepository::class);
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
@@ -128,6 +145,18 @@ class UpdateActivityCollectionCommandHandlerTest extends ContainerTestCase
         );
         $this->assertFalse($fileStorage->fileExists('activity-collections/old.jpg'));
         $this->assertSame('new-content', $fileStorage->read('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'));
+        $this->assertEquals(
+            MediaItems::fromArray([
+                MediaItemBuilder::fromDefaults()
+                    ->withMediaItemId(MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'))
+                    ->withPath(MediaItemPath::fromString('activity-collections/0025176c-5652-11ee-923d-02424dd627d5.jpg'))
+                    ->build(),
+            ]),
+            $mediaItemRepository->findByIds(MediaItemIds::fromArray([
+                MediaItemId::fromUnprefixed('0025176c-5652-11ee-923d-02424dd627d5'),
+                MediaItemId::fromUnprefixed('old'),
+            ])),
+        );
     }
 
     public function testHandleThrowsWhenActivityCollectionNotFound(): void
