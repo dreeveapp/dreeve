@@ -15,7 +15,6 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Media\MediaItemBuilder;
-use Override;
 
 class DbalGearComponentRepositoryTest extends ContainerTestCase
 {
@@ -115,7 +114,7 @@ class DbalGearComponentRepositoryTest extends ContainerTestCase
         return Json::decode((string) file_get_contents(__DIR__.'/fixtures/config-with-installations.json'))['components'];
     }
 
-    #[Override]
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
