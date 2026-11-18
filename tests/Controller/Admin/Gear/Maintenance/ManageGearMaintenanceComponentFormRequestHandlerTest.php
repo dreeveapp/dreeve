@@ -2,21 +2,28 @@
 
 namespace App\Tests\Controller\Admin\Gear\Maintenance;
 
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
-use App\Domain\Gear\Maintenance\GearComponent;
 use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
-use App\Infrastructure\Serialization\Json;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
+use App\Domain\Gear\Maintenance\Task\IntervalUnit;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use PHPUnit\Framework\Attributes\TestWith;
 
 class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     public function testRendersTheAddForm(): void
     {
         $this->seedGears();
@@ -57,7 +64,44 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
 
     public function testRendersTheEditFormPrefilledWithTheComponent(): void
     {
-        $this->importGearMaintenanceConfig();
+        static::getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('chain'))
+            ->withPath(MediaItemPath::fromString('gear-maintenance/chain.png'))
+            ->build());
+        $gearComponentRepository = static::getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMediaItemId(MediaItemId::fromUnprefixed('chain'))
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('g1233776')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('g10130856')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('retired')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->build());
         $this->seedGears();
 
         $this->client->loginUser($this->adminUser());
@@ -97,11 +141,11 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
 
     public function testItEscapesNotesInTheEditForm(): void
     {
-        $this->importGearMaintenanceConfig();
+        static::getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withNotes('</textarea><b>Serial</b>')
+            ->build());
         $this->seedGears();
-        $gearComponentRepository = static::getContainer()->get(GearComponentRepository::class);
-        $chain = Json::decode(Json::encode($gearComponentRepository->find(GearComponentId::fromString('gearComponent-chain'))));
-        $gearComponentRepository->update(GearComponent::fromArray([...$chain, 'notes' => '</textarea><b>Serial</b>']));
 
         $this->client->loginUser($this->adminUser());
 
@@ -113,7 +157,10 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
 
     public function testRendersTheDeleteConfirmation(): void
     {
-        $this->importGearMaintenanceConfig();
+        static::getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->build());
 
         $this->client->loginUser($this->adminUser());
 
@@ -133,8 +180,6 @@ class ManageGearMaintenanceComponentFormRequestHandlerTest extends AdminWebTestC
     #[TestWith(['delete'])]
     public function testReturns404ForAnUnknownComponent(string $action): void
     {
-        $this->importGearMaintenanceConfig();
-
         $this->client->loginUser($this->adminUser());
 
         $this->client->request('GET', '/admin/gear/maintenance-config/component/gearComponent-does-not-exist/'.$action);
