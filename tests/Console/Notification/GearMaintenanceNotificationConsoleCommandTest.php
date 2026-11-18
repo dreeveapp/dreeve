@@ -7,10 +7,18 @@ use App\Console\Notification\GearMaintenanceNotificationConsoleCommand;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearComponentId;
+use App\Domain\Gear\Maintenance\GearComponentRepository;
+use App\Domain\Gear\Maintenance\GearMaintenanceRepository;
+use App\Domain\Gear\Maintenance\Installation\GearComponentInstallation;
+use App\Domain\Gear\Maintenance\Installation\InstallationParent;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
+use App\Domain\Gear\Maintenance\Task\IntervalUnit;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Domain\Gear\Maintenance\Task\Progress\MaintenanceTaskProgressCalculator;
 use App\Domain\Integration\Notification\SendNotification\SendNotification;
@@ -20,15 +28,13 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Console\ConsoleCommandTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
-use App\Tests\ProvideGearMaintenanceConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class GearMaintenanceNotificationConsoleCommandTest extends ConsoleCommandTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     private GearMaintenanceNotificationConsoleCommand $command;
     private SpyCommandBus $commandBus;
 
@@ -94,7 +100,26 @@ class GearMaintenanceNotificationConsoleCommandTest extends ConsoleCommandTestCa
     {
         parent::setUp();
 
-        $this->importGearMaintenanceConfig();
+        $this->getContainer()->get(GearMaintenanceRepository::class)->updateConfig(
+            isFeatureEnabled: true,
+            ignoreRetiredGear: true,
+        );
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withInstallation(GearComponentInstallation::create(
+                parent: InstallationParent::gear(GearId::fromUnprefixed('g10130856')),
+                from: null,
+                until: null,
+                sportTypes: SportTypes::empty(),
+            ))
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
 
         $this->command = new GearMaintenanceNotificationConsoleCommand(
             $this->getContainer()->get(MaintenanceTaskProgressCalculator::class),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Domain\Gear\Maintenance\CreateGearMaintenanceComponent;
 
 use App\Domain\Gear\Maintenance\CreateGearMaintenanceComponent\CreateGearMaintenanceComponent;
+use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemPath;
@@ -12,20 +13,26 @@ use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
 use League\Flysystem\FilesystemOperator;
 
 class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     private CommandBus $commandBus;
     private FilesystemOperator $fileStorage;
 
     public function testItCreatesComponentAndPreservesExistingOnes(): void
     {
-        $this->importGearMaintenanceConfig();
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->build());
 
         $this->commandBus->dispatch(CreateGearMaintenanceComponent::fromPayload([
             'label' => 'Brake pads',
@@ -38,7 +45,7 @@ class CreateGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             ],
         ]));
 
-        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $components = Json::decode(Json::encode($gearComponentRepository->findAll()));
 
         $this->assertCount(3, $components);
 

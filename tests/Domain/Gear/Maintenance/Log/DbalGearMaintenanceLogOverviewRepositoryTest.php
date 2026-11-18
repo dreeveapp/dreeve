@@ -6,6 +6,7 @@ namespace App\Tests\Domain\Gear\Maintenance\Log;
 
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
+use App\Domain\Gear\Maintenance\GearComponentId;
 use App\Domain\Gear\Maintenance\GearComponentRepository;
 use App\Domain\Gear\Maintenance\Log\DbalGearMaintenanceLogOverviewRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLog;
@@ -13,26 +14,42 @@ use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogId;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogOverviewItem;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogOverviewRepository;
 use App\Domain\Gear\Maintenance\Log\GearMaintenanceLogRepository;
+use App\Domain\Gear\Maintenance\Task\IntervalUnit;
+use App\Domain\Gear\Maintenance\Task\MaintenanceTask;
 use App\Domain\Gear\Maintenance\Task\MaintenanceTaskId;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\Pagination;
+use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Gear\GearBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
+use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     private GearMaintenanceLogOverviewRepository $gearMaintenanceLogOverviewRepository;
     private GearMaintenanceLogRepository $gearMaintenanceLogRepository;
     private GearRepository $gearRepository;
 
     public function testFindMapsRowToOverviewItemWithResolvedLabels(): void
     {
-        $this->seedConfigAndGear();
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $this->gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $log = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g10130856'),
@@ -60,7 +77,22 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindSkipsOrphanedLogsButKeepsValidOnes(): void
     {
-        $this->seedConfigAndGear();
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $this->gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $validLog = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g10130856'),
@@ -130,7 +162,22 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
         array $expectedDates,
         int $expectedTotal,
     ): void {
-        $this->seedConfigAndGear();
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $this->gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
         $this->seedThreeLogs();
 
         $overview = $this->gearMaintenanceLogOverviewRepository->find($pagination);
@@ -178,7 +225,22 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindReturnsAnEmptyOverviewWhenThereIsNoData(): void
     {
-        $this->seedConfigAndGear();
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $this->gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $overview = $this->gearMaintenanceLogOverviewRepository->find(Pagination::fromOffsetAndLimit(0, 10));
 
@@ -189,7 +251,22 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindOneByGearMaintenanceLogIdReturnsTheItemWithResolvedLabels(): void
     {
-        $this->seedConfigAndGear();
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $this->gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $log = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g10130856'),
@@ -212,8 +289,6 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindOneByGearMaintenanceLogIdThrowsWhenUnknown(): void
     {
-        $this->seedConfigAndGear();
-
         $gearMaintenanceLogId = GearMaintenanceLogId::random();
         $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $gearMaintenanceLogId)));
         $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId($gearMaintenanceLogId);
@@ -221,7 +296,16 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindOneByGearMaintenanceLogIdThrowsWhenGearIsAbsent(): void
     {
-        $this->seedConfigAndGear();
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
 
         $log = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g999'),
@@ -236,7 +320,22 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
 
     public function testFindOneByGearMaintenanceLogIdThrowsWhenTaskIsNotInConfig(): void
     {
-        $this->seedConfigAndGear();
+        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->withMaintenanceTask(MaintenanceTask::create(
+                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
+                label: Name::fromString('Lube'),
+                intervalValue: 500,
+                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
+            ))
+            ->build());
+        $this->gearRepository->add(
+            GearBuilder::fromDefaults()
+                ->withGearId(GearId::fromUnprefixed('g10130856'))
+                ->withName('Race bike')
+                ->build()
+        );
 
         $log = GearMaintenanceLog::create(
             gearId: GearId::fromUnprefixed('g10130856'),
@@ -247,17 +346,6 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
 
         $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
         $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId($log->getId());
-    }
-
-    private function seedConfigAndGear(): void
-    {
-        $this->importGearMaintenanceConfig();
-        $this->gearRepository->add(
-            GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed('g10130856'))
-                ->withName('Race bike')
-                ->build()
-        );
     }
 
     private function seedThreeLogs(): void

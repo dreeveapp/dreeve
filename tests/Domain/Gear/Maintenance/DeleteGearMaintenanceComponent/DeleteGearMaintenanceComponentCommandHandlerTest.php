@@ -27,25 +27,30 @@ use App\Infrastructure\ValueObject\String\Name;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
-use App\Tests\ProvideGearMaintenanceConfig;
 use League\Flysystem\FilesystemOperator;
 
 class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 {
-    use ProvideGearMaintenanceConfig;
-
     private CommandBus $commandBus;
     private FilesystemOperator $fileStorage;
 
     public function testItDeletesComponentAndLeavesOthersUntouched(): void
     {
-        $this->importGearMaintenanceConfig();
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->build());
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-chain',
         ]));
 
-        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $components = Json::decode(Json::encode($gearComponentRepository->findAll()));
 
         $this->assertCount(1, $components);
         $this->assertSame('gearComponent-di-2', $components[0]['id']);
@@ -53,20 +58,36 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
 
     public function testItIsANoopWhenComponentDoesNotExist(): void
     {
-        $this->importGearMaintenanceConfig();
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->build());
 
         $this->commandBus->dispatch(DeleteGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-does-not-exist',
         ]));
 
-        $components = Json::decode(Json::encode($this->getContainer()->get(GearComponentRepository::class)->findAll()));
+        $components = Json::decode(Json::encode($gearComponentRepository->findAll()));
 
         $this->assertCount(2, $components);
     }
 
     public function testItRejectsAComponentThatHasOtherComponentsInstalledOnIt(): void
     {
-        $this->importGearMaintenanceConfig();
+        $gearComponentRepository = $this->getContainer()->get(GearComponentRepository::class);
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
+            ->withLabel('Some cool chain')
+            ->build());
+        $gearComponentRepository->add(GearComponentBuilder::fromDefaults()
+            ->withGearComponentId(GearComponentId::fromUnprefixed('di-2'))
+            ->withLabel('DI2 Battery')
+            ->build());
         $this->commandBus->dispatch(UpdateGearMaintenanceComponent::fromPayload([
             'gearComponentId' => 'gearComponent-di-2',
             'label' => 'DI2 Battery',
@@ -82,7 +103,7 @@ class DeleteGearMaintenanceComponentCommandHandlerTest extends ContainerTestCase
             $this->assertSame('A component that has other components installed on it cannot be deleted. Retire it instead.', $exception->getMessage());
         }
 
-        $this->assertCount(2, $this->getContainer()->get(GearComponentRepository::class)->findAll());
+        $this->assertCount(2, $gearComponentRepository->findAll());
     }
 
     public function testItDeletesTheComponentImageFile(): void
