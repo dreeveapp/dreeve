@@ -148,13 +148,10 @@ final readonly class DbalActivityMediaRepository extends DbalRepository implemen
             array_values(array_unique(array_column($results, 'activityId'))),
         )))->keyByActivityId();
 
-        $mediaItemsById = [];
-        foreach ($this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_map(
+        $mediaItemsById = $this->mediaItemRepository->findByIds(MediaItemIds::fromArray(array_map(
             MediaItemId::fromString(...),
             array_column($results, 'mediaItemId'),
-        ))) as $mediaItem) {
-            $mediaItemsById[(string) $mediaItem->getId()] = $mediaItem;
-        }
+        )))->keyById();
 
         return ActivityMediaItems::fromArray(array_map(
             static fn (array $result): ActivityMediaItem => ActivityMediaItem::create(

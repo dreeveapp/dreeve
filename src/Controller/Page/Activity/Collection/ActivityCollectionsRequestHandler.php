@@ -71,10 +71,7 @@ final readonly class ActivityCollectionsRequestHandler
             activities: $this->activityRepository->findByIds($activityCollections->getActivityIds()),
         );
 
-        $coverMediaItems = [];
-        foreach ($this->mediaItemRepository->findByIds($activityCollectionsWithActivities->getCoverMediaItemIds()) as $mediaItem) {
-            $coverMediaItems[(string) $mediaItem->getId()] = $mediaItem;
-        }
+        $coverMediaItems = $this->mediaItemRepository->findByIds($activityCollectionsWithActivities->getCoverMediaItemIds())->keyById();
 
         return $this->twig->load('html/activity/collection/activity-collections.html.twig')->render([
             'activityCollectionsWithActivities' => ActivityCollectionsWithActivities::fromArray($activityCollectionsWithActivities->map(
