@@ -64,7 +64,11 @@ trait ProvideMediaItemsFromDropZonePayload
                 if (!isset($mediaItem['id']) || !is_string($mediaItem['id']) || '' === trim($mediaItem['id'])) {
                     throw CouldNotDeserializeCommand::invalidPayload('A removed image requires an "id".');
                 }
-                $removedMediaItems[] = new RemovedMediaItem(MediaItemId::fromString(trim($mediaItem['id'])));
+                try {
+                    $removedMediaItems[] = new RemovedMediaItem(MediaItemId::fromString(trim($mediaItem['id'])));
+                } catch (\InvalidArgumentException) {
+                    throw CouldNotDeserializeCommand::invalidPayload('A removed image has an invalid "id".');
+                }
             }
         }
 
