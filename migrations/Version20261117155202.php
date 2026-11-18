@@ -9,7 +9,6 @@ use App\Domain\Media\Metadata\MediaItemMetadataReader;
 use App\Infrastructure\Serialization\Json;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Ramsey\Uuid\Uuid;
 
 final class Version20261117155202 extends AbstractMigration
 {
@@ -29,41 +28,13 @@ final class Version20261117155202 extends AbstractMigration
 
     public function postUp(Schema $schema): void
     {
-        $fileStorageDirectory = dirname(__DIR__).'/storage/files';
-        $mediaItemMetadataReader = new MediaItemMetadataReader();
-        $existingMediaItemIds = array_flip($this->connection->fetchFirstColumn('SELECT mediaItemId FROM MediaItem'));
-
         $localImagePathsPerActivity = $this->connection->fetchAllKeyValue('SELECT activityId, mediaItemIds FROM Activity');
 
         foreach ($localImagePathsPerActivity as $activityId => $localImagePaths) {
-            $mediaItemIds = [];
-            foreach (array_filter(array_map(trim(...), explode(',', (string) $localImagePaths))) as $localImagePath) {
-                $path = (string) preg_replace('#^/?files/#', '', $localImagePath);
-                $mediaItemId = MediaItemId::fromUnprefixed(pathinfo($localImagePath, PATHINFO_FILENAME));
-                $mediaItemIds[] = (string) $mediaItemId;
-                if (isset($existingMediaItemIds[(string) $mediaItemId])) {
-                    continue;
-                }
-
-                $fileSystemPath = $fileStorageDirectory.'/'.$path;
-                $content = is_file($fileSystemPath) ? @file_get_contents($fileSystemPath) : false;
-                $metadata = false !== $content ? $mediaItemMetadataReader->read($content) : null;
-
-                $this->connection->executeStatement(
-                    'INSERT INTO MediaItem (mediaItemId, path, width, height, coordinateLatitude, coordinateLongitude, takenOn)
-                     VALUES (:mediaItemId, :path, :width, :height, :coordinateLatitude, :coordinateLongitude, :takenOn)',
-                    [
-                        'mediaItemId' => (string) $mediaItemId,
-                        'path' => $path,
-                        'width' => $metadata?->getWidth(),
-                        'height' => $metadata?->getHeight(),
-                        'coordinateLatitude' => $metadata?->getCoordinate()?->getLatitude()->toFloat(),
-                        'coordinateLongitude' => $metadata?->getCoordinate()?->getLongitude()->toFloat(),
-                        'takenOn' => $metadata?->getTakenOn(),
-                    ]
-                );
-                $existingMediaItemIds[(string) $mediaItemId] = true;
-            }
+            $mediaItemIds = array_values(array_filter(array_map(
+                $this->migrateLocalImagePath(...),
+                explode(',', (string) $localImagePaths),
+            )));
 
             $this->connection->executeStatement(
                 'UPDATE Activity SET mediaItemIds = :mediaItemIds WHERE activityId = :activityId',
@@ -93,10 +64,6 @@ final class Version20261117155202 extends AbstractMigration
 
     private function migrateSingleMediaItemColumn(string $table, string $primaryKey, string $column): void
     {
-        $fileStorageDirectory = dirname(__DIR__).'/storage/files';
-        $mediaItemMetadataReader = new MediaItemMetadataReader();
-        $existingMediaItemIds = array_flip($this->connection->fetchFirstColumn('SELECT mediaItemId FROM MediaItem'));
-
         $localImagePathPerPrimaryKey = $this->connection->fetchAllKeyValue(sprintf(
             'SELECT %s, %s FROM %s WHERE %s IS NOT NULL',
             $primaryKey,
@@ -106,48 +73,45 @@ final class Version20261117155202 extends AbstractMigration
         ));
 
         foreach ($localImagePathPerPrimaryKey as $primaryKeyValue => $localImagePath) {
-            $localImagePath = trim((string) $localImagePath);
-            if (!preg_match('#^/?files/#', $localImagePath)) {
-                $this->connection->executeStatement(
-                    sprintf('UPDATE %s SET %s = NULL WHERE %s = :primaryKey', $table, $column, $primaryKey),
-                    ['primaryKey' => $primaryKeyValue]
-                );
-                continue;
-            }
-
-            $path = (string) preg_replace('#^/?files/#', '', $localImagePath);
-            $filename = pathinfo($path, PATHINFO_FILENAME);
-            $mediaItemId = Uuid::isValid($filename) && !isset($existingMediaItemIds[(string) MediaItemId::fromUnprefixed($filename)])
-                ? MediaItemId::fromUnprefixed($filename)
-                : MediaItemId::random();
-
-            $fileSystemPath = $fileStorageDirectory.'/'.$path;
-            $content = is_file($fileSystemPath) ? @file_get_contents($fileSystemPath) : false;
-            $metadata = false !== $content ? $mediaItemMetadataReader->read($content) : null;
-
-            $this->connection->executeStatement(
-                'INSERT INTO MediaItem (mediaItemId, path, width, height, coordinateLatitude, coordinateLongitude, takenOn)
-                 VALUES (:mediaItemId, :path, :width, :height, :coordinateLatitude, :coordinateLongitude, :takenOn)',
-                [
-                    'mediaItemId' => (string) $mediaItemId,
-                    'path' => $path,
-                    'width' => $metadata?->getWidth(),
-                    'height' => $metadata?->getHeight(),
-                    'coordinateLatitude' => $metadata?->getCoordinate()?->getLatitude()->toFloat(),
-                    'coordinateLongitude' => $metadata?->getCoordinate()?->getLongitude()->toFloat(),
-                    'takenOn' => $metadata?->getTakenOn(),
-                ]
-            );
-            $existingMediaItemIds[(string) $mediaItemId] = true;
-
             $this->connection->executeStatement(
                 sprintf('UPDATE %s SET %s = :mediaItemId WHERE %s = :primaryKey', $table, $column, $primaryKey),
                 [
-                    'mediaItemId' => (string) $mediaItemId,
+                    'mediaItemId' => $this->migrateLocalImagePath((string) $localImagePath),
                     'primaryKey' => $primaryKeyValue,
                 ]
             );
         }
+    }
+
+    private function migrateLocalImagePath(string $localImagePath): ?string
+    {
+        $localImagePath = trim($localImagePath);
+        if (!preg_match('#^/?files/#', $localImagePath)) {
+            return null;
+        }
+
+        $path = (string) preg_replace('#^/?files/#', '', $localImagePath);
+        $mediaItemId = (string) MediaItemId::fromUnprefixed(pathinfo($path, PATHINFO_FILENAME));
+
+        $fileSystemPath = dirname(__DIR__).'/storage/files/'.$path;
+        $content = is_file($fileSystemPath) ? @file_get_contents($fileSystemPath) : false;
+        $metadata = false !== $content ? new MediaItemMetadataReader()->read($content) : null;
+
+        $this->connection->executeStatement(
+            'INSERT INTO MediaItem (mediaItemId, path, width, height, coordinateLatitude, coordinateLongitude, takenOn)
+             VALUES (:mediaItemId, :path, :width, :height, :coordinateLatitude, :coordinateLongitude, :takenOn)',
+            [
+                'mediaItemId' => $mediaItemId,
+                'path' => $path,
+                'width' => $metadata?->getWidth(),
+                'height' => $metadata?->getHeight(),
+                'coordinateLatitude' => $metadata?->getCoordinate()?->getLatitude()->toFloat(),
+                'coordinateLongitude' => $metadata?->getCoordinate()?->getLongitude()->toFloat(),
+                'takenOn' => $metadata?->getTakenOn(),
+            ]
+        );
+
+        return $mediaItemId;
     }
 
     public function down(Schema $schema): void
