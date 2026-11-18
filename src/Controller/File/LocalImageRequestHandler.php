@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\File;
 
 use App\Domain\Media\MediaItemDirectory;
+use App\Infrastructure\Http\Response\CachePolicy;
 use App\Infrastructure\Security\Visitor;
 use App\Infrastructure\ValueObject\String\Path;
 use League\Flysystem\FilesystemOperator;
@@ -39,34 +40,32 @@ final readonly class LocalImageRequestHandler
         }
 
         $isActivityPhoto = str_starts_with($path, MediaItemDirectory::ACTIVITIES->value.'/');
-        $cachingHeaders = [
-            // Activity photos are the only ones that get anonymized, so the same URL can answer with
-            // the real photo or with a placeholder depending on state the browser cannot observe.
-            // Storing them would keep serving the real photo after demo mode is switched on.
-            // Every other file is written once under a unique name and never changes in place.
-            'Cache-Control' => $isActivityPhoto ? 'private, no-store' : 'private, max-age=31536000, immutable',
-            'Vary' => 'Cookie',
-        ];
+        // Activity photos are the only ones that get anonymized, so the same URL can answer with
+        // the real photo or with a placeholder depending on state the browser cannot observe.
+        // Storing them would keep serving the real photo after demo mode is switched on.
+        // Every other file is written once under a unique name and never changes in place.
+        $cachePolicy = $isActivityPhoto ? CachePolicy::private()->noStore() : CachePolicy::private()->maxAge(31536000)->immutable();
+        $cachingHeaders = ['Vary' => 'Cookie'];
 
         if ($isActivityPhoto && !$this->visitor->isTrusted()) {
             // Not a trusted visitor: serve a stable photo from the bundled anonymized set instead of the real one.
             $seed = Path::fromString($path)->getFilenameWithoutExtension();
 
-            return new RedirectResponse(
-                sprintf('/assets/images/anonymized/%02d.webp', crc32($seed) % self::ANONYMIZED_IMAGE_COUNT + 1),
-                Response::HTTP_FOUND,
-                $cachingHeaders
-            );
+            return $cachePolicy->applyTo(new RedirectResponse(
+                url: sprintf('/assets/images/anonymized/%02d.webp', crc32($seed) % self::ANONYMIZED_IMAGE_COUNT + 1),
+                status: Response::HTTP_FOUND,
+                headers: $cachingHeaders
+            ));
         }
 
         $stream = $this->fileStorage->readStream($path);
 
-        return new StreamedResponse(
+        return $cachePolicy->applyTo(new StreamedResponse(
             function () use ($stream): void {
                 fpassthru($stream);
             },
             Response::HTTP_OK,
             [...$cachingHeaders, 'Content-Type' => $this->fileStorage->mimeType($path)]
-        );
+        ));
     }
 }

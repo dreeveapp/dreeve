@@ -7,6 +7,7 @@ namespace App\Controller\File\Activity;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityOpenGraphImage;
 use App\Domain\Activity\ActivityRepository;
+use App\Infrastructure\Http\Response\CachePolicy;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,9 +26,8 @@ final readonly class ActivityOgImageRequestHandler
     {
         $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
 
-        return new Response($this->activityOpenGraphImage->render($activity), Response::HTTP_OK, [
+        return CachePolicy::public()->maxAge(3600)->applyTo(new Response($this->activityOpenGraphImage->render($activity), Response::HTTP_OK, [
             'Content-Type' => 'image/png',
-            'Cache-Control' => 'public, max-age=3600',
-        ]);
+        ]));
     }
 }

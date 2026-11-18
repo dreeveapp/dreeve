@@ -11,6 +11,7 @@ use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Exception\CorruptedData;
+use App\Infrastructure\Http\Response\CachePolicy;
 use App\Infrastructure\Serialization\Json;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,14 +46,11 @@ final readonly class LatestReleaseRequestHandler
             render: fn (): string => $this->renderFor(),
         );
 
-        return new JsonResponse(
+        return CachePolicy::private()->maxAge($render->getTtlInSeconds() ?? self::SIX_HOURS_IN_SECONDS)->applyTo(new JsonResponse(
             $render->getContent() ?? '{}',
-            headers: [
-                ...$render->getCacheHeaders(),
-                'Cache-Control' => sprintf('private, max-age=%d', $render->getTtlInSeconds() ?? self::SIX_HOURS_IN_SECONDS),
-            ],
+            headers: $render->getCacheHeaders(),
             json: true,
-        );
+        ));
     }
 
     private function renderFor(): string
