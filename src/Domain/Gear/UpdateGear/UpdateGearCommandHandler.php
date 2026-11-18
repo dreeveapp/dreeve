@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Domain\Gear\UpdateGear;
 
 use App\Domain\Gear\GearRepository;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use Money\Money;
@@ -42,13 +42,13 @@ final readonly class UpdateGearCommandHandler implements CommandHandler
                 newMediaItem: $newMediaItem,
                 directory: MediaItemDirectory::GEAR,
             )->getId());
-        } elseif ($removedMediaItem instanceof RemovedImage) {
+        } elseif ($removedMediaItem instanceof RemovedMediaItem) {
             $gear = $gear->withMediaItemId(null);
         }
 
         $this->gearRepository->update($gear);
 
-        if ($removedMediaItem instanceof RemovedImage) {
+        if ($removedMediaItem instanceof RemovedMediaItem) {
             $this->mediaItemStorage->remove($removedMediaItem->getId());
         }
     }

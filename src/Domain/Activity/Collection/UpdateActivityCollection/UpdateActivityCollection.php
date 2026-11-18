@@ -9,9 +9,9 @@ use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityReference;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
+use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -21,7 +21,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class UpdateActivityCollection extends DomainCommand implements DeserializableCommand
 {
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
     use ProvidesCommandName;
 
     private function __construct(
@@ -30,7 +30,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         private ?string $description,
         private ActivityCollectionType $type,
         private ?NewMediaItem $newMediaItem,
-        private ?RemovedImage $removedMediaItem,
+        private ?RemovedMediaItem $removedMediaItem,
         private bool $useRouteMapAsCover,
         private ActivityIds $activityIds,
         private ?ActivityId $activityIdToAdd,
@@ -102,7 +102,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
             throw CouldNotDeserializeCommand::invalidPayload('The start date must be on or before the end date.');
         }
 
-        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'coverMediaItem');
+        [$newMediaItems, $removedMediaItems] = self::parseMediaItems($payload, 'coverMediaItem');
 
         return new self(
             activityCollectionId: ActivityCollectionId::fromString($payload['activityCollectionId']),
@@ -143,7 +143,7 @@ final readonly class UpdateActivityCollection extends DomainCommand implements D
         return $this->newMediaItem;
     }
 
-    public function getRemovedMediaItem(): ?RemovedImage
+    public function getRemovedMediaItem(): ?RemovedMediaItem
     {
         return $this->removedMediaItem;
     }

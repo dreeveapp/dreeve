@@ -2,71 +2,69 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Image;
+namespace App\Domain\Media;
 
-use App\Domain\Media\MediaItemId;
-use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\String\Path;
 
-trait ProvideLocalImageFromDropZonePayload
+trait ProvideMediaItemsFromDropZonePayload
 {
     /**
      * @param array<string, mixed> $payload
      *
-     * @return array{0: array<NewMediaItem>, 1: array<RemovedImage>}
+     * @return array{0: array<NewMediaItem>, 1: array<RemovedMediaItem>}
      */
-    private static function parseImages(array $payload, string $payloadKey): array
+    private static function parseMediaItems(array $payload, string $payloadKey): array
     {
-        $newImages = [];
-        $removedImages = [];
+        $newMediaItems = [];
+        $removedMediaItems = [];
         if (!array_key_exists($payloadKey, $payload)) {
-            return [$newImages, $removedImages];
+            return [$newMediaItems, $removedMediaItems];
         }
 
         if (!is_string($payload[$payloadKey])) {
             throw CouldNotDeserializeCommand::invalidPayload(sprintf('The "%s" field is invalid.', $payloadKey));
         }
 
-        $decodedImages = Json::decode($payload[$payloadKey]);
-        if (!is_array($decodedImages)) {
+        $decodedMediaItems = Json::decode($payload[$payloadKey]);
+        if (!is_array($decodedMediaItems)) {
             throw CouldNotDeserializeCommand::invalidPayload(sprintf('The "%s" field is invalid.', $payloadKey));
         }
 
-        foreach ($decodedImages as $image) {
-            if (!is_array($image) || !isset($image['status']) || !is_string($image['status']) || !$status = ImageStatus::tryFrom($image['status'])) {
+        foreach ($decodedMediaItems as $mediaItem) {
+            if (!is_array($mediaItem) || !isset($mediaItem['status']) || !is_string($mediaItem['status']) || !$status = DropZoneItemStatus::tryFrom($mediaItem['status'])) {
                 throw CouldNotDeserializeCommand::invalidPayload('Each image requires a valid "status".');
             }
 
-            if (ImageStatus::NEW === $status) {
-                if (!isset($image['filename'], $image['content']) || !is_string($image['filename']) || !is_string($image['content'])) {
+            if (DropZoneItemStatus::NEW === $status) {
+                if (!isset($mediaItem['filename'], $mediaItem['content']) || !is_string($mediaItem['filename']) || !is_string($mediaItem['content'])) {
                     throw CouldNotDeserializeCommand::invalidPayload('A new image requires a "filename" and "content".');
                 }
 
-                $filename = Path::fromString(trim($image['filename']));
+                $filename = Path::fromString(trim($mediaItem['filename']));
                 if (!ImageExtension::isSupported($filename->getExtension())) {
                     throw CouldNotDeserializeCommand::invalidPayload('Unsupported image file type.');
                 }
 
-                $content = base64_decode($image['content'], true);
+                $content = base64_decode($mediaItem['content'], true);
                 if (false === $content || '' === $content) {
                     throw CouldNotDeserializeCommand::invalidPayload('A new image has invalid "content".');
                 }
 
-                $newImages[] = new NewMediaItem(
+                $newMediaItems[] = new NewMediaItem(
                     filename: $filename,
                     content: $content,
                 );
             }
-            if (ImageStatus::REMOVED === $status) {
-                if (!isset($image['id']) || !is_string($image['id']) || '' === trim($image['id'])) {
+            if (DropZoneItemStatus::REMOVED === $status) {
+                if (!isset($mediaItem['id']) || !is_string($mediaItem['id']) || '' === trim($mediaItem['id'])) {
                     throw CouldNotDeserializeCommand::invalidPayload('A removed image requires an "id".');
                 }
-                $removedImages[] = new RemovedImage(MediaItemId::fromString(trim($image['id'])));
+                $removedMediaItems[] = new RemovedMediaItem(MediaItemId::fromString(trim($mediaItem['id'])));
             }
         }
 
-        return [$newImages, $removedImages];
+        return [$newMediaItems, $removedMediaItems];
     }
 }

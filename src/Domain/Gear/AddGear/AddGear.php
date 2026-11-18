@@ -7,8 +7,8 @@ namespace App\Domain\Gear\AddGear;
 use App\Domain\Gear\GearStatus;
 use App\Domain\Gear\ProvideNotesFromPayload;
 use App\Domain\Gear\ProvidePurchasePriceFromPayload;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -19,7 +19,7 @@ final readonly class AddGear extends DomainCommand implements DeserializableComm
 {
     use ProvideNotesFromPayload;
     use ProvidePurchasePriceFromPayload;
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
     use ProvidesCommandName;
 
     private function __construct(
@@ -47,7 +47,7 @@ final readonly class AddGear extends DomainCommand implements DeserializableComm
             throw CouldNotDeserializeCommand::invalidPayload('The status is invalid.');
         }
 
-        [$newMediaItems] = self::parseImages($payload, 'mediaItem');
+        [$newMediaItems] = self::parseMediaItems($payload, 'mediaItem');
 
         return new self(
             name: $name,

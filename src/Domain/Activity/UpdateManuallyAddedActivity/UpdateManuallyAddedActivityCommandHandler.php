@@ -8,12 +8,12 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\WorldType;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Import\ImportMode;
 use App\Domain\Media\MediaItemDirectory;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemStorage;
+use App\Domain\Media\RemovedMediaItem;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -77,7 +77,7 @@ final readonly class UpdateManuallyAddedActivityCommandHandler implements Comman
         $mediaItemIdsThatNeedRemoval = [];
         if ([] !== $newMediaItems || [] !== $removedMediaItems) {
             $removedMediaItemIds = MediaItemIds::fromArray(array_map(
-                static fn (RemovedImage $removedMediaItem): MediaItemId => $removedMediaItem->getId(),
+                static fn (RemovedMediaItem $removedMediaItem): MediaItemId => $removedMediaItem->getId(),
                 $removedMediaItems
             ));
 

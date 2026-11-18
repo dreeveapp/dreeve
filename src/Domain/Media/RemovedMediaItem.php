@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Image;
+namespace App\Domain\Media;
 
-use App\Domain\Media\MediaItemId;
-
-final readonly class RemovedImage
+final readonly class RemovedMediaItem
 {
     public function __construct(
         private MediaItemId $id,

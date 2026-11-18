@@ -12,9 +12,9 @@ use App\Domain\Activity\ProvideCaloriesFromPayload;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Gear\GearId;
-use App\Domain\Image\ProvideLocalImageFromDropZonePayload;
-use App\Domain\Image\RemovedImage;
 use App\Domain\Media\NewMediaItem;
+use App\Domain\Media\ProvideMediaItemsFromDropZonePayload;
+use App\Domain\Media\RemovedMediaItem;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\DeserializableCommand;
 use App\Infrastructure\CQRS\Command\Deserialize\ProvidesCommandName;
@@ -23,12 +23,12 @@ use App\Infrastructure\CQRS\Command\DomainCommand;
 final readonly class UpdateActivity extends DomainCommand implements DeserializableCommand
 {
     use ProvideCaloriesFromPayload;
-    use ProvideLocalImageFromDropZonePayload;
+    use ProvideMediaItemsFromDropZonePayload;
     use ProvidesCommandName;
 
     /**
-     * @param array<NewMediaItem> $newMediaItems
-     * @param array<RemovedImage> $removedMediaItems
+     * @param array<NewMediaItem>     $newMediaItems
+     * @param array<RemovedMediaItem> $removedMediaItems
      */
     private function __construct(
         private ActivityId $activityId,
@@ -77,7 +77,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
             ? GearId::fromString(trim($payload['gearId']))
             : null;
 
-        [$newMediaItems, $removedMediaItems] = self::parseImages($payload, 'mediaItems');
+        [$newMediaItems, $removedMediaItems] = self::parseMediaItems($payload, 'mediaItems');
 
         $excludedFrom = is_array($payload['excludedFrom'] ?? null) ? $payload['excludedFrom'] : [];
         $exclusions = array_values(array_filter(
@@ -166,7 +166,7 @@ final readonly class UpdateActivity extends DomainCommand implements Deserializa
     }
 
     /**
-     * @return array<RemovedImage>
+     * @return array<RemovedMediaItem>
      */
     public function getRemovedMediaItems(): array
     {
