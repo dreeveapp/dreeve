@@ -6,9 +6,8 @@ namespace App\Domain\Activity\Collection\AddActivityCollection;
 
 use App\Domain\Activity\Collection\ActivityCollection;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
-use App\Domain\Image\ImageDirectory;
-use App\Domain\Image\ImageStorage;
-use App\Domain\Image\NewImage;
+use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -19,7 +18,7 @@ final readonly class AddActivityCollectionCommandHandler implements CommandHandl
     public function __construct(
         private ActivityCollectionRepository $activityCollectionRepository,
         private Clock $clock,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
     ) {
     }
 
@@ -29,13 +28,10 @@ final readonly class AddActivityCollectionCommandHandler implements CommandHandl
 
         $newImage = $command->getNewImage();
         $coverImagePath = $newImage instanceof NewMediaItem
-            ? $this->imageStorage->store(
-                newImage: new NewImage(
-                    filename: $newImage->getFilename(),
-                    content: $newImage->getContent(),
-                ),
-                directory: ImageDirectory::ACTIVITY_COLLECTIONS,
-            )->toLocalImagePath()
+            ? ltrim($this->mediaItemStorage->store(
+                newMediaItem: $newImage,
+                directory: MediaItemDirectory::ACTIVITY_COLLECTIONS,
+            )->getPath()->toUrlPath(), '/')
             : null;
 
         $this->activityCollectionRepository->add(ActivityCollection::create(

@@ -9,22 +9,22 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
-use App\Domain\Image\ImageDirectory;
-use App\Domain\Image\ImagePath;
-use App\Domain\Image\ImageStorage;
-use App\Domain\Image\NewImage;
 use App\Domain\Image\RemovedImage;
+use App\Domain\Media\MediaItemDirectory;
+use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemStorage;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\CQRS\Command\CouldNotProcessCommand;
+use App\Infrastructure\ValueObject\String\Path;
 use App\Infrastructure\ValueObject\Time\DateRange;
 
 final readonly class UpdateActivityCollectionCommandHandler implements CommandHandler
 {
     public function __construct(
         private ActivityCollectionRepository $activityCollectionRepository,
-        private ImageStorage $imageStorage,
+        private MediaItemStorage $mediaItemStorage,
         private ActivityRepository $activityRepository,
     ) {
     }
@@ -61,15 +61,10 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
         $removedImage = $command->getRemovedImage();
 
         if ($newImage instanceof NewMediaItem) {
-            $activityCollection = $activityCollection->withCoverImagePath(
-                $this->imageStorage->store(
-                    newImage: new NewImage(
-                        filename: $newImage->getFilename(),
-                        content: $newImage->getContent(),
-                    ),
-                    directory: ImageDirectory::ACTIVITY_COLLECTIONS,
-                )->toLocalImagePath()
-            );
+            $activityCollection = $activityCollection->withCoverImagePath(ltrim($this->mediaItemStorage->store(
+                newMediaItem: $newImage,
+                directory: MediaItemDirectory::ACTIVITY_COLLECTIONS,
+            )->getPath()->toUrlPath(), '/'));
         } elseif ($removedImage instanceof RemovedImage) {
             $activityCollection = $activityCollection->withCoverImagePath(null);
         }
@@ -77,7 +72,7 @@ final readonly class UpdateActivityCollectionCommandHandler implements CommandHa
         $this->activityCollectionRepository->update($activityCollection);
 
         if ($removedImage instanceof RemovedImage) {
-            $this->imageStorage->remove(ImagePath::fromLocalImagePath($removedImage->getId()));
+            $this->mediaItemStorage->remove(MediaItemId::fromUnprefixed(Path::fromString($removedImage->getId())->getFilenameWithoutExtension()));
         }
     }
 }
