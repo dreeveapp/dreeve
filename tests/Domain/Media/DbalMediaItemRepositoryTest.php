@@ -45,6 +45,7 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
                 [
                     'mediaItemId' => 'mediaItem-1',
                     'path' => 'activities/1.jpg',
+                    'type' => 'image',
                     'width' => 1200,
                     'height' => 800,
                     'coordinateLatitude' => 51.2,
@@ -54,6 +55,7 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
                 [
                     'mediaItemId' => 'mediaItem-2',
                     'path' => 'activities/2.m3u8',
+                    'type' => 'image',
                     'width' => null,
                     'height' => null,
                     'coordinateLatitude' => null,

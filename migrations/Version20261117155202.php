@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemType;
 use App\Domain\Media\Metadata\MediaItemMetadataReader;
 use App\Infrastructure\Serialization\Json;
 use Doctrine\DBAL\Schema\Schema;
@@ -19,7 +20,7 @@ final class Version20261117155202 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE MediaItem (mediaItemId VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, width INTEGER DEFAULT NULL, height INTEGER DEFAULT NULL, takenOn DATETIME DEFAULT NULL, coordinateLatitude DOUBLE PRECISION DEFAULT NULL, coordinateLongitude DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY (mediaItemId))');
+        $this->addSql('CREATE TABLE MediaItem (mediaItemId VARCHAR(255) NOT NULL, path VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, width INTEGER DEFAULT NULL, height INTEGER DEFAULT NULL, takenOn DATETIME DEFAULT NULL, coordinateLatitude DOUBLE PRECISION DEFAULT NULL, coordinateLongitude DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY (mediaItemId))');
         $this->addSql('ALTER TABLE Activity RENAME COLUMN localImagePaths TO mediaItemIds');
         $this->addSql('ALTER TABLE Activity DROP COLUMN totalImageCount');
         $this->addSql('ALTER TABLE ActivityCollection RENAME COLUMN coverImagePath TO coverMediaItemId');
@@ -99,11 +100,12 @@ final class Version20261117155202 extends AbstractMigration
         $metadata = false !== $content ? new MediaItemMetadataReader()->read($content) : null;
 
         $this->connection->executeStatement(
-            'INSERT INTO MediaItem (mediaItemId, path, width, height, coordinateLatitude, coordinateLongitude, takenOn)
-             VALUES (:mediaItemId, :path, :width, :height, :coordinateLatitude, :coordinateLongitude, :takenOn)',
+            'INSERT INTO MediaItem (mediaItemId, path, type, width, height, coordinateLatitude, coordinateLongitude, takenOn)
+             VALUES (:mediaItemId, :path, :type, :width, :height, :coordinateLatitude, :coordinateLongitude, :takenOn)',
             [
                 'mediaItemId' => $mediaItemId,
                 'path' => $path,
+                'type' => MediaItemType::IMAGE->value,
                 'width' => $metadata?->getWidth(),
                 'height' => $metadata?->getHeight(),
                 'coordinateLatitude' => $metadata?->getCoordinate()?->getLatitude()->toFloat(),

@@ -17,6 +17,8 @@ final readonly class MediaItem
         private MediaItemId $mediaItemId,
         #[ORM\Column(type: 'string')]
         private MediaItemPath $path,
+        #[ORM\Column(type: 'string', enumType: MediaItemType::class)]
+        private MediaItemType $type,
         #[ORM\Column(type: 'integer', nullable: true)]
         private ?int $width,
         #[ORM\Column(type: 'integer', nullable: true)]
@@ -39,6 +41,7 @@ final readonly class MediaItem
         return new self(
             mediaItemId: $mediaItemId,
             path: $path,
+            type: MediaItemType::IMAGE,
             width: $width,
             height: $height,
             coordinate: $coordinate,
@@ -49,6 +52,7 @@ final readonly class MediaItem
     public static function fromState(
         MediaItemId $mediaItemId,
         MediaItemPath $path,
+        MediaItemType $type,
         ?int $width,
         ?int $height,
         ?Coordinate $coordinate,
@@ -57,6 +61,7 @@ final readonly class MediaItem
         return new self(
             mediaItemId: $mediaItemId,
             path: $path,
+            type: $type,
             width: $width,
             height: $height,
             coordinate: $coordinate,
@@ -72,6 +77,11 @@ final readonly class MediaItem
     public function getPath(): MediaItemPath
     {
         return $this->path;
+    }
+
+    public function getType(): MediaItemType
+    {
+        return $this->type;
     }
 
     public function getWidth(): ?int
