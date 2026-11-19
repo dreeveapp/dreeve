@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Api;
 
 use App\Infrastructure\Config\PlatformEnvironment;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\ServerErrorLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -35,6 +36,7 @@ final readonly class ApiExceptionListener implements EventSubscriberInterface
 
         $statusCode = match (true) {
             $exception instanceof HttpExceptionInterface => $exception->getStatusCode(),
+            $exception instanceof EntityNotFound => Response::HTTP_NOT_FOUND,
             $exception instanceof \InvalidArgumentException,
             $exception instanceof BadRequestException => Response::HTTP_BAD_REQUEST,
             default => Response::HTTP_INTERNAL_SERVER_ERROR,
@@ -58,7 +60,8 @@ final readonly class ApiExceptionListener implements EventSubscriberInterface
                 default => ApiErrorCode::INTERNAL_ERROR,
             },
             message: match (true) {
-                $exception instanceof HttpExceptionInterface => $exception->getMessage(),
+                $exception instanceof HttpExceptionInterface,
+                $exception instanceof EntityNotFound => $exception->getMessage(),
                 PlatformEnvironment::DEV === $this->platformEnvironment => sprintf('%s: %s', $exception::class, $exception->getMessage()),
                 Response::HTTP_BAD_REQUEST === $statusCode => 'The request could not be processed.',
                 default => 'Something went wrong.',

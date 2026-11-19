@@ -8,7 +8,6 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Api\ProvidePagination;
 use App\Infrastructure\Repository\Pagination;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,7 +31,7 @@ final readonly class ActivitySegmentEffortsRequestHandler
     {
         try {
             $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
 

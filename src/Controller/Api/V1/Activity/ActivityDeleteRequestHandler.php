@@ -10,7 +10,6 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\DeleteActivities\DeleteActivities;
 use App\Domain\Import\ImportMode;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +40,7 @@ final readonly class ActivityDeleteRequestHandler
 
         try {
             $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
 

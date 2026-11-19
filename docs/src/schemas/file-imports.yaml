@@ -213,7 +213,7 @@ paths:
               examples:
                 unknownFileImport:
                   summary: No such file import
-                  value: { error: not_found, message: 'File import "fileImport-1" not found' }
+                  value: { error: not_found, message: 'File import "fileImport-1" is no longer available' }
                 withoutFile:
                   summary: A skipped duplicate
                   value:

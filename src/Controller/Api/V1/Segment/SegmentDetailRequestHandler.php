@@ -7,7 +7,6 @@ namespace App\Controller\Api\V1\Segment;
 use App\Domain\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Segment\SegmentId;
 use App\Domain\Segment\SegmentRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,7 +25,7 @@ final readonly class SegmentDetailRequestHandler
     {
         try {
             $segment = $this->segmentRepository->find(SegmentId::fromString($segmentId));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Segment "%s" not found', $segmentId));
         }
 

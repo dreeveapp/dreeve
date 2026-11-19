@@ -70,8 +70,8 @@ class ActivityDetailRequestHandlerTest extends ControllerWebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
         $this->assertSame(
-            'not_found',
-            Json::decode((string) $this->client->getResponse()->getContent())['error']
+            ['error' => 'not_found', 'message' => sprintf('Activity "%s" not found', $activityId)],
+            Json::decode((string) $this->client->getResponse()->getContent())
         );
     }
 

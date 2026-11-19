@@ -14,7 +14,6 @@ use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemRepository;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Api\ApiErrorCode;
 use App\Infrastructure\Http\Api\ApiErrorResponse;
 use App\Infrastructure\Http\Api\CouldNotReadUploadedFilePart;
@@ -55,7 +54,7 @@ final readonly class ActivityImageAddRequestHandler
 
         try {
             $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
 
