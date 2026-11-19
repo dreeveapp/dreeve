@@ -1,0 +1,20 @@
+{% set activity = activity ?? null %}
+{% set mediaItems = mediaItems ?? [] %}
+{% set dropzone = { name: 'mediaItems', maxImages: 5, mediaItems: mediaItems } %}
+{% if activity %}
+    {% set metadata = {} %}
+    {% for mediaItem in mediaItems %}
+        {% set takenOn = mediaItem.getTakenOn() %}
+        {% set coordinate = mediaItem.getCoordinate() %}
+        {% set metadata = metadata|merge({ (mediaItem.getId() ~ ''): [
+            { icon: 'calendar', label: takenOn ? takenOn|formatDate('normal') : 'No date'|trans({}, 'admin'), missing: takenOn is null },
+            { icon: 'globe', label: coordinate ? 'Location set'|trans({}, 'admin') : 'No location'|trans({}, 'admin'), missing: coordinate is null },
+        ] }) %}
+    {% endfor %}
+    {% set dropzone = dropzone|merge({
+        editRoute: 'admin_edit_activity_media_item',
+        editRouteParameters: {activityId: activity.getId()},
+        metadata: metadata,
+    }) %}
+{% endif %}
+{% include 'html/admin/component/image-dropzone-upload.html.twig' with dropzone %}

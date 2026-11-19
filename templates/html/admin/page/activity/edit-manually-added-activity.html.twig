@@ -119,15 +119,7 @@
                 </div>
                 <div>
                     <label>{{ "Images"|trans({}, 'admin') }}</label>
-                    {% set dropzone = { name: 'mediaItems', maxImages: 5 } %}
-                    {% if activity %}
-                        {% set dropzone = dropzone|merge({
-                            mediaItems: mediaItems,
-                            editRoute: 'admin_edit_activity_media_item',
-                            editRouteParameters: {activityId: activity.getId()},
-                        }) %}
-                    {% endif %}
-                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with dropzone %}
+                    {% include 'html/admin/page/activity/_image-dropzone.html.twig' %}
                 </div>
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     {% if activity and importMode.isFiles() %}

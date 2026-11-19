@@ -286,6 +286,7 @@ Latitude: Latitud
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Idioma
+'Location set': 'Location set'
 Log: Registro
 'Log maintenance': 'Registrar mantenimiento'
 'Long date format': 'Long date format'
@@ -329,9 +330,11 @@ Monday: Lunes
 'No backups yet.': 'No backups yet.'
 'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Aún no hay componentes.'
+'No date': 'No date'
 'No file imports match the current filters.': 'Ninguna importación de archivos coincide con los filtros actuales.'
 'No files imported yet.': 'Aún no se han importado archivos.'
 'No gears added yet.': 'Aún no se ha añadido ningún equipamiento.'
+'No location': 'No location'
 'No maintenance logs yet.': 'Aún no hay registros de mantenimiento.'
 'No recording devices yet.': 'Aún no hay dispositivos de grabación.'
 'No rule applies': 'No se aplica ninguna regla'

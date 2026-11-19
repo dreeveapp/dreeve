@@ -21,6 +21,10 @@ use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\Twig\SvgsTwigExtension;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Geography\Latitude;
+use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -158,7 +162,10 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
                 ->withGearId(GearId::fromUnprefixed('custom-gear'))
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
-                ->withMediaItemIds(MediaItemId::fromUnprefixed('image'))
+                ->withMediaItemIds(
+                    MediaItemId::fromUnprefixed('image'),
+                    MediaItemId::fromUnprefixed('image-with-metadata'),
+                )
                 ->build(),
             [],
         ));
@@ -166,6 +173,15 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         static::getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('image'))
             ->withPath(MediaItemPath::fromString('activities/image.jpg'))
+            ->build());
+        static::getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('image-with-metadata'))
+            ->withPath(MediaItemPath::fromString('activities/image-with-metadata.jpg'))
+            ->withCoordinate(Coordinate::createFromLatAndLng(
+                latitude: Latitude::fromString('51.2'),
+                longitude: Longitude::fromString('3.2'),
+            ))
+            ->withTakenOn(SerializableDateTime::fromString('2023-10-17 16:30:00'))
             ->build());
 
         $this->client->loginUser($this->adminUser());
@@ -210,13 +226,40 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
 
         // The existing image can be managed.
         $this->assertCount(1, $crawler->filter('[data-image-dropzone]'));
+        $svgs = static::getContainer()->get(SvgsTwigExtension::class);
+        $calendarIcon = $svgs->svg(
+            name: 'calendar',
+            size: 'size-3',
+            iconColor: 'shrink-0',
+        );
+        $globeIcon = $svgs->svg(
+            name: 'globe',
+            size: 'size-3',
+            iconColor: 'shrink-0',
+        );
         $this->assertSame(
-            [[
-                'url' => '/files/activities/image.jpg',
-                'name' => 'image.jpg',
-                'id' => 'mediaItem-image',
-                'editUrl' => '/admin/activities/activity-1/media/mediaItem-image/edit?redirectTo=%2Fadmin%2Factivities%2Factivity-1%2Fedit',
-            ]],
+            [
+                [
+                    'url' => '/files/activities/image.jpg',
+                    'name' => 'image.jpg',
+                    'id' => 'mediaItem-image',
+                    'editUrl' => '/admin/activities/activity-1/media/mediaItem-image/edit?redirectTo=%2Fadmin%2Factivities%2Factivity-1%2Fedit',
+                    'metadata' => [
+                        ['icon' => $calendarIcon, 'label' => 'No date', 'missing' => true],
+                        ['icon' => $globeIcon, 'label' => 'No location', 'missing' => true],
+                    ],
+                ],
+                [
+                    'url' => '/files/activities/image-with-metadata.jpg',
+                    'name' => 'image-with-metadata.jpg',
+                    'id' => 'mediaItem-image-with-metadata',
+                    'editUrl' => '/admin/activities/activity-1/media/mediaItem-image-with-metadata/edit?redirectTo=%2Fadmin%2Factivities%2Factivity-1%2Fedit',
+                    'metadata' => [
+                        ['icon' => $calendarIcon, 'label' => '17-10-2023', 'missing' => false],
+                        ['icon' => $globeIcon, 'label' => 'Location set', 'missing' => false],
+                    ],
+                ],
+            ],
             Json::decode((string) $crawler->filter('[data-image-dropzone]')->attr('data-existing-images')),
         );
 

@@ -286,6 +286,7 @@ Latitude: Breedtegraad
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Taalinstelling
+'Location set': 'Location set'
 Log: Log
 'Log maintenance': 'Onderhoud loggen'
 'Long date format': 'Long date format'
@@ -329,9 +330,11 @@ Monday: Maandag
 'No backups yet.': 'No backups yet.'
 'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Nog geen onderdelen.'
+'No date': 'No date'
 'No file imports match the current filters.': 'Geen bestandsimports die overeenkomen met de huidige filters.'
 'No files imported yet.': 'Nog geen bestanden geïmporteerd.'
 'No gears added yet.': 'Nog geen uitrusting toegevoegd.'
+'No location': 'No location'
 'No maintenance logs yet.': 'Nog geen onderhoudslogs.'
 'No recording devices yet.': 'Nog geen registratietoestellen.'
 'No rule applies': 'Geen enkele regel van toepassing'

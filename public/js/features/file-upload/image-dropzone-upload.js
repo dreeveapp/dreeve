@@ -17,6 +17,7 @@ class ImageDropzoneUpload {
         this.clearBtn = root.querySelector('[data-clear-btn]');
         this.field = root.querySelector('[data-images-field]');
         this.itemTemplate = root.querySelector('[data-item-template]');
+        this.metadataItemTemplate = root.querySelector('[data-metadata-item-template]');
 
         this.files = [];
         this.limitReached = false;
@@ -49,6 +50,7 @@ class ImageDropzoneUpload {
             ok: true,
             preview: image.url,
             editUrl: image.editUrl ?? null,
+            metadata: image.metadata ?? [],
             content: null,
         }));
 
@@ -189,6 +191,18 @@ class ImageDropzoneUpload {
             li.querySelector('.meta').textContent = file.status === ImageStatus.New
                 ? metaFor(file, this.translations)
                 : this.translations.existingImage;
+            if (file.metadata?.length) {
+                const metadata = li.querySelector('[data-metadata]');
+                file.metadata.forEach((item) => {
+                    const element = this.metadataItemTemplate.content.firstElementChild.cloneNode(true);
+                    element.querySelector('[data-icon]').innerHTML = item.icon;
+                    element.querySelector('[data-label]').textContent = item.label;
+                    element.toggleAttribute('data-missing', item.missing);
+                    metadata.appendChild(element);
+                });
+                metadata.hidden = false;
+                li.querySelector('.meta').hidden = true;
+            }
             const editLink = li.querySelector('[data-edit-file]');
             if (file.editUrl) {
                 editLink.href = file.editUrl;

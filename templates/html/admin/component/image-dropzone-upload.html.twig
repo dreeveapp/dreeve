@@ -5,11 +5,19 @@
     {% set maxTotalSize = maxTotalSize ?? 45 %}
     {% set editRoute = editRoute ?? null %}
     {% set editRouteParameters = editRouteParameters ?? {} %}
+    {% set metadata = metadata ?? {} %}
     {% set existingImages = [] %}
     {% for mediaItem in mediaItems ?? [] %}
         {% set existingImage = { url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId() } %}
         {% if editRoute %}
             {% set existingImage = existingImage|merge({ editUrl: relativeUrlWithRedirectTo(path(editRoute, editRouteParameters|merge({mediaItemId: mediaItem.getId()})), app.request.requestUri) }) %}
+        {% endif %}
+        {% set metadataItems = [] %}
+        {% for metadataItem in metadata[mediaItem.getId() ~ ''] ?? [] %}
+            {% set metadataItems = metadataItems|merge([{ icon: svg(metadataItem.icon, 'size-3', 'shrink-0'), label: metadataItem.label, missing: metadataItem.missing }]) %}
+        {% endfor %}
+        {% if metadataItems is not empty %}
+            {% set existingImage = existingImage|merge({ metadata: metadataItems }) %}
         {% endif %}
         {% set existingImages = existingImages|merge([existingImage]) %}
     {% endfor %}
@@ -75,6 +83,7 @@
                 <span class="flex flex-col min-w-0 flex-1">
                     <span class="name text-sm font-medium text-gray-800 truncate"></span>
                     <span class="meta text-xs text-gray-500 in-[.is-invalid]:text-red-500"></span>
+                    <span data-metadata hidden class="flex items-center gap-3 text-xs"></span>
                 </span>
                 <div class="flex items-center shrink-0">
                     <a data-edit-file hidden class="grid place-items-center size-9 shrink-0 p-0 rounded-lg border-0 bg-transparent text-gray-400 shadow-none cursor-pointer transition-colors hover:bg-gray-100 hover:text-gray-900" aria-label="{{ "Edit"|trans({}, 'admin') }}">
@@ -87,6 +96,12 @@
                     </button>
                 </div>
             </li>
+        </template>
+        <template data-metadata-item-template>
+            <span class="flex items-center gap-1 text-gray-500 data-missing:text-gray-300">
+                <span data-icon class="contents"></span>
+                <span data-label></span>
+            </span>
         </template>
         <div class="mt-3">
             <button type="button" data-clear-btn class="hidden btn--secondary">{{ "Clear"|trans({}, 'admin') }}</button>
