@@ -1,10 +1,10 @@
 import {Dropdown} from 'flowbite';
 import {eventBus, Events} from '../../core/event-bus';
+import {initComponents} from '../../core/component-registry';
 
 const ROOT_SELECTOR = '[data-combobox]';
 const OPTION_SELECTOR = '[data-combobox-option]';
 
-const instances = new Map();
 let instanceCount = 0;
 
 class Combobox {
@@ -169,27 +169,8 @@ class Combobox {
     }
 }
 
-const destroyDetachedComboboxes = () => {
-    instances.forEach((combobox, root) => {
-        if (document.contains(root)) {
-            return;
-        }
-        combobox.destroy();
-        instances.delete(root);
-    });
-};
-
 export default function initComboboxes(rootNode = document) {
-    destroyDetachedComboboxes();
-
-    rootNode.querySelectorAll(ROOT_SELECTOR).forEach((root) => {
-        if (instances.has(root)) {
-            return;
-        }
-        const combobox = new Combobox(root);
-        instances.set(root, combobox);
-        combobox.init();
-    });
+    initComponents(rootNode, ROOT_SELECTOR, Combobox);
 }
 
 eventBus.on(Events.REPEATER_CHANGED, ({repeater}) => initComboboxes(repeater));

@@ -1,9 +1,8 @@
 import {Dropdown} from 'flowbite';
 import {eventBus, Events} from '../../core/event-bus';
+import {getComponent, initComponents} from '../../core/component-registry';
 
 const MAX_VISIBLE_CHIPS = 3;
-
-const instances = new WeakMap();
 
 class CheckboxMultiselect {
     constructor(root) {
@@ -144,16 +143,11 @@ class CheckboxMultiselect {
 }
 
 export const validateMultiselects = (form) => Array.from(form.querySelectorAll('[data-multiselect]'))
-    .map((root) => instances.get(root)?.validate() ?? true)
+    .map((root) => getComponent(root, CheckboxMultiselect)?.validate() ?? true)
     .every(Boolean);
 
 export default function initCheckboxMultiselects(rootNode = document) {
-    rootNode.querySelectorAll('[data-multiselect]').forEach((root) => {
-        if (instances.has(root)) return;
-        const instance = new CheckboxMultiselect(root);
-        instances.set(root, instance);
-        instance.init();
-    });
+    initComponents(rootNode, '[data-multiselect]', CheckboxMultiselect);
 }
 
 eventBus.on(Events.REPEATER_CHANGED, ({repeater}) => initCheckboxMultiselects(repeater));

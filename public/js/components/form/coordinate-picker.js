@@ -1,4 +1,5 @@
 import {eventBus, Events} from '../../core/event-bus';
+import {initComponents} from '../../core/component-registry';
 
 const ROOT_SELECTOR = '[data-coordinate-picker]';
 const MAP_SELECTOR = '[data-coordinate-picker-map]';
@@ -8,8 +9,6 @@ const MIN_ZOOM = 1;
 const MAX_ZOOM = 17;
 const WORLD_ZOOM = 2;
 const COORDINATE_ZOOM = 13;
-
-const instances = new Map();
 
 const numberOf = (field) => {
     const value = parseFloat(field?.value ?? '');
@@ -235,28 +234,8 @@ class CoordinatePicker {
     }
 }
 
-const destroyDetachedPickers = () => {
-    instances.forEach((picker, root) => {
-        if (document.contains(root)) {
-            return;
-        }
-        picker.destroy();
-        instances.delete(root);
-    });
-};
-
 export default function initCoordinatePickers(rootNode = document) {
-    destroyDetachedPickers();
-
-    rootNode.querySelectorAll(ROOT_SELECTOR).forEach((root) => {
-        if (instances.has(root)) {
-            return;
-        }
-
-        const picker = new CoordinatePicker(root);
-        instances.set(root, picker);
-        picker.init();
-    });
+    initComponents(rootNode, ROOT_SELECTOR, CoordinatePicker);
 }
 
 eventBus.on(Events.REPEATER_CHANGED, ({repeater}) => initCoordinatePickers(repeater));
