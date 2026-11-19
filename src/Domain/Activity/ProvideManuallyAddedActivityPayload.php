@@ -11,8 +11,6 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 trait ProvideManuallyAddedActivityPayload
 {
-    public const string START_DATE_TIME_FORMAT = 'Y-m-d\TH:i';
-
     /**
      * @param array<string, mixed> $payload
      */
@@ -67,18 +65,11 @@ trait ProvideManuallyAddedActivityPayload
             throw CouldNotDeserializeCommand::invalidPayload('A "startDateTime" is required.');
         }
 
-        $startDateTime = trim($payload['startDateTime']);
-        // The datetime-local input omits the seconds when they are zero, trim them when present.
-        if (19 === strlen($startDateTime)) {
-            $startDateTime = substr($startDateTime, 0, 16);
-        }
-
-        $parsed = \DateTimeImmutable::createFromFormat(self::START_DATE_TIME_FORMAT, $startDateTime);
-        if (!$parsed || $parsed->format(self::START_DATE_TIME_FORMAT) !== $startDateTime) {
+        try {
+            return SerializableDateTime::fromLocalDateTimeString($payload['startDateTime']);
+        } catch (\InvalidArgumentException) {
             throw CouldNotDeserializeCommand::invalidPayload('The "startDateTime" is invalid.');
         }
-
-        return SerializableDateTime::createFromFormat(self::START_DATE_TIME_FORMAT, $startDateTime);
     }
 
     /**

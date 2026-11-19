@@ -42,6 +42,20 @@ class SerializableDateTime extends \DateTimeImmutable implements \JsonSerializab
         );
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
+    public static function fromLocalDateTimeString(string $value): self
+    {
+        $value = trim($value);
+        // The datetime-local input omits the seconds when they are zero, trim them when present.
+        if (19 === strlen($value)) {
+            $value = substr($value, 0, 16);
+        }
+
+        return self::createFromFormat('Y-m-d\TH:i', $value);
+    }
+
     public static function some(): self
     {
         return self::fromString('2025-01-01 00:00:00');
