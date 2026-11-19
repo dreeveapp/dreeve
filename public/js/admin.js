@@ -19,10 +19,9 @@ import initDashboardLayout from "./features/dashboard/dashboard-layout";
 import initSortableLists from "./components/sortable-list";
 import initAsyncContent from "./components/async-content";
 import {eventBus, Events} from "./core/event-bus";
-import {initDrawers, initCollapses} from "flowbite";
+import {initDrawers} from "flowbite";
 
 initDrawers();
-initCollapses();
 
 initPasswordToggle();
 initFormLoadingState();
