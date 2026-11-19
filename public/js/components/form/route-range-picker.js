@@ -2,14 +2,13 @@ import {fetchJson} from "../../utils";
 import {loadEcharts} from "../../features/charts/echarts-loader";
 import {registerEchartsCallbacks, resolveEchartsCallbacks} from "../../features/charts/echarts-callbacks";
 import {isDarkModeEnabled} from "../dark-mode";
-import {END_MARKER_COLOR, MARKER_BORDER_COLOR, START_MARKER_COLOR} from "../../features/maps/route-marker-colors";
+import {END_MARKER_COLOR, MARKER_BORDER_COLOR, PRIMARY_COLOR, START_MARKER_COLOR} from "../../features/maps/map-colors";
 import {createAdminLeafletMap} from "../../features/maps/admin-leaflet-map";
 
 const ROOT_SELECTOR = '[data-route-range-picker]';
 const MAP_SELECTOR = '[data-route-range-picker-map]';
 const CHART_SELECTOR = '[data-route-range-picker-chart]';
 const ROUTE_COLOR = '#9CA3AF';
-const SELECTION_COLOR = '#F26722';
 
 const markerIcon = (L, fillColor) => L.divIcon({
     className: '',
@@ -155,7 +154,7 @@ class RouteRangePicker {
         const points = this.route.points;
         this.layers = {
             route: L.polyline(points, {color: ROUTE_COLOR, weight: 4, interactive: false}).addTo(this.map),
-            selection: L.polyline([], {color: SELECTION_COLOR, weight: 6, interactive: false}).addTo(this.map),
+            selection: L.polyline([], {color: PRIMARY_COLOR, weight: 6, interactive: false}).addTo(this.map),
             start: L.marker(points[0], {draggable: true, icon: markerIcon(L, START_MARKER_COLOR)}).addTo(this.map),
             end: L.marker(points[points.length - 1], {draggable: true, icon: markerIcon(L, END_MARKER_COLOR)}).addTo(this.map),
         };
@@ -244,7 +243,7 @@ class RouteRangePicker {
             series: [{
                 markArea: {
                     silent: true,
-                    itemStyle: {color: SELECTION_COLOR, opacity: .25},
+                    itemStyle: {color: PRIMARY_COLOR, opacity: .25},
                     data: [[{xAxis: start}, {xAxis: end}]],
                 },
             }],

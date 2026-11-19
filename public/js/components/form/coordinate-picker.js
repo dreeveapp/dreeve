@@ -2,11 +2,11 @@ import {eventBus, Events} from '../../core/event-bus';
 import {initComponents} from '../../core/component-registry';
 import {fetchJson} from '../../utils';
 import {createAdminLeafletMap, MAX_ZOOM} from '../../features/maps/admin-leaflet-map';
+import {PRIMARY_COLOR} from '../../features/maps/map-colors';
 
 const ROOT_SELECTOR = '[data-coordinate-picker]';
 const MAP_SELECTOR = '[data-coordinate-picker-map]';
 const WARNING_SELECTOR = '[data-coordinate-picker-warning]';
-const COLOR = '#F26722';
 const MIN_ZOOM = 1;
 const WORLD_ZOOM = 2;
 const COORDINATE_ZOOM = 13;
@@ -114,7 +114,7 @@ class CoordinatePicker {
         }
 
         this.routes = this.L.featureGroup(polylines.map((coordinates) => this.L.polyline(coordinates, {
-            color: COLOR,
+            color: PRIMARY_COLOR,
             weight: 2,
             opacity: .9,
             noClip: true,
@@ -243,7 +243,7 @@ class CoordinatePicker {
         if (!this.circle) {
             this.circle = this.L.circle(coordinate, {
                 radius,
-                color: COLOR,
+                color: PRIMARY_COLOR,
                 weight: 2,
                 fillOpacity: .15,
                 interactive: false,
