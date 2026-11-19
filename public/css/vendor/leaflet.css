@@ -35,6 +35,14 @@
         @apply rounded-full border-2 border-[#ffffff] bg-[#2563eb] shadow-md;
     }
 
+    .leaflet-image-marker {
+        @apply block size-10 rounded-lg overflow-hidden border-2 border-[#ffffff] shadow-md;
+
+        & img {
+            @apply w-full! h-full object-cover;
+        }
+    }
+
     @keyframes leaflet-ctrl-scroll-zoom-fadein {
         from { opacity: 0; }
         to   { opacity: 1; }

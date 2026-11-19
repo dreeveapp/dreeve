@@ -64,6 +64,7 @@ export default class LeafletMap {
         }
 
         featureGroup.addTo(this.map);
+        (this.data.imageMarkers || []).forEach(imageMarker => this.addImageMarker(imageMarker).addTo(this.map));
         this.map.fitBounds(featureGroup.getBounds(), {maxZoom: this.data.maxZoom});
         if (this.isInteractive) {
             this.map.addControl(createMapToolsControl({bounds: featureGroup.getBounds()}));
@@ -119,6 +120,28 @@ export default class LeafletMap {
             fillColor,
             fillOpacity: opacity,
             opacity,
+        });
+    }
+
+    addImageMarker({latLng, imageUrl, lightGalleryTarget}) {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.className = 'leaflet-image-marker';
+        link.setAttribute('data-light-gallery-target', lightGalleryTarget);
+
+        const image = document.createElement('img');
+        image.src = imageUrl;
+        image.alt = '';
+        image.loading = 'lazy';
+        link.appendChild(image);
+
+        return L.marker(latLng, {
+            keyboard: false,
+            icon: L.divIcon({
+                html: link,
+                className: '',
+                iconSize: [40, 40],
+            }),
         });
     }
 
