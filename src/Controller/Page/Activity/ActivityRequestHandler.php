@@ -26,6 +26,7 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\FileImportRepository;
+use App\Domain\Media\MediaItemCacheTag;
 use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
@@ -91,6 +92,7 @@ final readonly class ActivityRequestHandler
                     RootCacheTag::SETTINGS_GENERAL,
                     RootCacheTag::SETTINGS_ATHLETE_WEIGHT,
                     RootCacheTag::SETTINGS_ATHLETE_FTP,
+                    ...MediaItemCacheTag::forAll($activity->getMediaItemIds()),
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class, TrustedVisitorCacheContext::class),
             ),

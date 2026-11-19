@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Media;
 
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -11,9 +12,17 @@ use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Connection;
 
 final readonly class DbalMediaItemRepository extends DbalRepository implements MediaItemRepository
 {
+    public function __construct(
+        Connection $connection,
+        private EventBus $eventBus,
+    ) {
+        parent::__construct($connection);
+    }
+
     public function add(MediaItem $mediaItem): void
     {
         $sql = 'INSERT INTO MediaItem (mediaItemId, path, type, width, height, coordinateLatitude, coordinateLongitude, takenOn)
@@ -51,6 +60,8 @@ final readonly class DbalMediaItemRepository extends DbalRepository implements M
             'coordinateLongitude' => $mediaItem->getCoordinate()?->getLongitude()->toFloat(),
             'takenOn' => $mediaItem->getTakenOn(),
         ]);
+
+        $this->eventBus->publishEvents($mediaItem->getRecordedEvents());
     }
 
     public function delete(MediaItem $mediaItem): void

@@ -15,6 +15,7 @@ enum RootCacheTag: string implements CacheTag
     case ACTIVITY_IMAGES = 'activity.images';
     case ACTIVITY_ROUTE = 'activity.route';
     case ACTIVITY_COLLECTIONS = 'activity.collections';
+    case MEDIA_ITEMS = 'media.items';
     case SEGMENTS = 'segments';
     case CHALLENGES = 'challenges';
     case GEAR = 'gear';

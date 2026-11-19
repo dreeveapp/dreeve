@@ -4,31 +4,34 @@ declare(strict_types=1);
 
 namespace App\Domain\Media;
 
+use App\Infrastructure\Eventing\RecordsEvents;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'MediaItem')]
-final readonly class MediaItem
+final class MediaItem
 {
+    use RecordsEvents;
+
     public const int MAX_DISTANCE_FROM_ROUTE_IN_METER = 300;
 
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
-        private MediaItemId $mediaItemId,
+        private readonly MediaItemId $mediaItemId,
         #[ORM\Column(type: 'string')]
-        private MediaItemPath $path,
+        private readonly MediaItemPath $path,
         #[ORM\Column(type: 'string', enumType: MediaItemType::class)]
-        private MediaItemType $type,
+        private readonly MediaItemType $type,
         #[ORM\Column(type: 'integer', nullable: true)]
-        private ?int $width,
+        private readonly ?int $width,
         #[ORM\Column(type: 'integer', nullable: true)]
-        private ?int $height,
+        private readonly ?int $height,
         #[ORM\Embedded(class: Coordinate::class)]
-        private ?Coordinate $coordinate,
+        private readonly ?Coordinate $coordinate,
         #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-        private ?SerializableDateTime $takenOn,
+        private readonly ?SerializableDateTime $takenOn,
     ) {
     }
 
@@ -108,16 +111,22 @@ final readonly class MediaItem
 
     public function withCoordinate(?Coordinate $coordinate): self
     {
-        return clone ($this, [
+        $mediaItem = clone ($this, [
             'coordinate' => $coordinate,
         ]);
+        $mediaItem->recordOnlyOnce(new MediaItemWasUpdated($this->mediaItemId));
+
+        return $mediaItem;
     }
 
     public function withTakenOn(?SerializableDateTime $takenOn): self
     {
-        return clone ($this, [
+        $mediaItem = clone ($this, [
             'takenOn' => $takenOn,
         ]);
+        $mediaItem->recordOnlyOnce(new MediaItemWasUpdated($this->mediaItemId));
+
+        return $mediaItem;
     }
 
     public function getOrientation(): ImageOrientation
