@@ -121,7 +121,7 @@
                 </div>
                 <div>
                     <label>{{ "Image"|trans({}, 'admin') }}</label>
-                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'mediaItem', maxImages: 1, mediaItems: component and component.getMediaItem() ? [component.getMediaItem()] : [] } %}
+                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'mediaItem', maxImages: 1, images: component and component.getMediaItem() ? [{mediaItem: component.getMediaItem()}] : [] } %}
                 </div>
                 <div data-repeater data-repeater-min="0">
                     <label>{{ "Maintenance tasks"|trans({}, 'admin') }}</label>

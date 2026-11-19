@@ -3,21 +3,14 @@
     {% set maxImages = maxImages ?? 1 %}
     {% set maxFileSize = maxFileSize ?? 15 %}
     {% set maxTotalSize = maxTotalSize ?? 45 %}
-    {% set editRoute = editRoute ?? null %}
-    {% set editRouteParameters = editRouteParameters ?? {} %}
-    {% set metadata = metadata ?? {} %}
     {% set existingImages = [] %}
-    {% for mediaItem in mediaItems ?? [] %}
-        {% set existingImage = { url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId() } %}
-        {% if editRoute %}
-            {% set existingImage = existingImage|merge({ editUrl: relativeUrlWithRedirectTo(path(editRoute, editRouteParameters|merge({mediaItemId: mediaItem.getId()})), app.request.requestUri) }) %}
+    {% for image in images ?? [] %}
+        {% set existingImage = { url: relativeUrl(image.mediaItem.getPath().toUrlPath()), name: image.mediaItem.getPath().getFilename(), id: image.mediaItem.getId() } %}
+        {% if image.editUrl is defined %}
+            {% set existingImage = existingImage|merge({ editUrl: image.editUrl }) %}
         {% endif %}
-        {% set metadataItems = [] %}
-        {% for metadataItem in metadata[mediaItem.getId() ~ ''] ?? [] %}
-            {% set metadataItems = metadataItems|merge([{ icon: svg(metadataItem.icon, 'size-3', 'shrink-0'), label: metadataItem.label, missing: metadataItem.missing }]) %}
-        {% endfor %}
-        {% if metadataItems is not empty %}
-            {% set existingImage = existingImage|merge({ metadata: metadataItems }) %}
+        {% if (image.metadata ?? []) is not empty %}
+            {% set existingImage = existingImage|merge({ metadata: image.metadata|map(item => { icon: svg(item.icon, 'size-3', 'shrink-0'), label: item.label, missing: item.missing }) }) %}
         {% endif %}
         {% set existingImages = existingImages|merge([existingImage]) %}
     {% endfor %}

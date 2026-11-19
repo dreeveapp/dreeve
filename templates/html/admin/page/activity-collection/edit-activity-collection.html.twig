@@ -29,7 +29,7 @@
                 </div>
                 <div>
                     <label>{{ "Cover image"|trans({}, 'admin') }}</label>
-                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'coverMediaItem', maxImages: 1, mediaItems: activityCollection and activityCollection.getCoverMediaItem() ? [activityCollection.getCoverMediaItem()] : [] } %}
+                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'coverMediaItem', maxImages: 1, images: activityCollection and activityCollection.getCoverMediaItem() ? [{mediaItem: activityCollection.getCoverMediaItem()}] : [] } %}
                     <p class="description">{{ "Without a cover image, the first photo of the collection's activities is used."|trans({}, 'admin') }}</p>
                 </div>
                 <div class="flex items-start gap-2">
