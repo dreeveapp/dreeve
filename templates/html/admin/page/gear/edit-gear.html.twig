@@ -52,12 +52,7 @@
             </div>
             <div>
                 <label>{{ "Image"|trans({}, 'admin') }}</label>
-                {% set existingImages = [] %}
-                {% if gear and gear.getMediaItem() %}
-                    {% set mediaItem = gear.getMediaItem() %}
-                    {% set existingImages = [{ url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId() }] %}
-                {% endif %}
-                {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'mediaItem', maxImages: 1, existingImages: existingImages } %}
+                {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'mediaItem', maxImages: 1, mediaItems: gear and gear.getMediaItem() ? [gear.getMediaItem()] : [] } %}
             </div>
             <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                 {% if isDeletable %}

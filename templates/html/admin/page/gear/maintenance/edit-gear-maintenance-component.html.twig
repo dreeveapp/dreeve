@@ -4,11 +4,6 @@
     {% set configUrl = relativeUrl(path('admin_manage_gear_maintenance_config')) %}
     {% set purchasePrice = component ? component.getPurchasePrice() : null %}
     {% set purchasePriceCurrency = purchasePrice ? purchasePrice.getCurrency().getCode() : 'EUR' %}
-    {% set existingImages = [] %}
-    {% if component and component.getMediaItem() %}
-        {% set mediaItem = component.getMediaItem() %}
-        {% set existingImages = [{url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId()}] %}
-    {% endif %}
     {% set initialTasks = [] %}
     {% if component %}
         {% for task in component.getMaintenanceTasks() %}
@@ -126,7 +121,7 @@
                 </div>
                 <div>
                     <label>{{ "Image"|trans({}, 'admin') }}</label>
-                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'mediaItem', maxImages: 1, existingImages: existingImages } %}
+                    {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'mediaItem', maxImages: 1, mediaItems: component and component.getMediaItem() ? [component.getMediaItem()] : [] } %}
                 </div>
                 <div data-repeater data-repeater-min="0">
                     <label>{{ "Maintenance tasks"|trans({}, 'admin') }}</label>
