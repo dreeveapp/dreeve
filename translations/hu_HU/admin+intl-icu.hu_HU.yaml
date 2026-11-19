@@ -286,6 +286,7 @@ Latitude: Szélesség
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Nyelv
+'Location set': 'Location set'
 Log: Napló
 'Log maintenance': 'Karbantartás naplózása'
 'Long date format': 'Long date format'
@@ -329,9 +330,11 @@ Monday: Hétfő
 'No backups yet.': 'No backups yet.'
 'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'Még nincsenek komponensek.'
+'No date': 'No date'
 'No file imports match the current filters.': 'Egyetlen fájlimport sem felel meg a jelenlegi szűrőknek.'
 'No files imported yet.': 'Még nincsenek importált fájlok.'
 'No gears added yet.': 'Még nincs hozzáadott felszerelés.'
+'No location': 'No location'
 'No maintenance logs yet.': 'Még nincsenek karbantartási naplók.'
 'No recording devices yet.': 'Még nincsenek rögzítő eszközök.'
 'No rule applies': 'Nincs érvényes szabály'

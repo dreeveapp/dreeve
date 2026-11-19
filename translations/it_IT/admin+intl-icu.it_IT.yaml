@@ -286,6 +286,7 @@ Latitude: Latitude
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Locale
+'Location set': 'Location set'
 Log: Log
 'Log maintenance': 'Log maintenance'
 'Long date format': 'Long date format'
@@ -329,9 +330,11 @@ Monday: Monday
 'No backups yet.': 'No backups yet.'
 'No collections added yet.': 'No collections added yet.'
 'No components yet.': 'No components yet.'
+'No date': 'No date'
 'No file imports match the current filters.': 'No file imports match the current filters.'
 'No files imported yet.': 'No files imported yet.'
 'No gears added yet.': 'No gears added yet.'
+'No location': 'No location'
 'No maintenance logs yet.': 'No maintenance logs yet.'
 'No recording devices yet.': 'No recording devices yet.'
 'No rule applies': 'No rule applies'

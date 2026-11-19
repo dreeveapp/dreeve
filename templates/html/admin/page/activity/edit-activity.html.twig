@@ -104,13 +104,7 @@
                 {% if not isImportedFromStrava %}
                     <div>
                         <label>{{ "Images"|trans({}, 'admin') }}</label>
-                        {% include 'html/admin/component/image-dropzone-upload.html.twig' with {
-                            name: 'mediaItems',
-                            maxImages: 5,
-                            mediaItems: mediaItems,
-                            editRoute: 'admin_edit_activity_media_item',
-                            editRouteParameters: {activityId: activity.getId()},
-                        } %}
+                        {% include 'html/admin/page/activity/_image-dropzone.html.twig' %}
                     </div>
                 {% endif %}
                 <div>
