@@ -65,7 +65,7 @@ export default function initDataTables(rootNode) {
             },
         });
 
-        fetch(settings.url, {cache: 'no-store'}).then(async (response) => {
+        fetch(settings.url).then(async (response) => {
             unsortedRows = await response.json();
             dataRows = sorter.apply([...unsortedRows]);
 
