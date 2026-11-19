@@ -29,15 +29,6 @@ class LightGallery {
             ...JSON.parse(container.getAttribute('data-light-gallery') || '{}'),
         });
 
-        this.onClick = e => {
-            const element = e.target.closest(ELEMENT_SELECTOR);
-            if (!element) return;
-
-            e.preventDefault();
-            this.lastClicked = element;
-            this.open(element);
-        };
-
         this.onKeydown = e => {
             if ('Escape' !== e.key || !this.gallery.lgOpened) return;
 
@@ -47,7 +38,6 @@ class LightGallery {
 
         this.onAfterClose = () => this.lastClicked?.focus({preventScroll: true});
 
-        this.container.addEventListener('click', this.onClick);
         this.container.addEventListener('lgAfterClose', this.onAfterClose);
         document.addEventListener('keydown', this.onKeydown, true);
         galleries.set(container, this);
@@ -66,10 +56,12 @@ class LightGallery {
 }
 
 document.addEventListener('click', e => {
-    const trigger = e.target.closest(TARGET_SELECTOR);
+    const trigger = e.target.closest(`${TARGET_SELECTOR}, ${ELEMENT_SELECTOR}`);
     if (!trigger) return;
 
-    const element = document.getElementById(trigger.getAttribute('data-light-gallery-target'));
+    const element = trigger.matches(TARGET_SELECTOR)
+        ? document.getElementById(trigger.getAttribute('data-light-gallery-target'))
+        : trigger;
     if (!element?.matches(ELEMENT_SELECTOR)) return;
 
     const gallery = galleries.get(element.closest(CONTAINER_SELECTOR));
