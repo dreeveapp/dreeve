@@ -3,13 +3,11 @@ import {loadEcharts} from "../../features/charts/echarts-loader";
 import {registerEchartsCallbacks, resolveEchartsCallbacks} from "../../features/charts/echarts-callbacks";
 import {isDarkModeEnabled} from "../dark-mode";
 import {END_MARKER_COLOR, MARKER_BORDER_COLOR, START_MARKER_COLOR} from "../../features/maps/route-marker-colors";
+import {createAdminLeafletMap} from "../../features/maps/admin-leaflet-map";
 
 const ROOT_SELECTOR = '[data-route-range-picker]';
 const MAP_SELECTOR = '[data-route-range-picker-map]';
 const CHART_SELECTOR = '[data-route-range-picker-chart]';
-const TILE_LAYER_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-const ATTRIBUTION = '© <a href="https://www.openstreetmap.org/copyright" rel="noreferrer noopener">OpenStreetMap</a>';
-const MAX_ZOOM = 17;
 const ROUTE_COLOR = '#9CA3AF';
 const SELECTION_COLOR = '#F26722';
 
@@ -112,17 +110,9 @@ class RouteRangePicker {
             return;
         }
 
-        const {default: L} = await import(/* webpackChunkName: "leaflet" */ 'leaflet');
-        await import(/* webpackChunkName: "leaflet" */ '../../features/maps/ctrl-scroll-zoom');
-
+        const {L, map} = await createAdminLeafletMap(this.mapNode);
         this.L = L;
-        this.map = L.map(this.mapNode, {
-            ctrlScrollZoom: true,
-            maxZoom: MAX_ZOOM,
-            zoomSnap: .5,
-            zoomDelta: .5,
-        });
-        L.tileLayer(TILE_LAYER_URL, {attribution: ATTRIBUTION, maxZoom: MAX_ZOOM}).addTo(this.map);
+        this.map = map;
     }
 
     async mountChart() {
