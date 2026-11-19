@@ -183,6 +183,7 @@ Edit: Editer
 'Edit component': 'Editer le composant'
 'Edit gear': 'Editer le matériel'
 'Edit maintenance log': "Editer l'entrée de maintenance"
+'Edit media': 'Edit media'
 'Edit recording device': "Editer l'appareil d'enregistrement"
 'Edit segment': 'Edit segment'
 Efforts: Efforts
@@ -518,6 +519,7 @@ Suggested: Suggested
 Sunday: Dimanche
 'Supported types': 'Types pris en charge'
 System: System
+'Taken on': 'Taken on'
 Task: Tâche
 'Task name': 'Nom de la tâche'
 Tasks: Tâches

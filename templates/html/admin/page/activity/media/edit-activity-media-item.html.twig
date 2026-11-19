@@ -1,0 +1,51 @@
+{% extends "html/admin/page/template.html.twig" %}
+{% block stylesheets %}
+    <link href="{{ relativeUrl(asset('libraries/leaflet/leaflet.min.css')) }}" rel="stylesheet"/>
+{% endblock %}
+{% block main %}
+    {% set returnUrl = redirectUrl(relativeUrl(path('admin_edit_activity', {activityId: activity.getId()}))) %}
+    {% set coordinate = mediaItem.getCoordinate() %}
+    {% embed 'html/admin/component/modal.html.twig' with {closeUrl: returnUrl, modalSize: 'max-w-3xl'} %}
+        {% block title %}{{ "Edit media"|trans({}, 'admin') }}{% endblock %}
+        {% block body %}
+            {% autoescape false %}
+            <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ returnUrl }}" class="flex flex-col gap-4">
+                <input type="hidden" name="mediaItemId" value="{{ mediaItem.getId() }}">
+                <div data-form-error class="form-error hidden" role="alert"></div>
+                <img class="h-48 w-full rounded-lg border border-gray-200 bg-gray-100 object-cover"
+                     src="{{ relativeUrl(mediaItem.getPath().toUrlPath()) }}" alt="{{ mediaItem.getPath().getFilename() }}">
+                <div>
+                    <label for="media-item-taken-on">{{ "Taken on"|trans({}, 'admin') }}</label>
+                    <input type="datetime-local" id="media-item-taken-on" name="takenOn"
+                           value="{{ mediaItem.getTakenOn() ? mediaItem.getTakenOn().format('Y-m-d\\TH:i') }}">
+                </div>
+                <div data-coordinate-picker='{{ {}|json_encode }}' class="grid gap-2 sm:grid-cols-2">
+                    <div>
+                        <label class="mt-0! text-xs text-gray-500">{{ "Latitude"|trans({}, 'admin') }}</label>
+                        <input type="number" step="any" min="-90" max="90" name="latitude"
+                               data-coordinate-picker-field="latitude" placeholder="51.0543"
+                               value="{{ coordinate ? coordinate.getLatitude().toFloat() }}">
+                    </div>
+                    <div>
+                        <label class="mt-0! text-xs text-gray-500">{{ "Longitude"|trans({}, 'admin') }}</label>
+                        <input type="number" step="any" min="-180" max="180" name="longitude"
+                               data-coordinate-picker-field="longitude" placeholder="3.7174"
+                               value="{{ coordinate ? coordinate.getLongitude().toFloat() }}">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <p class="mb-1 text-xxs text-gray-500">{{ "Click the map to set the location, or drag the marker to fine-tune it."|trans({}, 'admin') }}</p>
+                        <div data-coordinate-picker-map class="h-64 w-full rounded-lg border border-gray-200 bg-gray-100"></div>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
+                    <a href="{{ returnUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>
+                    <button type="submit" data-has-loading-state class="group btn--primary">
+                        <span class="label">{{ "Save"|trans({}, 'admin') }}</span>
+                        <span class="label--loading">{{ "Saving..."|trans({}, 'admin') }}</span>
+                    </button>
+                </div>
+            </form>
+            {% endautoescape %}
+        {% endblock %}
+    {% endembed %}
+{% endblock main %}
