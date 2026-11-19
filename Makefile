@@ -32,8 +32,11 @@ composer:
 download-database:
 	@make stop
 	rm -Rf storage/database/dreeve.*
-	scp $(user)@$(server):/home/docker/volumes/dreeve/storage/database/dreeve.db ./storage/database/dreeve.db
-	@make dc cmd="up -d --build"
+	ssh $(user)@$(server) "rm -f /home/docker/volumes/dreeve/storage/database/dreeve-download.db && cd /home/docker/stacks/dreeve && docker compose exec -T app bin/console dbal:run-sql \"VACUUM INTO '/var/www/storage/database/dreeve-download.db'\""
+	scp $(user)@$(server):/home/docker/volumes/dreeve/storage/database/dreeve-download.db ./storage/database/dreeve.db
+	ssh $(user)@$(server) "rm -f /home/docker/volumes/dreeve/storage/database/dreeve-download.db"
+	@make dc cmd="up -d --build --wait app"
+	@make dc cmd="up -d --build daemon"
 
 download-assets:
 	scp -r $(user)@$(server):/home/docker/volumes/dreeve/storage/files ./storage/
