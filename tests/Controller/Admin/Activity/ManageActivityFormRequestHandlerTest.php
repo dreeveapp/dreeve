@@ -211,7 +211,12 @@ class ManageActivityFormRequestHandlerTest extends AdminWebTestCase
         // The existing image can be managed.
         $this->assertCount(1, $crawler->filter('[data-image-dropzone]'));
         $this->assertSame(
-            [['url' => '/files/activities/image.jpg', 'name' => 'image.jpg', 'id' => 'mediaItem-image']],
+            [[
+                'url' => '/files/activities/image.jpg',
+                'name' => 'image.jpg',
+                'id' => 'mediaItem-image',
+                'editUrl' => '/admin/activities/activity-1/media/mediaItem-image/edit?redirectTo=%2Fadmin%2Factivities%2Factivity-1%2Fedit',
+            ]],
             Json::decode((string) $crawler->filter('[data-image-dropzone]')->attr('data-existing-images')),
         );
 
