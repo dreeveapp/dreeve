@@ -9,7 +9,6 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemRepository;
 use App\Domain\Media\UpdateMediaItem\UpdateMediaItem;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Response\HtmlResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -32,7 +31,7 @@ final readonly class ManageActivityMediaItemFormRequestHandler
         try {
             $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
             $parsedMediaItemId = MediaItemId::fromString($mediaItemId);
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Media item "%s" of activity "%s" not found', $mediaItemId, $activityId));
         }
 
@@ -40,11 +39,7 @@ final readonly class ManageActivityMediaItemFormRequestHandler
             throw new NotFoundHttpException(sprintf('Media item "%s" does not belong to activity "%s"', $mediaItemId, $activityId));
         }
 
-        try {
-            $mediaItem = $this->mediaItemRepository->find($parsedMediaItemId);
-        } catch (EntityNotFound) {
-            throw new NotFoundHttpException(sprintf('Media item "%s" not found', $mediaItemId));
-        }
+        $mediaItem = $this->mediaItemRepository->find($parsedMediaItemId);
 
         return new HtmlResponse($this->twig->render('html/admin/page/activity/media/edit-activity-media-item.html.twig', [
             'dispatchCommand' => UpdateMediaItem::getCommandName(),

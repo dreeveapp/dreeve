@@ -6,7 +6,6 @@ namespace App\Controller\Admin\FileImport;
 
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Response\AttachmentResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,7 +24,7 @@ final readonly class DownloadFileImportRequestHandler
     {
         try {
             $fileImport = $this->fileImportRepository->find(FileImportId::fromString($fileImportId));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('File import "%s" not found', $fileImportId));
         }
 
