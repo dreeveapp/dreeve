@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Admin\FileImport;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\FileImportStatus;
+use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Import\FileImportBuilder;
@@ -83,7 +84,7 @@ class DownloadFileImportRequestHandlerTest extends AdminWebTestCase
         $this->client->loginUser($this->adminUser());
         $this->client->catchExceptions(false);
 
-        $this->expectExceptionObject(new NotFoundHttpException(sprintf('File import "%s" not found', $fileImportId)));
+        $this->expectExceptionObject(new EntityNotFound(sprintf('File import "%s" is no longer available', $fileImportId)));
         $this->client->request('GET', '/admin/file-imports/'.$fileImportId.'/download');
     }
 
