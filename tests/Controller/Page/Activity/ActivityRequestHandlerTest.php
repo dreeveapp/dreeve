@@ -23,11 +23,16 @@ use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Media\MediaItemId;
+use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Config\DemoMode;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
+use App\Infrastructure\ValueObject\Geography\Latitude;
+use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
@@ -36,6 +41,7 @@ use App\Tests\Domain\Activity\Shifting\ActivityDrivetrainUsageBuilder;
 use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Import\FileImportBuilder;
+use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -101,6 +107,15 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
     public function testItRendersTheTemplateOfTheSportType(SportType $sportType): void
     {
         $this->provideFullTestSet();
+        $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('b3c1e0f2-53a7-11ee-a5e1-9a34a3268d74'))
+            ->withPath(MediaItemPath::fromString('activities/b3c1e0f2-53a7-11ee-a5e1-9a34a3268d74.jpg'))
+            ->withCoordinate(Coordinate::createFromLatAndLng(
+                latitude: Latitude::fromString('51.53'),
+                longitude: Longitude::fromString('-0.08'),
+            ))
+            ->build()
+        );
 
         $activityId = ActivityId::fromUnprefixed('123456789');
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
@@ -110,7 +125,10 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
                 ->withPolyline((string) EncodedPolyline::fromCoordinates([[51.51, -0.08], [51.52, -0.07]]))
-                ->withMediaItemIds(MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))
+                ->withMediaItemIds(
+                    MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'),
+                    MediaItemId::fromUnprefixed('b3c1e0f2-53a7-11ee-a5e1-9a34a3268d74'),
+                )
                 ->build(),
             [],
         ));
