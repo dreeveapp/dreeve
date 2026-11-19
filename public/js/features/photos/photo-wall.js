@@ -1,6 +1,7 @@
 import {FilterManager} from "../data-table/filter-manager";
-import {parse, serialize} from "../data-table/filter-url";
-import {HistoryMode, updateQueryString} from "../../core/history";
+import {serialize} from "../data-table/filter-url";
+import {bindFilterControls} from "../data-table/filter-controls";
+import {updateQueryString} from "../../core/history";
 
 export default class PhotoWall {
     constructor(wrapper) {
@@ -27,50 +28,18 @@ export default class PhotoWall {
                 element.classList.toggle('hidden', !active);
             }
 
-            this.resetBtn.classList.toggle('hidden', !(Object.keys(activeFilters).length > 0));
+            this.resetBtn?.classList.toggle('hidden', !(Object.keys(activeFilters).length > 0));
 
             const resultCount = this.wrapper.querySelector('[data-dataTable-result-count]');
             if (resultCount) resultCount.innerText = images.filter((image) => image.active).length;
         };
 
-        const applyUrlState = () => {
-            this.filterManager.resetAll();
-            this.filterManager.prefillFromUrl(parse(new URLSearchParams(location.search)).filters);
-        };
+        bindFilterControls({
+            wrapper: this.wrapper,
+            filterManager: this.filterManager,
+            onChange: redraw,
+        });
 
-        applyUrlState();
         redraw(null);
-
-        this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => {
-            if (!el.matches('[data-dataTable-filter*="[]"]')) {
-                el.addEventListener('input', () => redraw(HistoryMode.PUSH));
-                return;
-            }
-
-            el.addEventListener('input', () => redraw(null));
-            el.addEventListener('change', () => redraw(HistoryMode.PUSH));
-        });
-
-        window.addEventListener('popstate', () => {
-            applyUrlState();
-            redraw(null);
-        });
-
-        if (this.resetBtn) {
-            this.resetBtn.addEventListener('click', e => {
-                e.preventDefault();
-                this.filterManager.resetAll();
-                redraw(HistoryMode.PUSH);
-            });
-        }
-
-        this.wrapper.querySelectorAll('[data-datatable-filter-clear]').forEach(btn => {
-            btn.addEventListener('click', e => {
-                e.preventDefault();
-                const name = btn.getAttribute('data-datatable-filter-clear');
-                this.filterManager.resetOne(name);
-                redraw(HistoryMode.PUSH);
-            });
-        });
     }
 }
