@@ -10,7 +10,6 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Media\MediaItemRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,7 +30,7 @@ final readonly class ActivityDetailRequestHandler
     {
         try {
             $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
 

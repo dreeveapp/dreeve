@@ -7,7 +7,6 @@ namespace App\Controller\Api\V1\Activity\Stream;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
-use App\Infrastructure\Exception\EntityNotFound;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,7 +25,7 @@ final readonly class ActivityStreamsRequestHandler
     {
         try {
             $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
 

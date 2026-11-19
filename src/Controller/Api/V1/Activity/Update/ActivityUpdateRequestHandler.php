@@ -54,7 +54,7 @@ final readonly class ActivityUpdateRequestHandler
 
         try {
             $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
-        } catch (EntityNotFound|\InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             throw new NotFoundHttpException(sprintf('Activity "%s" not found', $activityId));
         }
 
