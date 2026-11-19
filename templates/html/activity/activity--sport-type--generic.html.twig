@@ -253,7 +253,12 @@
                         'minZoom': leaflet.map.getMinZoom(),
                         'maxZoom': leaflet.map.getMaxZoom(),
                         'imageOverlay': leaflet.map.getOverlayImageUrl(),
-                        'bounds': leaflet.map.getBounds()
+                        'bounds': leaflet.map.getBounds(),
+                        'imageMarkers': geotaggedMediaItems|map(mediaItem => {
+                            'latLng': mediaItem.getCoordinate(),
+                            'imageUrl': relativeUrl(mediaItem.getPath().toUrlPath()),
+                            'lightGalleryTarget': mediaItem.getId(),
+                        }),
                     } %}
                     <div class="h-80 md:h-96 w-full z-0" data-leaflet='{{ leafletOptions|json_encode }}' data-leaflet-echart-connect>
                     </div>

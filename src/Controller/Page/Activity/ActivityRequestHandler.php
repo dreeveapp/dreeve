@@ -26,8 +26,10 @@ use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamType;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Import\FileImportRepository;
+use App\Domain\Media\MediaItem;
 use App\Domain\Media\MediaItemCacheTag;
 use App\Domain\Media\MediaItemRepository;
+use App\Domain\Media\MediaItems;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -39,6 +41,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\Security\Visitor;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -76,9 +79,7 @@ final readonly class ActivityRequestHandler
     public function handle(string $activityId): HtmlResponse
     {
         $activityId = ActivityId::fromString($activityId);
-
         $activity = $this->activityRepository->find($activityId);
-
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
 
         return $this->pageRenderer->render(
@@ -137,12 +138,16 @@ final readonly class ActivityRequestHandler
         } catch (EntityNotFound) {
         }
 
+        $mediaItems = $this->mediaItemRepository->findByIds($activity->getMediaItemIds());
         $templateName = sprintf('html/activity/%s.html.twig', $activity->getSportType()->getTemplateName());
 
         return $this->twig->load($templateName)->render(context: [
             'activity' => $activity,
             'enrichedActivity' => $enrichedActivity,
-            'mediaItems' => $this->mediaItemRepository->findByIds($activity->getMediaItemIds()),
+            'mediaItems' => $mediaItems,
+            'geotaggedMediaItems' => $activity->getSportType()->isVirtual()
+                ? MediaItems::empty()
+                : $mediaItems->filter(fn (MediaItem $mediaItem): bool => $mediaItem->getCoordinate() instanceof Coordinate),
             'leaflet' => $leafletMap instanceof LeafletMap ? [
                 'polylineUrl' => $this->urlGenerator->generate('activity_polylines', ['activityId' => (string) $activityId]),
                 'map' => $leafletMap,

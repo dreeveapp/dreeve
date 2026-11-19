@@ -50,7 +50,10 @@ use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\Serialization\Json;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
+use App\Infrastructure\ValueObject\Geography\Latitude;
+use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Domain\Activity\BestEffort\ActivityBestEffortBuilder;
@@ -110,6 +113,10 @@ trait ProvideTestData
         $this->getContainer()->get(MediaItemRepository::class)->add(MediaItemBuilder::fromDefaults()
             ->withMediaItemId(MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'))
             ->withPath(MediaItemPath::fromString('activities/aea2d7b4-53a7-11ee-a5e1-9a34a3268d74.jpg'))
+            ->withCoordinate(Coordinate::createFromLatAndLng(
+                latitude: Latitude::fromString('51.51'),
+                longitude: Longitude::fromString('-0.08'),
+            ))
             ->build()
         );
     }
