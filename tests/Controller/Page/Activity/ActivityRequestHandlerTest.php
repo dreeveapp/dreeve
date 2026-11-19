@@ -73,7 +73,7 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertResponseHeaderSame(
             'X-Dreeve-Cache-Tags',
-            'settings.appearance, activities.9756441741, gear, activity.collections, settings.security, settings.general, settings.athleteWeight, settings.athleteFtp',
+            'settings.appearance, activities.9756441741, gear, activity.collections, settings.security, settings.general, settings.athleteWeight, settings.athleteFtp, media.items.aea2d7b4-53a7-11ee-a5e1-9a34a3268d74',
         );
         $this->assertStringNotContainsString('Not this one', (string) $this->client->getResponse()->getContent());
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());

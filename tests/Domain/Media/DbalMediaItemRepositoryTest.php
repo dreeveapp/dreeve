@@ -10,6 +10,7 @@ use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
+use App\Infrastructure\Eventing\EventBus;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -154,6 +155,9 @@ class DbalMediaItemRepositoryTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->mediaItemRepository = new DbalMediaItemRepository($this->getConnection());
+        $this->mediaItemRepository = new DbalMediaItemRepository(
+            $this->getConnection(),
+            $this->getContainer()->get(EventBus::class),
+        );
     }
 }
