@@ -47,7 +47,7 @@ final readonly class SegmentDataTableRequestHandler
         );
 
         $response = CachePolicy::private()->revalidate()->applyTo(new JsonResponse(
-            $render->getContent() ?? '[]',
+            data: $render->getContent() ?? '[]',
             headers: $render->getCacheHeaders(),
             json: true,
         ));
