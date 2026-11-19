@@ -1,5 +1,8 @@
 const CONTAINER_SELECTOR = '[data-light-gallery]';
 const ELEMENT_SELECTOR = '[data-light-gallery-element]';
+const TARGET_SELECTOR = '[data-light-gallery-target]';
+
+const galleries = new WeakMap();
 
 let libPromise = null;
 let lib = null;
@@ -47,6 +50,7 @@ class LightGallery {
         this.container.addEventListener('click', this.onClick);
         this.container.addEventListener('lgAfterClose', this.onAfterClose);
         document.addEventListener('keydown', this.onKeydown, true);
+        galleries.set(container, this);
     }
 
     open(element) {
@@ -60,6 +64,21 @@ class LightGallery {
         this.gallery.openGallery(elements.indexOf(element));
     }
 }
+
+document.addEventListener('click', e => {
+    const trigger = e.target.closest(TARGET_SELECTOR);
+    if (!trigger) return;
+
+    const element = document.getElementById(trigger.getAttribute('data-light-gallery-target'));
+    if (!element?.matches(ELEMENT_SELECTOR)) return;
+
+    const gallery = galleries.get(element.closest(CONTAINER_SELECTOR));
+    if (!gallery) return;
+
+    e.preventDefault();
+    gallery.lastClicked = trigger;
+    gallery.open(element);
+});
 
 export default async function initLightGalleries(rootNode) {
     const containers = rootNode.querySelectorAll(CONTAINER_SELECTOR);
