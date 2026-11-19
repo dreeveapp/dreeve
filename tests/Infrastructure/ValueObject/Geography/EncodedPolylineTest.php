@@ -61,4 +61,30 @@ class EncodedPolylineTest extends TestCase
         $this->assertSame([-11.63577, 166.97262, -11.63533, 166.97342], array_slice($decoded, 0, 4));
         $this->assertSame([-11.6614, 166.98429], array_slice($decoded, -2));
     }
+
+    public function testDistanceInMeterTo(): void
+    {
+        $polyline = EncodedPolyline::fromCoordinates([
+            [51.51, -0.08],
+            [51.52, -0.07],
+            [51.52, -0.05],
+        ]);
+
+        $this->assertEqualsWithDelta(0.0, $polyline->distanceInMeterTo(Coordinate::createFromLatAndLng(
+            Latitude::fromString('51.515'),
+            Longitude::fromString('-0.075'),
+        )), 0.01);
+        $this->assertEqualsWithDelta(293.75, $polyline->distanceInMeterTo(Coordinate::createFromLatAndLng(
+            Latitude::fromString('51.515'),
+            Longitude::fromString('-0.07'),
+        )), 0.01);
+        $this->assertEqualsWithDelta(555.97, $polyline->distanceInMeterTo(Coordinate::createFromLatAndLng(
+            Latitude::fromString('51.525'),
+            Longitude::fromString('-0.06'),
+        )), 0.01);
+        $this->assertEqualsWithDelta(1111.95, $polyline->distanceInMeterTo(Coordinate::createFromLatAndLng(
+            Latitude::fromString('51.50'),
+            Longitude::fromString('-0.08'),
+        )), 0.01);
+    }
 }

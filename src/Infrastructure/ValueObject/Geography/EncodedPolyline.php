@@ -84,6 +84,35 @@ final readonly class EncodedPolyline extends NonEmptyStringLiteral
         );
     }
 
+    public function distanceInMeterTo(Coordinate $coordinate): float
+    {
+        $latitude = $coordinate->getLatitude()->toFloat();
+        $longitude = $coordinate->getLongitude()->toFloat();
+        $longitudeScale = cos(deg2rad($latitude));
+        $points = $this->decodeAndPairLatLng();
+
+        $shortestDistance = INF;
+        foreach ($points as $index => [$fromLatitude, $fromLongitude]) {
+            [$toLatitude, $toLongitude] = $points[$index + 1] ?? [$fromLatitude, $fromLongitude];
+
+            $deltaX = ($toLongitude - $fromLongitude) * $longitudeScale;
+            $deltaY = $toLatitude - $fromLatitude;
+            $lengthSquared = $deltaX ** 2 + $deltaY ** 2;
+            $projection = $lengthSquared > 0.0
+                ? max(0.0, min(1.0, ((($longitude - $fromLongitude) * $longitudeScale) * $deltaX + ($latitude - $fromLatitude) * $deltaY) / $lengthSquared))
+                : 0.0;
+
+            $shortestDistance = min($shortestDistance, GeoMath::haversineDistance(
+                lat1: $latitude,
+                lon1: $longitude,
+                lat2: $fromLatitude + $projection * ($toLatitude - $fromLatitude),
+                lon2: $fromLongitude + $projection * ($toLongitude - $fromLongitude),
+            ));
+        }
+
+        return $shortestDistance;
+    }
+
     /**
      * @return float[]
      */

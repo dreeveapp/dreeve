@@ -27,6 +27,7 @@ use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -220,6 +221,76 @@ class ActivityTest extends TestCase
                 ->withWorldType(WorldType::REAL_WORLD)
                 ->withPolyline('tqafAua~y^vG{D')
                 ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))->withRouteGeography(RouteGeography::create([])),
+        ];
+    }
+
+    public function testAllowsPhotoMarkerAt(): void
+    {
+        $this->assertTrue(ActivityBuilder::fromDefaults()
+            ->withSportType(SportType::RIDE)
+            ->withWorldType(WorldType::REAL_WORLD)
+            ->withPolyline((string) EncodedPolyline::fromCoordinates([[51.51, -0.08], [51.52, -0.07]]))
+            ->build()
+            ->allowsPhotoMarkerAt(Coordinate::createFromLatAndLng(
+                latitude: Latitude::fromString('51.515'),
+                longitude: Longitude::fromString('-0.075'),
+            )));
+    }
+
+    #[DataProvider('provideCoordinatesThatAllowNoPhotoMarker')]
+    public function testAllowsNoPhotoMarkerAt(ActivityBuilder $builder, ?Coordinate $coordinate): void
+    {
+        $this->assertFalse($builder->build()->allowsPhotoMarkerAt($coordinate));
+    }
+
+    /**
+     * @return \Generator<string, array{ActivityBuilder, ?Coordinate}>
+     */
+    public static function provideCoordinatesThatAllowNoPhotoMarker(): \Generator
+    {
+        $polyline = (string) EncodedPolyline::fromCoordinates([[51.51, -0.08], [51.52, -0.07]]);
+        $nearTheRoute = Coordinate::createFromLatAndLng(
+            latitude: Latitude::fromString('51.515'),
+            longitude: Longitude::fromString('-0.075'),
+        );
+
+        yield 'without coordinate' => [
+            ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline($polyline),
+            null,
+        ];
+        yield 'virtual sport type' => [
+            ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::VIRTUAL_RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline($polyline),
+            $nearTheRoute,
+        ];
+        yield 'not recorded in the real world' => [
+            ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::ZWIFT)
+                ->withPolyline($polyline),
+            $nearTheRoute,
+        ];
+        yield 'without polyline' => [
+            ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline(null),
+            $nearTheRoute,
+        ];
+        yield 'far from the route' => [
+            ActivityBuilder::fromDefaults()
+                ->withSportType(SportType::RIDE)
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline($polyline),
+            Coordinate::createFromLatAndLng(
+                latitude: Latitude::fromString('51.53'),
+                longitude: Longitude::fromString('-0.08'),
+            ),
         ];
     }
 

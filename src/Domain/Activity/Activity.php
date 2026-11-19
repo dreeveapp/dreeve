@@ -8,6 +8,7 @@ use App\Domain\Gear\GearId;
 use App\Domain\Gear\RecordingDevice\RecordingDeviceId;
 use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
+use App\Domain\Media\MediaItem;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Zwift\CouldNotDetermineZwiftMap;
 use App\Domain\Zwift\ZwiftMap;
@@ -827,6 +828,25 @@ final class Activity
             && WorldType::REAL_WORLD === $this->worldType
             && !in_array($this->polyline, [null, '', '0'], true)
             && !is_null($this->routeGeography->getStartingPointCountryCode());
+    }
+
+    public function allowsPhotoMarkerAt(?Coordinate $coordinate): bool
+    {
+        if (!$coordinate instanceof Coordinate) {
+            return false;
+        }
+        if ($this->getSportType()->isVirtual()) {
+            return false;
+        }
+        if (WorldType::REAL_WORLD !== $this->worldType) {
+            return false;
+        }
+        $polyline = $this->getEncodedPolyline();
+        if (!$polyline instanceof EncodedPolyline) {
+            return false;
+        }
+
+        return $polyline->distanceInMeterTo($coordinate) <= MediaItem::MAX_DISTANCE_FROM_ROUTE_IN_METER;
     }
 
     /**
