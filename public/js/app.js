@@ -17,7 +17,8 @@ import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager from "./components/dark-mode";
 import initDropdowns from "./components/dropdown";
-import {initPopovers, initDrawers} from "flowbite";
+import initPopovers from "./components/popover";
+import {initDrawers} from "flowbite";
 
 registerEchartsCallbacks();
 initDrawers();
@@ -37,7 +38,7 @@ const initElements = (rootNode) => {
 
     initTabs(rootNode);
     initDropdowns(rootNode);
-    initPopovers();
+    initPopovers(rootNode);
 
     initDataTables(rootNode);
     chartManager.init(rootNode, darkModeManager.isDarkModeEnabled());
