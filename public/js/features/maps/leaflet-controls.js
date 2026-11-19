@@ -1,3 +1,5 @@
+import L from 'leaflet';
+
 const FlyToPlacesControl = L.Control.extend({
     options: {
         position: 'topright',

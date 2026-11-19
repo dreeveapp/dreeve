@@ -1,15 +1,13 @@
 import {eventBus, Events} from '../../core/event-bus';
 import {initComponents} from '../../core/component-registry';
 import {fetchJson} from '../../utils';
+import {createAdminLeafletMap, MAX_ZOOM} from '../../features/maps/admin-leaflet-map';
 
 const ROOT_SELECTOR = '[data-coordinate-picker]';
 const MAP_SELECTOR = '[data-coordinate-picker-map]';
 const WARNING_SELECTOR = '[data-coordinate-picker-warning]';
 const COLOR = '#F26722';
-const TILE_LAYER_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-const ATTRIBUTION = '© <a href="https://www.openstreetmap.org/copyright" rel="noreferrer noopener">OpenStreetMap</a>';
 const MIN_ZOOM = 1;
-const MAX_ZOOM = 17;
 const WORLD_ZOOM = 2;
 const COORDINATE_ZOOM = 13;
 
@@ -84,23 +82,17 @@ class CoordinatePicker {
         }
         this.isMounting = true;
 
-        const {default: L} = await import(/* webpackChunkName: "leaflet" */ 'leaflet');
-        await import(/* webpackChunkName: "leaflet" */ '../../features/maps/ctrl-scroll-zoom');
+        const {L, map} = await createAdminLeafletMap(this.mapNode, {minZoom: MIN_ZOOM});
 
         this.isMounting = false;
         if (this.isDestroyed) {
+            map.remove();
+
             return;
         }
 
         this.L = L;
-        this.map = L.map(this.mapNode, {
-            ctrlScrollZoom: true,
-            minZoom: MIN_ZOOM,
-            maxZoom: MAX_ZOOM,
-            zoomSnap: .5,
-            zoomDelta: .5,
-        });
-        L.tileLayer(TILE_LAYER_URL, {attribution: ATTRIBUTION, maxZoom: MAX_ZOOM}).addTo(this.map);
+        this.map = map;
 
         this.map.on('click', (event) => this.writeCoordinate(event.latlng));
 
