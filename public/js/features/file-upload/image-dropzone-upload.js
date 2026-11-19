@@ -48,6 +48,7 @@ class ImageDropzoneUpload {
             name: image.name,
             ok: true,
             preview: image.url,
+            editUrl: image.editUrl ?? null,
             content: null,
         }));
 
@@ -188,6 +189,11 @@ class ImageDropzoneUpload {
             li.querySelector('.meta').textContent = file.status === ImageStatus.New
                 ? metaFor(file, this.translations)
                 : this.translations.existingImage;
+            const editLink = li.querySelector('[data-edit-file]');
+            if (file.editUrl) {
+                editLink.href = file.editUrl;
+                editLink.hidden = false;
+            }
             li.querySelector('[data-remove-file]').dataset.index = index;
             this.list.appendChild(li);
         });
