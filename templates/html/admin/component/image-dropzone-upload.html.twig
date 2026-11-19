@@ -3,7 +3,16 @@
     {% set maxImages = maxImages ?? 1 %}
     {% set maxFileSize = maxFileSize ?? 15 %}
     {% set maxTotalSize = maxTotalSize ?? 45 %}
-    {% set existingImages = existingImages ?? [] %}
+    {% set editRoute = editRoute ?? null %}
+    {% set editRouteParameters = editRouteParameters ?? {} %}
+    {% set existingImages = [] %}
+    {% for mediaItem in mediaItems ?? [] %}
+        {% set existingImage = { url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId() } %}
+        {% if editRoute %}
+            {% set existingImage = existingImage|merge({ editUrl: relativeUrlWithRedirectTo(path(editRoute, editRouteParameters|merge({mediaItemId: mediaItem.getId()})), app.request.requestUri) }) %}
+        {% endif %}
+        {% set existingImages = existingImages|merge([existingImage]) %}
+    {% endfor %}
     {% set id = id ?? ('image-dropzone-' ~ name) %}
     {% set title = title ?? null %}
     {% set description = description ?? null %}

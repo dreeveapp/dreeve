@@ -104,11 +104,13 @@
                 {% if not isImportedFromStrava %}
                     <div>
                         <label>{{ "Images"|trans({}, 'admin') }}</label>
-                        {% set existingImages = [] %}
-                        {% for mediaItem in mediaItems %}
-                            {% set existingImages = existingImages|merge([{ url: relativeUrl(mediaItem.getPath().toUrlPath()), name: mediaItem.getPath().getFilename(), id: mediaItem.getId(), editUrl: relativeUrlWithRedirectTo(path('admin_edit_activity_media_item', {activityId: activity.getId(), mediaItemId: mediaItem.getId()}), app.request.requestUri) }]) %}
-                        {% endfor %}
-                        {% include 'html/admin/component/image-dropzone-upload.html.twig' with { name: 'mediaItems', maxImages: 5, existingImages: existingImages } %}
+                        {% include 'html/admin/component/image-dropzone-upload.html.twig' with {
+                            name: 'mediaItems',
+                            maxImages: 5,
+                            mediaItems: mediaItems,
+                            editRoute: 'admin_edit_activity_media_item',
+                            editRouteParameters: {activityId: activity.getId()},
+                        } %}
                     </div>
                 {% endif %}
                 <div>
