@@ -44,7 +44,7 @@ export class FilterManager {
             });
     }
 
-    toUrlFilters() {
+    _collectCheckedFilters() {
         const filters = {};
 
         this.wrapper.querySelectorAll('[data-dataTable-filter]:checked').forEach(el => {
@@ -59,6 +59,12 @@ export class FilterManager {
                 filters[key] = [filters[key], value];
             }
         });
+
+        return filters;
+    }
+
+    toUrlFilters() {
+        const filters = this._collectCheckedFilters();
 
         this.wrapper.querySelectorAll('[data-dataTable-filter*="[]"]').forEach(group => {
             const name = group.getAttribute('data-dataTable-filter').replace('[]', '');
@@ -75,22 +81,7 @@ export class FilterManager {
     }
 
     getActiveFilters() {
-        const filters = {};
-
-        this.wrapper.querySelectorAll('[data-dataTable-filter]:checked').forEach(el => {
-            const key = el.getAttribute('data-dataTable-filter');
-            const value = el.value.toLowerCase();
-
-            if (filters[key]) {
-                if (Array.isArray(filters[key])) {
-                    filters[key].push(value);
-                } else {
-                    filters[key] = [filters[key], value];
-                }
-            } else {
-                filters[key] = value;
-            }
-        });
+        const filters = this._collectCheckedFilters();
 
         this.wrapper.querySelectorAll('[data-dataTable-filter*="[]"]').forEach(group => {
             const name = group.getAttribute('data-dataTable-filter').replace('[]', '');
