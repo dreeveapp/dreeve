@@ -1,8 +1,11 @@
 import {eventBus, Events} from '../../core/event-bus';
 import {initComponents} from '../../core/component-registry';
+import {fetchJson} from '../../utils';
 
 const ROOT_SELECTOR = '[data-coordinate-picker]';
 const MAP_SELECTOR = '[data-coordinate-picker-map]';
+const WARNING_SELECTOR = '[data-coordinate-picker-warning]';
+const COLOR = '#F26722';
 const TILE_LAYER_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const ATTRIBUTION = '© <a href="https://www.openstreetmap.org/copyright" rel="noreferrer noopener">OpenStreetMap</a>';
 const MIN_ZOOM = 1;
@@ -28,10 +31,14 @@ class CoordinatePicker {
 
         const options = JSON.parse(root.getAttribute('data-coordinate-picker') || '{}');
         this.radiusToMeter = options.radiusToMeter || 1;
+        this.polylineUrl = options.polylineUrl || null;
+        this.maxDistanceFromRouteInMeter = options.maxDistanceFromRouteInMeter || null;
+        this.warning = root.querySelector(WARNING_SELECTOR);
 
         this.map = null;
         this.marker = null;
         this.circle = null;
+        this.routes = null;
         this.hasCoordinate = false;
         this.isMounting = false;
         this.isDestroyed = false;
@@ -100,6 +107,54 @@ class CoordinatePicker {
         this.resetView();
         this.render();
         this.map.invalidateSize();
+
+        await this.addRoutes();
+    }
+
+    async addRoutes() {
+        if (!this.polylineUrl) {
+            return;
+        }
+
+        const polylines = (await fetchJson(this.polylineUrl)).filter((coordinates) => coordinates.length > 0);
+        if (!this.map || 0 === polylines.length) {
+            return;
+        }
+
+        this.routes = this.L.featureGroup(polylines.map((coordinates) => this.L.polyline(coordinates, {
+            color: COLOR,
+            weight: 2,
+            opacity: .9,
+            noClip: true,
+            interactive: false,
+        }))).addTo(this.map);
+
+        if (!this.coordinate()) {
+            this.resetView();
+        }
+        this.updateWarning(this.coordinate());
+    }
+
+    distanceFromRouteInMeter(coordinate) {
+        const point = this.map.latLngToLayerPoint(coordinate);
+
+        return Math.min(...this.routes.getLayers()
+            .map((polyline) => polyline.closestLayerPoint(point))
+            .filter((closestPoint) => null !== closestPoint)
+            .map((closestPoint) => this.map.distance(coordinate, this.map.layerPointToLatLng(closestPoint))));
+    }
+
+    updateWarning(coordinate) {
+        if (!this.warning) {
+            return;
+        }
+
+        const isFarFromRoute = null !== coordinate
+            && null !== this.routes
+            && null !== this.maxDistanceFromRouteInMeter
+            && this.distanceFromRouteInMeter(coordinate) > this.maxDistanceFromRouteInMeter;
+
+        this.warning.classList.toggle('hidden', !isFarFromRoute);
     }
 
     coordinate() {
@@ -158,6 +213,7 @@ class CoordinatePicker {
     render() {
         const coordinate = this.coordinate();
         this.hasCoordinate = null !== coordinate;
+        this.updateWarning(coordinate);
 
         if (!coordinate) {
             this.marker?.remove();
@@ -178,7 +234,10 @@ class CoordinatePicker {
                     iconAnchor: [8, 8],
                 }),
             }).addTo(this.map);
-            this.marker.on('drag', () => this.circle?.setLatLng(this.marker.getLatLng()));
+            this.marker.on('drag', () => {
+                this.circle?.setLatLng(this.marker.getLatLng());
+                this.updateWarning(this.marker.getLatLng());
+            });
             this.marker.on('dragend', () => this.writeCoordinate(this.marker.getLatLng()));
         } else {
             this.marker.setLatLng(coordinate);
@@ -195,7 +254,7 @@ class CoordinatePicker {
         if (!this.circle) {
             this.circle = this.L.circle(coordinate, {
                 radius,
-                color: '#F26722',
+                color: COLOR,
                 weight: 2,
                 fillOpacity: .15,
                 interactive: false,
@@ -210,6 +269,11 @@ class CoordinatePicker {
 
     resetView() {
         const coordinate = this.coordinate();
+        if (!coordinate && this.routes) {
+            this.map.fitBounds(this.routes.getBounds());
+
+            return;
+        }
         if (!coordinate) {
             this.map.setView([20, 0], WORLD_ZOOM);
 

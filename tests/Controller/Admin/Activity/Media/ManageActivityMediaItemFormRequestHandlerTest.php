@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
+use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -34,10 +35,22 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
             ->withMediaItemId(MediaItemId::fromUnprefixed('other'))
             ->withPath(MediaItemPath::fromString('activities/other.jpg'))
             ->build());
+        $mediaItemRepository->add(MediaItemBuilder::fromDefaults()
+            ->withMediaItemId(MediaItemId::fromUnprefixed('indoor'))
+            ->withPath(MediaItemPath::fromString('activities/indoor.jpg'))
+            ->build());
         static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed('ride'))
                 ->withMediaItemIds(MediaItemId::fromUnprefixed('photo'))
+                ->withPolyline('tqafAua~y^vG{D')
+                ->build(),
+            [],
+        ));
+        static::getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('indoor'))
+                ->withMediaItemIds(MediaItemId::fromUnprefixed('indoor'))
                 ->build(),
             [],
         ));
@@ -60,6 +73,16 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('2025-06-14T09:30', $form->filter('input[name="takenOn"]')->attr('value'));
         $this->assertSame('51.0543', $form->filter('input[name="latitude"]')->attr('value'));
         $this->assertSame('3.7174', $form->filter('input[name="longitude"]')->attr('value'));
+        $this->assertSame([
+            'polylineUrl' => '/api/internal/activities/'.ActivityId::fromUnprefixed('ride').'/polylines',
+            'maxDistanceFromRouteInMeter' => 300,
+        ], Json::decode((string) $form->filter('[data-coordinate-picker]')->attr('data-coordinate-picker')));
+        $this->assertCount(1, $form->filter('[data-coordinate-picker] [data-coordinate-picker-warning].hidden'));
+
+        $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('indoor').'/media/'.MediaItemId::fromUnprefixed('indoor').'/edit');
+        $this->assertResponseIsSuccessful();
+        $this->assertSame('[]', $crawler->filter('[data-coordinate-picker]')->attr('data-coordinate-picker'));
+        $this->assertCount(0, $crawler->filter('[data-coordinate-picker-warning]'));
 
         $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('unknown').'/media/'.MediaItemId::fromUnprefixed('photo').'/edit');
         $this->assertResponseStatusCodeSame(404);

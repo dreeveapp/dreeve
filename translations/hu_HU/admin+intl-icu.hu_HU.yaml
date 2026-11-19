@@ -113,6 +113,7 @@ Clear: Törlés
 'Clear filters': 'Szűrők törlése'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Kattints a térképre a középpont beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Kattints a térképre a hely beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
+'This location is far from the route, so the photo will not show on the activity map.': 'This location is far from the route, so the photo will not show on the activity map.'
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
 Close: Bezárás

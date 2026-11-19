@@ -113,6 +113,7 @@ Clear: Leeren
 'Clear filters': 'Filter zurücksetzen'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Klicke auf die Karte, um den Mittelpunkt festzulegen, oder ziehe den Marker für die Feineinstellung.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Klicke auf die Karte, um den Ort festzulegen, oder ziehe den Marker für die Feineinstellung.'
+'This location is far from the route, so the photo will not show on the activity map.': 'This location is far from the route, so the photo will not show on the activity map.'
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
 Close: Schließen
