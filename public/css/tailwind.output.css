@@ -4239,6 +4239,9 @@
     .sm\:w-44 {
       width: calc(var(--spacing) * 44);
     }
+    .sm\:max-w-sm {
+      max-width: var(--container-sm);
+    }
     .sm\:flex-1 {
       flex: 1;
     }
