@@ -29,7 +29,15 @@ class ActivityDataTableRequestHandlerTest extends ControllerWebTestCase
             'X-Dreeve-Cache-Tags',
             'settings.appearance, activities, settings.athleteWeight',
         );
+        $this->assertResponseHeaderSame('Cache-Control', 'no-cache, private');
+        $etag = (string) $this->client->getResponse()->headers->get('ETag');
+        $this->assertNotEmpty($etag);
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
+
+        $this->client->request('GET', '/api/internal/activities/data-table', server: ['HTTP_IF_NONE_MATCH' => $etag]);
+
+        $this->assertResponseStatusCodeSame(304);
+        $this->assertSame('', $this->client->getResponse()->getContent());
     }
 
     #[\Override]

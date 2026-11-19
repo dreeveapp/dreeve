@@ -11,9 +11,11 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use App\Infrastructure\Http\Response\CachePolicy;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\DataTableRow;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -30,7 +32,7 @@ final readonly class ActivityDataTableRequestHandler
     }
 
     #[Route(path: '/api/internal/activities/data-table', name: 'activity_data_table', methods: ['GET'])]
-    public function handle(): JsonResponse
+    public function handle(Request $request): JsonResponse
     {
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
@@ -40,7 +42,14 @@ final readonly class ActivityDataTableRequestHandler
             render: fn (): string => $this->renderFor(),
         );
 
-        return new JsonResponse($render->getContent() ?? '[]', headers: $render->getCacheHeaders(), json: true);
+        $response = CachePolicy::private()->revalidate()->applyTo(new JsonResponse(
+            $render->getContent() ?? '[]',
+            headers: $render->getCacheHeaders(),
+            json: true,
+        ));
+        $response->isNotModified($request);
+
+        return $response;
     }
 
     private function renderFor(): string

@@ -29,7 +29,15 @@ class SegmentDataTableRequestHandlerTest extends ControllerWebTestCase
             'X-Dreeve-Cache-Tags',
             'settings.appearance, segments',
         );
+        $this->assertResponseHeaderSame('Cache-Control', 'no-cache, private');
+        $etag = (string) $this->client->getResponse()->headers->get('ETag');
+        $this->assertNotEmpty($etag);
         $this->assertMatchesJsonSnapshot((string) $this->client->getResponse()->getContent());
+
+        $this->client->request('GET', '/api/internal/segments/data-table', server: ['HTTP_IF_NONE_MATCH' => $etag]);
+
+        $this->assertResponseStatusCodeSame(304);
+        $this->assertSame('', $this->client->getResponse()->getContent());
     }
 
     #[\Override]
