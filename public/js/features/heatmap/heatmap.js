@@ -1,8 +1,9 @@
 import {FilterManager} from "../data-table/filter-manager";
-import {parse, serialize} from "../data-table/filter-url";
+import {serialize} from "../data-table/filter-url";
+import {bindFilterControls} from "../data-table/filter-controls";
 import HeatmapDrawer from "./heatmap-drawer";
 import {fetchJson} from "../../utils";
-import {HistoryMode, updateQueryString} from "../../core/history";
+import {updateQueryString} from "../../core/history";
 
 export default class Heatmap {
     constructor(wrapper) {
@@ -29,59 +30,18 @@ export default class Heatmap {
             const routes = this.filterManager.applyFiltersToRows(allRoutes);
             this.drawer.redraw(routes);
 
-            this.resetBtn.classList.toggle('hidden', !(Object.keys(activeFilters).length > 0));
+            this.resetBtn?.classList.toggle('hidden', !(Object.keys(activeFilters).length > 0));
             const resultCount = this.wrapper.querySelector('[data-dataTable-result-count]');
             if (resultCount) resultCount.innerText = routes.filter((route) => route.active).length;
         };
 
-        const applyUrlState = () => {
-            this.filterManager.resetAll();
-            this.filterManager.prefillFromUrl(parse(new URLSearchParams(location.search)).filters);
-        };
+        bindFilterControls({
+            wrapper: this.wrapper,
+            filterManager: this.filterManager,
+            onChange: redraw,
+        });
 
-        applyUrlState();
         redraw(null);
-
-        this.wrapper.querySelectorAll('[data-dataTable-filter]').forEach(el => {
-            if (!el.matches('[data-dataTable-filter*="[]"]')) {
-                el.addEventListener('input', () => redraw(HistoryMode.PUSH));
-                return;
-            }
-
-            el.addEventListener('input', () => redraw(null));
-            el.addEventListener('change', () => redraw(HistoryMode.PUSH));
-        });
-
-        window.addEventListener('popstate', () => {
-            applyUrlState();
-            redraw(null);
-        });
-
-        if (this.resetBtn) {
-            this.resetBtn.addEventListener('click', e => {
-                e.preventDefault();
-                this.filterManager.resetAll();
-                redraw(HistoryMode.PUSH);
-            });
-        }
-
-        this.wrapper.querySelectorAll('[data-datatable-filter-clear]').forEach(btn => {
-            btn.addEventListener('click', e => {
-                e.preventDefault();
-                const name = btn.getAttribute('data-datatable-filter-clear');
-                this.filterManager.resetOne(name);
-                redraw(HistoryMode.PUSH);
-            });
-        });
-
-        this.wrapper.addEventListener('click', (e) => {
-            const preset = e.target.closest('[data-date-preset]');
-            if (!preset) return;
-            e.preventDefault();
-            const filterName = preset.closest('[data-date-preset-filter]').getAttribute('data-date-preset-filter');
-            this.filterManager.applyDatePreset(preset.getAttribute('data-date-preset'), filterName);
-            redraw(HistoryMode.PUSH);
-        });
     };
 
 }
