@@ -226,10 +226,7 @@ class CoordinatePicker {
                     iconAnchor: [8, 8],
                 }),
             }).addTo(this.map);
-            this.marker.on('drag', () => {
-                this.circle?.setLatLng(this.marker.getLatLng());
-                this.updateWarning(this.marker.getLatLng());
-            });
+            this.marker.on('drag', () => this.circle?.setLatLng(this.marker.getLatLng()));
             this.marker.on('dragend', () => this.writeCoordinate(this.marker.getLatLng()));
         } else {
             this.marker.setLatLng(coordinate);
