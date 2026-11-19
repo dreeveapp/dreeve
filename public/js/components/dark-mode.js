@@ -1,5 +1,7 @@
 import {eventBus, Events} from "../core/event-bus";
 
+export const isDarkModeEnabled = () => document.documentElement.getAttribute('data-theme') === 'dark';
+
 export default class DarkModeManager {
     constructor() {
         this.storageKey = 'theme';
@@ -9,15 +11,10 @@ export default class DarkModeManager {
     }
 
     attachEventListeners() {
-        this.$toggleButton.checked = this.isDarkModeEnabled();
+        this.$toggleButton.checked = isDarkModeEnabled();
         this.$toggleButton.addEventListener('change', () => {
-            this.setDark(!this.isDarkModeEnabled());
+            this.setDark(!isDarkModeEnabled());
         });
-    }
-
-    isDarkModeEnabled() {
-        return this.$themeElement.hasAttribute(this.dataAttributeName)
-            && this.$themeElement.getAttribute(this.dataAttributeName) === 'dark';
     }
 
     setDark(enabled) {

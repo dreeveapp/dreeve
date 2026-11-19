@@ -1,7 +1,7 @@
 import {fetchJson} from "../../utils";
 import {loadEcharts} from "../../features/charts/echarts-loader";
 import {registerEchartsCallbacks, resolveEchartsCallbacks} from "../../features/charts/echarts-callbacks";
-import DarkModeManager from "../dark-mode";
+import {isDarkModeEnabled} from "../dark-mode";
 import {END_MARKER_COLOR, MARKER_BORDER_COLOR, START_MARKER_COLOR} from "../../features/maps/route-marker-colors";
 
 const ROOT_SELECTOR = '[data-route-range-picker]';
@@ -132,7 +132,7 @@ class RouteRangePicker {
 
         await loadEcharts();
         registerEchartsCallbacks();
-        this.chart = echarts.init(this.chartNode, new DarkModeManager().isDarkModeEnabled() ? 'v5-dark' : 'v5');
+        this.chart = echarts.init(this.chartNode, isDarkModeEnabled() ? 'v5-dark' : 'v5');
         new ResizeObserver(() => this.chart.resize()).observe(this.chartNode);
     }
 

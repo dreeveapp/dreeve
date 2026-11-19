@@ -15,7 +15,7 @@ import initAsyncContent from "./components/async-content";
 import initKeyboardShortcuts from "./components/keyboard-shortcut";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
-import DarkModeManager from "./components/dark-mode";
+import DarkModeManager, {isDarkModeEnabled} from "./components/dark-mode";
 import initDropdowns from "./components/dropdown";
 import initPopovers from "./components/popover";
 import {initDrawers} from "flowbite";
@@ -41,7 +41,7 @@ const initElements = (rootNode) => {
     initPopovers(rootNode);
 
     initDataTables(rootNode);
-    chartManager.init(rootNode, darkModeManager.isDarkModeEnabled());
+    chartManager.init(rootNode, isDarkModeEnabled());
     initLeafletMaps(rootNode);
     initFullscreen(rootNode);
     initLightGalleries(rootNode);
