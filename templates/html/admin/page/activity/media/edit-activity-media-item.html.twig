@@ -5,6 +5,10 @@
 {% block main %}
     {% set returnUrl = redirectUrl(relativeUrl(path('admin_edit_activity', {activityId: activity.getId()}))) %}
     {% set coordinate = mediaItem.getCoordinate() %}
+    {% set coordinatePickerOptions = activity.getLeafletMap() ? {
+        polylineUrl: relativeUrl(path('activity_polylines', {activityId: activity.getId()})),
+        maxDistanceFromRouteInMeter: constant('App\\Domain\\Media\\MediaItem::MAX_DISTANCE_FROM_ROUTE_IN_METER'),
+    } : {} %}
     {% embed 'html/admin/component/modal.html.twig' with {closeUrl: returnUrl, modalSize: 'max-w-3xl'} %}
         {% block title %}{{ "Edit media"|trans({}, 'admin') }}{% endblock %}
         {% block body %}
@@ -12,7 +16,7 @@
             <form data-dispatch-command="{{ dispatchCommand }}" data-redirect="{{ returnUrl }}" class="flex flex-col gap-4">
                 <input type="hidden" name="mediaItemId" value="{{ mediaItem.getId() }}">
                 <div data-form-error class="form-error hidden" role="alert"></div>
-                <div data-coordinate-picker='{{ {}|json_encode }}' class="flex flex-col gap-4">
+                <div data-coordinate-picker='{{ coordinatePickerOptions|json_encode }}' class="flex flex-col gap-4">
                     <div class="flex flex-col gap-4 sm:flex-row">
                         <img class="mx-auto h-auto max-h-64 w-auto max-w-full shrink-0 self-start rounded-lg border border-gray-200 bg-gray-100 sm:max-w-sm"
                              src="{{ relativeUrl(mediaItem.getPath().toUrlPath()) }}" alt="{{ mediaItem.getPath().getFilename() }}">
@@ -40,6 +44,12 @@
                         <p class="mb-1 text-xxs text-gray-500">{{ "Click the map to set the location, or drag the marker to fine-tune it."|trans({}, 'admin') }}</p>
                         <div data-coordinate-picker-map class="h-64 w-full rounded-lg border border-gray-200 bg-gray-100"></div>
                     </div>
+                    {% if coordinatePickerOptions %}
+                        <div data-coordinate-picker-warning class="alert alert--warning hidden" role="alert">
+                            <span class="sr-only">{{ "Warning"|trans({}, 'admin') }}</span>
+                            <div>{{ "This location is far from the route, so the photo will not show on the activity map."|trans({}, 'admin') }}</div>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="flex justify-end gap-2 border-t border-gray-200 pt-4">
                     <a href="{{ returnUrl }}" type="button" class="btn--secondary">{{ "Cancel"|trans({}, 'admin') }}</a>

@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'MediaItem')]
 final readonly class MediaItem
 {
+    public const int MAX_DISTANCE_FROM_ROUTE_IN_METER = 300;
+
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
         private MediaItemId $mediaItemId,
