@@ -51,7 +51,6 @@ eventBus.on(Events.ASYNC_CONTENT_LOADED, ({node}) => {
     initComboboxes(node);
     initCoordinatePickers(node);
     initDropdowns(node);
-    initDispatchCommandForm(node);
     initImageDropZones(node);
     initDashboardLayout(node);
     initSortableLists(node);
