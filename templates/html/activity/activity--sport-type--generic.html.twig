@@ -236,7 +236,7 @@
                             'subHtml': '<p>' ~ activity.getSanitizedName() ~ '</p>',
                             'alt': activity.getSanitizedName(),
                         } %}
-                        <a id="media-item-{{ mediaItem.getId() }}" class="shrink-0 h-32 rounded-lg overflow-hidden" href="{{ relativeUrl(imagePath) }}"
+                        <a id="{{ mediaItem.getId() }}" class="shrink-0 h-32 rounded-lg overflow-hidden" href="{{ relativeUrl(imagePath) }}"
                            data-light-gallery-element="{{ lightGalleryElement|json_encode|e('html_attr') }}">
                             <img src="{{ placeholderImage() }}" data-src="{{ relativeUrl(imagePath) }}" alt="{{ activity.getSanitizedName() }}" class="h-full w-auto block lazy" />
                         </a>
