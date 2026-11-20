@@ -3,13 +3,13 @@
 @import "../../node_modules/lightgallery/css/lightgallery-bundle.css";
 @import "./components/alert.css";
 @import "./components/form/search-autocomplete.css";
-@import "./components/chat.css";
+@import "./features/chat.css";
 @import "./components/form/checkbox-multiselect.css";
 @import "./components/form/combobox.css";
-@import "./components/data-table.css";
+@import "./features/data-table.css";
 @import "./components/sorting/drag-sort.css";
 @import "./components/overlay/dropdown.css";
-@import "./components/filter-dropdown.css";
+@import "./features/filter-dropdown.css";
 @import "./components/form/form.css";
 @import "./components/loader.css";
 @import "./components/pill.css";
@@ -78,13 +78,5 @@
 
     .overflow-auto, .overflow-x-auto {
         @apply scrollbar-thin;
-    }
-}
-
-@layer components {
-    div[data-datatable-settings] {
-        .clusterize-data-empty td {
-            @apply text-left p-4;
-        }
     }
 }
