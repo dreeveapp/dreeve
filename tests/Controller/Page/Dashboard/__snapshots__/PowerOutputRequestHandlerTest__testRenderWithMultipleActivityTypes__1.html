@@ -25,8 +25,8 @@
     <link href="/manifest.json" rel="manifest" crossorigin="use-credentials">
     <link rel="icon" type="image/x-icon" href="/assets/images/logo.svg">
     <script>
-        const t = localStorage.getItem('theme') || 'system';
-        document.documentElement.setAttribute('data-theme', t === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t);
+        const themePreference = localStorage.getItem('theme') || 'system';
+        document.documentElement.setAttribute('data-theme', themePreference === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : themePreference);
         if (localStorage.getItem('sideNavCollapsed') === 'true') {
             document.documentElement.setAttribute('data-sidebar-collapsed', '');
         }
