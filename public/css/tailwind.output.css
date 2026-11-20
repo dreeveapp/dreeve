@@ -4779,7 +4779,7 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
       transition-duration: 200ms;
     }
   }
-  body.admin .checkbox-multiselect:has([data-multiselect-panel].block) [data-multiselect-trigger] > svg {
+  body.admin .checkbox-multiselect:has([data-multiselect-panel]:popover-open) [data-multiselect-trigger] > svg {
     rotate: 180deg;
   }
   body.admin .checkbox-multiselect.has-error [data-multiselect-trigger] {
@@ -4855,7 +4855,6 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
     color: var(--color-gray-600);
   }
   body.admin .checkbox-multiselect [data-multiselect-panel] {
-    z-index: 1002;
     width: calc(var(--spacing) * 72);
     max-width: calc(100vw - 2rem);
     border-radius: var(--radius-lg);
