@@ -66,7 +66,7 @@ const MapToolsControl = L.Control.extend({
             return button;
         };
 
-        if (options.showFullscreen) {
+        if (options.showFullscreen && document.fullscreenEnabled) {
             const fsButton = makeButton(enterIcon, 'Toggle fullscreen');
             L.DomEvent.on(fsButton, 'click', function (e) {
                 L.DomEvent.preventDefault(e);
