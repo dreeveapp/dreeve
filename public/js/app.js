@@ -18,7 +18,7 @@ import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager, {isDarkModeEnabled} from "./components/dark-mode";
 import initDropdowns from "./components/dropdown";
 import initPopovers from "./components/popover";
-import {initDrawers} from "flowbite";
+import initDrawers from "./components/drawer";
 
 registerEchartsCallbacks();
 initDrawers();

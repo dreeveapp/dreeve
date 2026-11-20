@@ -19,7 +19,7 @@ import initDashboardLayout from "./features/dashboard/dashboard-layout";
 import initSortableLists from "./components/sortable-list";
 import initAsyncContent from "./components/async-content";
 import {eventBus, Events} from "./core/event-bus";
-import {initDrawers} from "flowbite";
+import initDrawers from "./components/drawer";
 
 initDrawers();
 

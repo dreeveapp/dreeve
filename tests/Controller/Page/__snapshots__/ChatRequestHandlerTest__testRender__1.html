@@ -48,7 +48,7 @@
                     </svg>
                     <span class="sr-only">Toggle sidebar</span>
                 </button>
-                <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation" class="md:hidden mr-3 inline-flex items-center justify-center text-gray-600 cursor-pointer select-none">
+                <button data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation" class="md:hidden mr-3 inline-flex items-center justify-center text-gray-600 cursor-pointer select-none">
                     <span aria-hidden="true" class="relative block w-3.5 h-5">
                         <span class="absolute inset-x-0 top-1 h-0.5 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:top-1/2 drawer-open:-translate-y-1/2 drawer-open:rotate-45"></span>
                         <span class="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-current transition-all duration-300 ease-in-out drawer-open:opacity-0"></span>
@@ -149,7 +149,8 @@
                     </div>
     </div>
 </nav>        <!-- SIDEBAR -->
-    <aside class="-translate-x-full md:translate-x-0" aria-label="Sidenav" id="drawer-navigation">
+    <div data-drawer-hide="drawer-navigation" class="hidden max-md:drawer-open:block fixed inset-0 z-30 bg-gray-900/50 dark:bg-gray-900/80"></div>
+<aside class="-translate-x-full md:translate-x-0 drawer-open:translate-x-0 transition-transform" aria-label="Sidenav" id="drawer-navigation">
     <div>
         <ul class="space-y-1 pb-2">
             <li>
