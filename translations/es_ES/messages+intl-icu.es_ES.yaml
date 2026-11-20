@@ -98,6 +98,7 @@ Cycling: Ciclismo
 'Daily TRIMP': 'TRIMP diario'
 'Daily activities': 'Actividades diarias'
 Dance: Baile
+Dark: Oscuro
 'Dark mode': 'Modo oscuro'
 Dashboard: 'Panel de control'
 Date: Fecha
@@ -247,6 +248,7 @@ Lap: Vuelta
 'Last week': 'Semana pasada'
 'Last {numberOfDays} days': 'Últimos {numberOfDays} días'
 Lifetime: 'Toda la vida'
+Light: Claro
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Fatiga leve con buena disposición. Un gran equilibrio para el entrenamiento de calidad o esfuerzos más largos'
 Load: Carga
 'Load (CTL/ATL)': 'Carga (CTL/ATL)'
@@ -448,6 +450,7 @@ Streaks: Rachas
 Sun: Dom
 Sun.: Dom.
 Surfing: Surf
+System: Sistema
 'TSB (Form)': 'TSB (Estado de forma)'
 'TSB positive in': 'TSB positivo en'
 'Table Tennis': 'Tenis de mesa'

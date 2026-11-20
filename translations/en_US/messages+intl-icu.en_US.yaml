@@ -98,6 +98,7 @@ Cycling: Cycling
 'Daily TRIMP': 'Daily TRIMP'
 'Daily activities': 'Daily activities'
 Dance: Dance
+Dark: Dark
 'Dark mode': 'Dark mode'
 Dashboard: Dashboard
 Date: Date
@@ -247,6 +248,7 @@ Lap: Lap
 'Last week': 'Last week'
 'Last {numberOfDays} days': 'Last {numberOfDays} days'
 Lifetime: Lifetime
+Light: Light
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Light fatigue with good readiness. A great balance for quality training or longer efforts'
 Load: Load
 'Load (CTL/ATL)': 'Load (CTL/ATL)'
@@ -448,6 +450,7 @@ Streaks: Streaks
 Sun: Sun
 Sun.: Sun.
 Surfing: Surfing
+System: System
 'TSB (Form)': 'TSB (Form)'
 'TSB positive in': 'TSB positive in'
 'Table Tennis': 'Table Tennis'

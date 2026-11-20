@@ -121,14 +121,16 @@
                             </a>
                         </li>
                         <li class="border-t border-gray-200 pt-1.5">
-                            <label for="darkModeToggle" class="dark-mode-toggle hover:bg-gray-50 rounded p-2 flex cursor-pointer items-center">
-                                <div class="inline-flex items-center">
+                            <button type="button" class="dark-mode-toggle hover:bg-gray-50 rounded p-2 flex w-full cursor-pointer items-center">
+                                <span class="inline-flex items-center">
                                     <svg class="size-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 0 1-.5-17.986V3c-.354.966-.5 1.911-.5 3a9 9 0 0 0 9 9c.239 0 .254.018.488 0A9.004 9.004 0 0 1 12 21Z"/></svg>
                                     <span class="text-sm font-medium text-heading">{{ "Dark mode"|trans }}</span>
-                                </div>
-                                <input id="darkModeToggle" type="checkbox" value="" class="peer sr-only" />
-                                <div class="ms-auto peer peer-checked:after:border-buffer relative h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-gray-100 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"></div>
-                            </label>
+                                    <span class="sr-only" data-theme-selected-label="light">{{ "Light"|trans }}</span>
+                                    <span class="sr-only" data-theme-selected-label="system">{{ "System"|trans }}</span>
+                                    <span class="sr-only" data-theme-selected-label="dark">{{ "Dark"|trans }}</span>
+                                </span>
+                                <span class="ms-auto relative h-5 w-14 shrink-0 rounded-full bg-gray-200 after:absolute after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-['']" aria-hidden="true"></span>
+                            </button>
                         </li>
                         <li>
                             <a href="{{ relativeUrl('admin') }}" class="inline-flex items-center w-full p-2 hover:bg-gray-50 rounded">

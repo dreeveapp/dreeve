@@ -7,7 +7,11 @@
     <meta name="theme-color" content="#F26822">
     <link rel="icon" type="image/x-icon" href="/assets/images/logo.svg">
     <script>
-        document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+        const selectedTheme = localStorage.getItem('theme');
+        const resolvedTheme = ['light', 'dark'].includes(selectedTheme)
+            ? selectedTheme
+            : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme-resolved', resolvedTheme);
     </script>
     <link href="/css/dist/tailwind.min.css" rel="stylesheet"/>
 </head>

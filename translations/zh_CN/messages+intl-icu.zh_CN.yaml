@@ -98,6 +98,7 @@ Cycling: 骑行
 'Daily TRIMP': 每日TRIMP
 'Daily activities': 每日活动
 Dance: Dance
+Dark: 深色
 'Dark mode': 'Dark mode'
 Dashboard: 仪表板
 Date: 日期
@@ -247,6 +248,7 @@ Lap: 圈
 'Last week': 'Last week'
 'Last {numberOfDays} days': '最近{numberOfDays}天'
 Lifetime: Lifetime
+Light: 浅色
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Light fatigue with good readiness. A great balance for quality training or longer efforts'
 Load: Load
 'Load (CTL/ATL)': '负荷 (CTL/ATL)'
@@ -448,6 +450,7 @@ Streaks: 连续记录
 Sun: 周日
 Sun.: Sun.
 Surfing: 冲浪
+System: 跟随系统
 'TSB (Form)': 'TSB (状态)'
 'TSB positive in': 'TSB positive in'
 'Table Tennis': 乒乓球

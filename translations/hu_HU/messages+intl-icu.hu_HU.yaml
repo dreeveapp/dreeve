@@ -98,6 +98,7 @@ Cycling: Kerékpározás
 'Daily TRIMP': 'Napi TRIMP'
 'Daily activities': 'Napi tevékenységek'
 Dance: Tánc
+Dark: Sötét
 'Dark mode': 'Sötét mód'
 Dashboard: Irányítópult
 Date: Dátum
@@ -247,6 +248,7 @@ Lap: Kör
 'Last week': 'Előző hét'
 'Last {numberOfDays} days': 'Utolsó {numberOfDays} nap'
 Lifetime: 'Teljes időszak'
+Light: Világos
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Enyhe fáradtság jó készenléti állapottal. Kiváló egyensúly a minőségi edzéshez vagy hosszabb erőfeszítésekhez'
 Load: Terhelés
 'Load (CTL/ATL)': 'Terhelés (CTL/ATL)'
@@ -448,6 +450,7 @@ Streaks: Sorozatok
 Sun: V
 Sun.: Vas.
 Surfing: Szörfözés
+System: Rendszer
 'TSB (Form)': 'TSB (Forma)'
 'TSB positive in': 'TSB pozitív ezután:'
 'Table Tennis': Asztalitenisz

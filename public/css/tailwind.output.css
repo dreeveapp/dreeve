@@ -2245,9 +2245,6 @@
   :is(:where(.peer):checked ~ .peer-checked\:border-primary) {
     border-color: var(--color-primary);
   }
-  :is(:where(.peer):checked ~ .peer-checked\:bg-gray-100) {
-    background-color: var(--color-gray-100);
-  }
   :is(:where(.peer):checked ~ .peer-checked\:bg-primary-soft) {
     background-color: var(--color-primary-soft);
   }
@@ -2303,10 +2300,6 @@
   :is(:where(.peer\/speed):checked ~ .peer-checked\/speed\:shadow-xs) {
     --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  :is(:where(.peer):focus ~ .peer-focus\:outline-none) {
-    --tw-outline-style: none;
-    outline-style: none;
   }
   :is(:where(.peer\/activity):focus-visible ~ .peer-focus-visible\/activity\:ring-2) {
     --tw-ring-shadow: var(--tw-ring-inset, ) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
@@ -2365,10 +2358,6 @@
     content: var(--tw-content);
     position: absolute;
   }
-  .after\:start-\[2px\]::after {
-    content: var(--tw-content);
-    inset-inline-start: 2px;
-  }
   .after\:top-\[2px\]::after {
     content: var(--tw-content);
     top: 2px;
@@ -2398,11 +2387,6 @@
   .after\:content-\[\'\'\]::after {
     --tw-content: '';
     content: var(--tw-content);
-  }
-  :is(:where(.peer):checked ~ .peer-checked\:after\:translate-x-full)::after {
-    content: var(--tw-content);
-    --tw-translate-x: 100%;
-    translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .last\:animate-fade-in-chat-message:last-child {
     animation: var(--animate-fade-in-chat-message);
@@ -2919,18 +2903,13 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
-  :is(:where(.peer):checked ~ .rtl\:peer-checked\:after\:-translate-x-full:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *))::after {
-    content: var(--tw-content);
-    --tw-translate-x: -100%;
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
-  .dark\:border-\[\#3e444d\]:where([data-theme=dark], [data-theme=dark] *) {
+  .dark\:border-\[\#3e444d\]:where([data-theme-resolved=dark], [data-theme-resolved=dark] *) {
     border-color: #3e444d;
   }
-  .dark\:bg-\[\#202830\]:where([data-theme=dark], [data-theme=dark] *) {
+  .dark\:bg-\[\#202830\]:where([data-theme-resolved=dark], [data-theme-resolved=dark] *) {
     background-color: #202830;
   }
-  .dark\:bg-gray-900\/80:where([data-theme=dark], [data-theme=dark] *) {
+  .dark\:bg-gray-900\/80:where([data-theme-resolved=dark], [data-theme-resolved=dark] *) {
     background-color: color-mix(in srgb, #111827 80%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-gray-900) 80%, transparent);
@@ -5827,7 +5806,7 @@ table.data-table {
               color: var(--color-gray-900);
             }
           }
-          &:where([data-theme=dark], [data-theme=dark] *) {
+          &:where([data-theme-resolved=dark], [data-theme-resolved=dark] *) {
             background-color: #151b23;
           }
         }
@@ -6254,7 +6233,7 @@ table.data-table {
   }
 }
 @layer base {
-  html[data-theme=dark] {
+  html[data-theme-resolved=dark] {
     color-scheme: dark;
     --color-gray-50: #151b23;
     --color-gray-100: #262C36;
@@ -6327,14 +6306,26 @@ table.data-table {
       background-color: color-mix(in oklab, #000000 60%, transparent);
     }
   }
-  .dark-mode-toggle > div::after {
+  .dark-mode-toggle > span[aria-hidden]::after {
+    inset-inline-start: 2px;
     background-image: url('data:image/svg+xml;utf8,<svg fill="%239CA3AF" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>');
     background-size: 70%;
     background-position: center;
     background-repeat: no-repeat;
   }
-  .dark-mode-toggle > input:checked + div::after {
+  .dark-mode-toggle[data-theme-selected=system] > span[aria-hidden]::after {
+    inset-inline-start: calc(50% - 0.5rem);
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%239CA3AF" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"></path></svg>');
+    @media (pointer: coarse) {
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%239CA3AF" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>');
+    }
+  }
+  .dark-mode-toggle[data-theme-selected=dark] > span[aria-hidden]::after {
+    inset-inline-start: calc(100% - 1rem - 2px);
     background-image: url('data:image/svg+xml;utf8,<svg fill="none" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="%239CA3AF" fill-rule="evenodd" clip-rule="evenodd" d="M12.2256 2.00253C9.59172 1.94346 6.93894 2.9189 4.92893 4.92891C1.02369 8.83415 1.02369 15.1658 4.92893 19.071C8.83418 22.9763 15.1658 22.9763 19.0711 19.071C21.0811 17.061 22.0565 14.4082 21.9975 11.7743C21.9796 10.9772 21.8669 10.1818 21.6595 9.40643C21.0933 9.9488 20.5078 10.4276 19.9163 10.8425C18.5649 11.7906 17.1826 12.4053 15.9301 12.6837C14.0241 13.1072 12.7156 12.7156 12 12C11.2844 11.2844 10.8928 9.97588 11.3163 8.0699C11.5947 6.81738 12.2094 5.43511 13.1575 4.08368C13.5724 3.49221 14.0512 2.90664 14.5935 2.34046C13.8182 2.13305 13.0228 2.02041 12.2256 2.00253ZM17.6569 17.6568C18.9081 16.4056 19.6582 14.8431 19.9072 13.2186C16.3611 15.2643 12.638 15.4664 10.5858 13.4142C8.53361 11.362 8.73568 7.63895 10.7814 4.09281C9.1569 4.34184 7.59434 5.09193 6.34315 6.34313C3.21895 9.46732 3.21895 14.5326 6.34315 17.6568C9.46734 20.781 14.5327 20.781 17.6569 17.6568Z" /></svg>');
+  }
+  .dark-mode-toggle:not([data-theme-selected=light]) [data-theme-selected-label=light], .dark-mode-toggle:not([data-theme-selected=system]) [data-theme-selected-label=system], .dark-mode-toggle:not([data-theme-selected=dark]) [data-theme-selected-label=dark] {
+    display: none;
   }
   .enable-grey-scale .leaflet-tile-pane {
     --tw-grayscale: grayscale(100%);
