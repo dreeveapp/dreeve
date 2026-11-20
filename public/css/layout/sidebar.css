@@ -1,4 +1,8 @@
 @layer components {
+    body:has(#drawer-navigation[aria-modal="true"]) {
+        @apply max-md:overflow-hidden;
+    }
+
     aside#drawer-navigation {
         @apply fixed top-0 left-0 w-64 sidebar-collapsed:w-16 h-screen pt-14 bg-white border-r border-gray-200 z-1001;
 

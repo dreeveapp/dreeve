@@ -1,6 +1,6 @@
 const EDITABLE_SELECTOR = 'input, textarea, select, [contenteditable]:not([contenteditable="false"])';
 const IGNORED_CONTAINER_SELECTOR = '.leaflet-container';
-const OPEN_OVERLAY_SELECTOR = '[drawer-backdrop], [modal-backdrop], dialog[open]';
+const OPEN_OVERLAY_SELECTOR = '[aria-modal="true"], [modal-backdrop], dialog[open]';
 
 const shouldIgnore = (e) => {
     if (e.defaultPrevented || e.repeat || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return true;
