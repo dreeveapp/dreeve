@@ -1,4 +1,4 @@
-import { Popover } from 'flowbite';
+import anchor from './floating';
 
 const initialisedTriggers = new WeakSet();
 
@@ -9,12 +9,34 @@ export default function initPopovers(rootNode) {
         const $popoverEl = document.getElementById($triggerEl.getAttribute('data-popover-target'));
         if (!$popoverEl) return;
 
-        const placement = $triggerEl.getAttribute('data-popover-placement');
-        const triggerType = $triggerEl.getAttribute('data-popover-trigger');
+        const placement = $triggerEl.getAttribute('data-popover-placement') || 'top';
+        let cleanup = null;
+        let hideTimeout = null;
 
-        new Popover($popoverEl, $triggerEl, {
-            placement: placement ? placement : 'top',
-            triggerType: triggerType ? triggerType : 'hover',
+        const show = () => {
+            clearTimeout(hideTimeout);
+            if ($popoverEl.matches(':popover-open')) return;
+
+            $popoverEl.showPopover();
+            cleanup = anchor({
+                reference: $triggerEl,
+                floating: $popoverEl,
+                placement,
+                offset: 10,
+            });
+        };
+        const hide = () => {
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+                if ($popoverEl.matches(':popover-open')) $popoverEl.hidePopover();
+                cleanup?.();
+                cleanup = null;
+            }, 100);
+        };
+
+        [$triggerEl, $popoverEl].forEach(($el) => {
+            ['mouseenter', 'focus'].forEach((event) => $el.addEventListener(event, show));
+            ['mouseleave', 'blur'].forEach((event) => $el.addEventListener(event, hide));
         });
         initialisedTriggers.add($triggerEl);
     });

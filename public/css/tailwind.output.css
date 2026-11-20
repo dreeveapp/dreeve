@@ -5830,23 +5830,27 @@ table.data-table {
     color: var(--color-gray-600);
   }
   div[data-popover][role="tooltip"] {
-    visibility: hidden;
-    position: absolute;
-    z-index: 999999;
+    position: fixed;
+    inset: auto;
+    margin: 0px;
+    overflow: visible;
     border-radius: var(--radius-lg);
     border-style: var(--tw-border-style);
     border-width: 1px;
     border-color: var(--color-gray-200);
     background-color: var(--color-white);
+    padding: 0px;
     color: var(--color-gray-500);
     opacity: 0%;
     --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-    transition-property: opacity;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
-    --tw-duration: 300ms;
-    transition-duration: 300ms;
+    transition: opacity 300ms, display 300ms allow-discrete, overlay 300ms allow-discrete;
+    &:popover-open {
+      opacity: 100%;
+      @starting-style {
+        opacity: 0%;
+      }
+    }
   }
   .scroll-to-highlighted {
     animation: scroll-to-highlight 1.5s ease-out;
