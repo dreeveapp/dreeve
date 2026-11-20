@@ -16,7 +16,7 @@ import initToasts from "./components/toast";
 import FileDropzoneUpload from "./features/file-upload/file-dropzone-upload";
 import {initImageDropZones} from "./features/file-upload/image-dropzone-upload";
 import initDashboardLayout from "./features/dashboard/dashboard-layout";
-import initSortableLists from "./components/sortable-list";
+import initSortableLists from "./components/sorting/sortable-list";
 import initAsyncContent from "./components/async-content";
 import {eventBus, Events} from "./core/event-bus";
 import initDrawers from "./components/overlay/drawer";

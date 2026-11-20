@@ -1,4 +1,4 @@
-import {dispatchCommand} from "../utils";
+import {dispatchCommand} from "../../utils";
 import createDragSort from "./drag-sort";
 
 class SortableList {

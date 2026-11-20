@@ -1,5 +1,5 @@
 import {debounce, dispatchCommand} from "../../utils";
-import createDragSort from "../../components/drag-sort";
+import createDragSort from "../../components/sorting/drag-sort";
 
 const WIDTHS = new Set([33, 50, 66, 100]);
 
