@@ -16,8 +16,8 @@
         <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
         {% block stylesheets %}{% endblock %}
         <script>
-            const t = localStorage.getItem('theme') || 'system';
-            document.documentElement.setAttribute('data-theme', t === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t);
+            const themePreference = localStorage.getItem('theme') || 'system';
+            document.documentElement.setAttribute('data-theme', themePreference === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : themePreference);
         </script>
     </head>
     <body class="min-h-screen bg-gray-50 text-gray-900 antialiased admin">

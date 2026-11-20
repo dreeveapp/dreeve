@@ -8,8 +8,8 @@
         <meta name="theme-color" content="#F26822">
         <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
         <script>
-            const t = localStorage.getItem('theme') || 'system';
-            document.documentElement.setAttribute('data-theme', t === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t);
+            const themePreference = localStorage.getItem('theme') || 'system';
+            document.documentElement.setAttribute('data-theme', themePreference === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : themePreference);
         </script>
         <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
     </head>
