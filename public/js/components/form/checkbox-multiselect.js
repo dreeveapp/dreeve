@@ -1,4 +1,4 @@
-import {Dropdown} from 'flowbite';
+import Dropdown from 'flowbite/lib/esm/components/dropdown';
 import {eventBus, Events} from '../../core/event-bus';
 import {getComponent, initComponents} from '../../core/component-registry';
 

@@ -1,5 +1,14 @@
 @layer components {
     div[data-popover][role="tooltip"] {
-        @apply absolute z-999999 invisible text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-md opacity-0;
+        @apply fixed inset-auto m-0 p-0 overflow-visible text-gray-500 bg-white border border-gray-200 rounded-lg shadow-md opacity-0;
+        transition: opacity 300ms, display 300ms allow-discrete, overlay 300ms allow-discrete;
+
+        &:popover-open {
+            @apply opacity-100;
+
+            @starting-style {
+                @apply opacity-0;
+            }
+        }
     }
 }

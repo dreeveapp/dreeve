@@ -1,4 +1,4 @@
-import { Dropdown } from 'flowbite';
+import Dropdown from 'flowbite/lib/esm/components/dropdown';
 
 const instances = new WeakMap();
 
