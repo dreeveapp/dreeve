@@ -4814,6 +4814,10 @@ table.data-table {
   container-type: inline-size;
 }
 @layer components {
+  div[data-datatable-settings] .clusterize-data-empty td {
+    padding: calc(var(--spacing) * 4);
+    text-align: left;
+  }
   [data-drag-handle] {
     cursor: grab;
     user-select: none;
@@ -6453,12 +6457,6 @@ table.data-table {
       height: 8px;
     }
     scrollbar-width: thin;
-  }
-}
-@layer components {
-  div[data-datatable-settings] .clusterize-data-empty td {
-    padding: calc(var(--spacing) * 4);
-    text-align: left;
   }
 }
 @layer base {

@@ -75,3 +75,11 @@ table.data-table {
 .scroll-area:has(> table.data-table) {
     container-type: inline-size;
 }
+
+@layer components {
+    div[data-datatable-settings] {
+        .clusterize-data-empty td {
+            @apply text-left p-4;
+        }
+    }
+}
