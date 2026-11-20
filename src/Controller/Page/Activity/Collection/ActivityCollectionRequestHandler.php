@@ -18,6 +18,7 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
+use App\Domain\Activity\Media\ActivityMediaItem;
 use App\Domain\Activity\Media\ActivityMediaRepository;
 use App\Domain\Activity\RealWorldMap;
 use App\Domain\Media\MediaItemCacheTag;
@@ -89,6 +90,7 @@ final readonly class ActivityCollectionRequestHandler
             activityCollection: $activityCollection,
             activities: $activities,
         );
+        $mediaItems = $this->activityMediaRepository->findByActivityIds($activityCollection->getActivityIds())->reverse();
 
         return $this->twig->load(sprintf(
             'html/activity/collection/%s.html.twig',
@@ -96,7 +98,10 @@ final readonly class ActivityCollectionRequestHandler
         ))->render([
             'activityCollectionWithActivities' => $activityCollectionWithActivities,
             'leafletMap' => $activityCollectionWithActivities->getActivitiesWithARealWorldRoute()->isEmpty() ? null : new RealWorldMap(),
-            'mediaItems' => $this->activityMediaRepository->findByActivityIds($activityCollection->getActivityIds())->reverse(),
+            'mediaItems' => $mediaItems,
+            'geotaggedMediaItems' => $mediaItems->filter(
+                fn (ActivityMediaItem $mediaItem): bool => $mediaItem->allowsPhotoMarker(),
+            ),
         ]);
     }
 }
