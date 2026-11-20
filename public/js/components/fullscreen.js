@@ -8,6 +8,12 @@ export default function initFullscreen(rootNode) {
 
     rootNode.querySelectorAll('[data-fullscreen-trigger]:not([data-fullscreen-trigger-bound])').forEach((el) => {
         el.setAttribute('data-fullscreen-trigger-bound', '');
+
+        if (!document.fullscreenEnabled) {
+            el.hidden = true;
+            return;
+        }
+
         el.addEventListener('click', (e) => {
             e.preventDefault();
 
