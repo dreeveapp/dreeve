@@ -1,6 +1,6 @@
 import {eventBus, Events} from '../../core/event-bus';
 import {initComponents} from '../../core/component-registry';
-import anchor from '../floating';
+import anchor from '../overlay/floating';
 
 const ROOT_SELECTOR = '[data-combobox]';
 const OPTION_SELECTOR = '[data-combobox-option]';

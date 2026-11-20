@@ -1,6 +1,6 @@
 import {eventBus, Events} from '../../core/event-bus';
 import {getComponent, initComponents} from '../../core/component-registry';
-import anchor from '../floating';
+import anchor from '../overlay/floating';
 
 const MAX_VISIBLE_CHIPS = 3;
 

@@ -16,9 +16,9 @@ import initKeyboardShortcuts from "./components/keyboard-shortcut";
 import ScrollTo from "./components/scroll-to";
 import MilestoneFilter from "./features/milestones/milestone-filter";
 import DarkModeManager, {isDarkModeEnabled} from "./components/dark-mode";
-import initDropdowns from "./components/dropdown";
-import initPopovers from "./components/popover";
-import initDrawers from "./components/drawer";
+import initDropdowns from "./components/overlay/dropdown";
+import initPopovers from "./components/overlay/popover";
+import initDrawers from "./components/overlay/drawer";
 
 registerEchartsCallbacks();
 initDrawers();
