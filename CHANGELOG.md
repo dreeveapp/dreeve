@@ -1,3 +1,36 @@
+# [v5.9.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.9.1) - 2026-11-20
+
+> [!WARNING]
+> This release migrates all existing images to media items with metadata.
+>
+> Make sure to back up your database before upgrading.
+
+## New features
+* Activity images are now stored as media items with metadata
+* Activity image metadata can be managed from the admin panel
+* Activity images with coordinates are displayed at their corresponding locations on route maps
+
+## Improvements
+* Added ETag revalidation for heatmaps, activity data and segment data tables to reduce unnecessary requests
+* Fixed support for oversized JSON integers, ensuring 64-bit Strava IDs are handled correctly
+
+## Technical details
+* Update German translations in admin+intl-icu.yaml by @effectpears in https://github.com/dreeveapp/dreeve/pull/3050
+* ISSUE #3054: Default to requiring login on managed instances by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3055
+* ISSUE #3056: Replace Symfony form in AI chat with plain HTML form by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3058
+* ISSUE #3060: Add curated sports photos for anonymized activity images in demo mode by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3061
+* ISSUE #3062: Store activity photos as media items with their metadata by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3068
+* ISSUE #3067: Decode oversized JSON integers as strings to support 64-bit Strava ids by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3069
+* ISSUE #3064: Revalidate heatmap routes with an ETag by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3070
+* ISSUE #3075: Clean up and deduplicate JS by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3076
+* ISSUE #3057: Raise image upload limit to 15 MB per file by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3077
+* ISSUE #3064: Add ETag revalidation to the activity and segment data tables by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3078
+* ISSUE #3073: Map EntityNotFound to a 404 in the API exception listener by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3079
+* ISSUE #3082: Remove dependency to Flowbite by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3083
+* ISSUE #3059: Show activity photos at their locations on the route map by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3080
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.9.0...v5.9.1
+
 # [v5.9.0](https://github.com/dreeveapp/dreeve/releases/tag/v5.9.0) - 2026-11-15
 
 > [!NOTE]
