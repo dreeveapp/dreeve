@@ -135,7 +135,7 @@ final class FitSportType
             self::SPORT_PADDLING, self::SPORT_CANOEING => SportType::CANOEING,
             self::SPORT_E_BIKING => SportType::E_BIKE_RIDE,
             self::SPORT_GOLF => SportType::GOLF,
-            self::SPORT_DISC_GOLF => SportType::WORKOUT,
+            self::SPORT_DISC_GOLF => SportType::DISC_GOLF,
             self::SPORT_INLINE_SKATING => SportType::INLINE_SKATE,
             self::SPORT_ROCK_CLIMBING => SportType::ROCK_CLIMBING,
             self::SPORT_SAILING => SportType::SAIL,
