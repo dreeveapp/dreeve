@@ -1,7 +1,7 @@
 import {fetchJson} from "../../utils";
 import {loadEcharts} from "../../features/charts/echarts-loader";
 import {registerEchartsCallbacks, resolveEchartsCallbacks} from "../../features/charts/echarts-callbacks";
-import {isDarkModeEnabled} from "../dark-mode";
+import {isDarkModeEnabled} from "../../layout/dark-mode";
 import {END_MARKER_COLOR, MARKER_BORDER_COLOR, PRIMARY_COLOR, START_MARKER_COLOR} from "../../features/maps/map-colors";
 import {createAdminLeafletMap} from "../../features/maps/admin-leaflet-map";
 
