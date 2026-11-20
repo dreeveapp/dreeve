@@ -29,7 +29,6 @@
 @source "../../src/Domain/Dashboard/Widget/TrainingLoad/*.php";
 
 @plugin "tailwind-scrollbar";
-@plugin "flowbite/plugin";
 @source "../../node_modules/flowbite";
 
 @theme {
