@@ -120,14 +120,32 @@
                             </a>
                         </li>
                         <li class="border-t border-gray-200 pt-1.5">
-                            <label for="darkModeToggle" class="dark-mode-toggle hover:bg-gray-50 rounded p-2 flex cursor-pointer items-center">
+                            <div class="dark-mode-toggle p-2 flex items-center">
                                 <div class="inline-flex items-center">
                                     <svg class="size-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 0 1-.5-17.986V3c-.354.966-.5 1.911-.5 3a9 9 0 0 0 9 9c.239 0 .254.018.488 0A9.004 9.004 0 0 1 12 21Z"></path></svg>
-                                    <span class="text-sm font-medium text-heading">Dark mode</span>
+                                    <span class="text-sm font-medium text-heading">Theme</span>
                                 </div>
-                                <input id="darkModeToggle" type="checkbox" value="" class="peer sr-only">
-                                <div class="ms-auto peer peer-checked:after:border-buffer relative h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-gray-100 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"></div>
-                            </label>
+                                <div class="ms-auto inline-flex shadow-xs" role="radiogroup" aria-label="Theme">
+                                                                            <div class="flex">
+                                            <input type="radio" id="theme-light" value="light" name="theme" class="hidden peer">
+                                            <label for="theme-light" title="Light" aria-label="Light" class="rounded-s-lg inline-flex items-center cursor-pointer p-1 bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 peer-checked:relative peer-checked:text-primary peer-checked:border-primary peer-checked:bg-primary-soft peer-checked:hover:text-primary peer-checked:hover:bg-primary/20 transition-colors">
+                                                <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5V3m0 18v-2M7.05 7.05 5.636 5.636m12.728 12.728L16.95 16.95M5 12H3m18 0h-2M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"></path></svg>
+                                            </label>
+                                        </div>
+                                                                            <div class="flex">
+                                            <input type="radio" id="theme-system" value="system" name="theme" class="hidden peer">
+                                            <label for="theme-system" title="System" aria-label="System" class="-ms-px inline-flex items-center cursor-pointer p-1 bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 peer-checked:relative peer-checked:text-primary peer-checked:border-primary peer-checked:bg-primary-soft peer-checked:hover:text-primary peer-checked:hover:bg-primary/20 transition-colors">
+                                                <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm8 11v4m-4 0h8"></path></svg>
+                                            </label>
+                                        </div>
+                                                                            <div class="flex">
+                                            <input type="radio" id="theme-dark" value="dark" name="theme" class="hidden peer">
+                                            <label for="theme-dark" title="Dark" aria-label="Dark" class="-ms-px rounded-e-lg inline-flex items-center cursor-pointer p-1 bg-white border border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 peer-checked:relative peer-checked:text-primary peer-checked:border-primary peer-checked:bg-primary-soft peer-checked:hover:text-primary peer-checked:hover:bg-primary/20 transition-colors">
+                                                <svg class="size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 0 1-.5-17.986V3c-.354.966-.5 1.911-.5 3a9 9 0 0 0 9 9c.239 0 .254.018.488 0A9.004 9.004 0 0 1 12 21Z"></path></svg>
+                                            </label>
+                                        </div>
+                                                                    </div>
+                            </div>
                         </li>
                         <li>
                             <a href="/admin" class="inline-flex items-center w-full p-2 hover:bg-gray-50 rounded">

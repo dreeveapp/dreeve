@@ -98,7 +98,7 @@ Cycling: Cyclisme
 'Daily TRIMP': 'TRIMP quotidien'
 'Daily activities': 'Activités quotidiennes'
 Dance: Danse
-'Dark mode': 'Mode sombre'
+Dark: Dark
 Dashboard: 'Tableau de bord'
 Date: Date
 Day: Jour
@@ -248,6 +248,7 @@ Lap: Tour
 'Last week': 'Semaine dernière'
 'Last {numberOfDays} days': 'Derniers {numberOfDays} jours'
 Lifetime: 'Depuis toujours'
+Light: Light
 'Light fatigue with good readiness. A great balance for quality training or longer efforts': 'Fatigue légère avec une bonne préparation. Un super équilibre pour un entraînement de qualité ou des efforts plus longs'
 Load: Charge
 'Load (CTL/ATL)': 'Charge (CTL/ATL)'
@@ -449,6 +450,7 @@ Streaks: Séries
 Sun: Dim
 Sun.: Dim.
 Surfing: Surf
+System: System
 'TSB (Form)': 'TSB (État de forme)'
 'TSB positive in': 'TSB positif dans'
 'Table Tennis': 'Tennis de table'
@@ -550,6 +552,7 @@ Tennis: Tennis
 'The largest connected group of cluster tiles': 'The largest connected group of cluster tiles'
 'The largest square of visited tiles': 'The largest square of visited tiles'
 "The page you're looking for doesn't exist or may have been moved.": "La page n'existe pas ou a été déplacée."
+Theme: Theme
 'These badges are dynamically created. You can use them in any &lt;img&gt; tag': "Ces badges sont créés dynamiquement. Vous pouvez les utiliser dans n'importe quelle balise &lt;img&gt;"
 'These components are not installed on any gear at the moment.': 'These components are not installed on any gear at the moment.'
 Thinking...: Réfléchit...

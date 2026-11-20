@@ -5,25 +5,33 @@ export const isDarkModeEnabled = () => document.documentElement.getAttribute('da
 export default class DarkModeManager {
     constructor() {
         this.storageKey = 'theme';
-        this.$toggleButton = document.querySelector('.dark-mode-toggle input');
+        this.$themeInputs = document.querySelectorAll('.dark-mode-toggle input[name=theme]');
         this.$themeElement = document.documentElement;
         this.dataAttributeName = 'data-theme';
     }
 
     attachEventListeners() {
-        this.$toggleButton.checked = isDarkModeEnabled();
-        this.$toggleButton.addEventListener('change', () => {
-            this.setDark(!isDarkModeEnabled());
+        const preference = localStorage.getItem(this.storageKey) || 'system';
+
+        this.$themeInputs.forEach(($input) => {
+            $input.checked = $input.value === preference;
+            $input.addEventListener('change', () => {
+                this.setPreference($input.value);
+            });
         });
     }
 
-    setDark(enabled) {
-        const theme = enabled ? 'dark' : 'light';
-        localStorage.setItem(this.storageKey, theme);
+    setPreference(preference) {
+        localStorage.setItem(this.storageKey, preference);
+
+        const theme = preference === 'system'
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : preference;
+        if (theme === this.$themeElement.getAttribute(this.dataAttributeName)) {
+            return;
+        }
+
         this.$themeElement.setAttribute(this.dataAttributeName, theme);
-
-        this.$toggleButton.checked = enabled;
-
-        eventBus.emit(Events.DARK_MODE_TOGGLED, {darkModeEnabled: enabled});
+        eventBus.emit(Events.DARK_MODE_TOGGLED, {darkModeEnabled: theme === 'dark'});
     }
 }
