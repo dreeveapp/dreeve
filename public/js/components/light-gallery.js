@@ -45,13 +45,14 @@ class LightGallery {
 
     open(element) {
         const elements = Array.from(this.container.querySelectorAll(ELEMENT_SELECTOR))
-            .filter(node => node.getClientRects().length > 0);
-        if (0 === elements.length) return;
+            .filter(node => !node.classList.contains('hidden'));
+        const index = elements.indexOf(element);
+        if (-1 === index) return;
 
         this.gallery.refresh(elements.map(
             node => JSON.parse(node.getAttribute('data-light-gallery-element'))
         ));
-        this.gallery.openGallery(elements.indexOf(element));
+        this.gallery.openGallery(index);
     }
 }
 
