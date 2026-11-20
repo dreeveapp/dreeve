@@ -1,0 +1,14 @@
+@layer utilities {
+    body .lg-outer {
+        z-index: 1500 !important;
+    }
+
+    body .lg-backdrop {
+        z-index: 1490 !important;
+        opacity: 0.9 !important;
+    }
+
+    body .lg-outer:not(.lg-visible) {
+        pointer-events: none;
+    }
+}
