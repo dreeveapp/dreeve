@@ -7,6 +7,8 @@ namespace App\Controller\Page\Activity\Collection;
 use App\Application\Navigation\NavigationSection;
 use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
+use App\Domain\Activity\Activities;
+use App\Domain\Activity\Activity;
 use App\Domain\Activity\ActivityCacheTag;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
@@ -18,6 +20,7 @@ use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
 use App\Domain\Activity\Media\ActivityMediaRepository;
 use App\Domain\Activity\RealWorldMap;
+use App\Domain\Media\MediaItemCacheTag;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
 use App\Infrastructure\Cache\Context\CacheContexts;
@@ -54,6 +57,8 @@ final readonly class ActivityCollectionRequestHandler
             throw new NotFoundHttpException('Not found');
         }
 
+        $activities = $this->activityRepository->findByIds($activityCollection->getActivityIds());
+
         return $this->pageRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: sprintf('activity-collections.%s', $activityCollection->getId()->toUnprefixedString()),
@@ -61,10 +66,14 @@ final readonly class ActivityCollectionRequestHandler
                     ActivityCollectionCacheTag::for($activityCollection->getId()),
                     RootCacheTag::ACTIVITY_ROUTE,
                     ...$activityCollection->getActivityIds()->map(static fn (ActivityId $activityId): CacheTag => ActivityCacheTag::for($activityId)),
+                    ...array_merge(...$activities->map(static fn (Activity $activity): array => MediaItemCacheTag::forAll($activity->getMediaItemIds()))),
                 ),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
             ),
-            render: fn (): string => $this->renderFor($activityCollection),
+            render: fn (): string => $this->renderFor(
+                activityCollection: $activityCollection,
+                activities: $activities,
+            ),
             navigationSection: NavigationSection::ACTIVITY_COLLECTIONS,
             metadata: new PageMetadata(
                 title: $activityCollection->getName(),
@@ -74,11 +83,11 @@ final readonly class ActivityCollectionRequestHandler
         );
     }
 
-    private function renderFor(ActivityCollection $activityCollection): string
+    private function renderFor(ActivityCollection $activityCollection, Activities $activities): string
     {
         $activityCollectionWithActivities = ActivityCollectionWithActivities::create(
             activityCollection: $activityCollection,
-            activities: $this->activityRepository->findByIds($activityCollection->getActivityIds()),
+            activities: $activities,
         );
 
         return $this->twig->load(sprintf(
