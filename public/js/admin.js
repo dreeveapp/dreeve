@@ -10,7 +10,7 @@ import initDependentFormInputs from "./components/form/dependent-form-input";
 import initCoordinatePickers from "./components/form/coordinate-picker";
 import initRouteRangePickers from "./components/form/route-range-picker";
 import initDropdowns from "./components/overlay/dropdown";
-import initImportStatus from "./components/import-status";
+import initImportStatus from "./features/import-status/import-status";
 import initSearchAutocompletes from "./components/form/search-autocomplete";
 import initToasts from "./components/toast";
 import FileDropzoneUpload from "./features/file-upload/file-dropzone-upload";

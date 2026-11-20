@@ -1,4 +1,4 @@
-import {fetchJson} from "../utils";
+import {fetchJson} from "../../utils";
 
 const POLL_INTERVAL_MS = 30000;
 
