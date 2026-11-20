@@ -50,6 +50,7 @@
     "Yoga": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "PhysicalTherapy": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "Golf": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
+    "DiscGolf": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "RockClimbing": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
     "Sail": "App\\Infrastructure\\Measurement\\Velocity\\Knot",
     "Basketball": "App\\Infrastructure\\Measurement\\Velocity\\KmPerHour",
