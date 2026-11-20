@@ -38,7 +38,7 @@
                         {% endif %}
                         <div class="filter-dropdown">
                             {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'distanceButton', dropdownId: 'dropdownDistance', label: "Distance"|trans} only %}
-                            <div id="dropdownDistance">
+                            <div id="dropdownDistance" popover="auto" data-dropdown-panel>
                                 <div class="p-3 flex flex-col gap-y-2">
                                     {% include 'html/data-table/filter/range.html.twig' with {name: 'distance', label: "Distance"|trans, icon: 'distance', unit: renderUnitSymbol('distance')} only %}
                                 </div>
@@ -46,7 +46,7 @@
                         </div>
                         <div class="filter-dropdown">
                             {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'gradientButton', dropdownId: 'dropdownGradient', label: "Gradient"|trans} only %}
-                            <div id="dropdownGradient">
+                            <div id="dropdownGradient" popover="auto" data-dropdown-panel>
                                 <div class="p-3 flex flex-col gap-y-2">
                                     {% include 'html/data-table/filter/range.html.twig' with {name: 'averageGradient', label: "Average gradient"|trans, icon: 'percentage', unit: '%', allowNegative: true} only %}
                                     {% include 'html/data-table/filter/range.html.twig' with {name: 'maxGradient', label: "Max gradient"|trans, icon: 'percentage', unit: '%', allowNegative: true} only %}
@@ -56,7 +56,7 @@
                         {% include 'html/data-table/filter/date-range.html.twig' with {name: 'lastEffortDate', label: "Last effort date"|trans} only %}
                         <div class="filter-dropdown">
                             {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownOtherButton', dropdownId: 'dropdownOther', label: "Other"|trans} only %}
-                            <div id="dropdownOther" class="divide-y divide-gray-100">
+                            <div id="dropdownOther" popover="auto" data-dropdown-panel class="divide-y divide-gray-100">
                                 <ul aria-labelledby="dropdownOtherButton">
                                     <li>
                                         <div>

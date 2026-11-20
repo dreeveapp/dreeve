@@ -1,0 +1,5 @@
+@layer components {
+    [data-dropdown-panel] {
+        @apply fixed inset-auto m-0 p-0 overflow-visible border-0 bg-transparent text-inherit;
+    }
+}
