@@ -105,7 +105,12 @@
                         'imageOverlay': leafletMap.getOverlayImageUrl(),
                         'bounds': leafletMap.getBounds(),
                         'showStartMarker': showRouteMarkers|default(false),
-                        'showEndMarker': showRouteMarkers|default(false)
+                        'showEndMarker': showRouteMarkers|default(false),
+                        'imageMarkers': geotaggedMediaItems|map(mediaItem => {
+                            'latLng': mediaItem.getCoordinate(),
+                            'imageUrl': relativeUrl(mediaItem.getImageUrl()),
+                            'lightGalleryTarget': mediaItem.getMediaItemId(),
+                        }),
                     } %}
                     <div class="h-87.5 mt-4 rounded-lg overflow-hidden" style="background-color:{{ leafletMap.getBackgroundColor() }}"
                          data-leaflet='{{ leafletOptions|json_encode }}'></div>

@@ -51,6 +51,11 @@ final readonly class ActivityMediaItem
         return $this->mediaItem->getCoordinate();
     }
 
+    public function allowsPhotoMarker(): bool
+    {
+        return $this->activity->allowsPhotoMarkerAt($this->mediaItem->getCoordinate());
+    }
+
     /**
      * @return array<string, mixed>
      */
