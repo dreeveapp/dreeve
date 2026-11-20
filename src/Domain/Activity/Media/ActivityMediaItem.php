@@ -5,6 +5,7 @@ namespace App\Domain\Activity\Media;
 use App\Domain\Activity\Activity;
 use App\Domain\Media\ImageOrientation;
 use App\Domain\Media\MediaItem;
+use App\Domain\Media\MediaItemId;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 
 final readonly class ActivityMediaItem
@@ -23,6 +24,11 @@ final readonly class ActivityMediaItem
             mediaItem: $mediaItem,
             activity: $activity,
         );
+    }
+
+    public function getMediaItemId(): MediaItemId
+    {
+        return $this->mediaItem->getId();
     }
 
     public function getImageUrl(): string
