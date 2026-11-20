@@ -46,7 +46,7 @@
                             {% if gears|length > 0 %}
                                 <div class="filter-dropdown">
                                     {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownGearsButton', dropdownId: 'dropdownGears', label: "Gear"|trans} only %}
-                                    <div id="dropdownGears" class="divide-y divide-gray-100">
+                                    <div id="dropdownGears" popover="auto" data-dropdown-panel class="divide-y divide-gray-100">
                                         <ul aria-labelledby="dropdownGearsButton">
                                             {% for gear in gears %}
                                                 <li>
@@ -75,7 +75,7 @@
                             {% if devices|length > 0 %}
                                 <div class="filter-dropdown">
                                     {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'dropdownDevicesButton', dropdownId: 'dropdownDevices', label: "Device"|trans} only %}
-                                    <div id="dropdownDevices" class="divide-y divide-gray-100">
+                                    <div id="dropdownDevices" popover="auto" data-dropdown-panel class="divide-y divide-gray-100">
                                         <ul aria-labelledby="dropdownDevicesButton">
                                             {% for device in devices %}
                                                 <li>
@@ -103,7 +103,7 @@
                             {% endif %}
                             <div class="filter-dropdown">
                                 {% include 'html/data-table/filter/dropdown-button.html.twig' with {buttonId: 'distanceElevationButton', dropdownId: 'dropdownDistanceElevation', label: "Distance & Elevation"|trans} only %}
-                                <div id="dropdownDistanceElevation">
+                                <div id="dropdownDistanceElevation" popover="auto" data-dropdown-panel>
                                     <div class="p-3 flex flex-col gap-y-2">
                                         {% include 'html/data-table/filter/range.html.twig' with {name: 'distance', label: "Distance"|trans, icon: 'distance', unit: renderUnitSymbol('distance')} only %}
                                         {% include 'html/data-table/filter/range.html.twig' with {name: 'elevation', label: "Elevation"|trans, icon: 'elevation', unit: renderUnitSymbol('elevation')} only %}
@@ -118,7 +118,7 @@
                                 {{ svg('columns') }}
                                 <span class="sr-only">{{ "Columns"|trans }}</span>
                             </button>
-                            <div id="dropdownColumns" class="divide-y divide-gray-100">
+                            <div id="dropdownColumns" popover="auto" data-dropdown-panel class="divide-y divide-gray-100">
                                 <ul aria-labelledby="dropdownColumnsButton" data-dataTable-columns></ul>
                                 <div class="p-3">
                                     <a href="#" class="text-primary text-sm underline" data-dataTable-columns-reset>{{ "Show all columns"|trans }}</a>

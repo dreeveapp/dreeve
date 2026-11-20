@@ -1,35 +1,56 @@
-import Dropdown from 'flowbite/lib/esm/components/dropdown';
+import anchor from './floating';
 
-const instances = new WeakMap();
+const initialisedTriggers = new WeakSet();
 
 export default function initDropdowns(rootNode) {
     rootNode.querySelectorAll('[data-dropdown]').forEach(($triggerEl) => {
+        if (initialisedTriggers.has($triggerEl)) return;
+
         const $dropdownEl = document.getElementById($triggerEl.getAttribute('data-dropdown'));
-        const placement = $triggerEl.getAttribute('data-dropdown-placement');
-        const offsetSkidding = $triggerEl.getAttribute('data-dropdown-offset-skidding');
-        const offsetDistance = $triggerEl.getAttribute('data-dropdown-offset-distance');
-        const triggerType = $triggerEl.getAttribute('data-dropdown-trigger');
-        const delay = $triggerEl.getAttribute('data-dropdown-delay');
-        const ignoreClickOutsideClass = $triggerEl.getAttribute('data-dropdown-ignore-click-outside-class');
+        if (!$dropdownEl) return;
 
-        const dropdown = new Dropdown($dropdownEl, $triggerEl, {
-            placement: placement ? placement : 'bottom',
-            triggerType: triggerType ? triggerType : 'click',
-            offsetSkidding: offsetSkidding ? parseInt(offsetSkidding) : 0,
-            offsetDistance: offsetDistance ? parseInt(offsetDistance) : 10,
-            delay: delay ? parseInt(delay) : 300,
-            ignoreClickOutsideClass: ignoreClickOutsideClass
-                ? ignoreClickOutsideClass
-                : false,
+        const placement = $triggerEl.getAttribute('data-dropdown-placement') || 'bottom';
+        const offset = parseInt($triggerEl.getAttribute('data-dropdown-offset-distance') ?? 10);
+        const skidding = parseInt($triggerEl.getAttribute('data-dropdown-offset-skidding') ?? 0);
+        let cleanup = null;
+        let wasOpenOnPointerDown = false;
+
+        $triggerEl.setAttribute('aria-expanded', 'false');
+        $triggerEl.setAttribute('aria-controls', $dropdownEl.id);
+
+        $triggerEl.addEventListener('pointerdown', () => {
+            wasOpenOnPointerDown = $dropdownEl.matches(':popover-open');
         });
+        $triggerEl.addEventListener('click', (e) => {
+            const wasOpen = e.detail === 0 ? $dropdownEl.matches(':popover-open') : wasOpenOnPointerDown;
+            if (wasOpen) {
+                if ($dropdownEl.matches(':popover-open')) $dropdownEl.hidePopover();
+                return;
+            }
 
-        if (!$dropdownEl.hasAttribute('data-close-dropdown-bound')) {
-            $dropdownEl.setAttribute('data-close-dropdown-bound', '');
-            $dropdownEl.addEventListener('click', (e) => {
-                if (!e.target.closest('[data-close-dropdown]')) return;
-                instances.get($dropdownEl)?.hide();
+            if ($dropdownEl.matches(':popover-open')) return;
+
+            $dropdownEl.showPopover();
+            cleanup?.();
+            cleanup = anchor({
+                reference: $triggerEl,
+                floating: $dropdownEl,
+                placement,
+                offset,
+                skidding,
             });
-        }
-        instances.set($dropdownEl, dropdown);
+        });
+        $dropdownEl.addEventListener('toggle', (e) => {
+            $triggerEl.setAttribute('aria-expanded', String(e.newState === 'open'));
+            if (e.newState === 'open') return;
+
+            cleanup?.();
+            cleanup = null;
+        });
+        $dropdownEl.addEventListener('click', (e) => {
+            if (!e.target.closest('[data-close-dropdown]')) return;
+            $dropdownEl.hidePopover();
+        });
+        initialisedTriggers.add($triggerEl);
     });
 }

@@ -5149,6 +5149,17 @@ table.data-table {
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     cursor: grabbing;
   }
+  [data-dropdown-panel] {
+    position: fixed;
+    inset: auto;
+    margin: 0px;
+    overflow: visible;
+    border-style: var(--tw-border-style);
+    border-width: 0px;
+    background-color: transparent;
+    padding: 0px;
+    color: inherit;
+  }
   div.filter-dropdown > button[data-dropdown] {
     display: inline-flex;
     width: fit-content;
@@ -5210,12 +5221,10 @@ table.data-table {
       transition-duration: 200ms;
     }
   }
-  div.filter-dropdown > button:has( + div.block) svg {
+  div.filter-dropdown > button:has( + div:popover-open) svg {
     rotate: 180deg;
   }
   div.filter-dropdown > div {
-    z-index: 1002;
-    display: none;
     width: fit-content;
     max-width: calc(100vw - 2rem);
     border-radius: var(--radius-lg);
