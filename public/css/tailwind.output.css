@@ -4951,12 +4951,10 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
         transition-duration: 200ms;
       }
     }
-    &:has([data-combobox-panel].block) [data-combobox-toggle] > svg {
+    &:has([data-combobox-panel]:popover-open) [data-combobox-toggle] > svg {
       rotate: 180deg;
     }
     & [data-combobox-panel] {
-      z-index: 1002;
-      width: 100%;
       max-width: calc(100vw - 2rem);
       border-radius: var(--radius-lg);
       border-style: var(--tw-border-style);

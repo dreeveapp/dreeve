@@ -19,12 +19,12 @@
                 }
             }
 
-            &:has([data-combobox-panel].block) [data-combobox-toggle] > svg {
+            &:has([data-combobox-panel]:popover-open) [data-combobox-toggle] > svg {
                 @apply rotate-180;
             }
 
             & [data-combobox-panel] {
-                @apply z-1002 w-full max-w-[calc(100vw-2rem)] rounded-lg border border-gray-200 bg-white shadow-xs;
+                @apply max-w-[calc(100vw-2rem)] rounded-lg border border-gray-200 bg-white shadow-xs;
 
                 & > ul {
                     @apply flex max-h-48 flex-col gap-0.5 overflow-y-auto p-2 text-sm text-gray-700;

@@ -1,11 +1,9 @@
-import Dropdown from 'flowbite/lib/esm/components/dropdown';
 import {eventBus, Events} from '../../core/event-bus';
 import {initComponents} from '../../core/component-registry';
+import anchor from '../floating';
 
 const ROOT_SELECTOR = '[data-combobox]';
 const OPTION_SELECTOR = '[data-combobox-option]';
-
-let instanceCount = 0;
 
 class Combobox {
     constructor(root) {
@@ -13,8 +11,13 @@ class Combobox {
         this.input = root.querySelector('[data-combobox-input]');
         this.toggleButton = root.querySelector('[data-combobox-toggle]');
         this.panel = root.querySelector('[data-combobox-panel]');
-        this.instanceId = `combobox-${++instanceCount}`;
         this.isRefocussing = false;
+        this.cleanup = null;
+        this.onDocumentClick = (event) => {
+            if (!this.root.contains(event.target)) {
+                this.close();
+            }
+        };
     }
 
     init() {
@@ -23,16 +26,16 @@ class Combobox {
             return;
         }
 
-        this.dropdown = new Dropdown(this.panel, this.root, {
-            placement: 'bottom-start',
-            offsetDistance: 6,
-            triggerType: 'none',
-            onShow: () => this.onShow(),
-            onHide: () => this.input.setAttribute('aria-expanded', 'false'),
-        }, {id: this.instanceId, override: true});
+        this.panel.addEventListener('toggle', (event) => {
+            if ('closed' !== event.newState) {
+                return;
+            }
+            this.input.setAttribute('aria-expanded', 'false');
+            this.detach();
+        });
 
         this.toggleButton.addEventListener('click', () => {
-            this.dropdown.isVisible() ? this.close() : this.open();
+            this.isOpen() ? this.close() : this.open();
             this.focusInput();
         });
 
@@ -69,7 +72,23 @@ class Combobox {
         return this.options().filter((option) => !option.parentElement.classList.contains('hidden'));
     }
 
-    onShow() {
+    isOpen() {
+        return this.panel.matches(':popover-open');
+    }
+
+    show() {
+        if (!this.isOpen()) {
+            this.panel.showPopover();
+            this.cleanup = anchor({
+                reference: this.root,
+                floating: this.panel,
+                placement: 'bottom-start',
+                offset: 6,
+                matchReferenceWidth: true,
+            });
+            document.addEventListener('click', this.onDocumentClick, true);
+        }
+
         this.input.setAttribute('aria-expanded', 'true');
         this.options().forEach((option) => option.setAttribute(
             'aria-selected',
@@ -78,7 +97,7 @@ class Combobox {
     }
 
     onKeydown(event) {
-        const isOpen = this.dropdown.isVisible();
+        const isOpen = this.isOpen();
 
         if ('Escape' === event.key && isOpen) {
             // Don't let it bubble up to the surrounding form.
@@ -129,7 +148,7 @@ class Combobox {
     // Opening always shows the full list; the filter only narrows it down while typing.
     open() {
         this.options().forEach((option) => option.parentElement.classList.remove('hidden'));
-        this.dropdown.show();
+        this.show();
     }
 
     filterOptions() {
@@ -145,13 +164,19 @@ class Combobox {
             return;
         }
 
-        this.dropdown.show();
+        this.show();
     }
 
     close() {
-        if (this.dropdown?.isVisible()) {
-            this.dropdown.hide();
+        if (this.isOpen()) {
+            this.panel.hidePopover();
         }
+    }
+
+    detach() {
+        this.cleanup?.();
+        this.cleanup = null;
+        document.removeEventListener('click', this.onDocumentClick, true);
     }
 
     // Focusing the input opens the panel. Focus events are dispatched synchronously, so guarding
@@ -163,9 +188,7 @@ class Combobox {
     }
 
     destroy() {
-        // Hide first, flowbite only detaches its document wide click outside listener there.
-        this.close();
-        this.dropdown?.destroyAndRemoveInstance();
+        this.detach();
     }
 }
 
