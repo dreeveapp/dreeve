@@ -30,7 +30,6 @@
 @source "../../src/Domain/Dashboard/Widget/TrainingLoad/*.php";
 
 @plugin "tailwind-scrollbar";
-@source "../../node_modules/flowbite";
 
 @theme {
     --font-sans: Inter, ui-sans-serif, system-ui;
