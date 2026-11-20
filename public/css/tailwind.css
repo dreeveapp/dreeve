@@ -11,6 +11,7 @@
 @import "./components/overlay/dropdown.css";
 @import "./features/filter-dropdown.css";
 @import "./components/form/form.css";
+@import "./components/light-gallery.css";
 @import "./components/loader.css";
 @import "./components/pill.css";
 @import "./components/overlay/popover.css";
@@ -63,19 +64,6 @@
 }
 
 @layer utilities {
-    body .lg-outer {
-        z-index: 1500 !important;
-    }
-
-    body .lg-backdrop {
-        z-index: 1490 !important;
-        opacity: 0.9 !important;
-    }
-
-    body .lg-outer:not(.lg-visible) {
-        pointer-events: none;
-    }
-
     .overflow-auto, .overflow-x-auto {
         @apply scrollbar-thin;
     }
