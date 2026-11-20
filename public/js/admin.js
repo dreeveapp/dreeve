@@ -9,7 +9,7 @@ import initDependentSelects from "./components/form/dependent-select";
 import initDependentFormInputs from "./components/form/dependent-form-input";
 import initCoordinatePickers from "./components/form/coordinate-picker";
 import initRouteRangePickers from "./components/form/route-range-picker";
-import initDropdowns from "./components/dropdown";
+import initDropdowns from "./components/overlay/dropdown";
 import initImportStatus from "./components/import-status";
 import initSearchAutocompletes from "./components/form/search-autocomplete";
 import initToasts from "./components/toast";
@@ -19,7 +19,7 @@ import initDashboardLayout from "./features/dashboard/dashboard-layout";
 import initSortableLists from "./components/sortable-list";
 import initAsyncContent from "./components/async-content";
 import {eventBus, Events} from "./core/event-bus";
-import initDrawers from "./components/drawer";
+import initDrawers from "./components/overlay/drawer";
 
 initDrawers();
 
