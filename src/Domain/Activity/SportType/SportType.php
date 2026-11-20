@@ -80,6 +80,7 @@ enum SportType: string implements TranslatableInterface
     case PHYSICAL_THERAPY = 'PhysicalTherapy';
     // Outdoor Sports.
     case GOLF = 'Golf';
+    case DISC_GOLF = 'DiscGolf';
     case ROCK_CLIMBING = 'RockClimbing';
     case SAIL = 'Sail';
     // Team Sports.
@@ -217,6 +218,7 @@ enum SportType: string implements TranslatableInterface
             self::CROSSFIT => $translator->trans('Crossfit', locale: $locale),
             self::ELLIPTICAL => $translator->trans('Elliptical', locale: $locale),
             self::GOLF => $translator->trans('Golf', locale: $locale),
+            self::DISC_GOLF => $translator->trans('Disc Golf', locale: $locale),
             self::HAND_CYCLE => $translator->trans('Hand Cycle', locale: $locale),
             self::HIIT => $translator->trans('HIIT', locale: $locale),
             self::PICKLE_BALL => $translator->trans('Pickle Ball', locale: $locale),
@@ -282,6 +284,7 @@ enum SportType: string implements TranslatableInterface
             self::CROSSFIT => $translator->trans('Crossfit', locale: $locale),
             self::ELLIPTICAL => $translator->trans('Elliptical', locale: $locale),
             self::GOLF => $translator->trans('Golf', locale: $locale),
+            self::DISC_GOLF => $translator->trans('Disc Golf', locale: $locale),
             self::HAND_CYCLE => $translator->trans('Hand Cycle', locale: $locale),
             self::HIIT => $translator->trans('HIIT', locale: $locale),
             self::PICKLE_BALL => $translator->trans('Pickle Ball', locale: $locale),
@@ -340,7 +343,7 @@ enum SportType: string implements TranslatableInterface
             // MIND_BODY_SPORTS.
             SportType::PILATES, SportType::YOGA, SportType::PHYSICAL_THERAPY => ActivityType::MIND_BODY_SPORTS,
             // OUTDOOR_SPORTS.
-            SportType::GOLF, SportType::ROCK_CLIMBING, SportType::SAIL => ActivityType::OUTDOOR_SPORTS,
+            SportType::GOLF, SportType::DISC_GOLF, SportType::ROCK_CLIMBING, SportType::SAIL => ActivityType::OUTDOOR_SPORTS,
             // TEAM SPORTS.
             SportType::SOCCER, SportType::BASKETBALL, SportType::VOLLEYBALL, SportType::CRICKET => ActivityType::TEAM_SPORTS,
             // ADAPTIVE_INCLUSIVE_SPORTS

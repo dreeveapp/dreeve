@@ -611,6 +611,18 @@
             "distancePrecision": 0
         }
     },
+    "DiscGolf": {
+        "metric": {
+            "distance": "km",
+            "speed": "km/h",
+            "distancePrecision": 0
+        },
+        "imperial": {
+            "distance": "mi",
+            "speed": "mph",
+            "distancePrecision": 0
+        }
+    },
     "RockClimbing": {
         "metric": {
             "distance": "km",

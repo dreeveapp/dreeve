@@ -26,7 +26,7 @@ class ActivityTypeTest extends ContainerTestCase
                 ActivityType::RACQUET_PADDLE_SPORTS->value => [SportType::BADMINTON, SportType::PICKLE_BALL, SportType::RACQUET_BALL, SportType::SQUASH, SportType::TABLE_TENNIS, SportType::TENNIS, SportType::PADEL],
                 ActivityType::FITNESS->value => [SportType::CROSSFIT, SportType::WEIGHT_TRAINING, SportType::WORKOUT, SportType::STAIR_STEPPER, SportType::VIRTUAL_ROW, SportType::HIIT, SportType::ELLIPTICAL, SportType::DANCE, SportType::BOXING],
                 ActivityType::MIND_BODY_SPORTS->value => [SportType::PILATES, SportType::YOGA, SportType::PHYSICAL_THERAPY],
-                ActivityType::OUTDOOR_SPORTS->value => [SportType::GOLF, SportType::ROCK_CLIMBING, SportType::SAIL],
+                ActivityType::OUTDOOR_SPORTS->value => [SportType::GOLF, SportType::DISC_GOLF, SportType::ROCK_CLIMBING, SportType::SAIL],
                 ActivityType::TEAM_SPORTS->value => [SportType::BASKETBALL, SportType::SOCCER, SportType::VOLLEYBALL, SportType::CRICKET],
                 ActivityType::ADAPTIVE_INCLUSIVE_SPORTS->value => [SportType::HAND_CYCLE, SportType::WHEELCHAIR],
                 ActivityType::OTHER->value => [],
