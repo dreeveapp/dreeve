@@ -12,7 +12,8 @@
         <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
         <link href="{{ relativeUrl(asset('css/dist/tailwind.min.css')) }}" rel="stylesheet"/>
         <script>
-            document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+            const t = localStorage.getItem('theme') || 'system';
+            document.documentElement.setAttribute('data-theme', t === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t);
         </script>
     </head>
     <body class="min-h-screen bg-gray-50 text-gray-900 antialiased admin">
