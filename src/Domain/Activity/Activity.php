@@ -825,8 +825,7 @@ final class Activity
     public function hasMappableRoute(): bool
     {
         return $this->sportType->supportsReverseGeocoding()
-            && WorldType::REAL_WORLD === $this->worldType
-            && !in_array($this->polyline, [null, '', '0'], true)
+            && $this->hasRealWorldRoute()
             && !is_null($this->routeGeography->getStartingPointCountryCode());
     }
 
@@ -838,15 +837,20 @@ final class Activity
         if ($this->getSportType()->isVirtual()) {
             return false;
         }
-        if (WorldType::REAL_WORLD !== $this->worldType) {
-            return false;
-        }
-        $polyline = $this->getEncodedPolyline();
-        if (!$polyline instanceof EncodedPolyline) {
+        if (!$this->hasRealWorldRoute()) {
             return false;
         }
 
-        return $polyline->distanceInMeterTo($coordinate) <= MediaItem::MAX_DISTANCE_FROM_ROUTE_IN_METER;
+        return $this->getEncodedPolyline()->distanceInMeterTo($coordinate) <= MediaItem::MAX_DISTANCE_FROM_ROUTE_IN_METER;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->getEncodedPolyline()
+     */
+    public function hasRealWorldRoute(): bool
+    {
+        return WorldType::REAL_WORLD === $this->worldType
+            && $this->getEncodedPolyline() instanceof EncodedPolyline;
     }
 
     /**

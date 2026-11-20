@@ -6,7 +6,6 @@ namespace App\Domain\Activity\Collection;
 
 use App\Domain\Activity\Activities;
 use App\Domain\Activity\Activity;
-use App\Domain\Activity\WorldType;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
 use App\Domain\Media\MediaItem;
 use App\Domain\Media\MediaItemId;
@@ -14,7 +13,6 @@ use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Temperature\Celsius;
 use App\Infrastructure\Measurement\Time\Seconds;
-use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final class ActivityCollectionWithActivities
@@ -49,8 +47,7 @@ final class ActivityCollectionWithActivities
 
     public function getActivitiesWithARealWorldRoute(): Activities
     {
-        return $this->activities->filter(static fn (Activity $activity): bool => WorldType::REAL_WORLD === $activity->getWorldType()
-            && $activity->getEncodedPolyline() instanceof EncodedPolyline);
+        return $this->activities->filter(static fn (Activity $activity): bool => $activity->hasRealWorldRoute());
     }
 
     public function usesRouteMapAsCover(): bool
