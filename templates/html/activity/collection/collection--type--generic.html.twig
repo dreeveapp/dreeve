@@ -112,6 +112,7 @@
                             'lightGalleryTarget': mediaItem.getMediaItemId(),
                         }),
                     } %}
+                    {%- set leafletOptions = geotaggedMediaItems is empty ? leafletOptions : leafletOptions|merge({'imageMarkersTitle': "Show photos"|trans}) %}
                     <div class="h-87.5 mt-4 rounded-lg overflow-hidden" style="background-color:{{ leafletMap.getBackgroundColor() }}"
                          data-leaflet='{{ leafletOptions|json_encode }}'></div>
                 {% endif %}

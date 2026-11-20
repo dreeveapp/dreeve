@@ -260,6 +260,7 @@
                             'lightGalleryTarget': mediaItem.getId(),
                         }),
                     } %}
+                    {%- set leafletOptions = geotaggedMediaItems is empty ? leafletOptions : leafletOptions|merge({'imageMarkersTitle': "Show photos"|trans}) %}
                     <div class="h-80 md:h-96 w-full z-0" data-leaflet='{{ leafletOptions|json_encode }}' data-leaflet-echart-connect>
                     </div>
                 </div>
