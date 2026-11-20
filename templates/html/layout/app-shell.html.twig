@@ -15,7 +15,8 @@
     <link href="{{ relativeUrl('manifest.json') }}" rel="manifest" crossorigin="use-credentials">
     <link rel="icon" type="image/x-icon" href="{{ relativeUrl('assets/images/logo.svg') }}">
     <script>
-        document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+        const t = localStorage.getItem('theme') || 'system';
+        document.documentElement.setAttribute('data-theme', t === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t);
         if (localStorage.getItem('sideNavCollapsed') === 'true') {
             document.documentElement.setAttribute('data-sidebar-collapsed', '');
         }
