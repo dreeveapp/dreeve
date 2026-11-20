@@ -68,6 +68,7 @@
                 'maxZoom': leaflet.map.getMaxZoom(),
                 'imageOverlay': leaflet.map.getOverlayImageUrl(),
                 'bounds': leaflet.map.getBounds(),
+                'interactive': false
             } %}
             <div class="h-64 rounded-lg overflow-hidden" style="background-color:{{ leaflet.map.getBackgroundColor() }}"
                  data-leaflet='{{ leafletOptions|json_encode }}'></div>
