@@ -10,7 +10,7 @@
                 }
             }
 
-            &:has([data-multiselect-panel].block) [data-multiselect-trigger] > svg {
+            &:has([data-multiselect-panel]:popover-open) [data-multiselect-trigger] > svg {
                 @apply rotate-180;
             }
 
@@ -48,7 +48,7 @@
             }
 
             & [data-multiselect-panel] {
-                @apply z-1002 w-72 max-w-[calc(100vw-2rem)] rounded-lg border border-gray-200 bg-white shadow-xs;
+                @apply w-72 max-w-[calc(100vw-2rem)] rounded-lg border border-gray-200 bg-white shadow-xs;
 
                 & > ul {
                     @apply flex max-h-48 flex-col gap-0.5 overflow-y-auto p-2 text-sm text-gray-700;

@@ -1,6 +1,6 @@
-import Dropdown from 'flowbite/lib/esm/components/dropdown';
 import {eventBus, Events} from '../../core/event-bus';
 import {getComponent, initComponents} from '../../core/component-registry';
+import anchor from '../floating';
 
 const MAX_VISIBLE_CHIPS = 3;
 
@@ -14,34 +14,35 @@ class CheckboxMultiselect {
         this.errorBox = root.querySelector('[data-multiselect-error]');
         this.placeholder = root.getAttribute('data-multiselect-placeholder') || '';
         this.requiredMessage = root.getAttribute('data-multiselect-required');
+        this.cleanup = null;
+        this.wasOpenOnPointerDown = false;
     }
 
     init() {
-        this.dropdown = new Dropdown(this.panel, this.trigger, {
-            placement: 'bottom-start',
-            offsetDistance: 6,
-            onShow: () => {
-                this.trigger.setAttribute('aria-expanded', 'true');
-                this.search.focus();
-            },
-            onHide: () => {
-                this.trigger.setAttribute('aria-expanded', 'false');
-                this.search.value = '';
-                this.applyFilter();
-            },
+        this.panel.addEventListener('toggle', (event) => {
+            if ('closed' !== event.newState) return;
+            this.trigger.setAttribute('aria-expanded', 'false');
+            this.search.value = '';
+            this.applyFilter();
+            this.detach();
         });
 
-        // Flowbite only listens for clicks; a div[role=button] needs Enter/Space itself.
         this.trigger.addEventListener('keydown', (event) => {
             if ('Enter' !== event.key && ' ' !== event.key) return;
             event.preventDefault();
-            this.dropdown.toggle();
+            this.isOpen() ? this.close() : this.open();
+        });
+
+        this.trigger.addEventListener('pointerdown', () => {
+            this.wasOpenOnPointerDown = this.isOpen();
         });
 
         this.trigger.addEventListener('click', (event) => {
             const removeButton = event.target.closest('[data-multiselect-chip-remove]');
-            if (!removeButton) return;
-            event.stopPropagation();
+            if (!removeButton) {
+                this.wasOpenOnPointerDown ? this.close() : this.open();
+                return;
+            }
             const value = removeButton.getAttribute('data-multiselect-chip-remove');
             this.checkboxes().forEach((box) => {
                 if (box.value === value) box.checked = false;
@@ -63,6 +64,36 @@ class CheckboxMultiselect {
         this.panel.querySelector('[data-multiselect-clear]').addEventListener('click', () => this.setAll(false));
 
         this.render();
+    }
+
+    isOpen() {
+        return this.panel.matches(':popover-open');
+    }
+
+    open() {
+        if (this.isOpen()) return;
+        this.panel.showPopover();
+        this.cleanup = anchor({
+            reference: this.trigger,
+            floating: this.panel,
+            placement: 'bottom-start',
+            offset: 6,
+        });
+        this.trigger.setAttribute('aria-expanded', 'true');
+        this.search.focus();
+    }
+
+    close() {
+        if (this.isOpen()) this.panel.hidePopover();
+    }
+
+    detach() {
+        this.cleanup?.();
+        this.cleanup = null;
+    }
+
+    destroy() {
+        this.detach();
     }
 
     checkboxes() {
