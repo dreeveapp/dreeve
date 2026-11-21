@@ -61,7 +61,7 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
         )->fetchAllAssociative();
 
         if ([] === $rows) {
-            return new FindTripSuggestionsResponse([]);
+            return new FindTripSuggestionsResponse(TripSuggestions::fromArray([]));
         }
 
         $locations = array_map(
@@ -150,6 +150,6 @@ final readonly class FindTripSuggestionsQueryHandler implements QueryHandler
             );
         }
 
-        return new FindTripSuggestionsResponse(array_reverse($tripSuggestions));
+        return new FindTripSuggestionsResponse(TripSuggestions::fromArray(array_reverse($tripSuggestions)));
     }
 }
