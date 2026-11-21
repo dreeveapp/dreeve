@@ -11,8 +11,9 @@
 //	{"name":"record","fields":{"position_lat":533590487,"speed":4.123}}
 //
 // Field values already have their FIT scale/offset applied. Invalid/unset
-// numeric fields (encoded as NaN by the FIT profile) are emitted as null so
-// every line is valid JSON. When a message holds the same field name twice,
+// fields (the FIT "no value" sentinel, or a non-finite float) are left out of
+// "fields"; inside array values they are emitted as null so every line is
+// valid JSON. When a message holds the same field name twice,
 // the last value wins. A single .FIT file may contain several chained FIT
 // files; their messages are written one after another.
 //
@@ -99,7 +100,12 @@ func decode(data []byte, opts ...decoder.Option) (*bytes.Buffer, error) {
 					continue
 				}
 
-				fields[field.Name] = convertValue(field)
+				value := convertValue(field)
+				if value == nil {
+					continue
+				}
+
+				fields[field.Name] = value
 			}
 
 			if err := enc.Encode(outMessage{Name: mesg.Num.String(), Fields: fields}); err != nil {
@@ -112,7 +118,7 @@ func decode(data []byte, opts ...decoder.Option) (*bytes.Buffer, error) {
 }
 
 // convertValue turns a decoded FIT field into its JSON output value. Fields
-// holding the FIT "no value" sentinel are emitted as null; otherwise the
+// holding the FIT "no value" sentinel return nil; otherwise the
 // raw value has its scale/offset applied and is sanitized.
 func convertValue(field proto.Field) any {
 	raw := field.Value.Any()
