@@ -44,6 +44,10 @@
               "value": 10
             },
             {
+              "name": "total_descent",
+              "value": 8
+            },
+            {
               "name": "total_timer_time",
               "value": 10
             },

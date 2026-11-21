@@ -46,6 +46,10 @@
                         {
                             "name": "total_ascent",
                             "value": 0
+                        },
+                        {
+                            "name": "total_descent",
+                            "value": 0
                         }
                     ]
                 },
@@ -236,7 +240,7 @@
                         },
                         {
                             "name": "enhanced_altitude",
-                            "value": 20.0
+                            "value": 10.0
                         },
                         {
                             "name": "heart_rate",
