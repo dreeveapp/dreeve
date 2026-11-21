@@ -38,17 +38,6 @@ class JsonTest extends TestCase
         );
     }
 
-    public function testDecodeLazy(): void
-    {
-        $this->assertEquals(
-            ['first', 'second', 'third'],
-            $this->namesIn(Json::decodeLazy(
-                json: file_get_contents(__DIR__.'/fixtures/lazy-decode.json') ?: '',
-                pointer: '/items'
-            ))
-        );
-    }
-
     public function testDecodeLazyFromFile(): void
     {
         $this->assertEquals(

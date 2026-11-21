@@ -91,15 +91,11 @@ final readonly class FitFileParser implements ActivityFileParser
         $manufacturerId = null;
         $productId = null;
 
-        $messages = Json::decodeLazy(
-            json: $output,
-            pointer: '/files/-/messages',
-        );
-
         $hasMessages = false;
-        foreach ($messages as $message) {
+        foreach (array_filter(explode("\n", $output)) as $line) {
             $hasMessages = true;
-            $fields = $this->fieldMap($message['fields'] ?? []);
+            $message = Json::decode($line);
+            $fields = $message['fields'] ?? [];
             switch ($message['name'] ?? null) {
                 case 'record':
                     $records[] = $fields;
@@ -541,23 +537,5 @@ final readonly class FitFileParser implements ActivityFileParser
         }
 
         return StreamMath::firstCoordinate($streams);
-    }
-
-    /**
-     * @param array<int, array<string, mixed>> $fields
-     *
-     * @return array<string, mixed>
-     */
-    private function fieldMap(array $fields): array
-    {
-        $map = [];
-        foreach ($fields as $field) {
-            if (!is_string($field['name'] ?? null)) {
-                continue;
-            }
-            $map[$field['name']] = $field['value'] ?? null;
-        }
-
-        return $map;
     }
 }

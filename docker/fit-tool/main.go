@@ -6,28 +6,17 @@
 //
 //	fit-tool < activity.fit
 //
-// Output shape:
+// Output shape, one JSON object per FIT message, one message per line:
 //
-//	{
-//	  "files": [
-//	    {
-//	      "profileVersion": 2132,
-//	      "messages": [
-//	        {"name": "record", "num": 20, "fields": [
-//	          {"name": "position_lat", "num": 0, "units": "semicircles", "value": 533590487},
-//	          {"name": "speed", "num": 6, "units": "m/s", "value": 4.123}
-//	        ]}
-//	      ]
-//	    }
-//	  ]
-//	}
+//	{"name":"record","fields":{"position_lat":533590487,"speed":4.123}}
 //
 // Field values already have their FIT scale/offset applied. Invalid/unset
-// numeric fields (encoded as NaN by the FIT profile) are emitted as null so the
-// document is always valid JSON. A single .FIT file may contain several chained
-// FIT files, hence "files" is an array.
+// numeric fields (encoded as NaN by the FIT profile) are emitted as null so
+// every line is valid JSON. When a message holds the same field name twice,
+// the last value wins. A single .FIT file may contain several chained FIT
+// files; their messages are written one after another.
 //
-// On success it prints the JSON document and exits 0. On any error it prints a
+// On success it prints the messages and exits 0. On any error it prints a
 // message to stderr and exits non-zero.
 package main
 
@@ -46,22 +35,9 @@ import (
 	"github.com/muktihari/fit/proto"
 )
 
-type outFile struct {
-	ProfileVersion uint16       `json:"profileVersion"`
-	Messages       []outMessage `json:"messages"`
-}
-
 type outMessage struct {
-	Name   string     `json:"name"`
-	Num    uint16     `json:"num"`
-	Fields []outField `json:"fields"`
-}
-
-type outField struct {
-	Name  string `json:"name"`
-	Num   byte   `json:"num"`
-	Units string `json:"units,omitempty"`
-	Value any    `json:"value"`
+	Name   string         `json:"name"`
+	Fields map[string]any `json:"fields"`
 }
 
 func main() {
@@ -82,31 +58,33 @@ func run(r io.Reader) error {
 		return fmt.Errorf("read input: %w", err)
 	}
 
-	files, err := decode(data)
+	out, err := decode(data)
 	// A bad CRC almost always means a quirky-but-readable file rather than
 	// corrupt data, so retry while ignoring the checksum instead of failing.
 	if errors.Is(err, decoder.ErrCRCChecksumMismatch) {
 		fmt.Fprintf(os.Stderr, "fit-tool: warning: %v; retrying without checksum validation\n", err)
-		files, err = decode(data, decoder.WithIgnoreChecksum())
+		out, err = decode(data, decoder.WithIgnoreChecksum())
 	}
 	if err != nil {
 		return err
 	}
 
-	enc := json.NewEncoder(os.Stdout)
-	if err := enc.Encode(map[string]any{"files": files}); err != nil {
-		return fmt.Errorf("encode json: %w", err)
+	if _, err := out.WriteTo(os.Stdout); err != nil {
+		return fmt.Errorf("write output: %w", err)
 	}
 
 	return nil
 }
 
-// decode reads every chained FIT file in data into the output shape. The opts
-// are forwarded to the decoder so callers can, e.g., relax CRC validation.
-func decode(data []byte, opts ...decoder.Option) ([]outFile, error) {
+// decode writes every message of every chained FIT file in data to a buffer,
+// one JSON object per line. Each attempt gets its own buffer, so a failed
+// attempt never leaves partial output. The opts are forwarded to the decoder
+// so callers can, e.g., relax CRC validation.
+func decode(data []byte, opts ...decoder.Option) (*bytes.Buffer, error) {
 	dec := decoder.New(bytes.NewReader(data), opts...)
 
-	files := make([]outFile, 0, 1)
+	out := new(bytes.Buffer)
+	enc := json.NewEncoder(out)
 	// A .FIT file may contain multiple chained FIT files; decode them all.
 	for dec.Next() {
 		fit, err := dec.Decode()
@@ -114,48 +92,32 @@ func decode(data []byte, opts ...decoder.Option) ([]outFile, error) {
 			return nil, fmt.Errorf("decode: %w", err)
 		}
 
-		file := outFile{
-			ProfileVersion: fit.FileHeader.ProfileVersion,
-			Messages:       make([]outMessage, 0, len(fit.Messages)),
-		}
-
 		for _, mesg := range fit.Messages {
-			fields := make([]outField, 0, len(mesg.Fields))
+			fields := make(map[string]any, len(mesg.Fields))
 			for _, field := range mesg.Fields {
 				if field.FieldBase == nil {
 					continue
 				}
 
-				fields = append(fields, convertField(field))
+				fields[field.Name] = convertValue(field)
 			}
 
-			file.Messages = append(file.Messages, outMessage{
-				Name:   mesg.Num.String(),
-				Num:    uint16(mesg.Num),
-				Fields: fields,
-			})
+			if err := enc.Encode(outMessage{Name: mesg.Num.String(), Fields: fields}); err != nil {
+				return nil, fmt.Errorf("encode json: %w", err)
+			}
 		}
-
-		files = append(files, file)
 	}
 
-	return files, nil
+	return out, nil
 }
 
-// convertField turns a decoded FIT field into its JSON output form. Fields
+// convertValue turns a decoded FIT field into its JSON output value. Fields
 // holding the FIT "no value" sentinel are emitted as null; otherwise the
 // raw value has its scale/offset applied and is sanitized.
-func convertField(field proto.Field) outField {
-	out := outField{
-		Name:  field.Name,
-		Num:   field.Num,
-		Units: field.Units,
-	}
-
+func convertValue(field proto.Field) any {
 	raw := field.Value.Any()
 	if isInvalid(raw, field.BaseType) {
-		out.Value = nil
-		return out
+		return nil
 	}
 
 	scale := field.Scale
@@ -163,9 +125,7 @@ func convertField(field proto.Field) outField {
 		scale = 1
 	}
 
-	out.Value = sanitize(scaleoffset.ApplyAny(raw, scale, field.Offset))
-
-	return out
+	return sanitize(scaleoffset.ApplyAny(raw, scale, field.Offset))
 }
 
 // isInvalid reports whether raw is the FIT "no value" sentinel for its base

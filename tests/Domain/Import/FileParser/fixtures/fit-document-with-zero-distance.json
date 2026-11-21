@@ -1,61 +1,7 @@
-{
-    "files": [
-        {
-            "profileVersion": 2132,
-            "messages": [
-                {
-                    "name": "file_id",
-                    "fields": [
-                        {"name": "product_name", "value": "Venu 3"}
-                    ]
-                },
-                {
-                    "name": "session",
-                    "fields": [
-                        {"name": "sport", "value": 10},
-                        {"name": "sub_sport", "value": 20},
-                        {"name": "start_time", "value": 1000000000},
-                        {"name": "total_timer_time", "value": 4},
-                        {"name": "total_elapsed_time", "value": 4},
-                        {"name": "total_calories", "value": 42}
-                    ]
-                },
-                {
-                    "name": "record",
-                    "fields": [
-                        {"name": "timestamp", "value": 1000000000},
-                        {"name": "distance", "value": 0.0}
-                    ]
-                },
-                {
-                    "name": "record",
-                    "fields": [
-                        {"name": "timestamp", "value": 1000000001},
-                        {"name": "heart_rate", "value": 91}
-                    ]
-                },
-                {
-                    "name": "record",
-                    "fields": [
-                        {"name": "timestamp", "value": 1000000002},
-                        {"name": "heart_rate", "value": 95}
-                    ]
-                },
-                {
-                    "name": "record",
-                    "fields": [
-                        {"name": "timestamp", "value": 1000000003},
-                        {"name": "heart_rate", "value": 125}
-                    ]
-                },
-                {
-                    "name": "record",
-                    "fields": [
-                        {"name": "timestamp", "value": 1000000004},
-                        {"name": "distance", "value": null}
-                    ]
-                }
-            ]
-        }
-    ]
-}
+{"name":"file_id","fields":{"product_name":"Venu 3"}}
+{"name":"session","fields":{"sport":10,"sub_sport":20,"start_time":1000000000,"total_timer_time":4,"total_elapsed_time":4,"total_calories":42}}
+{"name":"record","fields":{"timestamp":1000000000,"distance":0.0}}
+{"name":"record","fields":{"timestamp":1000000001,"heart_rate":91}}
+{"name":"record","fields":{"timestamp":1000000002,"heart_rate":95}}
+{"name":"record","fields":{"timestamp":1000000003,"heart_rate":125}}
+{"name":"record","fields":{"timestamp":1000000004,"distance":null}}
