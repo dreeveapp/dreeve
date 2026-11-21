@@ -1,0 +1,157 @@
+<html><body><section>
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-gray-900">Laps</h3>
+                    <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">2</span>
+                </div>
+                                    <span class="text-xs text-gray-500">
+                        Best lap:
+                        <span class="font-bold text-gray-900">43.2<span class="text-xxs ml-px whitespace-nowrap">km/h</span></span>
+                    </span>
+                            </div>
+                            <div class="bg-white border border-gray-200 shadow-xs rounded-lg p-4 mb-3">
+                    <div class="h-64" data-echarts-options='{"backgroundColor":null,"animation":true,"grid":{"left":"1%","right":"4%","bottom":"34px","top":"10px","containLabel":true},"tooltip":{"trigger":"item","formatter":{"callback":"formatDataTooltip"}},"legend":{"show":true,"bottom":0,"data":["Speed","Heart rate","Power"]},"xAxis":{"type":"category","data":["1","2"],"axisTick":{"show":false},"axisLabel":{"interval":"auto"}},"yAxis":[{"type":"value","name":"km\/h","min":0,"axisLabel":{"formatter":{"callback":"toInteger"}}},{"type":"value","name":"bpm","show":true,"min":0,"splitLine":{"show":false}},{"type":"value","name":"W","show":true,"min":0,"splitLine":{"show":false}}],"series":[{"name":"Speed","type":"bar","yAxisIndex":0,"barMaxWidth":30,"itemStyle":{"borderRadius":[4,4,0,0]},"data":[{"value":36,"tooltip":"1.00 km \u00b7 1:50 \u00b7 150 bpm \u00b7 150 W"},{"value":43.2,"tooltip":"1.20 km \u00b7 1:50 \u00b7 160 bpm \u00b7 400 W"}]},{"name":"Heart rate","type":"line","yAxisIndex":1,"smooth":true,"symbol":"circle","symbolSize":6,"data":[{"value":150,"tooltip":"1.00 km \u00b7 1:50 \u00b7 150 bpm \u00b7 150 W"},{"value":160,"tooltip":"1.20 km \u00b7 1:50 \u00b7 160 bpm \u00b7 400 W"}]},{"name":"Power","type":"line","yAxisIndex":2,"smooth":true,"symbol":"circle","symbolSize":6,"data":[{"value":150,"tooltip":"1.00 km \u00b7 1:50 \u00b7 150 bpm \u00b7 150 W"},{"value":400,"tooltip":"1.20 km \u00b7 1:50 \u00b7 160 bpm \u00b7 400 W"}]}]}'></div>
+                </div>
+                        <div class="bg-white border border-gray-200 shadow-xs rounded-lg overflow-hidden">
+                <div class="max-h-85 overflow-auto">
+                    <table class="min-w-200 w-full table-fixed border-separate border-spacing-0 text-sm">
+                        <thead class="sticky top-0 z-10 bg-gray-50">
+                        <tr class="text-xxs uppercase text-gray-500 font-semibold">
+                            <th scope="col" class="border-b border-gray-100 w-20 px-4 pt-4 pb-4 text-left font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="lap">
+                                <div class="flex items-center" title="Lap">
+                                    Lap
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-left font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="distance">
+                                <div class="flex items-center" title="Distance">
+                                    Distance
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-left font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="time">
+                                <div class="flex items-center" title="Time">
+                                    Time
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-left font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="speed">
+                                <div class="flex items-center" title="Speed">
+                                    Speed
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                            <th class="border-b border-gray-100 px-2 pt-4 pb-4"></th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="max-speed">
+                                <div class="flex items-center justify-end" title="Max">
+                                    Max
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="power">
+                                <div class="flex items-center justify-end" title="Power">
+                                    Power
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="max-power">
+                                <div class="flex items-center justify-end" title="Max">
+                                    Max
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-17.5 px-4 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="heart-rate">
+                                <div class="flex items-center justify-end" title="Heart rate">
+                                    HR
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-17.5 px-2 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-datatable-sort="elevation">
+                                <div class="flex items-center justify-end" title="Elevation">
+                                    Elev
+                                    <div class="ml-1.5 group sorting-icon" aria-sort="none">
+<svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-desc:text-primary group-aria-asc:text-gray-200" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7"></path></svg><svg xmlns="http://www.w3.org/2000/svg" class="size-2 text-gray-300 group-aria-asc:text-primary group-aria-desc:text-gray-200 transition-colors" aria-hidden="true" fill="none" viewbox="0 0 14 8"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1 1 5.326 5.7a.909.909 0 0 0 1.348 0L13 1"></path></svg>
+</div>
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                                                                                                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-2.5 font-bold text-gray-900" data-sort-value="1">
+                                    <span class="inline-flex items-center gap-1">
+                                                                                1
+                                    </span>
+                                </td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="1000">1.0<span class="text-xxs ml-px whitespace-nowrap">km</span>
+</td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="110">1:50</td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="10">36.0<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
+</td>
+                                <td class="px-2 py-2.5">
+                                    <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="8">28.8<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
+</td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="150">150<span class="text-xxs ml-px whitespace-nowrap">W</span>
+</td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="200">200<span class="text-xxs ml-px whitespace-nowrap">W</span>
+</td>
+                                <td class="px-4 py-2.5 text-right text-gray-500" data-sort-value="150">
+                                    150
+                                </td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="2">2<span class="text-xxs ml-px whitespace-nowrap">m</span>
+</td>
+                            </tr>
+                                                                                                            <tr class="bg-primary/5">
+                                <td class="px-4 py-2.5 font-bold text-gray-900" data-sort-value="2">
+                                    <span class="inline-flex items-center gap-1">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 size-3 text-amber-500" aria-hidden="true" fill="none" viewbox="0 0 24 24"><path stroke="currentColor" stroke-width="2" d="M11.083 5.104c.35-.8 1.485-.8 1.834 0l1.752 4.022a1 1 0 0 0 .84.597l4.463.342c.9.069 1.255 1.2.556 1.771l-3.33 2.723a1 1 0 0 0-.337 1.016l1.03 4.119c.214.858-.71 1.552-1.474 1.106l-3.913-2.281a1 1 0 0 0-1.008 0L7.583 20.8c-.764.446-1.688-.248-1.474-1.106l1.03-4.119A1 1 0 0 0 6.8 14.56l-3.33-2.723c-.698-.571-.342-1.702.557-1.771l4.462-.342a1 1 0 0 0 .84-.597l1.753-4.022Z"></path></svg>
+                                                                                2
+                                    </span>
+                                </td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="1200">1.2<span class="text-xxs ml-px whitespace-nowrap">km</span>
+</td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="110">1:50</td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="12">43.2<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
+</td>
+                                <td class="px-2 py-2.5">
+                                    <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="8">28.8<span class="text-xxs ml-px whitespace-nowrap">km/h</span>
+</td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="400">400<span class="text-xxs ml-px whitespace-nowrap">W</span>
+</td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="500">500<span class="text-xxs ml-px whitespace-nowrap">W</span>
+</td>
+                                <td class="px-4 py-2.5 text-right text-gray-500" data-sort-value="160">
+                                    160
+                                </td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="2">2<span class="text-xxs ml-px whitespace-nowrap">m</span>
+</td>
+                            </tr>
+                                                </tbody>
+                    </table>
+                </div>
+            </div>
+        </section></body></html>

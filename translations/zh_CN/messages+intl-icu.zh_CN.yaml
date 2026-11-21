@@ -37,6 +37,7 @@ Apr: 四月
 Aug: 八月
 Average: Average
 'Average gradient': 'Average gradient'
+'Average lap distance': 'Average lap distance'
 'Avg distance': 'Avg distance'
 'Avg gradient': 'Avg gradient'
 'Avg pace': 'Avg pace'
@@ -53,6 +54,7 @@ Best: 最佳
 'Best effort': 最佳努力
 'Best efforts': 最佳努力
 'Best efforts for {sportType}': '{sportType}最佳努力'
+'Best lap': 'Best lap'
 'Bike light': 'Bike light'
 'Bike radar': 'Bike radar'
 Boxing: Boxing
@@ -236,6 +238,7 @@ KOM: 赛段王
 Kayaking: 皮划艇
 'Kite Surf': 风筝冲浪
 Lap: 圈
+Laps: Laps
 'Last 12 months': 'Last 12 months'
 'Last 30 days': 'Last 30 days'
 'Last 7 days training load': 最近7天训练负荷
@@ -389,6 +392,7 @@ Recent: Recent
 'Recovery forecast': 'Recovery forecast'
 'Reduced carbon emission by commuting': 通勤减少的碳排放
 'Register maintenance': 'Register maintenance'
+Regularity: Regularity
 'Rest Days': 休息日
 'Rest days': 休息日
 'Rest days in last 7 days': 最近7天的休息日

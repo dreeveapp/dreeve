@@ -16,14 +16,15 @@ final class ActivityLapBuilder
     private ActivityId $activityId;
     private int $lapNumber = 1;
     private readonly string $name;
-    private readonly int $elapsedTimeInSeconds;
-    private readonly int $movingTimeInSeconds;
-    private readonly Meter $distance;
+    private int $elapsedTimeInSeconds = 120;
+    private int $movingTimeInSeconds = 110;
+    private Meter $distance;
     private MetersPerSecond $averageSpeed;
     private readonly MetersPerSecond $minAverageSpeed;
     private readonly MetersPerSecond $maxAverageSpeed;
     private MetersPerSecond $maxSpeed;
     private readonly Meter $elevationDifference;
+    private ?int $averageHeartRate = null;
 
     private function __construct()
     {
@@ -31,8 +32,6 @@ final class ActivityLapBuilder
         $this->activityId = ActivityId::fromUnprefixed('test');
         $this->name = 'test';
         $this->distance = Meter::from(100);
-        $this->elapsedTimeInSeconds = 120;
-        $this->movingTimeInSeconds = 110;
         $this->elevationDifference = Meter::from(2);
         $this->averageSpeed = MetersPerSecond::from(3);
         $this->minAverageSpeed = MetersPerSecond::from(1);
@@ -60,7 +59,7 @@ final class ActivityLapBuilder
             maxAverageSpeed: $this->maxAverageSpeed,
             maxSpeed: $this->maxSpeed,
             elevationDifference: $this->elevationDifference,
-            averageHeartRate: null,
+            averageHeartRate: $this->averageHeartRate,
         );
     }
 
@@ -81,6 +80,34 @@ final class ActivityLapBuilder
     public function withLapNumber(int $labNumber): self
     {
         $this->lapNumber = $labNumber;
+
+        return $this;
+    }
+
+    public function withDistance(Meter $distance): self
+    {
+        $this->distance = $distance;
+
+        return $this;
+    }
+
+    public function withMovingTimeInSeconds(int $movingTimeInSeconds): self
+    {
+        $this->movingTimeInSeconds = $movingTimeInSeconds;
+
+        return $this;
+    }
+
+    public function withElapsedTimeInSeconds(int $elapsedTimeInSeconds): self
+    {
+        $this->elapsedTimeInSeconds = $elapsedTimeInSeconds;
+
+        return $this;
+    }
+
+    public function withAverageHeartRate(?int $averageHeartRate): self
+    {
+        $this->averageHeartRate = $averageHeartRate;
 
         return $this;
     }

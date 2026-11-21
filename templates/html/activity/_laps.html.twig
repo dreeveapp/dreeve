@@ -1,0 +1,120 @@
+{% if laps|length > 1 %}
+    {% autoescape false %}
+        {% set fastestLap = lapsSummary.getFastestLap() %}
+        <section>
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-gray-900">{{ "Laps"|trans }}</h3>
+                    <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ laps|length }}</span>
+                </div>
+                {% if fastestLap %}
+                    <span class="text-xs text-gray-500">
+                        {{ "Best lap"|trans }}:
+                        <span class="font-bold text-gray-900">{{ fastestLap.getAverageSpeedInKmPerHour()|renderMeasurement(1) }}</span>
+                    </span>
+                {% endif %}
+            </div>
+            {% if lapChart is not null %}
+                <div class="bg-white border border-gray-200 shadow-xs rounded-lg p-4 mb-3">
+                    <div class="h-64" data-echarts-options='{{ lapChart }}'></div>
+                </div>
+            {% endif %}
+            <div class="bg-white border border-gray-200 shadow-xs rounded-lg overflow-hidden">
+                <div class="max-h-85 overflow-auto">
+                    <table class="min-w-200 w-full table-fixed border-separate border-spacing-0 text-sm">
+                        <thead class="sticky top-0 z-10 bg-gray-50">
+                        <tr class="text-xxs uppercase text-gray-500 font-semibold">
+                            <th scope="col" class="border-b border-gray-100 w-20 px-4 pt-4 pb-4 text-left font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="lap">
+                                <div class="flex items-center" title="{{ "Lap"|trans }}">
+                                    {{ "Lap"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-left font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="distance">
+                                <div class="flex items-center" title="{{ "Distance"|trans }}">
+                                    {{ "Distance"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-left font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="time">
+                                <div class="flex items-center" title="{{ "Time"|trans }}">
+                                    {{ "Time"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-left font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="speed">
+                                <div class="flex items-center" title="{{ "Speed"|trans }}">
+                                    {{ "Speed"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                            <th class="border-b border-gray-100 px-2 pt-4 pb-4"></th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="max-speed">
+                                <div class="flex items-center justify-end" title="{{ "Max"|trans }}">
+                                    {{ "Max"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="power">
+                                <div class="flex items-center justify-end" title="{{ "Power"|trans }}">
+                                    {{ "Power"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-20 px-2 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="max-power">
+                                <div class="flex items-center justify-end" title="{{ "Max"|trans }}">
+                                    {{ "Max"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-17.5 px-4 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="heart-rate">
+                                <div class="flex items-center justify-end" title="{{ "Heart rate"|trans }}">
+                                    {{ "HR"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                            <th scope="col" class="border-b border-gray-100 w-17.5 px-2 pt-4 pb-4 text-right font-semibold cursor-pointer transition-colors hover:bg-gray-100" data-dataTable-sort="elevation">
+                                <div class="flex items-center justify-end" title="{{ "Elevation"|trans }}">
+                                    {{ "Elev"|trans }}
+                                    {{ svg('sorting-icon') }}
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                        {% for lap in laps %}
+                            {% set isFastestLap = fastestLap and lap.getLapId().toUnprefixedString() == fastestLap.getLapId().toUnprefixedString() %}
+                            {% set lapPower = lapPowers.forLap(lap.getLapId()) %}
+                            <tr class="{{ isFastestLap ? 'bg-primary/5' : 'hover:bg-gray-50' }}">
+                                <td class="px-4 py-2.5 font-bold text-gray-900" data-sort-value="{{ lap.getLapNumber() }}">
+                                    <span class="inline-flex items-center gap-1">
+                                        {% if isFastestLap %}
+                                            {{ svg('star', 'size-3', 'text-amber-500') }}
+                                        {% endif %}
+                                        {{ lap.getLapNumber() }}
+                                    </span>
+                                </td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="{{ lap.getDistance().toFloat() }}">{{ lap.getDistanceInKilometer()|renderMeasurement(1) }}</td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="{{ lap.getMovingTimeInSeconds() }}">{{ lap.getMovingTimeFormatted() }}</td>
+                                <td class="px-2 py-2.5 text-gray-500" data-sort-value="{{ lap.getAverageSpeed().toFloat() }}">{{ lap.getAverageSpeedInKmPerHour()|renderMeasurement(1) }}</td>
+                                <td class="px-2 py-2.5">
+                                    <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary rounded-full" style="width: {{ lap.getRelativeSpeedPercentage() }}%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="{{ lap.getMaxSpeed().toFloat() }}">{{ lap.getMaxSpeedInKmPerHour()|renderMeasurement(1) }}</td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="{{ lapPower is not null and lapPower.getAverageWatts() is not null ? lapPower.getAverageWatts() : '' }}">{{ lapPower is not null and lapPower.getAverageWatts() is not null ? lapPower.getAverageWatts() ~ '<span class="text-xxs ml-px whitespace-nowrap">W</span>' : "n/a"|trans }}</td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="{{ lapPower is not null and lapPower.getMaxWatts() is not null ? lapPower.getMaxWatts() : '' }}">{{ lapPower is not null and lapPower.getMaxWatts() is not null ? lapPower.getMaxWatts() ~ '<span class="text-xxs ml-px whitespace-nowrap">W</span>' : "n/a"|trans }}</td>
+                                <td class="px-4 py-2.5 text-right text-gray-500" data-sort-value="{{ lap.getAverageHeartRate() ?: '' }}">
+                                    {{ lap.getAverageHeartRate() ?: "n/a"|trans }}
+                                </td>
+                                <td class="px-2 py-2.5 text-right text-gray-500" data-sort-value="{{ lap.getElevationDifference().toFloat() }}">{{ lap.getElevationDifference()|renderMeasurement(0) }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    {% endautoescape %}
+{% endif %}

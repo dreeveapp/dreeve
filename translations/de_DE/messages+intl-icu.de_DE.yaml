@@ -37,6 +37,7 @@ Apr: Apr
 Aug: Aug
 Average: Durchschnitt
 'Average gradient': 'Ø Steigung'
+'Average lap distance': 'Average lap distance'
 'Avg distance': 'Ø Distanz'
 'Avg gradient': 'Ø Steigung'
 'Avg pace': 'Ø Tempo'
@@ -53,6 +54,7 @@ Best: Beste
 'Best effort': Bestzeit
 'Best efforts': Bestleistungen
 'Best efforts for {sportType}': 'Bestzeiten für {sportType}'
+'Best lap': 'Best lap'
 'Bike light': Fahrradlicht
 'Bike radar': Fahrradradar
 Boxing: Boxen
@@ -236,6 +238,7 @@ KOM: KOM
 Kayaking: Kajakfahren
 'Kite Surf': Kitesurfen
 Lap: Runde
+Laps: Laps
 'Last 12 months': 'Letzte 12 Monate'
 'Last 30 days': 'Letzte 30 Tage'
 'Last 7 days training load': 'Trainingsbelastung der letzten 7 Tage'
@@ -389,6 +392,7 @@ Recent: Neueste
 'Recovery forecast': Erholungsprognose
 'Reduced carbon emission by commuting': 'Reduzierter CO₂-Ausstoß durch Pendeln'
 'Register maintenance': 'Wartung erfassen'
+Regularity: Regularity
 'Rest Days': Ruhetage
 'Rest days': Ruhetage
 'Rest days in last 7 days': 'Ruhetage in den letzten 7 Tagen'

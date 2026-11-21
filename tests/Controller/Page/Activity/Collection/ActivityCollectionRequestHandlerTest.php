@@ -10,15 +10,23 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Activity\Lap\ActivityLapId;
+use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
+use App\Tests\Domain\Activity\Lap\ActivityLapBuilder;
+use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -110,6 +118,78 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testItRendersTheLapsOfAnEvent(): void
+    {
+        $this->provideFullTestSet();
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withName('24H du Mans')
+            ->withType(ActivityCollectionType::EVENT)
+            ->withActivityIds(ActivityIds::fromArray([
+                ActivityId::fromUnprefixed('9830227167'),
+                ActivityId::fromUnprefixed('9830227112'),
+            ]))
+            ->build());
+
+        $activityLapRepository = $this->getContainer()->get(ActivityLapRepository::class);
+        $activityLapRepository->add(
+            ActivityLapBuilder::fromDefaults()
+                ->withLapId(ActivityLapId::fromUnprefixed('9830227167-1'))
+                ->withActivityId(ActivityId::fromUnprefixed('9830227167'))
+                ->withLapNumber(1)
+                ->withDistance(Meter::from(1000))
+                ->withAverageSpeed(MetersPerSecond::from(10))
+                ->withAverageHeartRate(150)
+                ->build()
+        );
+        $activityLapRepository->add(
+            ActivityLapBuilder::fromDefaults()
+                ->withLapId(ActivityLapId::fromUnprefixed('9830227112-1'))
+                ->withActivityId(ActivityId::fromUnprefixed('9830227112'))
+                ->withLapNumber(1)
+                ->withDistance(Meter::from(1200))
+                ->withAverageSpeed(MetersPerSecond::from(12))
+                ->withAverageHeartRate(160)
+                ->build()
+        );
+
+        $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
+        $activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('9830227167'))
+                ->withStreamType(StreamType::DISTANCE)
+                ->withData([0, 500, 1000])
+                ->build()
+        );
+        $activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('9830227167'))
+                ->withStreamType(StreamType::WATTS)
+                ->withData([100, 200, 300])
+                ->build()
+        );
+        $activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('9830227112'))
+                ->withStreamType(StreamType::DISTANCE)
+                ->withData([0, 600, 1200])
+                ->build()
+        );
+        $activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('9830227112'))
+                ->withStreamType(StreamType::WATTS)
+                ->withData([150, 250, 350])
+                ->build()
+        );
+
+        $crawler = $this->client->request('GET', '/collections/activityCollection-1');
+
+        $this->assertResponseIsSuccessful();
+        $lapsSection = $crawler->filterXPath('//details[.//h3[normalize-space()="Laps"]]');
+        $this->assertCount(1, $lapsSection);
+        $this->assertMatchesHtmlSnapshot($lapsSection->outerHtml());
     }
 
     public function testItRendersNoMapWithoutRealWorldRoutes(): void

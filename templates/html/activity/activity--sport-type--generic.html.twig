@@ -402,6 +402,7 @@
         <section class="grid grid-cols-1 gap-4">
             <div data-async-content-url="{{ relativeUrl(path('activity_best_efforts', {'activityId': activity.getId()})) }}"></div>
             {% block splitsAndLaps %}
+                {% include 'html/activity/_laps.html.twig' %}
             {% endblock splitsAndLaps %}
             <div data-async-content-url="{{ relativeUrl(path('activity_segments', {'activityId': activity.getId()})) }}"></div>
             <div data-async-content-url="{{ relativeUrl(path('activity_route_matches', {'activityId': activity.getId()})) }}"></div>
