@@ -10,14 +10,17 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemIds;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
 use App\Tests\ProvideTestData;
@@ -104,6 +107,28 @@ class ActivityCollectionRequestHandlerTest extends AdminWebTestCase
                 ActivityId::fromUnprefixed('9830227112'),
                 ActivityId::fromUnprefixed('9830232182'),
             ]))
+            ->build());
+
+        $this->client->request('GET', '/collections/activityCollection-1');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertMatchesHtmlSnapshot((string) $this->client->getResponse()->getContent());
+    }
+
+    public function testRenderWithDescent(): void
+    {
+        $this->provideFullTestSet();
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('snowboard'))
+                ->withSportType(SportType::SNOWBOARD)
+                ->withDescent(Meter::from(3049))
+                ->build(),
+            rawData: [],
+        ));
+        $this->getContainer()->get(ActivityCollectionRepository::class)->add(ActivityCollectionBuilder::fromDefaults()
+            ->withName('Ski week')
+            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('snowboard')]))
             ->build());
 
         $this->client->request('GET', '/collections/activityCollection-1');

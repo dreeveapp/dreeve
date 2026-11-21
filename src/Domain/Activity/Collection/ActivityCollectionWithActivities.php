@@ -120,6 +120,18 @@ final class ActivityCollectionWithActivities
         return Meter::from($this->activities->sum(static fn (Activity $activity): float => $activity->getElevation()->toFloat()));
     }
 
+    public function getDescent(): Meter
+    {
+        return Meter::from($this->activities->sum(static fn (Activity $activity): float => $activity->getDescent()?->toFloat() ?? 0));
+    }
+
+    public function displaysDescent(): bool
+    {
+        return !$this->activities->isEmpty() && $this->activities->filter(
+            static fn (Activity $activity): bool => !$activity->getSportType()->displaysDescent(),
+        )->isEmpty();
+    }
+
     public function getMovingTime(): Seconds
     {
         return Seconds::from($this->activities->sum(static fn (Activity $activity): int => $activity->getMovingTimeInSeconds()));
