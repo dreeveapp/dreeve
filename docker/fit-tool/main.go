@@ -1,10 +1,10 @@
-// Command fit-tool decodes a Garmin .FIT file and writes its contents to
-// stdout as JSON. It is a thin wrapper around github.com/muktihari/fit so the
+// Command fit-tool decodes a Garmin .FIT file read from stdin and writes its
+// contents to stdout as JSON. It is a thin wrapper around github.com/muktihari/fit so the
 // PHP application can decode FIT files through a Symfony Process call.
 //
 // Usage:
 //
-//	fit-tool <path-to-fit-file>
+//	fit-tool < activity.fit
 //
 // Output shape:
 //
@@ -32,10 +32,11 @@
 package main
 
 import (
-	"bufio"
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"math"
 	"os"
 
@@ -64,24 +65,29 @@ type outField struct {
 }
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Fprintln(os.Stderr, "usage: fit-tool <path-to-fit-file>")
+	if len(os.Args) != 1 {
+		fmt.Fprintln(os.Stderr, "usage: fit-tool < activity.fit")
 		os.Exit(2)
 	}
 
-	if err := run(os.Args[1]); err != nil {
+	if err := run(os.Stdin); err != nil {
 		fmt.Fprintf(os.Stderr, "fit-tool: %v\n", err)
 		os.Exit(1)
 	}
 }
 
-func run(path string) error {
-	files, err := decode(path)
+func run(r io.Reader) error {
+	data, err := io.ReadAll(r)
+	if err != nil {
+		return fmt.Errorf("read input: %w", err)
+	}
+
+	files, err := decode(data)
 	// A bad CRC almost always means a quirky-but-readable file rather than
 	// corrupt data, so retry while ignoring the checksum instead of failing.
 	if errors.Is(err, decoder.ErrCRCChecksumMismatch) {
 		fmt.Fprintf(os.Stderr, "fit-tool: warning: %v; retrying without checksum validation\n", err)
-		files, err = decode(path, decoder.WithIgnoreChecksum())
+		files, err = decode(data, decoder.WithIgnoreChecksum())
 	}
 	if err != nil {
 		return err
@@ -95,16 +101,10 @@ func run(path string) error {
 	return nil
 }
 
-// decode reads every chained FIT file at path into the output shape. The opts
+// decode reads every chained FIT file in data into the output shape. The opts
 // are forwarded to the decoder so callers can, e.g., relax CRC validation.
-func decode(path string, opts ...decoder.Option) ([]outFile, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, fmt.Errorf("open file: %w", err)
-	}
-	defer f.Close()
-
-	dec := decoder.New(bufio.NewReader(f), opts...)
+func decode(data []byte, opts ...decoder.Option) ([]outFile, error) {
+	dec := decoder.New(bytes.NewReader(data), opts...)
 
 	files := make([]outFile, 0, 1)
 	// A .FIT file may contain multiple chained FIT files; decode them all.

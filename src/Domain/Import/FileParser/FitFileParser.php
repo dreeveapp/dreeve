@@ -63,7 +63,8 @@ final readonly class FitFileParser implements ActivityFileParser
 
     public function parse(RawActivityFile $file): ParsedActivityFile
     {
-        $process = $this->processFactory->create(['fit-tool', (string) $file->getPath()]);
+        $process = $this->processFactory->create(['fit-tool']);
+        $process->setInput($file->getContents());
         $process->run();
 
         if (!$process->isSuccessful()) {
