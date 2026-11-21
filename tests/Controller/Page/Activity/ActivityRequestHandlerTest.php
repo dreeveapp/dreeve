@@ -28,6 +28,8 @@ use App\Domain\Media\MediaItemRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Config\DemoMode;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
@@ -217,6 +219,92 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertMatchesHtmlSnapshot($crawler->filterXPath('//section[div/h3[text()="Shifting"]]')->outerHtml());
+    }
+
+    public function testItRendersTheLaps(): void
+    {
+        $this->provideFullTestSet();
+
+        $activityId = ActivityId::fromUnprefixed('123456789');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withSportType(SportType::RIDE)
+                ->build(),
+            [],
+        ));
+
+        $activityLapRepository = $this->getContainer()->get(ActivityLapRepository::class);
+        $activityLapRepository->add(
+            ActivityLapBuilder::fromDefaults()
+                ->withLapId(ActivityLapId::fromUnprefixed('123456789-1'))
+                ->withActivityId($activityId)
+                ->withLapNumber(1)
+                ->withDistance(Meter::from(1000))
+                ->withAverageSpeed(MetersPerSecond::from(10))
+                ->withAverageHeartRate(150)
+                ->build()
+        );
+        $activityLapRepository->add(
+            ActivityLapBuilder::fromDefaults()
+                ->withLapId(ActivityLapId::fromUnprefixed('123456789-2'))
+                ->withActivityId($activityId)
+                ->withLapNumber(2)
+                ->withDistance(Meter::from(1200))
+                ->withAverageSpeed(MetersPerSecond::from(12))
+                ->withAverageHeartRate(160)
+                ->build()
+        );
+
+        $activityStreamRepository = $this->getContainer()->get(ActivityStreamRepository::class);
+        $activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::DISTANCE)
+                ->withData([0, 500, 1000, 1500, 2000, 2200])
+                ->build()
+        );
+        $activityStreamRepository->add(
+            ActivityStreamBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withStreamType(StreamType::WATTS)
+                ->withData([100, 200, 300, 400, 500, 600])
+                ->build()
+        );
+
+        $crawler = $this->client->request('GET', '/activities/'.$activityId);
+
+        $this->assertResponseIsSuccessful();
+        $lapsSection = $crawler->filterXPath('//section[.//h3[normalize-space()="Laps"] and not(.//section)]');
+        $this->assertCount(1, $lapsSection);
+        $this->assertMatchesHtmlSnapshot($lapsSection->outerHtml());
+    }
+
+    public function testItDoesNotRenderTheLapsWhenThereIsOnlyOneLap(): void
+    {
+        $this->provideFullTestSet();
+
+        $activityId = ActivityId::fromUnprefixed('123456789');
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId($activityId)
+                ->withSportType(SportType::RIDE)
+                ->build(),
+            [],
+        ));
+
+        $this->getContainer()->get(ActivityLapRepository::class)->add(
+            ActivityLapBuilder::fromDefaults()
+                ->withLapId(ActivityLapId::fromUnprefixed('123456789-1'))
+                ->withActivityId($activityId)
+                ->withLapNumber(1)
+                ->build()
+        );
+
+        $crawler = $this->client->request('GET', '/activities/'.$activityId);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(0, $crawler->filterXPath('//section[.//h3[normalize-space()="Laps"] and not(.//section)]'));
     }
 
     public function testItLabelsTheVelocityDistributionOfARunAsPace(): void

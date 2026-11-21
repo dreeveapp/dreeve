@@ -37,6 +37,7 @@ Apr: Ápr
 Aug: Aug
 Average: Átlag
 'Average gradient': 'Átlagos lejtés'
+'Average lap distance': 'Average lap distance'
 'Avg distance': 'Avg distance'
 'Avg gradient': 'Átl. emelkedő'
 'Avg pace': 'Átl. tempó'
@@ -53,6 +54,7 @@ Best: Legjobb
 'Best effort': 'Legjobb teljesítmény'
 'Best efforts': 'Legjobb teljesítmények'
 'Best efforts for {sportType}': 'Legjobb teljesítmények ({sportType})'
+'Best lap': 'Best lap'
 'Bike light': Kerékpárlámpa
 'Bike radar': Kerékpárradar
 Boxing: Boxing
@@ -236,6 +238,7 @@ KOM: KOM
 Kayaking: Kajak
 'Kite Surf': 'Sárkányos szörfözés'
 Lap: Kör
+Laps: Laps
 'Last 12 months': 'Last 12 months'
 'Last 30 days': 'Utolsó 30 nap'
 'Last 7 days training load': 'Utolsó 7 nap edzésterhelése'
@@ -389,6 +392,7 @@ Recent: Legutóbbi
 'Recovery forecast': 'Regenerációs előrejelzés'
 'Reduced carbon emission by commuting': 'Csökkentett szén-dioxid kibocsátás ingázással'
 'Register maintenance': 'Karbantartás rögzítése'
+Regularity: Regularity
 'Rest Days': Pihenőnapok
 'Rest days': Pihenőnapok
 'Rest days in last 7 days': 'Pihenőnapok az utolsó 7 napban'

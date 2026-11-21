@@ -76,3 +76,110 @@
         </details>
     {% endautoescape %}
 {% endblock %}
+
+{% block laps %}
+    {%- if lapsPerActivity is not empty -%}
+        {% autoescape false %}
+            <details open class="group/section p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+                <summary class="list-none cursor-pointer flex items-center justify-between select-none">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-lg font-semibold">{{ "Laps"|trans }}</h3>
+                        <span class="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{ lapsSummary.getNumberOfLaps() }}</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/section:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m1 1 4 4 4-4"/>
+                    </svg>
+                </summary>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Laps"|trans }}</div>
+                        <span class="text-lg font-black tracking-tight text-gray-900">{{ lapsSummary.getNumberOfLaps() }}</span>
+                    </div>
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Average lap distance"|trans }}</div>
+                        <div class="flex items-baseline gap-1">
+                            {% set averageLapDistance = lapsSummary.getAverageLapDistanceInKilometer() %}
+                            {% if averageLapDistance %}
+                                <span class="text-lg font-black tracking-tight text-gray-900">{{ averageLapDistance|formatMeasurement(2) }}</span>
+                                <span class="text-xs font-medium text-gray-500">{{ averageLapDistance|measurementSymbol }}</span>
+                            {% else %}
+                                <span class="text-lg font-black tracking-tight text-gray-900">{{ "n/a"|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Best lap"|trans }}</div>
+                        <div class="flex items-baseline gap-1">
+                            {% set fastestLap = lapsSummary.getFastestLap() %}
+                            {% if fastestLap %}
+                                <span class="text-lg font-black tracking-tight text-gray-900">{{ fastestLap.getAverageSpeedInKmPerHour()|formatMeasurement(1) }}</span>
+                                <span class="text-xs font-medium text-gray-500">{{ fastestLap.getAverageSpeedInKmPerHour()|measurementSymbol }}</span>
+                            {% else %}
+                                <span class="text-lg font-black tracking-tight text-gray-900">{{ "n/a"|trans }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg p-2.5 border border-gray-200 shadow-xs">
+                        <div class="text-xxs uppercase tracking-wider font-semibold text-gray-500 mb-1">{{ "Regularity"|trans }}</div>
+                        {% set regularity = lapsSummary.getRegularityPercentage() %}
+                        <span class="text-lg font-black tracking-tight text-gray-900">{{ regularity is not null ? regularity|formatNumber(1) ~ '%' : "n/a"|trans }}</span>
+                    </div>
+                </div>
+                <div class="mt-4 relative overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="narrow">{{ "Stage"|trans }}</th>
+                            <th scope="col" class="narrow">{{ "Lap"|trans }}</th>
+                            <th scope="col">{{ "Distance"|trans }}</th>
+                            <th scope="col">{{ "Time"|trans }}</th>
+                            <th scope="col">{{ "Speed"|trans }}</th>
+                            <th scope="col">{{ "Max"|trans }}</th>
+                            <th scope="col">{{ "Power"|trans }}</th>
+                            <th scope="col">{{ "Max"|trans }}</th>
+                            <th scope="col">{{ "HR"|trans }}</th>
+                            <th scope="col">{{ "Elev"|trans }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in lapsPerActivity %}
+                            {% set fastestLap = item.summary.getFastestLap() %}
+                            <tr class="bg-gray-50">
+                                <td colspan="10" class="font-semibold text-gray-900 text-left">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-normal text-gray-400">{{ item.activity.getStartDate()|formatDate() }}</span>
+                                        {{ item.activity|activityLink(ellipses: 120) }}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% for lap in item.laps %}
+                                {% set isFastestLap = fastestLap and lap.getLapId().toUnprefixedString() == fastestLap.getLapId().toUnprefixedString() %}
+                                {% set lapPower = item.powers.forLap(lap.getLapId()) %}
+                                <tr class="{{ isFastestLap ? 'bg-primary/5' : '' }}">
+                                    <td class="narrow"></td>
+                                    <td class="narrow font-bold text-gray-900">
+                                        <span class="inline-flex items-center gap-1">
+                                            {% if isFastestLap %}
+                                                {{ svg('star', 'size-3', 'text-amber-500') }}
+                                            {% endif %}
+                                            {{ lap.getLapNumber() }}
+                                        </span>
+                                    </td>
+                                    <td>{{ lap.getDistanceInKilometer()|renderMeasurement(1) }}</td>
+                                    <td>{{ lap.getMovingTimeFormatted() }}</td>
+                                    <td>{{ lap.getAverageSpeedInKmPerHour()|renderMeasurement(1) }}</td>
+                                    <td>{{ lap.getMaxSpeedInKmPerHour()|renderMeasurement(1) }}</td>
+                                    <td>{{ lapPower is not null and lapPower.getAverageWatts() is not null ? lapPower.getAverageWatts() ~ '<span class="text-xxs ml-px whitespace-nowrap">W</span>' : "n/a"|trans }}</td>
+                                    <td>{{ lapPower is not null and lapPower.getMaxWatts() is not null ? lapPower.getMaxWatts() ~ '<span class="text-xxs ml-px whitespace-nowrap">W</span>' : "n/a"|trans }}</td>
+                                    <td>{{ lap.getAverageHeartRate() ?: "n/a"|trans }}</td>
+                                    <td>{{ lap.getElevationDifference()|renderMeasurement(0) }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        {% endautoescape %}
+    {%- endif -%}
+{% endblock %}

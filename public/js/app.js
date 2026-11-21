@@ -9,6 +9,7 @@ import initLeafletMaps from "./features/maps/map-manager";
 import initTabs from "./components/tabs";
 import LazyLoad from "../libraries/lazyload.min";
 import initDataTables from "./features/data-table/data-table-manager";
+import initLocalTableSorters from "./features/data-table/local-table-sorter";
 import initFullscreen from "./components/fullscreen";
 import initLightGalleries from "./components/light-gallery";
 import initAsyncContent from "./components/async-content";
@@ -41,6 +42,7 @@ const initElements = (rootNode) => {
     initPopovers(rootNode);
 
     initDataTables(rootNode);
+    initLocalTableSorters(rootNode);
     chartManager.init(rootNode, isDarkModeEnabled());
     initLeafletMaps(rootNode);
     initFullscreen(rootNode);

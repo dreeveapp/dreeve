@@ -8,6 +8,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Integration\AI\SupportsAITooling;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\Measurement\Velocity\KmPerHour;
 use App\Infrastructure\Measurement\Velocity\MetersPerSecond;
 use App\Infrastructure\Measurement\Velocity\SecPer100Meter;
 use App\Infrastructure\Measurement\Velocity\SecPerKm;
@@ -149,6 +150,11 @@ final readonly class ActivityLap implements SupportsAITooling
         return $this->formatDurationAsClock($this->getMovingTimeInSeconds());
     }
 
+    public function getElapsedTimeFormatted(): string
+    {
+        return $this->formatDurationAsClock($this->getElapsedTimeInSeconds());
+    }
+
     public function getDistance(): Meter
     {
         return $this->distance;
@@ -174,7 +180,17 @@ final readonly class ActivityLap implements SupportsAITooling
         return $this->averageSpeed;
     }
 
+    public function getAverageSpeedInKmPerHour(): KmPerHour
+    {
+        return $this->getAverageSpeed()->toKmPerHour();
+    }
+
     public function getRelativePacePercentage(): float
+    {
+        return $this->getRelativeSpeedPercentage();
+    }
+
+    public function getRelativeSpeedPercentage(): float
     {
         $minAverageSpeed = $this->getMinAverageSpeed()->toFloat();
         $maxAverageSpeed = $this->getMaxAverageSpeed()->toFloat();
@@ -210,6 +226,11 @@ final readonly class ActivityLap implements SupportsAITooling
     public function getMaxSpeed(): MetersPerSecond
     {
         return $this->maxSpeed;
+    }
+
+    public function getMaxSpeedInKmPerHour(): KmPerHour
+    {
+        return $this->getMaxSpeed()->toKmPerHour();
     }
 
     public function getElevationDifference(): Meter

@@ -37,6 +37,7 @@ Apr: Apr
 Aug: Aug
 Average: Average
 'Average gradient': 'Average gradient'
+'Average lap distance': 'Average lap distance'
 'Avg distance': 'Avg distance'
 'Avg gradient': 'Avg gradient'
 'Avg pace': 'Avg pace'
@@ -53,6 +54,7 @@ Best: Bästa
 'Best effort': 'Bästa resultatet'
 'Best efforts': 'Bästa Insatser'
 'Best efforts for {sportType}': 'Bästa resultaten för {sportType}'
+'Best lap': 'Best lap'
 'Bike light': 'Bike light'
 'Bike radar': 'Bike radar'
 Boxing: Boxing
@@ -236,6 +238,7 @@ KOM: KOM
 Kayaking: Kayak
 'Kite Surf': Draksurfning
 Lap: Varv
+Laps: Laps
 'Last 12 months': 'Last 12 months'
 'Last 30 days': 'Last 30 days'
 'Last 7 days training load': 'Belastning de senaste 7 dagarna'
@@ -389,6 +392,7 @@ Recent: Recent
 'Recovery forecast': 'Recovery forecast'
 'Reduced carbon emission by commuting': 'Minskade koldioxidutsläpp tack vare pendling'
 'Register maintenance': 'Register maintenance'
+Regularity: Regularity
 'Rest Days': Vilodagar
 'Rest days': Vilodagar
 'Rest days in last 7 days': 'Vilodagar de senaste 7 dagarna'

@@ -37,6 +37,7 @@ Apr: Apr
 Aug: Aug
 Average: Gemiddeld
 'Average gradient': 'Gemiddelde helling'
+'Average lap distance': 'Average lap distance'
 'Avg distance': 'Avg distance'
 'Avg gradient': 'Gem. helling'
 'Avg pace': 'Gem. tempo'
@@ -53,6 +54,7 @@ Best: Beste
 'Best effort': 'Beste prestatie'
 'Best efforts': 'Beste prestaties'
 'Best efforts for {sportType}': 'Beste prestaties voor {sportType}'
+'Best lap': 'Best lap'
 'Bike light': Fietslicht
 'Bike radar': Fietsradar
 Boxing: Boxing
@@ -236,6 +238,7 @@ KOM: KOM
 Kayaking: Kajakken
 'Kite Surf': Kitesurfen
 Lap: Ronde
+Laps: Laps
 'Last 12 months': 'Last 12 months'
 'Last 30 days': 'Laatste 30 dagen'
 'Last 7 days training load': 'Trainingsbelasting laatste 7 dagen'
@@ -389,6 +392,7 @@ Recent: Recent
 'Recovery forecast': Herstelprognose
 'Reduced carbon emission by commuting': 'Verminderde CO₂-uitstoot door woon-werkverkeer'
 'Register maintenance': 'Onderhoud registreren'
+Regularity: Regularity
 'Rest Days': Rustdagen
 'Rest days': Rustdagen
 'Rest days in last 7 days': 'Rustdagen in de laatste 7 dagen'

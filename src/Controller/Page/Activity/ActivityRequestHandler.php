@@ -14,12 +14,18 @@ use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\DistributionChartsBuilder;
 use App\Domain\Activity\EnrichedActivityRepository;
 use App\Domain\Activity\GpxFileName;
+use App\Domain\Activity\Lap\ActivityLapPowerCalculator;
+use App\Domain\Activity\Lap\ActivityLapPowers;
 use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Lap\ActivityLaps;
+use App\Domain\Activity\Lap\ActivityLapsSummary;
+use App\Domain\Activity\Lap\LapChart;
 use App\Domain\Activity\LeafletMap;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsageRepository;
 use App\Domain\Activity\Shifting\ActivityDrivetrainUsages;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Stream\ActivityHeartRateRepository;
+use App\Domain\Activity\Stream\ActivityStream;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedActivityStreamRepository;
 use App\Domain\Activity\Stream\CombinedStream\CombinedStreamProfileCharts;
@@ -40,6 +46,7 @@ use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Http\Response\HtmlResponse;
 use App\Infrastructure\Measurement\ProvideMeasurementFormats;
 use App\Infrastructure\Security\Visitor;
+use App\Infrastructure\Serialization\Json;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -139,6 +146,16 @@ final readonly class ActivityRequestHandler
         $mediaItems = $this->mediaItemRepository->findByIds($activity->getMediaItemIds());
         $templateName = sprintf('html/activity/%s.html.twig', $activity->getSportType()->getTemplateName());
 
+        $laps = $this->activityLapRepository->findBy($activityId);
+        $lapPowers = $this->lapPowersFor($activityId, $laps);
+        $lapChart = LapChart::create(
+            laps: $laps,
+            lapPowers: $lapPowers,
+            sportType: $activity->getSportType(),
+            unitSystem: $unitSystem,
+            translator: $this->translator,
+        )->build();
+
         return $this->twig->load($templateName)->render(context: [
             'activity' => $activity,
             'enrichedActivity' => $enrichedActivity,
@@ -159,7 +176,10 @@ final readonly class ActivityRequestHandler
                 activityId: $activityId,
                 unitSystem: $unitSystem
             ),
-            'laps' => $this->activityLapRepository->findBy($activityId),
+            'laps' => $laps,
+            'lapsSummary' => ActivityLapsSummary::create($laps),
+            'lapPowers' => $lapPowers,
+            'lapChart' => null === $lapChart ? null : Json::encode($lapChart),
             'profileChartHeight' => CombinedStreamProfileCharts::totalHeightFor(
                 numberOfLanes: $numberOfProfileChartLanes,
                 hasTemperatureRibbon: $hasTemperatureRibbon
@@ -172,5 +192,25 @@ final readonly class ActivityRequestHandler
                 ? $this->activityDrivetrainUsageRepository->findByActivity($activityId)
                 : ActivityDrivetrainUsages::empty(),
         ]);
+    }
+
+    private function lapPowersFor(ActivityId $activityId, ActivityLaps $laps): ActivityLapPowers
+    {
+        if ($laps->isEmpty()) {
+            return ActivityLapPowers::empty();
+        }
+
+        $streams = $this->activityStreamRepository->findByActivityId($activityId);
+        $wattsStream = $streams->filterOnType(StreamType::WATTS);
+        $distanceStream = $streams->filterOnType(StreamType::DISTANCE);
+        if (!$wattsStream instanceof ActivityStream || !$distanceStream instanceof ActivityStream) {
+            return ActivityLapPowers::empty();
+        }
+
+        return ActivityLapPowerCalculator::calculate(
+            laps: $laps,
+            distanceStream: $distanceStream->getData(),
+            wattsStream: $wattsStream->getData(),
+        );
     }
 }

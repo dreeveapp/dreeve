@@ -16,11 +16,20 @@ use App\Domain\Activity\Collection\ActivityCollection;
 use App\Domain\Activity\Collection\ActivityCollectionCacheTag;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
+use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\ActivityCollectionWithActivities;
 use App\Domain\Activity\Collection\FindNumberOfActivitiesPerActivityCollection\FindNumberOfActivitiesPerActivityCollection;
+use App\Domain\Activity\Lap\ActivityLapPowerCalculator;
+use App\Domain\Activity\Lap\ActivityLapPowers;
+use App\Domain\Activity\Lap\ActivityLapRepository;
+use App\Domain\Activity\Lap\ActivityLaps;
+use App\Domain\Activity\Lap\ActivityLapsSummary;
 use App\Domain\Activity\Media\ActivityMediaItem;
 use App\Domain\Activity\Media\ActivityMediaRepository;
 use App\Domain\Activity\RealWorldMap;
+use App\Domain\Activity\Stream\ActivityStream;
+use App\Domain\Activity\Stream\ActivityStreamRepository;
+use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Media\MediaItemCacheTag;
 use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\Context\AuthenticatedCacheContext;
@@ -42,6 +51,8 @@ final readonly class ActivityCollectionRequestHandler
     public function __construct(
         private ActivityCollectionRepository $activityCollectionRepository,
         private ActivityRepository $activityRepository,
+        private ActivityLapRepository $activityLapRepository,
+        private ActivityStreamRepository $activityStreamRepository,
         private QueryBus $queryBus,
         private Environment $twig,
         private PageRenderer $pageRenderer,
@@ -92,6 +103,25 @@ final readonly class ActivityCollectionRequestHandler
         );
         $mediaItems = $this->activityMediaRepository->findByActivityIds($activityCollection->getActivityIds())->reverse();
 
+        $lapsPerActivity = [];
+        $allLaps = ActivityLaps::empty();
+        if (ActivityCollectionType::EVENT === $activityCollection->getType()) {
+            foreach ($activityCollectionWithActivities->getActivities() as $activity) {
+                $laps = $this->activityLapRepository->findBy($activity->getId());
+                if ($laps->isEmpty()) {
+                    continue;
+                }
+
+                $lapsPerActivity[] = [
+                    'activity' => $activity,
+                    'laps' => $laps,
+                    'summary' => ActivityLapsSummary::create($laps),
+                    'powers' => $this->lapPowersFor($activity->getId(), $laps),
+                ];
+                $allLaps->mergeWith($laps);
+            }
+        }
+
         return $this->twig->load(sprintf(
             'html/activity/collection/%s.html.twig',
             $activityCollection->getType()->getTemplateName(),
@@ -102,6 +132,24 @@ final readonly class ActivityCollectionRequestHandler
             'geotaggedMediaItems' => $mediaItems->filter(
                 fn (ActivityMediaItem $mediaItem): bool => $mediaItem->allowsPhotoMarker(),
             ),
+            'lapsPerActivity' => $lapsPerActivity,
+            'lapsSummary' => ActivityLapsSummary::create($allLaps),
         ]);
+    }
+
+    private function lapPowersFor(ActivityId $activityId, ActivityLaps $laps): ActivityLapPowers
+    {
+        $streams = $this->activityStreamRepository->findByActivityId($activityId);
+        $wattsStream = $streams->filterOnType(StreamType::WATTS);
+        $distanceStream = $streams->filterOnType(StreamType::DISTANCE);
+        if (!$wattsStream instanceof ActivityStream || !$distanceStream instanceof ActivityStream) {
+            return ActivityLapPowers::empty();
+        }
+
+        return ActivityLapPowerCalculator::calculate(
+            laps: $laps,
+            distanceStream: $distanceStream->getData(),
+            wattsStream: $wattsStream->getData(),
+        );
     }
 }
