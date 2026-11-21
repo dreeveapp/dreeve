@@ -44,12 +44,16 @@ class TripSuggestionsRequestHandlerTest extends AdminWebTestCase
             $crawler->filter('nav.contextual-panel[aria-label="Activity collections"] a[aria-selected="true"]')->extract(['href']),
         );
         $this->assertSame('1', $crawler->filter('nav.contextual-panel[aria-label="Activity collections"] a[aria-selected="true"] span')->text());
-        $suggestion = $crawler->filter('table.data-table tbody tr');
+        $suggestion = $crawler->filter('details');
         $this->assertSame(
-            [['10-04-2024 - 12-04-2024', 'Pollença', '2', 'Create collection Dismiss']],
+            [['10-04-2024 - 12-04-2024', '2', 'Pollença', 'Create collection Dismiss']],
             $suggestion->each(
-                static fn (Crawler $row): array => $row->filter('td')->each(static fn (Crawler $cell): string => preg_replace('/\s+/', ' ', trim($cell->text())) ?? ''),
+                static fn (Crawler $row): array => $row->filter('summary > div')->each(static fn (Crawler $cell): string => preg_replace('/\s+/', ' ', trim($cell->text())) ?? ''),
             ),
+        );
+        $this->assertSame(
+            ['/activities/activity-trip-2', '/activities/activity-trip-1'],
+            $suggestion->filter('table.data-table tbody a')->extract(['href']),
         );
         $form = $suggestion->filter('form[data-dispatch-command="add-activity-collection"]');
         $this->assertSame('add-activity-collection', $form->attr('data-dispatch-command'));
@@ -85,8 +89,8 @@ class TripSuggestionsRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/collections/suggestions');
 
         $this->assertResponseIsSuccessful();
-        $this->assertStringContainsString('No suggestions found.', $crawler->filter('table.data-table')->text());
-        $this->assertCount(0, $crawler->filter('table.data-table form'));
+        $this->assertStringContainsString('No suggestions found.', $crawler->filter('main')->text());
+        $this->assertCount(0, $crawler->filter('details'));
         $this->assertCount(0, $crawler->filter('nav.contextual-panel a span'));
     }
 }
