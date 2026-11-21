@@ -13,6 +13,7 @@
         "description": "",
         "distance": 15,
         "elevation": 10,
+        "descent": null,
         "calories": null,
         "kilojoules": null,
         "averagePower": null,

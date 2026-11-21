@@ -13,6 +13,7 @@
         "description": "BUILD PHASE\n8K @ Easy\n\nEasy: 5:45-6:28 /min | MP (Marathon Pace): 5:01-5:17 /min",
         "distance": 50,
         "elevation": 10,
+        "descent": null,
         "calories": 42,
         "kilojoules": 210,
         "averagePower": 205,

@@ -136,13 +136,13 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
     {
         $sql = 'INSERT INTO Activity (
             activityId, startDateTime, sportType, activityType, worldType, importSource, externalReferenceId, name, description, distance,
-            elevation, startingCoordinateLatitude, startingCoordinateLongitude, calories, kilojoules,
+            elevation, descent, startingCoordinateLatitude, startingCoordinateLongitude, calories, kilojoules,
             averagePower, maxPower, averageSpeed, maxSpeed, averageHeartRate, maxHeartRate,
             averageCadence,movingTimeInSeconds, elapsedTimeInSeconds, deviceName, connectedSensors, mediaItemIds,
             polyline, routeGeography, weather, gearId, data, isCommute, isGroupActivity, workoutType, excludedFrom
         ) VALUES(
             :activityId, :startDateTime, :sportType, :activityType, :worldType, :importSource, :externalReferenceId, :name, :description, :distance,
-            :elevation, :startingCoordinateLatitude, :startingCoordinateLongitude, :calories, :kilojoules,
+            :elevation, :descent, :startingCoordinateLatitude, :startingCoordinateLongitude, :calories, :kilojoules,
             :averagePower, :maxPower, :averageSpeed, :maxSpeed, :averageHeartRate, :maxHeartRate,
             :averageCadence, :movingTimeInSeconds, :elapsedTimeInSeconds, :deviceName, :connectedSensors, :mediaItemIds,
             :polyline, :routeGeography, :weather, :gearId, :data, :isCommute, :isGroupActivity, :workoutType, :excludedFrom
@@ -161,6 +161,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'description' => $activity->getDescription(),
             'distance' => $activity->getDistance()->toMeter()->toInt(),
             'elevation' => $activity->getElevation()->toInt(),
+            'descent' => $activity->getDescent()?->toInt(),
             'startingCoordinateLatitude' => $activity->getStartingCoordinate()?->getLatitude()->toFloat(),
             'startingCoordinateLongitude' => $activity->getStartingCoordinate()?->getLongitude()->toFloat(),
             'calories' => $activity->getCalories(),
@@ -209,6 +210,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
                     movingTimeInSeconds = :movingTimeInSeconds,
                     elapsedTimeInSeconds = :elapsedTimeInSeconds,
                     elevation = :elevation,
+                    descent = :descent,
                     calories = :calories,
                     kilojoules = :kilojoules,
                     polyline = :polyline,
@@ -237,6 +239,7 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'deviceName' => $activity->getDeviceName(),
             'distance' => $activity->getDistance()->toMeter()->toInt(),
             'elevation' => $activity->getElevation()->toInt(),
+            'descent' => $activity->getDescent()?->toInt(),
             'calories' => $activity->getCalories(),
             'kilojoules' => $activity->getKilojoules(),
             'averageSpeed' => $activity->getAverageSpeed()->toFloat(),

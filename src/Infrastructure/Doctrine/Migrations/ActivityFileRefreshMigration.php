@@ -27,7 +27,7 @@ abstract class ActivityFileRefreshMigration extends AbstractMigration
      */
     abstract protected function columnsToRefresh(Activity $parsedActivity): array;
 
-    final public function up(Schema $schema): void
+    public function up(Schema $schema): void
     {
         $total = (int) $this->connection->fetchOne(
             'SELECT COUNT(*) FROM FileImport WHERE status = :status AND activityId IS NOT NULL AND fileContents IS NOT NULL',

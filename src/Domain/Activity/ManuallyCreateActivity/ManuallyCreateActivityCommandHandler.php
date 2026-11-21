@@ -64,6 +64,7 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
             description: $command->getDescription(),
             distance: $distance,
             elevation: $elevation,
+            descent: null,
             startingCoordinate: null,
             calories: $command->getCalories(),
             kilojoules: null,

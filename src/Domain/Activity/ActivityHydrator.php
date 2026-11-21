@@ -26,7 +26,7 @@ final readonly class ActivityHydrator
      */
     private const array COLUMNS = [
         'activityId', 'startDateTime', 'sportType', 'worldType', 'importSource',
-        'externalReferenceId', 'name', 'description', 'distance', 'elevation',
+        'externalReferenceId', 'name', 'description', 'distance', 'elevation', 'descent',
         'startingCoordinateLatitude', 'startingCoordinateLongitude', 'calories', 'kilojoules',
         'averagePower', 'maxPower', 'averageSpeed', 'maxSpeed', 'averageHeartRate', 'maxHeartRate',
         'averageCadence', 'movingTimeInSeconds', 'elapsedTimeInSeconds', 'deviceName',
@@ -65,6 +65,7 @@ final readonly class ActivityHydrator
             description: $result['description'] ?: '',
             distance: Meter::from($result['distance'])->toKilometer(),
             elevation: Meter::from($result['elevation'] ?: 0),
+            descent: null !== ($result['descent'] ?? null) ? Meter::from($result['descent']) : null,
             startingCoordinate: Coordinate::createFromOptionalLatAndLng(
                 Latitude::fromOptionalString((string) $result['startingCoordinateLatitude']),
                 Longitude::fromOptionalString((string) $result['startingCoordinateLongitude'])

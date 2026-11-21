@@ -210,6 +210,7 @@ final readonly class FitFileParser implements ActivityFileParser
             description: '' !== $workoutDescription ? $workoutDescription : null,
             distance: Kilometer::from(round((is_numeric($session['total_distance'] ?? null) ? (float) $session['total_distance'] : 0.0) / 1000, 3)),
             elevation: Meter::from(round(is_numeric($session['total_ascent'] ?? null) && (float) $session['total_ascent'] > 0 ? (float) $session['total_ascent'] : StreamMath::elevationGain($streamMap[StreamType::ALTITUDE->value]))),
+            descent: null,
             startingCoordinate: $this->resolveStartingCoordinate($session, $streamMap),
             calories: is_numeric($session['total_calories'] ?? null) ? (int) round((float) $session['total_calories']) : null,
             kilojoules: null !== $work ? (int) round($work / 1000) : null,

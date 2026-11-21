@@ -193,6 +193,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             ->withMaxSpeed(MetersPerSecond::from(99.99)->toKmPerHour())
             ->withMovingTimeInSeconds(999)
             ->withElevation(Meter::from(9999))
+            ->withDescent(Meter::from(8888))
             ->withCalories(1234)
             ->withKilojoules(4321)
             ->withAverageHeartRate(142)
@@ -222,6 +223,10 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         $this->assertSame(
             1234,
             $persistedActivity->getCalories()
+        );
+        $this->assertEquals(
+            Meter::from(8888),
+            $persistedActivity->getDescent()
         );
         $this->assertSame(
             4321,
