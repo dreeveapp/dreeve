@@ -12,6 +12,7 @@ use App\Domain\Activity\Collection\FindTripSuggestions\FindTripSuggestions;
 use App\Domain\Activity\Collection\FindTripSuggestions\FindTripSuggestionsQueryHandler;
 use App\Domain\Activity\Collection\FindTripSuggestions\FindTripSuggestionsResponse;
 use App\Domain\Activity\Collection\FindTripSuggestions\TripSuggestion;
+use App\Domain\Activity\Collection\FindTripSuggestions\TripSuggestions;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\WorldType;
@@ -101,7 +102,7 @@ class FindTripSuggestionsQueryHandlerTest extends ContainerTestCase
         assert($response instanceof FindTripSuggestionsResponse);
 
         $this->assertEquals(
-            [
+            TripSuggestions::fromArray([
                 TripSuggestion::create(
                     activityIds: ActivityIds::fromArray([
                         ActivityId::fromUnprefixed('departure'),
@@ -141,7 +142,7 @@ class FindTripSuggestionsQueryHandlerTest extends ContainerTestCase
                     countryCodes: ['es', 'fr'],
                     places: ['Perpignan', 'Pollença'],
                 ),
-            ],
+            ]),
             $response->getTripSuggestions(),
         );
     }

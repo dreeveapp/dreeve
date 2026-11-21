@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Activity\Collection;
 
 use App\Application\Countries;
+use App\Domain\Activity\Activity;
+use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\AddActivityCollection\AddActivityCollection;
@@ -25,25 +27,31 @@ final readonly class TripSuggestionsRequestHandler
         private Environment $twig,
         private QueryBus $queryBus,
         private Countries $countries,
+        private ActivityRepository $activityRepository,
     ) {
     }
 
     #[Route(path: '/admin/collections/suggestions', name: 'admin_activity_collection_trip_suggestions', methods: ['GET'], priority: 10)]
     public function handle(): HtmlResponse
     {
+        $tripSuggestions = $this->queryBus->ask(new FindTripSuggestions())->getTripSuggestions();
+        $activities = $this->activityRepository->findByIds($tripSuggestions->getActivityIds());
+
         return new HtmlResponse($this->twig->render('html/admin/page/activity-collection/trip-suggestions.html.twig', [
             'addActivityCollectionCommand' => AddActivityCollection::getCommandName(),
             'tripType' => ActivityCollectionType::TRIP,
-            'tripSuggestions' => array_map(
+            'tripSuggestions' => $tripSuggestions->map(
                 fn (TripSuggestion $tripSuggestion): array => [
                     'tripSuggestion' => $tripSuggestion,
                     'activityCollectionId' => ActivityCollectionId::random(),
+                    'activities' => $activities->filter(
+                        static fn (Activity $activity): bool => $tripSuggestion->getActivityIds()->has($activity->getId()),
+                    ),
                     'name' => implode(', ', array_filter([
                         $tripSuggestion->getCountryCodes() ? $this->countries->getName($tripSuggestion->getCountryCodes()[0]) : null,
                         $tripSuggestion->getStartDate()->translatedFormat('M Y'),
                     ])),
                 ],
-                $this->queryBus->ask(new FindTripSuggestions())->getTripSuggestions(),
             ),
         ]));
     }
@@ -51,8 +59,7 @@ final readonly class TripSuggestionsRequestHandler
     #[Route(path: '/admin/collections/suggestions/{tripSuggestionId}/dismiss', name: 'admin_dismiss_trip_suggestion', methods: ['GET'], priority: 10)]
     public function handleDismiss(string $tripSuggestionId): HtmlResponse
     {
-        $tripSuggestion = array_find(
-            $this->queryBus->ask(new FindTripSuggestions())->getTripSuggestions(),
+        $tripSuggestion = $this->queryBus->ask(new FindTripSuggestions())->getTripSuggestions()->find(
             static fn (TripSuggestion $tripSuggestion): bool => $tripSuggestionId === (string) $tripSuggestion->getId(),
         ) ?? throw new EntityNotFound(sprintf('TripSuggestion "%s" not found', $tripSuggestionId));
 

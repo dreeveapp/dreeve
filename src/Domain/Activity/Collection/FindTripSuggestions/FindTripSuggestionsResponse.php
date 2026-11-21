@@ -9,15 +9,11 @@ use App\Infrastructure\CQRS\Query\Response;
 final readonly class FindTripSuggestionsResponse implements Response
 {
     public function __construct(
-        /** @var TripSuggestion[] */
-        private array $tripSuggestions,
+        private TripSuggestions $tripSuggestions,
     ) {
     }
 
-    /**
-     * @return TripSuggestion[]
-     */
-    public function getTripSuggestions(): array
+    public function getTripSuggestions(): TripSuggestions
     {
         return $this->tripSuggestions;
     }
