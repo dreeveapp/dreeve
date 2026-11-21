@@ -9,7 +9,6 @@ use App\Domain\Activity\ImportSource;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\FileImportStatus;
-use App\Domain\Import\FileParser\ActivityFileParsers;
 use App\Domain\Import\StoredActivityFiles;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -60,10 +59,7 @@ class StoredActivityFilesTest extends ContainerTestCase
 
         $failures = [];
         $externalReferenceIds = [];
-        foreach (new StoredActivityFiles(
-            fileImportRepository: $fileImportRepository,
-            activityFileParsers: $this->getContainer()->get(ActivityFileParsers::class),
-        )->parse(function (string $failure) use (&$failures): void {
+        foreach ($this->getContainer()->get(StoredActivityFiles::class)->parse(function (string $failure) use (&$failures): void {
             $failures[] = $failure;
         }) as $activityId => $parsedActivityFile) {
             $externalReferenceIds[(string) $activityId] = (string) $parsedActivityFile->getActivity()->getExternalReferenceId();
