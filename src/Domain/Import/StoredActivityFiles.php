@@ -36,7 +36,7 @@ final readonly class StoredActivityFiles
 
             $activityId = $fileImport->getActivityId();
             $fileContents = $fileImport->getFileContents();
-            if (null === $activityId || null === $fileContents) {
+            if (!$activityId instanceof ActivityId || null === $fileContents) {
                 continue;
             }
 
