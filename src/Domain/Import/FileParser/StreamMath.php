@@ -53,6 +53,40 @@ final readonly class StreamMath
     }
 
     /**
+     * @param list<?float> $altitudes
+     */
+    public static function descent(array $altitudes): float
+    {
+        $altitudes = array_values(array_filter($altitudes, static fn (?float $altitude): bool => null !== $altitude));
+        $count = count($altitudes);
+        if (0 === $count) {
+            return 0.0;
+        }
+
+        $prefixSums = [0.0];
+        foreach ($altitudes as $index => $altitude) {
+            $prefixSums[$index + 1] = $prefixSums[$index] + $altitude;
+        }
+
+        $maxRadius = intdiv(self::ELEVATION_SMOOTHING_WINDOW, 2);
+        $descent = 0.0;
+        $reference = $altitudes[0];
+        for ($index = 0; $index < $count; ++$index) {
+            $radius = min($maxRadius, $index, $count - 1 - $index);
+            $smoothed = ($prefixSums[$index + $radius + 1] - $prefixSums[$index - $radius]) / (2 * $radius + 1);
+
+            if ($smoothed - $reference >= self::ELEVATION_GAIN_THRESHOLD_IN_METERS) {
+                $reference = $smoothed;
+            } elseif ($reference - $smoothed >= self::ELEVATION_GAIN_THRESHOLD_IN_METERS) {
+                $descent += $reference - $smoothed;
+                $reference = $smoothed;
+            }
+        }
+
+        return $descent;
+    }
+
+    /**
      * @param list<?int> $timestamps
      */
     public static function activeSeconds(array $timestamps): int
