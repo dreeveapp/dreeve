@@ -1076,6 +1076,9 @@
   .grid-cols-\[minmax\(0\,1fr\)_6rem_0\.75rem\] {
     grid-template-columns: minmax(0,1fr) 6rem 0.75rem;
   }
+  .grid-cols-\[minmax\(0\,1fr\)_auto_0\.75rem\] {
+    grid-template-columns: minmax(0,1fr) auto 0.75rem;
+  }
   .grid-cols-\[minmax\(0\,1fr\)_minmax\(4rem\,auto\)_minmax\(5rem\,auto\)\] {
     grid-template-columns: minmax(0,1fr) minmax(4rem,auto) minmax(5rem,auto);
   }
@@ -2823,6 +2826,9 @@
     }
     .lg\:grid-cols-\[8rem_minmax\(0\,1fr\)_minmax\(5rem\,auto\)_minmax\(6rem\,auto\)_minmax\(6rem\,auto\)_minmax\(6rem\,auto\)\] {
       grid-template-columns: 8rem minmax(0,1fr) minmax(5rem,auto) minmax(6rem,auto) minmax(6rem,auto) minmax(6rem,auto);
+    }
+    .lg\:grid-cols-\[14rem_6rem_minmax\(0\,1fr\)_auto_0\.75rem\] {
+      grid-template-columns: 14rem 6rem minmax(0,1fr) auto 0.75rem;
     }
     .lg\:grid-cols-\[minmax\(0\,1fr\)_6rem_8rem_6rem_12rem_0\.75rem\] {
       grid-template-columns: minmax(0,1fr) 6rem 8rem 6rem 12rem 0.75rem;

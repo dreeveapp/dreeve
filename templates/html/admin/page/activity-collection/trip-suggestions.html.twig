@@ -1,6 +1,7 @@
 {% extends "html/admin/page/template.html.twig" %}
 {% block main %}
     {% set suggestionsUrl = relativeUrl(path('admin_activity_collection_trip_suggestions')) %}
+    {% set gridColumns = 'grid-cols-[minmax(0,1fr)_auto_0.75rem] lg:grid-cols-[14rem_6rem_minmax(0,1fr)_auto_0.75rem]' %}
     {% autoescape false %}
     <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <div class="mb-4">
@@ -9,48 +10,47 @@
                 {{ "Suggestions based on your activities that aren't in a collection yet."|trans({}, 'admin') }}
             </p>
         </div>
-        <div class="relative overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                <tr>
-                    <th scope="col" class="text-left">
-                        {{ "Date"|trans }}
-                    </th>
-                    <th scope="col" class="text-left">
-                        {{ "Places"|trans({}, 'admin') }}
-                    </th>
-                    <th scope="col">
-                        {{ "Activities"|trans }}
-                    </th>
-                    <th scope="col" class="narrow sticky-actions">
-                        <span class="sr-only">{{ "Create collection"|trans({}, 'admin') }}</span>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
+        {% if tripSuggestions is empty %}
+            <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
+                <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
+                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 8H4m0-2v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-5.032a1 1 0 0 1-.768-.36l-1.9-2.28a1 1 0 0 0-.768-.36H5a1 1 0 0 0-1 1Z"/>
+                    </svg>
+                </span>
+                <div class="flex flex-col gap-1">
+                    <span class="text-sm font-medium text-gray-800">{{ "No suggestions found."|trans({}, 'admin') }}</span>
+                </div>
+            </div>
+        {% else %}
+            <div class="grid items-center gap-x-4 {{ gridColumns }} px-4 py-3 bg-gray-50 text-gray-500 text-xxs uppercase font-semibold">
+                <div>{{ "Date"|trans }}</div>
+                <div class="hidden lg:block">{{ "Activities"|trans }}</div>
+                <div class="hidden lg:block">{{ "Places"|trans({}, 'admin') }}</div>
+                <div><span class="sr-only">{{ "Create collection"|trans({}, 'admin') }}</span></div>
+                <div></div>
+            </div>
+            <div>
                 {% for suggestion in tripSuggestions %}
                     {% set tripSuggestion = suggestion.tripSuggestion %}
-                    <tr>
-                        <td class="whitespace-nowrap text-left">
-                            <div class="flex items-center gap-1.5">
+                    <details class="group/row border-t border-gray-100">
+                        <summary class="grid items-center gap-x-4 {{ gridColumns }} list-none cursor-pointer px-4 py-2.5 hover:bg-gray-50 select-none">
+                            <div class="min-w-0 flex items-center gap-1.5 text-sm font-medium text-gray-900 whitespace-nowrap">
                                 {% for countryCode in tripSuggestion.getCountryCodes() %}
                                     <img src="{{ countryCode|countryIcon }}" width="15" class="rounded-xs" alt="{{ countryCode|upper }}">
                                 {% endfor %}
-                                <span>
+                                <span class="truncate">
                                     {{ tripSuggestion.getStartDate()|formatDate('normal') }}
                                     {% if tripSuggestion.getStartDate() != tripSuggestion.getEndDate() %}
                                         - {{ tripSuggestion.getEndDate()|formatDate('normal') }}
                                     {% endif %}
                                 </span>
                             </div>
-                        </td>
-                        <td class="text-left">
-                            {{ tripSuggestion.getPlaces()|map(place => place|e)|join(', ') }}
-                        </td>
-                        <td class="whitespace-nowrap">
-                            {{ tripSuggestion.getActivityIds()|length }}
-                        </td>
-                        <td class="narrow whitespace-nowrap sticky-actions">
+                            <div class="hidden lg:block text-sm font-semibold text-gray-700">
+                                {{ tripSuggestion.getActivityIds()|length }}
+                            </div>
+                            <div class="hidden lg:block text-sm text-gray-500 truncate">
+                                {{ tripSuggestion.getPlaces()|map(place => place|e)|join(', ') }}
+                            </div>
                             <div class="flex items-center gap-3">
                                 <form data-dispatch-command="{{ addActivityCollectionCommand }}" data-redirect="{{ relativeUrlWithRedirectTo(path('admin_edit_activity_collection', {activityCollectionId: suggestion.activityCollectionId}), suggestionsUrl) }}" class="inline-flex">
                                     <input type="hidden" name="activityCollectionId" value="{{ suggestion.activityCollectionId }}">
@@ -71,28 +71,50 @@
                                     {{ svg('trash') }}
                                 </a>
                             </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-                {% if tripSuggestions is empty %}
-                    <tr>
-                        <td colspan="4">
-                            <div class="flex flex-col items-center justify-center gap-3 py-12 px-4 text-center">
-                                <span class="grid place-items-center size-12 rounded-full bg-gray-100 text-gray-400" aria-hidden="true">
-                                    <svg class="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 8H4m0-2v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-5.032a1 1 0 0 1-.768-.36l-1.9-2.28a1 1 0 0 0-.768-.36H5a1 1 0 0 0-1 1Z"/>
-                                    </svg>
-                                </span>
-                                <div class="flex flex-col gap-1">
-                                    <span class="text-sm font-medium text-gray-800">{{ "No suggestions found."|trans({}, 'admin') }}</span>
-                                </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-3 text-gray-400 transition-transform group-open/row:rotate-180" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </summary>
+                        <div class="px-8 py-5 border-t border-gray-100">
+                            <div class="relative overflow-x-auto">
+                                <table class="data-table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="narrow">{{ "Date"|trans }}</th>
+                                        <th scope="col" class="text-left narrow">{{ "Activity"|trans }}</th>
+                                        <th scope="col">{{ "Distance"|trans }}</th>
+                                        <th scope="col">{{ "Elevation"|trans }}</th>
+                                        <th scope="col">{{ "Moving time"|trans }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for activity in suggestion.activities %}
+                                        <tr>
+                                            <td class="narrow whitespace-nowrap">
+                                                {{ activity.getStartDate()|formatDate() }}
+                                            </td>
+                                            <td class="narrow truncate">
+                                                {{ activity|activityLink(ellipses: 180) }}
+                                            </td>
+                                            <td>
+                                                {{ activity.getDistance()|renderMeasurement(activity.getSportType().getActivityType().getDistancePrecision()) }}
+                                            </td>
+                                            <td>
+                                                {{ activity.getElevation()|renderMeasurement(0) }}
+                                            </td>
+                                            <td>
+                                                {{ activity.getMovingTimeFormatted() }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
-                        </td>
-                    </tr>
-                {% endif %}
-                </tbody>
-            </table>
-        </div>
+                        </div>
+                    </details>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
     {% endautoescape %}
 {% endblock main %}
