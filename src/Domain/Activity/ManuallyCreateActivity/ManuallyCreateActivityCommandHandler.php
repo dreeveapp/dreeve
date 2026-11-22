@@ -87,6 +87,8 @@ final readonly class ManuallyCreateActivityCommandHandler implements CommandHand
             isCommute: $command->isCommute(),
             isGroupActivity: $command->isGroupActivity(),
             workoutType: $command->getWorkoutType(),
+            workoutRpe: null,
+            workoutFeel: null,
         );
 
         $this->activityRepository->add(ActivityWithRawData::fromState(

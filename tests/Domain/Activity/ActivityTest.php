@@ -445,6 +445,8 @@ class ActivityTest extends TestCase
         yield 'commute' => [fn (Activity $activity): Activity => $activity->withCommute(true)];
         yield 'group activity' => [fn (Activity $activity): Activity => $activity->withGroupActivity(true)];
         yield 'workout type' => [fn (Activity $activity): Activity => $activity->withWorkoutType(WorkoutType::RACE)];
+        yield 'workout rpe' => [fn (Activity $activity): Activity => $activity->withWorkoutRpe(70)];
+        yield 'workout feel' => [fn (Activity $activity): Activity => $activity->withWorkoutFeel(75)];
         yield 'weather' => [fn (Activity $activity): Activity => $activity->withWeather(Weather::fromState(['temperature' => 18.3]))];
         yield 'excluded from' => [fn (Activity $activity): Activity => $activity->withExcludedFrom(
             ActivityExclusions::fromArray([ActivityExclusion::BEST_EFFORTS])

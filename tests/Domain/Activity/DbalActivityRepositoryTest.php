@@ -196,6 +196,8 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             ->withDescent(Meter::from(8888))
             ->withCalories(1234)
             ->withKilojoules(4321)
+            ->withWorkoutRpe(70)
+            ->withWorkoutFeel(75)
             ->withAverageHeartRate(142)
             ->withMaxHeartRate(175)
             ->withPolyline('updated polyline')
@@ -227,6 +229,14 @@ class DbalActivityRepositoryTest extends ContainerTestCase
         $this->assertEquals(
             Meter::from(8888),
             $persistedActivity->getDescent()
+        );
+        $this->assertSame(
+            70,
+            $persistedActivity->getWorkoutRpe()
+        );
+        $this->assertSame(
+            75,
+            $persistedActivity->getWorkoutFeel()
         );
         $this->assertSame(
             4321,

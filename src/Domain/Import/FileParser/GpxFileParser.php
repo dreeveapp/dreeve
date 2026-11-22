@@ -140,6 +140,8 @@ final readonly class GpxFileParser implements ActivityFileParser
             isCommute: false,
             isGroupActivity: false,
             workoutType: null,
+            workoutRpe: null,
+            workoutFeel: null,
         );
 
         return ParsedActivityFile::create(
