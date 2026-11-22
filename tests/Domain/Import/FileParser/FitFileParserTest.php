@@ -92,16 +92,9 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseWithoutRecordsAndWithoutSessionThrows(): void
     {
-        $this->givenFitToolReturns(Json::encode([
-            'files' => [[
-                'profileVersion' => 2132,
-                'messages' => [
-                    ['name' => 'file_id', 'fields' => []],
-                    ['name' => 'monitoring', 'fields' => [
-                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
-                    ]],
-                ],
-            ]],
+        $this->givenFitToolReturns(implode("\n", [
+            Json::encode(['name' => 'file_id', 'fields' => []]),
+            Json::encode(['name' => 'monitoring', 'fields' => ['timestamp' => self::START_FIT_SECONDS]]),
         ]));
 
         $rawActivityFile = RawActivityFile::from(Path::fromString('/tmp/activity.fit'), '');
@@ -209,12 +202,13 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseIgnoresStrapHeartRateWithoutAnchor(): void
     {
-        $document = Json::decode((string) file_get_contents(__DIR__.'/fixtures/fit-document-with-hr-mesgs.json'));
         // Strip the anchor hr message; without it the event_timestamp clock
         // cannot be mapped to wall clock time and the wrist readings are kept.
-        array_shift($document['files'][1]['messages']);
-
-        $this->givenFitToolReturns(Json::encode($document));
+        $this->givenFitToolReturns((string) preg_replace(
+            '/^\{"name":"hr","fields":\{"timestamp".*\n/m',
+            '',
+            (string) file_get_contents(__DIR__.'/fixtures/fit-document-with-hr-mesgs.json'),
+        ));
 
         $this->assertParsedFileMatchesSnapshot(
             $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))
@@ -223,46 +217,42 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParsePrefersProductNameWhenManufacturerHasNoProductEnum(): void
     {
-        $document = $this->minimalFitDocument(fileIdFields: [
-            ['name' => 'manufacturer', 'value' => 23],
-            ['name' => 'product', 'value' => 999],
-            ['name' => 'product_name', 'value' => 'Suunto Vertical'],
-        ]);
-        $this->givenFitToolReturns(Json::encode($document));
+        $this->givenFitToolReturns($this->minimalFitDocument(fileIdFields: [
+            'manufacturer' => 23,
+            'product' => 999,
+            'product_name' => 'Suunto Vertical',
+        ]));
 
         $this->assertSame('Suunto Vertical', $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getDeviceName());
     }
 
     public function testParseIgnoresProductNameForZwift(): void
     {
-        $document = $this->minimalFitDocument(fileIdFields: [
-            ['name' => 'manufacturer', 'value' => 260],
-            ['name' => 'product_name', 'value' => 'with {wo'],
-        ]);
-        $this->givenFitToolReturns(Json::encode($document));
+        $this->givenFitToolReturns($this->minimalFitDocument(fileIdFields: [
+            'manufacturer' => 260,
+            'product_name' => 'with {wo',
+        ]));
 
         $this->assertSame('Zwift', $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getDeviceName());
     }
 
     public function testParseFallsBackToManufacturerWhenProductNameMissing(): void
     {
-        $document = $this->minimalFitDocument(fileIdFields: [
-            ['name' => 'manufacturer', 'value' => 123],
-            ['name' => 'product', 'value' => 99],
-        ]);
-        $this->givenFitToolReturns(Json::encode($document));
+        $this->givenFitToolReturns($this->minimalFitDocument(fileIdFields: [
+            'manufacturer' => 123,
+            'product' => 99,
+        ]));
 
         $this->assertSame('Polar Electro', $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getDeviceName());
     }
 
     public function testParseTrailRunSubSport(): void
     {
-        $document = $this->minimalFitDocument(sessionFields: [
-            ['name' => 'sport', 'value' => 1], // running
-            ['name' => 'sub_sport', 'value' => 3], // trail
-            ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-        ]);
-        $this->givenFitToolReturns(Json::encode($document));
+        $this->givenFitToolReturns($this->minimalFitDocument(sessionFields: [
+            'sport' => 1, // running
+            'sub_sport' => 3, // trail
+            'start_time' => self::START_FIT_SECONDS,
+        ]));
 
         $this->assertSame(SportType::TRAIL_RUN, $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getSportType());
     }
@@ -276,13 +266,12 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseResolvesGenericSportFromSportProfileName(): void
     {
-        $document = $this->minimalFitDocument(sessionFields: [
-            ['name' => 'sport', 'value' => 0], // generic
-            ['name' => 'sub_sport', 'value' => 0], // generic
-            ['name' => 'sport_profile_name', 'value' => 'Indoor Rowing'],
-            ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-        ]);
-        $this->givenFitToolReturns(Json::encode($document));
+        $this->givenFitToolReturns($this->minimalFitDocument(sessionFields: [
+            'sport' => 0, // generic
+            'sub_sport' => 0, // generic
+            'sport_profile_name' => 'Indoor Rowing',
+            'start_time' => self::START_FIT_SECONDS,
+        ]));
 
         $this->assertSame(SportType::VIRTUAL_ROW, $this->parser->parse(RawActivityFile::from(Path::fromString('/tmp/activity.fit'), ''))->getActivity()->getSportType());
     }
@@ -312,11 +301,10 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseMultiSportSessionThrows(): void
     {
-        $document = $this->minimalFitDocument(sessionFields: [
-            ['name' => 'sport', 'value' => 18], // multisport
-            ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-        ]);
-        $this->givenFitToolReturns(Json::encode($document));
+        $this->givenFitToolReturns($this->minimalFitDocument(sessionFields: [
+            'sport' => 18, // multisport
+            'start_time' => self::START_FIT_SECONDS,
+        ]));
 
         $rawActivityFile = RawActivityFile::from(Path::fromString('/tmp/activity.fit'), '');
 
@@ -333,11 +321,10 @@ class FitFileParserTest extends ActivityFileParserTestCase
 
     public function testParseUnsupportedSportThrows(): void
     {
-        $document = $this->minimalFitDocument(sessionFields: [
-            ['name' => 'sport', 'value' => 24], // driving (unsupported)
-            ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-        ]);
-        $this->givenFitToolReturns(Json::encode($document));
+        $this->givenFitToolReturns($this->minimalFitDocument(sessionFields: [
+            'sport' => 24, // driving (unsupported)
+            'start_time' => self::START_FIT_SECONDS,
+        ]));
 
         $rawActivityFile = RawActivityFile::from(Path::fromString('/tmp/activity.fit'), '');
 
@@ -346,28 +333,21 @@ class FitFileParserTest extends ActivityFileParserTestCase
     }
 
     /**
-     * @param list<array{name: string, value: int|string}> $fileIdFields
-     * @param list<array{name: string, value: int|string}> $sessionFields
-     *
-     * @return array<string, mixed>
+     * @param array<string, int|string> $fileIdFields
+     * @param array<string, int|string> $sessionFields
      */
-    private function minimalFitDocument(array $fileIdFields = [], array $sessionFields = []): array
+    private function minimalFitDocument(array $fileIdFields = [], array $sessionFields = []): string
     {
-        return [
-            'files' => [[
-                'profileVersion' => 2132,
-                'messages' => [
-                    ['name' => 'file_id', 'fields' => $fileIdFields],
-                    ['name' => 'session', 'fields' => [] !== $sessionFields ? $sessionFields : [
-                        ['name' => 'sport', 'value' => 2], // cycling
-                        ['name' => 'start_time', 'value' => self::START_FIT_SECONDS],
-                    ]],
-                    ['name' => 'record', 'fields' => [
-                        ['name' => 'timestamp', 'value' => self::START_FIT_SECONDS],
-                    ]],
-                ],
-            ]],
-        ];
+        return implode("\n", [
+            Json::encode(['name' => 'file_id', 'fields' => $fileIdFields]),
+            Json::encode(['name' => 'session', 'fields' => [] !== $sessionFields ? $sessionFields : [
+                'sport' => 2, // cycling
+                'start_time' => self::START_FIT_SECONDS,
+            ]]),
+            Json::encode(['name' => 'record', 'fields' => [
+                'timestamp' => self::START_FIT_SECONDS,
+            ]]),
+        ]);
     }
 
     private function givenFitToolReturns(string $output): void

@@ -1,62 +1,6 @@
-{
-    "files": [
-        {
-            "profileVersion": 21198,
-            "messages": [
-                {
-                    "name": "file_id",
-                    "fields": [
-                        {"name": "product_name", "value": "Forerunner 735XT"}
-                    ]
-                },
-                {
-                    "name": "sport",
-                    "fields": [
-                        {"name": "name", "value": "Foil"},
-                        {"name": "sport", "value": 0},
-                        {"name": "sub_sport", "value": 0}
-                    ]
-                },
-                {
-                    "name": "session",
-                    "fields": [
-                        {"name": "sport", "value": 0},
-                        {"name": "sub_sport", "value": 0},
-                        {"name": "sport_profile_name", "value": "Foil"},
-                        {"name": "start_time", "value": 1000000000},
-                        {"name": "total_distance", "value": 523.98},
-                        {"name": "total_timer_time", "value": 4},
-                        {"name": "total_elapsed_time", "value": 4},
-                        {"name": "total_calories", "value": 4},
-                        {"name": "avg_heart_rate", "value": 164},
-                        {"name": "max_heart_rate", "value": 182}
-                    ]
-                },
-                {
-                    "name": "record",
-                    "fields": [
-                        {"name": "timestamp", "value": 1000000000},
-                        {"name": "distance", "value": 0.0},
-                        {"name": "heart_rate", "value": 148}
-                    ]
-                },
-                {
-                    "name": "record",
-                    "fields": [
-                        {"name": "timestamp", "value": 1000000001},
-                        {"name": "distance", "value": 3.55},
-                        {"name": "heart_rate", "value": 164}
-                    ]
-                },
-                {
-                    "name": "record",
-                    "fields": [
-                        {"name": "timestamp", "value": 1000000002},
-                        {"name": "distance", "value": 7.1},
-                        {"name": "heart_rate", "value": 182}
-                    ]
-                }
-            ]
-        }
-    ]
-}
+{"name":"file_id","fields":{"product_name":"Forerunner 735XT"}}
+{"name":"sport","fields":{"name":"Foil","sport":0,"sub_sport":0}}
+{"name":"session","fields":{"sport":0,"sub_sport":0,"sport_profile_name":"Foil","start_time":1000000000,"total_distance":523.98,"total_timer_time":4,"total_elapsed_time":4,"total_calories":4,"avg_heart_rate":164,"max_heart_rate":182}}
+{"name":"record","fields":{"timestamp":1000000000,"distance":0.0,"heart_rate":148}}
+{"name":"record","fields":{"timestamp":1000000001,"distance":3.55,"heart_rate":164}}
+{"name":"record","fields":{"timestamp":1000000002,"distance":7.1,"heart_rate":182}}
