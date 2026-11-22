@@ -6,11 +6,17 @@ namespace App\Tests\Controller\Page\Activity\Collection;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionRepository;
 use App\Domain\Activity\Collection\ActivityCollectionType;
+use App\Domain\Activity\SportType\SportType;
 use App\Domain\Media\MediaItemId;
+use App\Infrastructure\Measurement\Length\Meter;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Collection\ActivityCollectionBuilder;
 use App\Tests\ProvideTestData;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -42,6 +48,33 @@ class ActivityCollectionsRequestHandlerTest extends AdminWebTestCase
             ->withUseRouteMapAsCover(true)
             ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('9830227112')]))
             ->withCoverMediaItemId(MediaItemId::fromUnprefixed('cover'))
+            ->build());
+        $activityRepository = $this->getContainer()->get(ActivityRepository::class);
+        $activityRepository->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('snowboard'))
+                ->withSportType(SportType::SNOWBOARD)
+                ->withStartDateTime(SerializableDateTime::fromString('2023-01-14 09:00:00'))
+                ->withDescent(Meter::from(3049))
+                ->build(),
+            rawData: [],
+        ));
+        $activityRepository->add(ActivityWithRawData::fromState(
+            activity: ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('alpine-ski'))
+                ->withSportType(SportType::ALPINE_SKI)
+                ->withStartDateTime(SerializableDateTime::fromString('2023-01-15 09:00:00'))
+                ->withDescent(null)
+                ->build(),
+            rawData: [],
+        ));
+        $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
+            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('4'))
+            ->withName('Ski week')
+            ->withActivityIds(ActivityIds::fromArray([
+                ActivityId::fromUnprefixed('snowboard'),
+                ActivityId::fromUnprefixed('alpine-ski'),
+            ]))
             ->build());
         $activityCollectionRepository->add(ActivityCollectionBuilder::fromDefaults()
             ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('3'))
