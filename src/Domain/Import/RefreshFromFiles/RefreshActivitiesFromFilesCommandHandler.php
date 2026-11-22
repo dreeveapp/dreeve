@@ -6,6 +6,7 @@ namespace App\Domain\Import\RefreshFromFiles;
 
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\StoredActivityFiles;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
@@ -19,6 +20,7 @@ final readonly class RefreshActivitiesFromFilesCommandHandler implements Command
 {
     public function __construct(
         private StoredActivityFiles $storedActivityFiles,
+        private FileImportRepository $fileImportRepository,
         private ActivityRepository $activityRepository,
         private ActivityFieldsToRefresh $activityFieldsToRefresh,
         private Mutex $mutex,
@@ -33,16 +35,22 @@ final readonly class RefreshActivitiesFromFilesCommandHandler implements Command
         $output->writeln('Refreshing activities from stored files...');
 
         $fields = $this->activityFieldsToRefresh->find();
+        $countTotal = $this->fileImportRepository->countWithFileContents();
         $countRefreshed = 0;
+        $delta = 0;
 
-        foreach ($this->storedActivityFiles->parse(static function (string $failure) use ($output): void {
-            $output->writeln(sprintf('  => <error>Could not refresh %s</error>', $failure));
+        foreach ($this->storedActivityFiles->parse(static function (string $failure) use ($output, $countTotal, &$delta): void {
+            ++$delta;
+            $output->writeln(sprintf('  => <error>[%d/%d] Could not refresh %s</error>', $delta, $countTotal, $failure));
         }) as $activityId => $parsedActivityFile) {
             $this->mutex->heartbeat();
+            ++$delta;
 
             try {
                 $activityWithRawData = $this->activityRepository->findWithRawData($activityId);
             } catch (EntityNotFound) {
+                $output->writeln(sprintf('  => [%d/%d] Skipping %s, the activity no longer exists', $delta, $countTotal, $activityId));
+
                 continue;
             }
 
@@ -58,6 +66,7 @@ final readonly class RefreshActivitiesFromFilesCommandHandler implements Command
                 rawData: $activityWithRawData->getRawData(),
             ));
             ++$countRefreshed;
+            $output->writeln(sprintf('  => [%d/%d] Refreshed activity "%s"', $delta, $countTotal, $activity->getName()));
         }
 
         $this->activityFieldsToRefresh->clear();
