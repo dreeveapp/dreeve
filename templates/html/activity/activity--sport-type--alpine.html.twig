@@ -1,0 +1,114 @@
+{% extends "html/activity/activity--sport-type--generic.html.twig" %}
+
+{% block mainStatsOnTop %}
+    {% autoescape false %}
+        <section>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">{{ "Distance"|trans }}</span>
+                        <div class="size-6 rounded-md bg-primary-soft text-primary flex items-center justify-center">
+                            {{ svg('distance', 'size-3.5') }}
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1">
+                        {% set distance = activity.getDistanceInDisplayUnit() %}
+                        <span class="text-2xl font-black tracking-tight text-gray-900">{{ distance|formatMeasurement(activity.getSportType().getDistancePrecision()) }}</span>
+                        <span class="text-xs font-medium text-gray-500">{{ distance|measurementSymbol }}</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">{{ "Moving time"|trans }}</span>
+                        <div class="size-6 rounded-md bg-primary-soft text-primary flex items-center justify-center">
+                            {{ svg('time', 'size-3.5') }}
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-2xl font-black tracking-tight text-gray-900">{{ activity.getMovingTimeFormatted() }}</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">{{ "Avg speed"|trans }}</span>
+                        <div class="size-6 rounded-md bg-primary-soft text-primary flex items-center justify-center">
+                            {{ svg('speed', 'size-3.5') }}
+                        </div>
+                    </div>
+                    {% set maxSpeed = activity.getMaxSpeedInDisplayUnit() %}
+                    <div class="flex items-baseline gap-1" title="{{ maxSpeed ? 'Max ' ~ maxSpeed|formatMeasurement(1) : '' }}">
+                        {% set averageSpeed = activity.getAverageSpeedInDisplayUnit() %}
+                        {% if averageSpeed %}
+                            <span class="text-2xl font-black tracking-tight text-gray-900">{{ averageSpeed|formatMeasurement(1) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ averageSpeed|measurementSymbol }}</span>
+                        {% else %}
+                            <span class="text-2xl font-black tracking-tight text-gray-900">{{ "n/a"|trans }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-gray-200 shadow-xs">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xxs uppercase tracking-wider font-semibold text-gray-500">{{ "Descent"|trans }}</span>
+                        <div class="size-6 rounded-md bg-primary-soft text-primary flex items-center justify-center">
+                            {{ svg('elevation', 'size-3.5') }}
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1">
+                        {% set descent = activity.getDescent() %}
+                        {% if descent %}
+                            <span class="text-2xl font-black tracking-tight text-gray-900">{{ descent|formatMeasurement(0) }}</span>
+                            <span class="text-xs font-medium text-gray-500">{{ renderUnitSymbol('elevation') }}</span>
+                        {% else %}
+                            <span class="text-2xl font-black tracking-tight text-gray-900">{{ "n/a"|trans }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3 grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3">
+                <div class="bg-gray-50 rounded-lg p-3 flex gap-x-2 items-center justify-between">
+                    <span class="text-xs text-gray-500">{{ "Elevation"|trans }}</span>
+                    <span class="text-sm font-bold text-gray-900">{{ activity.getElevation()|formatMeasurement(0) }}
+                        <span class="text-xxs font-medium text-gray-400">{{ renderUnitSymbol('elevation') }}</span>
+                    </span>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 flex gap-x-2 items-center justify-between">
+                    <span class="text-xs text-gray-500">{{ "Elapsed time"|trans }}</span>
+                    <span class="text-sm font-bold text-gray-900">{{ activity.getElapsedTimeFormatted() }}</span>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 flex gap-x-2 items-center justify-between">
+                    <span class="text-xs text-gray-500">{{ "Calories"|trans }}</span>
+                    <span class="text-sm font-bold text-gray-900">{{ activity.getCalories() is not null ? activity.getCalories() ~ ' <span class="text-xxs font-medium text-gray-400">kcal</span>' : '-' }}</span>
+                </div>
+                {% if activity.getKilojoules() %}
+                    <div class="bg-gray-50 rounded-lg p-3 flex gap-x-2 items-center justify-between">
+                        <span class="text-xs text-gray-500">{{ "Energy"|trans }}</span>
+                        <span class="text-sm font-bold text-gray-900">{{ activity.getKilojoules() }} <span class="text-xxs font-medium text-gray-400">kJ</span></span>
+                    </div>
+                {% endif %}
+                {% set averageCadence = activity.getAverageCadence() %}
+                {% set maxCadence = enrichedActivity.getMaxCadence() %}
+                <div class="bg-gray-50 rounded-lg p-3 flex gap-x-2 items-center justify-between" title="{{ maxCadence ? 'Max ' ~ maxCadence : '' }}">
+                    <span class="text-xs text-gray-500">{{ "Cadence"|trans }}</span>
+                    <span class="text-sm font-bold text-gray-900">
+                        {{ averageCadence ?: 'n/a'|trans }}
+                        {% if averageCadence %}
+                            <span class="text-xxs font-medium text-gray-400">{{ "rpm"|trans }}</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <a href="{{ filteredUrl(path('activities'), {gear: activity.getGearIdIncludingNone()}) }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group">
+                    <span class="text-xs text-gray-500 shrink-0">{{ "Gear"|trans }}</span>
+                    <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ enrichedActivity.getGearName() }}">
+                        {{ enrichedActivity.getGearName() ?: 'Unspecified'|trans }}
+                    </span>
+                </a>
+                <a href="{{ filteredUrl(path('activities'), {device: activity.getDeviceId()}) }}" class="bg-gray-50 rounded-lg p-3 gap-x-2 flex items-center justify-between group">
+                    <span class="text-xs text-gray-500 shrink-0">{{ "Device"|trans }}</span>
+                    <span class="text-xs font-bold text-gray-900 group-hover:text-primary truncate" title="{{ activity.getDeviceName() }}">
+                        {{ activity.getDeviceName() ?: 'None'|trans }}
+                    </span>
+                </a>
+            </div>
+        </section>
+    {% endautoescape %}
+{% endblock mainStatsOnTop %}
