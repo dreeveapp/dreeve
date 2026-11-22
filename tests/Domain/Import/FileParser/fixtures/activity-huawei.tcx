@@ -50,7 +50,7 @@
           <Trackpoint>
             <Time>2021-09-08T00:00:06Z</Time>
             <Position><LatitudeDegrees>43.633270</LatitudeDegrees><LongitudeDegrees>3.917700</LongitudeDegrees></Position>
-            <AltitudeMeters>40.0</AltitudeMeters>
+            <AltitudeMeters>30.0</AltitudeMeters>
             <Cadence>75</Cadence>
           </Trackpoint>
           <Trackpoint>

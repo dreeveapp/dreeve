@@ -113,7 +113,7 @@ final readonly class GpxFileParser implements ActivityFileParser
             description: $workoutSummary?->getDescription() ?? $metadata->getDescription() ?? $this->resolveTrackDescription($xml),
             distance: Kilometer::from(round($distanceInMeter / 1000, 3)),
             elevation: Meter::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getElevationDifference()->toFloat()))),
-            descent: null,
+            descent: Meter::from(round(StreamMath::descent($streams[StreamType::ALTITUDE->value]))),
             startingCoordinate: StreamMath::firstCoordinate($streams),
             calories: $calories,
             kilojoules: null,
