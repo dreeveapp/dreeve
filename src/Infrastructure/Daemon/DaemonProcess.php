@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Daemon\Cron;
+namespace App\Infrastructure\Daemon;
 
 use App\Infrastructure\Time\Clock\Clock;
 use React\ChildProcess\Process;
@@ -11,10 +11,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @codeCoverageIgnore
  */
-final readonly class CronProcess
+final readonly class DaemonProcess
 {
     public function __construct(
-        private string $cronActionId,
+        private DaemonProcessType $type,
+        private string $name,
         private Clock $clock,
         private OutputInterface $output,
         private string $command,
@@ -24,9 +25,10 @@ final readonly class CronProcess
     public function start(): void
     {
         $this->output->writeln(sprintf(
-            '<info>[%s] Starting cron action "%s"</info>',
+            '<info>[%s] Starting %s "%s"</info>',
             $this->clock->now()->format('d-m-Y H:i:s'),
-            $this->cronActionId
+            $this->type->value,
+            $this->name,
         ));
 
         $process = new Process($this->command);
@@ -42,9 +44,10 @@ final readonly class CronProcess
 
         $process->on('exit', function (): void {
             $this->output->writeln(sprintf(
-                '<info>[%s] Finished cron action "%s"</info>',
+                '<info>[%s] Finished %s "%s"</info>',
                 $this->clock->now()->format('d-m-Y H:i:s'),
-                $this->cronActionId
+                $this->type->value,
+                $this->name,
             ));
         });
     }
