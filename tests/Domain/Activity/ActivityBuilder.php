@@ -37,6 +37,7 @@ final class ActivityBuilder
     private string $description = '';
     private Kilometer $distance;
     private Meter $elevation;
+    private ?Meter $descent = null;
     private ?Coordinate $startingCoordinate = null;
     private ?int $calories = 0;
     private ?int $kilojoules = null;
@@ -93,6 +94,7 @@ final class ActivityBuilder
             description: $this->description,
             distance: $this->distance,
             elevation: $this->elevation,
+            descent: $this->descent,
             startingCoordinate: $this->startingCoordinate,
             calories: $this->calories,
             kilojoules: $this->kilojoules,
@@ -131,6 +133,7 @@ final class ActivityBuilder
             description: $this->description,
             distance: $this->distance,
             elevation: $this->elevation,
+            descent: $this->descent,
             startingCoordinate: $this->startingCoordinate,
             calories: $this->calories,
             kilojoules: $this->kilojoules,
@@ -321,6 +324,13 @@ final class ActivityBuilder
     public function withElevation(Meter $elevation): self
     {
         $this->elevation = $elevation;
+
+        return $this;
+    }
+
+    public function withDescent(?Meter $descent): self
+    {
+        $this->descent = $descent;
 
         return $this;
     }

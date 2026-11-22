@@ -425,6 +425,7 @@ class ActivityTest extends TestCase
         yield 'world type' => [fn (Activity $activity): Activity => $activity->withWorldType(WorldType::ZWIFT)];
         yield 'distance' => [fn (Activity $activity): Activity => $activity->withDistance(Kilometer::from(42))];
         yield 'elevation' => [fn (Activity $activity): Activity => $activity->withElevation(Meter::from(666))];
+        yield 'descent' => [fn (Activity $activity): Activity => $activity->withDescent(Meter::from(666))];
         yield 'calories' => [fn (Activity $activity): Activity => $activity->withCalories(500)];
         yield 'average heart rate' => [fn (Activity $activity): Activity => $activity->withAverageHeartRate(140)];
         yield 'max heart rate' => [fn (Activity $activity): Activity => $activity->withMaxHeartRate(180)];
