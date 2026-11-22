@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Doctrine\Migrations;
+namespace App\Tests\Infrastructure\Doctrine\Migrations\ActivityFieldRefresh;
 
 use App\Tests\ContainerTestCase;
 use Doctrine\Migrations\DependencyFactory;

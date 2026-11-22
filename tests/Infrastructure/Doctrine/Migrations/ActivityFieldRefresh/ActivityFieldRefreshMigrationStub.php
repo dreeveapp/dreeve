@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Infrastructure\Doctrine\Migrations;
+namespace App\Tests\Infrastructure\Doctrine\Migrations\ActivityFieldRefresh;
 
-use App\Infrastructure\Doctrine\Migrations\ActivityFieldRefreshMigration;
+use App\Infrastructure\Doctrine\Migrations\ActivityFieldRefresh\ActivityFieldRefreshMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 final class ActivityFieldRefreshMigrationStub extends ActivityFieldRefreshMigration

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use App\Domain\Import\RefreshFromFiles\RefreshableActivityField;
-use App\Infrastructure\Doctrine\Migrations\ActivityFieldRefreshMigration;
+use App\Infrastructure\Doctrine\Migrations\ActivityFieldRefresh\ActivityFieldRefreshMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 final class Version20261121193000 extends ActivityFieldRefreshMigration
