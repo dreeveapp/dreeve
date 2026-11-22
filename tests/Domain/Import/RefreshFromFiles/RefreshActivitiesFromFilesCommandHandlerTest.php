@@ -34,6 +34,8 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
                     ->withName(sprintf('Activity %s', $activityId))
                     ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 08:00:00'))
                     ->withDescent(null)
+                    ->withWorkoutRpe(70)
+                    ->withWorkoutFeel(75)
                     ->build(),
                 rawData: ['raw' => $activityId],
             ));
@@ -60,7 +62,7 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
 
         $this->getContainer()->get(KeyValueStore::class)->save(KeyValue::fromState(
             key: Key::ACTIVITY_FILE_REFRESH,
-            value: Value::fromString('["descent", "droppedField"]'),
+            value: Value::fromString('["descent", "workoutRpe", "workoutFeel", "droppedField"]'),
         ));
 
         $output = new SpyOutput();
@@ -81,10 +83,14 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
 
         $fit = $activityRepository->findWithRawData(ActivityId::fromUnprefixed('fit'));
         $this->assertSame(0, $fit->getActivity()->getDescent()?->toInt());
+        $this->assertNull($fit->getActivity()->getWorkoutRpe());
+        $this->assertNull($fit->getActivity()->getWorkoutFeel());
         $this->assertSame(['raw' => 'fit'], $fit->getRawData());
         $this->assertSame(10, $activityRepository->find(ActivityId::fromUnprefixed('gpx'))->getDescent()?->toInt());
         $this->assertNull($activityRepository->find(ActivityId::fromUnprefixed('broken'))->getDescent());
         $this->assertNull($activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getDescent());
+        $this->assertSame(70, $activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getWorkoutRpe());
+        $this->assertSame(75, $activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getWorkoutFeel());
 
         $this->assertFalse($this->getContainer()->get(ActivityFieldsToRefresh::class)->hasAny());
     }
