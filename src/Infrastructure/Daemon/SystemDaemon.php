@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Daemon;
 
 use App\Console\Cache\PruneRenderCacheConsoleCommand;
+use App\Console\Import\RefreshActivitiesFromFilesConsoleCommand;
 use App\Console\Import\RunAutomationRulesBackfillConsoleCommand;
 use App\Console\Import\RunFileImportConsoleCommand;
 use App\Console\Strava\ProcessStravaWebhooksConsoleCommand;
@@ -140,5 +141,15 @@ final class SystemDaemon implements Daemon
 
         $this->getConsoleOutput()->writeln(sprintf('<info>%s</info>', 'Cron configured'));
         $this->getConsoleOutput()->writeln($output);
+    }
+
+    public function runStartupTasks(): void
+    {
+        new CronProcess(
+            cronActionId: 'refreshActivitiesFromFiles',
+            clock: $this->clock,
+            output: $this->getConsoleOutput(),
+            command: sprintf('bin/console %s', RefreshActivitiesFromFilesConsoleCommand::NAME),
+        )->start();
     }
 }

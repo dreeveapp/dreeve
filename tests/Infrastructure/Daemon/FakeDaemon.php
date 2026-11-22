@@ -34,4 +34,9 @@ final class FakeDaemon implements Daemon
     {
         $this->output->writeln('Cron configured');
     }
+
+    public function runStartupTasks(): void
+    {
+        $this->output->writeln('Startup tasks started');
+    }
 }

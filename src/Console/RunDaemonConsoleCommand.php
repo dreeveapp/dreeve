@@ -40,6 +40,7 @@ final class RunDaemonConsoleCommand extends Command
 
         $this->daemon->setConsoleOutput($output);
         $this->daemon->clearStaleCronLocks();
+        $this->daemon->runStartupTasks();
         $this->daemon->configureCron();
 
         if (!empty($_ENV['DAEMON_DEBUG'])) {

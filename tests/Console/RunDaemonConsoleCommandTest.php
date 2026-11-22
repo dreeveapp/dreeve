@@ -24,7 +24,7 @@ class RunDaemonConsoleCommandTest extends ConsoleCommandTestCase
         $this->assertStringContainsString('| DAEMON', $display);
         $this->assertStringContainsString('Started on 08-11-2025 14:47:03', $display);
         $this->assertStringContainsString('Configured import mode: stravaApi', $display);
-        $this->assertStringEndsWith("Cron configured\nPeriodic timer added\n", $display);
+        $this->assertStringEndsWith("Startup tasks started\nCron configured\nPeriodic timer added\n", $display);
     }
 
     #[\Override]
