@@ -17,4 +17,6 @@ interface Daemon
     public function clearStaleCronLocks(): void;
 
     public function configureCron(): void;
+
+    public function runStartupTasks(): void;
 }
