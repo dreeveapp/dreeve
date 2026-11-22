@@ -1,9 +1,9 @@
 {"name":"file_id","fields":{"manufacturer":337,"product_name":"Runna"}}
-{"name":"session","fields":{"sport":1,"sub_sport":0,"start_time":1000000000,"total_distance":15.0,"total_timer_time":5,"total_elapsed_time":5,"total_ascent":0}}
+{"name":"session","fields":{"sport":1,"sub_sport":0,"start_time":1000000000,"total_distance":15.0,"total_timer_time":5,"total_elapsed_time":5,"total_ascent":0,"total_descent":0}}
 {"name":"lap","fields":{"start_time":1000000000,"total_distance":15.0,"total_timer_time":5,"total_elapsed_time":5,"total_ascent":0}}
 {"name":"record","fields":{"timestamp":1000000000,"distance":0.0,"enhanced_speed":3.0,"enhanced_altitude":10.0,"heart_rate":140,"cadence":80}}
 {"name":"record","fields":{"timestamp":1000000001,"distance":3.0,"enhanced_speed":3.0,"enhanced_altitude":12.0,"heart_rate":141,"cadence":80}}
 {"name":"record","fields":{"timestamp":1000000002,"distance":6.0,"enhanced_speed":3.0,"enhanced_altitude":14.0,"heart_rate":142,"cadence":80}}
 {"name":"record","fields":{"timestamp":1000000003,"distance":9.0,"enhanced_speed":3.0,"enhanced_altitude":16.0,"heart_rate":143,"cadence":80}}
 {"name":"record","fields":{"timestamp":1000000004,"distance":12.0,"enhanced_speed":3.0,"enhanced_altitude":18.0,"heart_rate":144,"cadence":80}}
-{"name":"record","fields":{"timestamp":1000000005,"distance":15.0,"enhanced_speed":3.0,"enhanced_altitude":20.0,"heart_rate":145,"cadence":80}}
+{"name":"record","fields":{"timestamp":1000000005,"distance":15.0,"enhanced_speed":3.0,"enhanced_altitude":10.0,"heart_rate":145,"cadence":80}}
