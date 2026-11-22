@@ -168,8 +168,20 @@ enum SportType: string implements TranslatableInterface
         return $this->getActivityType()->getDistancePrecision();
     }
 
+    public function displaysDescent(): bool
+    {
+        return in_array($this, [
+            self::ALPINE_SKI,
+            self::SNOWBOARD,
+        ], true);
+    }
+
     public function getTemplateName(): string
     {
+        if ($this->displaysDescent()) {
+            return 'activity--sport-type--alpine';
+        }
+
         if (ActivityType::RUN === self::getActivityType() || ActivityType::WALK === self::getActivityType()) {
             return 'activity--sport-type--run';
         }
