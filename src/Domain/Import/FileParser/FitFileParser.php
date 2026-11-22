@@ -235,8 +235,8 @@ final readonly class FitFileParser implements ActivityFileParser
             isCommute: false,
             isGroupActivity: false,
             workoutType: null,
-            workoutRpe: null,
-            workoutFeel: null,
+            workoutRpe: is_numeric($session['workout_rpe'] ?? null) ? (int) $session['workout_rpe'] : null,
+            workoutFeel: is_numeric($session['workout_feel'] ?? null) ? (int) $session['workout_feel'] : null,
         );
 
         return ParsedActivityFile::create(
