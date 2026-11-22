@@ -60,6 +60,8 @@ final class ActivityBuilder
     private bool $isCommute = false;
     private bool $isGroupActivity = false;
     private ?WorkoutType $workoutType = null;
+    private ?int $workoutRpe = null;
+    private ?int $workoutFeel = null;
     private ActivityExclusions $excludedFrom;
 
     private function __construct()
@@ -117,6 +119,8 @@ final class ActivityBuilder
             isCommute: $this->isCommute,
             isGroupActivity: $this->isGroupActivity,
             workoutType: $this->workoutType,
+            workoutRpe: $this->workoutRpe,
+            workoutFeel: $this->workoutFeel,
         );
     }
 
@@ -156,6 +160,8 @@ final class ActivityBuilder
             isCommute: $this->isCommute,
             isGroupActivity: $this->isGroupActivity,
             workoutType: $this->workoutType,
+            workoutRpe: $this->workoutRpe,
+            workoutFeel: $this->workoutFeel,
             excludedFrom: $this->excludedFrom,
         );
     }
@@ -394,6 +400,20 @@ final class ActivityBuilder
     public function withWorkoutType(WorkoutType $workoutType): self
     {
         $this->workoutType = $workoutType;
+
+        return $this;
+    }
+
+    public function withWorkoutRpe(?int $workoutRpe): self
+    {
+        $this->workoutRpe = $workoutRpe;
+
+        return $this;
+    }
+
+    public function withWorkoutFeel(?int $workoutFeel): self
+    {
+        $this->workoutFeel = $workoutFeel;
 
         return $this;
     }

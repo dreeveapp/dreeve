@@ -235,6 +235,8 @@ final readonly class FitFileParser implements ActivityFileParser
             isCommute: false,
             isGroupActivity: false,
             workoutType: null,
+            workoutRpe: null,
+            workoutFeel: null,
         );
 
         return ParsedActivityFile::create(

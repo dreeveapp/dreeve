@@ -125,6 +125,10 @@ final class Activity
         private readonly bool $isGroupActivity,
         #[ORM\Column(type: 'string', nullable: true)]
         private readonly ?WorkoutType $workoutType,
+        #[ORM\Column(type: 'integer', nullable: true)]
+        private readonly ?int $workoutRpe,
+        #[ORM\Column(type: 'integer', nullable: true)]
+        private readonly ?int $workoutFeel,
         #[ORM\Column(type: 'json', nullable: true)]
         private readonly ActivityExclusions $excludedFrom,
     ) {
@@ -180,6 +184,8 @@ final class Activity
             isCommute: $rawData['commute'] ?? false,
             isGroupActivity: ($rawData['athlete_count'] ?? 1) > 1,
             workoutType: WorkoutType::fromStravaInt($rawData['workout_type'] ?? null),
+            workoutRpe: null,
+            workoutFeel: null,
         );
     }
 
@@ -217,6 +223,8 @@ final class Activity
         bool $isCommute,
         bool $isGroupActivity,
         ?WorkoutType $workoutType,
+        ?int $workoutRpe,
+        ?int $workoutFeel,
     ): self {
         $activity = self::fromState(
             activityId: $activityId,
@@ -252,6 +260,8 @@ final class Activity
             isCommute: $isCommute,
             isGroupActivity: $isGroupActivity,
             workoutType: $workoutType,
+            workoutRpe: $workoutRpe,
+            workoutFeel: $workoutFeel,
             excludedFrom: ActivityExclusions::empty(),
         );
         $activity->recordThat(new ActivityWasAdded($activity->getStartDate()));
@@ -296,6 +306,8 @@ final class Activity
         bool $isCommute,
         bool $isGroupActivity,
         ?WorkoutType $workoutType,
+        ?int $workoutRpe,
+        ?int $workoutFeel,
         ActivityExclusions $excludedFrom,
     ): self {
         return new self(
@@ -332,6 +344,8 @@ final class Activity
             isCommute: $isCommute,
             isGroupActivity: $isGroupActivity,
             workoutType: $workoutType,
+            workoutRpe: $workoutRpe,
+            workoutFeel: $workoutFeel,
             excludedFrom: $excludedFrom,
         );
     }
@@ -769,6 +783,30 @@ final class Activity
         ]));
     }
 
+    public function getWorkoutRpe(): ?int
+    {
+        return $this->workoutRpe;
+    }
+
+    public function withWorkoutRpe(?int $workoutRpe): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'workoutRpe' => $workoutRpe,
+        ]));
+    }
+
+    public function getWorkoutFeel(): ?int
+    {
+        return $this->workoutFeel;
+    }
+
+    public function withWorkoutFeel(?int $workoutFeel): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'workoutFeel' => $workoutFeel,
+        ]));
+    }
+
     public function getExcludedFrom(): ActivityExclusions
     {
         return $this->excludedFrom;
@@ -926,6 +964,8 @@ final class Activity
             'isCommute' => $this->isCommute,
             'isGroupActivity' => $this->isGroupActivity,
             'workoutType' => $this->workoutType?->value,
+            'workoutRpe' => $this->workoutRpe,
+            'workoutFeel' => $this->workoutFeel,
             'excludedFrom' => $this->excludedFrom->toValues(),
         ];
     }

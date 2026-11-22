@@ -127,6 +127,8 @@ final readonly class TcxFileParser implements ActivityFileParser
             isCommute: false,
             isGroupActivity: false,
             workoutType: null,
+            workoutRpe: null,
+            workoutFeel: null,
         );
 
         return ParsedActivityFile::create(

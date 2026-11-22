@@ -31,7 +31,7 @@ final readonly class ActivityHydrator
         'averagePower', 'maxPower', 'averageSpeed', 'maxSpeed', 'averageHeartRate', 'maxHeartRate',
         'averageCadence', 'movingTimeInSeconds', 'elapsedTimeInSeconds', 'deviceName',
         'connectedSensors', 'mediaItemIds', 'polyline', 'routeGeography',
-        'weather', 'gearId', 'isCommute', 'isGroupActivity', 'workoutType', 'excludedFrom',
+        'weather', 'gearId', 'isCommute', 'isGroupActivity', 'workoutType', 'workoutRpe', 'workoutFeel', 'excludedFrom',
     ];
 
     public static function columns(?string $alias = null): string
@@ -96,6 +96,8 @@ final readonly class ActivityHydrator
             isCommute: (bool) $result['isCommute'],
             isGroupActivity: (bool) $result['isGroupActivity'],
             workoutType: WorkoutType::tryFrom($result['workoutType'] ?? ''),
+            workoutRpe: null !== ($result['workoutRpe'] ?? null) ? (int) $result['workoutRpe'] : null,
+            workoutFeel: null !== ($result['workoutFeel'] ?? null) ? (int) $result['workoutFeel'] : null,
             excludedFrom: ActivityExclusions::fromValues(Json::decode($result['excludedFrom'] ?? '[]')),
         );
     }
