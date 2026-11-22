@@ -147,12 +147,14 @@ final class SystemDaemon implements Daemon
 
     public function runStartupTasks(): void
     {
-        new DaemonProcess(
-            type: DaemonProcessType::STARTUP_TASK,
-            name: 'refreshActivitiesFromFiles',
-            clock: $this->clock,
-            output: $this->getConsoleOutput(),
-            command: sprintf('bin/console %s', RefreshActivitiesFromFilesConsoleCommand::NAME),
-        )->start();
+        if ($this->importMode->isFiles()) {
+            new DaemonProcess(
+                type: DaemonProcessType::STARTUP_TASK,
+                name: 'refreshActivitiesFromFiles',
+                clock: $this->clock,
+                output: $this->getConsoleOutput(),
+                command: sprintf('bin/console %s', RefreshActivitiesFromFilesConsoleCommand::NAME),
+            )->start();
+        }
     }
 }
