@@ -4,7 +4,7 @@
         "activityId": "activity-1",
         "streamType": "altitude",
         "createdOn": "2023-10-17 16:15:04",
-        "data": "[39,39,39,41.5,41.5,41.5,40,40]"
+        "data": "[39,39,39,41.5,41.5,41.5,30,30]"
     },
     {
         "dataSize": 8,

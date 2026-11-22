@@ -93,6 +93,7 @@ class GpxFileParserTest extends ActivityFileParserTestCase
 
         $this->assertSame('Loop around the lake', $parsed->getActivity()->getName());
         $this->assertSame('Easy recovery spin, stopped for coffee halfway.', $parsed->getActivity()->getDescription());
+        $this->assertSame(10, $parsed->getActivity()->getDescent()?->toInt());
     }
 
     public function testParseFallsBackToStreamValuesWhenWorkoutSummaryIsImplausible(): void
