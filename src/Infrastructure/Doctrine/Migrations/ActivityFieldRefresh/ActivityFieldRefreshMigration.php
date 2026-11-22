@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Doctrine\Migrations;
+namespace App\Infrastructure\Doctrine\Migrations\ActivityFieldRefresh;
 
 use App\Domain\Import\RefreshFromFiles\ActivityFieldsToRefresh;
 use Doctrine\DBAL\Connection;
