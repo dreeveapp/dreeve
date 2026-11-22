@@ -13,7 +13,6 @@ use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Console\ConsoleOutputAware;
-use App\Infrastructure\Daemon\Cron\CronProcess;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Time\Clock\Clock;
@@ -122,8 +121,9 @@ final class SystemDaemon implements Daemon
                 mutexTtl: $job['mutexTtl'],
                 expression: $job['expression'],
                 performer: function () use ($job): PromiseInterface {
-                    new CronProcess(
-                        cronActionId: $job['key'],
+                    new DaemonProcess(
+                        type: DaemonProcessType::CRON_ACTION,
+                        name: $job['key'],
                         clock: $this->clock,
                         output: $this->getConsoleOutput(),
                         command: $job['command'],
@@ -145,8 +145,9 @@ final class SystemDaemon implements Daemon
 
     public function runStartupTasks(): void
     {
-        new CronProcess(
-            cronActionId: 'refreshActivitiesFromFiles',
+        new DaemonProcess(
+            type: DaemonProcessType::STARTUP_TASK,
+            name: 'refreshActivitiesFromFiles',
             clock: $this->clock,
             output: $this->getConsoleOutput(),
             command: sprintf('bin/console %s', RefreshActivitiesFromFilesConsoleCommand::NAME),
