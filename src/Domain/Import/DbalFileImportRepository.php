@@ -89,6 +89,24 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
             ->fetchOne();
     }
 
+    public function findIdsWithFileContents(): iterable
+    {
+        $fileImportIds = $this->connection->createQueryBuilder()
+            ->select('fileImportId')
+            ->from('FileImport')
+            ->andWhere('status = :status')
+            ->andWhere('activityId IS NOT NULL')
+            ->andWhere('fileContents IS NOT NULL')
+            ->setParameter('status', FileImportStatus::SUCCESS->value)
+            ->orderBy('importedOn', 'ASC')
+            ->executeQuery()
+            ->iterateColumn();
+
+        foreach ($fileImportIds as $fileImportId) {
+            yield FileImportId::fromString($fileImportId);
+        }
+    }
+
     public function delete(FileImport $fileImport): void
     {
         $sql = 'DELETE FROM FileImport WHERE fileImportId = :fileImportId';

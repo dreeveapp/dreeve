@@ -17,5 +17,10 @@ interface FileImportRepository extends DeletesActivityData
 
     public function hasFileContentsForActivity(ActivityId $activityId): bool;
 
+    /**
+     * @return iterable<FileImportId>
+     */
+    public function findIdsWithFileContents(): iterable;
+
     public function delete(FileImport $fileImport): void;
 }
