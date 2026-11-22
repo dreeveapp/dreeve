@@ -13,36 +13,43 @@ class StreamMathTest extends TestCase
     /**
      * @param list<?float> $altitudes
      */
-    #[DataProvider('provideElevationGain')]
-    public function testElevationGain(array $altitudes, float $expectedResult): void
+    #[DataProvider('provideElevationGainAndDescent')]
+    public function testElevationGainAndDescent(array $altitudes, float $expectedGain, float $expectedDescent): void
     {
         $this->assertEqualsWithDelta(
-            $expectedResult,
+            $expectedGain,
             StreamMath::elevationGain($altitudes),
+            0.001
+        );
+        $this->assertEqualsWithDelta(
+            $expectedDescent,
+            StreamMath::descent($altitudes),
             0.001
         );
     }
 
     /**
-     * @return iterable<string, array{list<?float>, float}>
+     * @return iterable<string, array{list<?float>, float, float}>
      */
-    public static function provideElevationGain(): iterable
+    public static function provideElevationGainAndDescent(): iterable
     {
-        yield 'empty' => [[], 0.0];
-        yield 'only nulls' => [[null, null], 0.0];
-        yield 'climb below threshold' => [[10.0, 11.0, 10.5, 11.5], 0.0];
-        yield 'descent' => [[14.0, 12.0, 10.0, 5.0, 1.0], 0.0];
-        yield 'clean climb' => [array_map(floatval(...), range(0, 99)), 98.0];
-        yield 'clean climb with nulls' => [[0.0, null, 3.0, 6.0, null, null, 9.0], 9.0];
-        yield 'flat jitter' => [array_map(static fn (int $i): float => 100.0 + ($i % 2), range(0, 59)), 0.0];
-        yield 'climb with jitter' => [array_map(static fn (int $i): float => $i + ($i % 2 ? 1.0 : -1.0), range(0, 99)), 101.0];
+        yield 'empty' => [[], 0.0, 0.0];
+        yield 'only nulls' => [[null, null], 0.0, 0.0];
+        yield 'climb below threshold' => [[10.0, 11.0, 10.5, 11.5], 0.0, 0.0];
+        yield 'descent' => [[14.0, 12.0, 10.0, 5.0, 1.0], 0.0, 13.0];
+        yield 'clean climb' => [array_map(floatval(...), range(0, 99)), 98.0, 0.0];
+        yield 'clean climb with nulls' => [[0.0, null, 3.0, 6.0, null, null, 9.0], 9.0, 0.0];
+        yield 'flat jitter' => [array_map(static fn (int $i): float => 100.0 + ($i % 2), range(0, 59)), 0.0, 0.0];
+        yield 'climb with jitter' => [array_map(static fn (int $i): float => $i + ($i % 2 ? 1.0 : -1.0), range(0, 99)), 101.0, 0.0];
         yield 'climb, descent, climb' => [
             [...array_map(floatval(...), range(0, 50)), ...array_map(floatval(...), range(49, 20, -1)), ...array_map(floatval(...), range(21, 80))],
             99.2,
+            19.2,
         ];
         yield 'rolling within a few meters' => [
             [...array_map(floatval(...), range(0, 10)), ...array_map(floatval(...), range(9, 0, -1)), ...array_map(floatval(...), range(1, 10))],
             12.0,
+            2.0,
         ];
     }
 
