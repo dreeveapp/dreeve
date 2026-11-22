@@ -49,6 +49,53 @@ class DbalKeyValueStoreTest extends ContainerTestCase
         $this->keyValueStore->find(Key::THEME);
     }
 
+    public function testAppendToMissingKey(): void
+    {
+        $this->keyValueStore->append(
+            key: Key::THEME,
+            value: 'descent',
+        );
+
+        $this->assertEquals(
+            Value::fromString('["descent"]'),
+            $this->keyValueStore->find(Key::THEME)
+        );
+    }
+
+    public function testAppendToExistingList(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::THEME,
+            value: Value::fromString('["descent"]'),
+        ));
+        $this->keyValueStore->append(
+            key: Key::THEME,
+            value: 'elevation',
+        );
+
+        $this->assertEquals(
+            Value::fromString('["descent","elevation"]'),
+            $this->keyValueStore->find(Key::THEME)
+        );
+    }
+
+    public function testAppendValueAlreadyInList(): void
+    {
+        $this->keyValueStore->save(KeyValue::fromState(
+            key: Key::THEME,
+            value: Value::fromString('["descent","elevation"]'),
+        ));
+        $this->keyValueStore->append(
+            key: Key::THEME,
+            value: 'descent',
+        );
+
+        $this->assertEquals(
+            Value::fromString('["descent","elevation"]'),
+            $this->keyValueStore->find(Key::THEME)
+        );
+    }
+
     #[\Override]
     protected function setUp(): void
     {
