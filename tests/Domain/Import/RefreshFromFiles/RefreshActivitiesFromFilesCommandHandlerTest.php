@@ -31,6 +31,7 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
             $activityRepository->add(ActivityWithRawData::fromState(
                 activity: ActivityBuilder::fromDefaults()
                     ->withActivityId(ActivityId::fromUnprefixed($activityId))
+                    ->withName(sprintf('Activity %s', $activityId))
                     ->withDescent(null)
                     ->build(),
                 rawData: ['raw' => $activityId],
@@ -64,16 +65,18 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
         $output = new SpyOutput();
         $this->getContainer()->get(RefreshActivitiesFromFilesCommandHandler::class)->handle(new RefreshActivitiesFromFiles($output));
 
-        $this->assertStringStartsWith(
-            implode("\n", [
-                'Refreshing activities from stored files...',
-                '  => <error>Could not refresh activity-broken (broken.fit): ',
-            ]),
-            (string) $output,
-        );
-        $this->assertStringEndsWith(
-            "</error>\n  => Refreshed 2 activities from stored files",
-            (string) $output,
+        $lines = explode("\n", (string) $output);
+        $this->assertSame('Refreshing activities from stored files...', $lines[0]);
+        $this->assertSame('  => [1/4] Refreshed activity "Activity fit"', $lines[1]);
+        $this->assertStringStartsWith('  => <error>[2/4] Could not refresh activity-broken (broken.fit): ', $lines[2]);
+        $this->assertStringEndsWith('</error>', $lines[2]);
+        $this->assertSame(
+            [
+                '  => [3/4] Refreshed activity "Activity gpx"',
+                '  => [4/4] Skipping activity-deleted, the activity no longer exists',
+                '  => Refreshed 2 activities from stored files',
+            ],
+            array_slice($lines, 3),
         );
 
         $fit = $activityRepository->findWithRawData(ActivityId::fromUnprefixed('fit'));
