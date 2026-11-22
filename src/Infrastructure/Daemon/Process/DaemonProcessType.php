@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Daemon;
+namespace App\Infrastructure\Daemon\Process;
 
 enum DaemonProcessType: string
 {

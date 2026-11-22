@@ -13,6 +13,8 @@ use App\Domain\Import\ImportMode;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Config\ManagedMode;
 use App\Infrastructure\Console\ConsoleOutputAware;
+use App\Infrastructure\Daemon\Process\DaemonProcess;
+use App\Infrastructure\Daemon\Process\DaemonProcessType;
 use App\Infrastructure\Mutex\LockName;
 use App\Infrastructure\Mutex\Mutex;
 use App\Infrastructure\Time\Clock\Clock;
