@@ -20,7 +20,7 @@ final readonly class RefreshActivitiesFromFilesCommandHandler implements Command
     public function __construct(
         private StoredActivityFiles $storedActivityFiles,
         private ActivityRepository $activityRepository,
-        private ActivityFileRefreshQueue $queue,
+        private ActivityFieldsToRefresh $activityFieldsToRefresh,
         private Mutex $mutex,
     ) {
     }
@@ -32,7 +32,7 @@ final readonly class RefreshActivitiesFromFilesCommandHandler implements Command
         $output = $command->getOutput();
         $output->writeln('Refreshing activities from stored files...');
 
-        $fields = $this->queue->find();
+        $fields = $this->activityFieldsToRefresh->find();
         $countRefreshed = 0;
 
         foreach ($this->storedActivityFiles->parse(static function (string $failure) use ($output): void {
@@ -60,7 +60,7 @@ final readonly class RefreshActivitiesFromFilesCommandHandler implements Command
             ++$countRefreshed;
         }
 
-        $this->queue->clear();
+        $this->activityFieldsToRefresh->clear();
 
         $output->writeln(sprintf('  => Refreshed %d activities from stored files', $countRefreshed));
     }
