@@ -90,16 +90,12 @@ class FitDrivetrainUsageExtractorTest extends TestCase
     private function eventMessagesFromFixture(string $fixture): array
     {
         $eventMessages = [];
-        foreach (Json::decodeLazy(json: (string) file_get_contents(__DIR__.'/../fixtures/'.$fixture), pointer: '/files/-/messages') as $message) {
+        foreach (array_filter(explode("\n", (string) file_get_contents(__DIR__.'/../fixtures/'.$fixture))) as $line) {
+            $message = Json::decode($line);
             if ('event' !== $message['name']) {
                 continue;
             }
-
-            $fields = [];
-            foreach ($message['fields'] as $field) {
-                $fields[$field['name']] = $field['value'];
-            }
-            $eventMessages[] = $fields;
+            $eventMessages[] = $message['fields'];
         }
 
         return $eventMessages;

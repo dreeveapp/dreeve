@@ -31,14 +31,6 @@ Please see the troubleshooting guide for steps to resolve the issue: https://doc
         }
     }
 
-    public static function decodeLazy(string $json, string $pointer): Items
-    {
-        return Items::fromString($json, [
-            'decoder' => new ExtJsonDecoder(true),
-            'pointer' => $pointer,
-        ]);
-    }
-
     public static function decodeLazyFromFile(string $filePath, string $pointer): Items
     {
         return Items::fromFile($filePath, [
