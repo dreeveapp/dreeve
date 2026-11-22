@@ -36,9 +36,8 @@ final readonly class StoredActivityFiles
 
             $activityId = $fileImport->getActivityId();
             $fileContents = $fileImport->getFileContents();
-            if (!$activityId instanceof ActivityId || null === $fileContents) {
-                continue;
-            }
+            assert($activityId instanceof ActivityId);
+            assert(null !== $fileContents);
 
             try {
                 $parsedActivityFile = $this->activityFileParsers->parse(RawActivityFile::from(
