@@ -32,6 +32,7 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
                 activity: ActivityBuilder::fromDefaults()
                     ->withActivityId(ActivityId::fromUnprefixed($activityId))
                     ->withName(sprintf('Activity %s', $activityId))
+                    ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 08:00:00'))
                     ->withDescent(null)
                     ->build(),
                 rawData: ['raw' => $activityId],
@@ -67,13 +68,12 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
 
         $lines = explode("\n", (string) $output);
         $this->assertSame('Refreshing activities from stored files...', $lines[0]);
-        $this->assertSame('  => [1/4] Refreshed activity "Activity fit"', $lines[1]);
-        $this->assertStringStartsWith('  => <error>[2/4] Could not refresh activity-broken (broken.fit): ', $lines[2]);
+        $this->assertSame('  => Refreshed activity "Activity fit - 01-06-2026"', $lines[1]);
+        $this->assertStringStartsWith('  => <error>Could not refresh activity-broken (broken.fit): ', $lines[2]);
         $this->assertStringEndsWith('</error>', $lines[2]);
         $this->assertSame(
             [
-                '  => [3/4] Refreshed activity "Activity gpx"',
-                '  => [4/4] Skipping activity-deleted, the activity no longer exists',
+                '  => Refreshed activity "Activity gpx - 01-06-2026"',
                 '  => Refreshed 2 activities from stored files',
             ],
             array_slice($lines, 3),

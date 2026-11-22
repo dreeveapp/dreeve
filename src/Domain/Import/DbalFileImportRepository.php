@@ -107,19 +107,6 @@ final readonly class DbalFileImportRepository extends DbalRepository implements 
         }
     }
 
-    public function countWithFileContents(): int
-    {
-        return (int) $this->connection->createQueryBuilder()
-            ->select('COUNT(*)')
-            ->from('FileImport')
-            ->andWhere('status = :status')
-            ->andWhere('activityId IS NOT NULL')
-            ->andWhere('fileContents IS NOT NULL')
-            ->setParameter('status', FileImportStatus::SUCCESS->value)
-            ->executeQuery()
-            ->fetchOne();
-    }
-
     public function delete(FileImport $fileImport): void
     {
         $sql = 'DELETE FROM FileImport WHERE fileImportId = :fileImportId';
