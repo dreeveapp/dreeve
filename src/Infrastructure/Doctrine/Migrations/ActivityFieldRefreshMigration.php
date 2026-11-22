@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Doctrine\Migrations;
 
-use App\Infrastructure\KeyValue\KeyValueStore;
+use App\Domain\Import\RefreshFromFiles\ActivityFieldsToRefresh;
 use Doctrine\DBAL\Connection;
 use Doctrine\Migrations\AbstractMigration;
 use Psr\Log\LoggerInterface;
 
-abstract class KeyValueStoreAwareMigration extends AbstractMigration
+abstract class ActivityFieldRefreshMigration extends AbstractMigration
 {
     public function __construct(
         Connection $connection,
         LoggerInterface $logger,
-        protected readonly KeyValueStore $keyValueStore,
+        protected readonly ActivityFieldsToRefresh $activityFieldsToRefresh,
     ) {
         parent::__construct($connection, $logger);
     }

@@ -6,7 +6,6 @@ namespace App\Infrastructure\KeyValue;
 
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
-use App\Infrastructure\Serialization\Json;
 
 final readonly class DbalKeyValueStore extends DbalRepository implements KeyValueStore
 {
@@ -43,24 +42,5 @@ final readonly class DbalKeyValueStore extends DbalRepository implements KeyValu
         }
 
         return Value::fromString($result['value']);
-    }
-
-    public function append(Key $key, string $value): void
-    {
-        try {
-            $values = Json::decode((string) $this->find($key));
-        } catch (EntityNotFound) {
-            $values = [];
-        }
-
-        if (in_array($value, $values, true)) {
-            return;
-        }
-
-        $values[] = $value;
-        $this->save(KeyValue::fromState(
-            key: $key,
-            value: Value::fromString(Json::encode($values)),
-        ));
     }
 }

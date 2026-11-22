@@ -9,7 +9,7 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
-use App\Domain\Import\RefreshFromFiles\ActivityFileRefreshQueue;
+use App\Domain\Import\RefreshFromFiles\ActivityFieldsToRefresh;
 use App\Domain\Import\RefreshFromFiles\RefreshActivitiesFromFiles;
 use App\Domain\Import\RefreshFromFiles\RefreshActivitiesFromFilesCommandHandler;
 use App\Infrastructure\KeyValue\Key;
@@ -83,7 +83,7 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
         $this->assertNull($activityRepository->find(ActivityId::fromUnprefixed('broken'))->getDescent());
         $this->assertNull($activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getDescent());
 
-        $this->assertFalse($this->getContainer()->get(ActivityFileRefreshQueue::class)->isQueued());
+        $this->assertFalse($this->getContainer()->get(ActivityFieldsToRefresh::class)->hasAny());
     }
 
     #[\Override]
