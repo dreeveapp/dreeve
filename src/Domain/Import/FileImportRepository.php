@@ -22,7 +22,5 @@ interface FileImportRepository extends DeletesActivityData
      */
     public function findIdsWithFileContents(): iterable;
 
-    public function countWithFileContents(): int;
-
     public function delete(FileImport $fileImport): void;
 }
