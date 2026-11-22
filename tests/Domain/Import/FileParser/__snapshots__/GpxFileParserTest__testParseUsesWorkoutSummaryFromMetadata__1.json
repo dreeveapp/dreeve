@@ -13,6 +13,7 @@
         "description": "Walked to the market",
         "distance": 4995,
         "elevation": 2,
+        "descent": null,
         "calories": 406,
         "kilojoules": null,
         "averagePower": null,

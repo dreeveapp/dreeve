@@ -79,6 +79,8 @@ final class Activity
         private readonly Kilometer $distance,
         #[ORM\Column(type: 'integer')]
         private readonly Meter $elevation,
+        #[ORM\Column(type: 'integer', nullable: true)]
+        private readonly ?Meter $descent,
         #[ORM\Embedded(class: Coordinate::class)]
         private readonly ?Coordinate $startingCoordinate,
         #[ORM\Column(type: 'integer', nullable: true)]
@@ -152,6 +154,7 @@ final class Activity
             description: $rawData['description'],
             distance: Kilometer::from(round($rawData['distance'] / 1000, 3)),
             elevation: Meter::from(round($rawData['total_elevation_gain'])),
+            descent: null,
             startingCoordinate: Coordinate::createFromOptionalLatAndLng(
                 Latitude::fromOptionalString($rawData['start_latlng'][0] ?? null),
                 Longitude::fromOptionalString($rawData['start_latlng'][1] ?? null),
@@ -191,6 +194,7 @@ final class Activity
         ?string $description,
         Kilometer $distance,
         Meter $elevation,
+        ?Meter $descent,
         ?Coordinate $startingCoordinate,
         ?int $calories,
         ?int $kilojoules,
@@ -225,6 +229,7 @@ final class Activity
             description: $description,
             distance: $distance,
             elevation: $elevation,
+            descent: $descent,
             startingCoordinate: $startingCoordinate,
             calories: $calories,
             kilojoules: $kilojoules,
@@ -268,6 +273,7 @@ final class Activity
         ?string $description,
         Kilometer $distance,
         Meter $elevation,
+        ?Meter $descent,
         ?Coordinate $startingCoordinate,
         ?int $calories,
         ?int $kilojoules,
@@ -303,6 +309,7 @@ final class Activity
             description: $description,
             distance: $distance,
             elevation: $elevation,
+            descent: $descent,
             startingCoordinate: $startingCoordinate,
             calories: $calories,
             kilojoules: $kilojoules,
@@ -522,6 +529,18 @@ final class Activity
     {
         return $this->recordUpdate(clone ($this, [
             'elevation' => $elevation,
+        ]));
+    }
+
+    public function getDescent(): ?Meter
+    {
+        return $this->descent;
+    }
+
+    public function withDescent(?Meter $descent): self
+    {
+        return $this->recordUpdate(clone ($this, [
+            'descent' => $descent,
         ]));
     }
 
@@ -895,6 +914,7 @@ final class Activity
             'movingTimeInSeconds' => $this->movingTimeInSeconds,
             'elapsedTimeInSeconds' => $this->elapsedTimeInSeconds,
             'elevation' => $this->elevation->toFloat(),
+            'descent' => $this->descent?->toFloat(),
             'calories' => $this->calories,
             'kilojoules' => $this->kilojoules,
             'polyline' => $this->polyline,

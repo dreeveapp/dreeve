@@ -104,6 +104,7 @@ final readonly class TcxFileParser implements ActivityFileParser
             description: null,
             distance: Kilometer::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getDistance()->toFloat()) / 1000, 3)),
             elevation: Meter::from(round($activityLaps->sum(static fn (ActivityLap $lap): float => $lap->getElevationDifference()->toFloat()))),
+            descent: null,
             startingCoordinate: StreamMath::firstCoordinate($streams),
             calories: $this->sumCalories($activityXml),
             kilojoules: null,
