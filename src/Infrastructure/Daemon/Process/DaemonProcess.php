@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Daemon;
+namespace App\Infrastructure\Daemon\Process;
 
 use App\Infrastructure\Time\Clock\Clock;
 use React\ChildProcess\Process;
