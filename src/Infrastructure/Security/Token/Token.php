@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Token;
 
-abstract readonly class Token implements \Stringable
+abstract readonly class Token implements \Stringable, \Countable
 {
     private const int LENGTH_IN_BYTES = 32;
 
+    /**
+     * @param list<non-empty-string> $tokens
+     */
     final private function __construct(
         #[\SensitiveParameter]
-        private string $token,
+        private array $tokens,
     ) {
     }
 
@@ -25,32 +28,56 @@ abstract readonly class Token implements \Stringable
 
     public static function generate(): static
     {
-        return new static(static::getPrefix().bin2hex(random_bytes(self::LENGTH_IN_BYTES)));
+        return new static([static::getPrefix().bin2hex(random_bytes(self::LENGTH_IN_BYTES))]);
     }
 
-    public static function fromString(#[\SensitiveParameter] string $token): static
+    public static function fromString(#[\SensitiveParameter] string $tokens): static
     {
-        return new static(trim($token));
+        return new static(array_values(array_filter(
+            array_map(trim(...), explode(',', $tokens)),
+            static fn (string $token): bool => '' !== $token,
+        )));
     }
 
     public function isEmpty(): bool
     {
-        return '' === $this->token;
+        return [] === $this->tokens;
+    }
+
+    public function count(): int
+    {
+        return count($this->tokens);
     }
 
     public function hasValidFormat(): bool
     {
-        return 1 === preg_match('/^'.static::getPrefix().'[a-f0-9]{'.(self::LENGTH_IN_BYTES * 2).'}$/', $this->token);
+        if ($this->isEmpty()) {
+            return false;
+        }
+
+        foreach ($this->tokens as $token) {
+            if (1 !== preg_match('/^'.static::getPrefix().'[a-f0-9]{'.(self::LENGTH_IN_BYTES * 2).'}$/', $token)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function matches(#[\SensitiveParameter] string $token): bool
     {
-        return hash_equals($this->token, $token);
+        foreach ($this->tokens as $configuredToken) {
+            if (hash_equals($configuredToken, $token)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function __toString(): string
     {
-        return $this->token;
+        return implode(',', $this->tokens);
     }
 
     /**

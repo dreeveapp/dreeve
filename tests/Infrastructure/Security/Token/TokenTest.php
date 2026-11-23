@@ -37,9 +37,15 @@ class TokenTest extends TestCase
         $this->assertStringNotContainsString((string) $token, (string) ob_get_clean());
     }
 
-    public function testFromStringTrims(): void
+    public function testFromStringSplitsAndTrims(): void
     {
         $this->assertSame('drv_abc', (string) ApiToken::fromString("  drv_abc\n"));
+        $this->assertSame('drv_abc,drv_def', (string) ApiToken::fromString(" drv_abc , drv_def\n"));
+        $this->assertSame('drv_abc,drv_def', (string) ApiToken::fromString('drv_abc,, ,drv_def,'));
+
+        $this->assertCount(0, ApiToken::fromString(' , ,'));
+        $this->assertCount(1, ApiToken::generate());
+        $this->assertCount(2, ApiToken::fromString('drv_abc,, ,drv_def,'));
     }
 
     #[DataProvider('provideValuesThatMustNotThrow')]
@@ -64,12 +70,16 @@ class TokenTest extends TestCase
         yield 'one char long' => ['drv_'.str_repeat('a', 65)];
         yield 'uppercase hex' => ['drv_'.str_repeat('A', 64)];
         yield 'non hex' => ['drv_'.str_repeat('z', 64)];
+        yield 'only commas' => [' , ,'];
+        yield 'one malformed entry in a list' => ['drv_'.str_repeat('a', 64).',hunter2'];
+        yield 'one key with the wrong prefix in a list' => ['drv_'.str_repeat('a', 64).',drvm_'.str_repeat('a', 64)];
     }
 
     public function testIsEmpty(): void
     {
         $this->assertTrue(ApiToken::fromString('')->isEmpty());
         $this->assertTrue(ApiToken::fromString('   ')->isEmpty());
+        $this->assertTrue(ApiToken::fromString(' , ,')->isEmpty());
         $this->assertFalse(ApiToken::generate()->isEmpty());
     }
 
@@ -80,6 +90,7 @@ class TokenTest extends TestCase
         $this->assertTrue(McpToken::fromString((string) McpToken::generate())->hasValidFormat());
         $this->assertFalse(ApiToken::fromString((string) McpToken::generate())->hasValidFormat());
         $this->assertFalse(McpToken::fromString((string) ApiToken::generate())->hasValidFormat());
+        $this->assertTrue(ApiToken::fromString(ApiToken::generate().', '.ApiToken::generate().',')->hasValidFormat());
     }
 
     public function testMatches(): void
@@ -89,12 +100,20 @@ class TokenTest extends TestCase
         $this->assertTrue($token->matches((string) $token));
         $this->assertFalse($token->matches(substr((string) $token, 4)));
         $this->assertFalse($token->matches((string) ApiToken::generate()));
+
+        $first = ApiToken::generate();
+        $second = ApiToken::generate();
+        $tokens = ApiToken::fromString($first.','.$second);
+
+        $this->assertTrue($tokens->matches((string) $first));
+        $this->assertTrue($tokens->matches((string) $second));
+        $this->assertFalse($tokens->matches($first.','.$second));
+        $this->assertFalse($tokens->matches(''));
     }
 
     public function testAnEmptyTokenMatchesNothing(): void
     {
-        // hash_equals('', '') is true, so this is the case the handler has to guard first.
-        $this->assertTrue(ApiToken::fromString('')->matches(''));
+        $this->assertFalse(ApiToken::fromString('')->matches(''));
         $this->assertTrue(ApiToken::fromString('')->isEmpty());
     }
 }

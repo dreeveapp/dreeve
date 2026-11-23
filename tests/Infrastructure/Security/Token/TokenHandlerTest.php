@@ -29,6 +29,20 @@ class TokenHandlerTest extends TestCase
 
         $this->assertSame('dreeve-mcp', $userBadge->getUserIdentifier());
         $this->assertSame(['ROLE_MCP'], $userBadge->getUser()->getRoles());
+
+        $apiKeys = [ApiToken::generate(), ApiToken::generate()];
+        $mcpKeys = [McpToken::generate(), McpToken::generate()];
+        $handler = new TokenHandler(
+            ApiToken::fromString(implode(',', $apiKeys)),
+            McpToken::fromString(implode(',', $mcpKeys)),
+        );
+
+        foreach ($apiKeys as $apiKey) {
+            $this->assertSame('dreeve-api', $handler->getUserBadgeFrom((string) $apiKey)->getUserIdentifier());
+        }
+        foreach ($mcpKeys as $mcpKey) {
+            $this->assertSame('dreeve-mcp', $handler->getUserBadgeFrom((string) $mcpKey)->getUserIdentifier());
+        }
     }
 
     public function testItSuppliesItsOwnUserLoader(): void
@@ -96,5 +110,8 @@ class TokenHandlerTest extends TestCase
         yield 'right length, no prefix' => [str_repeat('a', 64), str_repeat('a', 64)];
         yield 'uppercase hex' => ['drv_'.str_repeat('A', 64), 'drv_'.str_repeat('A', 64)];
         yield 'uppercase hex, MCP prefix' => ['drvm_'.str_repeat('A', 64), 'drvm_'.str_repeat('A', 64)];
+        yield 'one malformed entry in a list, valid key sent' => ['drv_'.str_repeat('a', 64).',hunter2', 'drv_'.str_repeat('a', 64)];
+        yield 'one malformed entry in a list, malformed entry sent' => ['drv_'.str_repeat('a', 64).',hunter2', 'hunter2'];
+        yield 'only commas' => [' , ,', ''];
     }
 }
