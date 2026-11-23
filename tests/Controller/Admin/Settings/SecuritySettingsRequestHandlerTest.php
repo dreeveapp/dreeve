@@ -12,15 +12,15 @@ class SecuritySettingsRequestHandlerTest extends AdminWebTestCase
 {
     public function testItRendersTheEnvironmentDrivenAccessWhenConfigured(): void
     {
-        $this->withApiKey((string) ApiToken::generate());
+        $this->withApiKey(ApiToken::generate().', '.ApiToken::generate());
         $this->withMcpKey((string) McpToken::generate());
         $this->withOidc('https://idp.example.com/application/o/dreeve/', 'dreeve', 'oidc-client-secret', 'athlete-subject, athlete@example.com', '/certs/ca.pem');
         $this->client->loginUser($this->adminUser());
 
         $crawler = $this->client->request('GET', '/admin/settings/security');
 
-        $this->assertSame('Configured', $crawler->filter('input#apiKeyState[disabled]')->attr('value'));
-        $this->assertSame('Configured', $crawler->filter('input#mcpKeyState[disabled]')->attr('value'));
+        $this->assertSame('2 key(s) configured', $crawler->filter('input#apiKeyState[disabled]')->attr('value'));
+        $this->assertSame('1 key(s) configured', $crawler->filter('input#mcpKeyState[disabled]')->attr('value'));
         $this->assertStringNotContainsString('drv', $crawler->filter('main')->text());
 
         $this->assertStringContainsString('Single sign-on (enabled)', $crawler->filter('main')->text());

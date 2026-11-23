@@ -377,7 +377,7 @@ Operator: Operátor
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Alkatrészek, amelyek karbantartását követed, pl.: láncok, kazetták, fékbetétek...'
 'Passes near': 'Elhalad a közelében'
 Password: Jelszó
-'Paste the value above, replacing any key that is already there.': 'Illeszd be a fenti értéket, felülírva a már ott lévő kulcsot.'
+'Paste the value above, separated by a comma from any keys you want to keep.': 'Paste the value above, separated by a comma from any keys you want to keep.'
 'Performed on': 'Elvégezve ekkor'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'A kiválasztott sporttípusok fotói ki vannak zárva a fotógalériából.'
@@ -466,6 +466,7 @@ Security: Biztonság
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Értesítést küld, ha esedékes a felszerelés karbantartása. Beállított értesítési szolgáltatást igényel.'
 Sensors: Érzékelők
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Az érzékelők csak a FIT-fájlokból importált tevékenységeknél kerülnek rögzítésre. A Stravából, GPX- vagy TCX-fájlokból származó tevékenységek soha nem illeszkednek erre a feltételre.'
+'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
 'Set description': 'Leírás beállítása'
 'Set its status to Retired instead to hide it from your active gear.': 'Állítsd inkább Nyugdíjazott státuszra, hogy elrejtsd az aktív felszerelések közül.'
@@ -688,6 +689,7 @@ then: akkor
 '{count} files ready to upload': '{count} fájl készen áll a feltöltésre'
 '{count} files uploaded': '{count} fájl feltöltve'
 '{count} images selected': '{count} kép kiválasztva'
+'{count} key(s) configured': '{count} key(s) configured'
 '{count} rules apply': '{count} szabály érvényes'
 '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.'
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
