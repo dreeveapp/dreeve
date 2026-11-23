@@ -11,6 +11,7 @@ use App\Domain\Activity\DbalActivityRepository;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\SportType\SportTypes;
+use App\Domain\Activity\WorkoutRpe;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\Sensor\ConnectedSensor;
 use App\Domain\Gear\Sensor\ConnectedSensors;
@@ -196,7 +197,7 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             ->withDescent(Meter::from(8888))
             ->withCalories(1234)
             ->withKilojoules(4321)
-            ->withWorkoutRpe(70)
+            ->withWorkoutRpe(WorkoutRpe::fromFitValue(70))
             ->withWorkoutFeel(75)
             ->withAverageHeartRate(142)
             ->withMaxHeartRate(175)
@@ -230,13 +231,13 @@ class DbalActivityRepositoryTest extends ContainerTestCase
             Meter::from(8888),
             $persistedActivity->getDescent()
         );
-        $this->assertSame(
-            70,
+        $this->assertEquals(
+            WorkoutRpe::fromFitValue(70),
             $persistedActivity->getWorkoutRpe()
         );
         $this->assertSame(
             75,
-            $persistedActivity->getWorkoutFeel()
+            $persistedActivity->getRawWorkoutFeel()
         );
         $this->assertSame(
             4321,

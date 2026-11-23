@@ -162,6 +162,7 @@ Event: Event
 Fastest: Schnellste
 Favourite: Favorit
 Feb: Feb
+Feel: Feel
 'Filling up the bottles...': 'Trinkflaschen werden aufgefüllt...'
 'Filter on KOM segments': 'Filter für KOM-Segmente'
 'Filter on country': 'Filter nach Land'
@@ -321,6 +322,7 @@ Night: Nacht
 'No purchase price set': 'Kein Kaufpreis festgelegt'
 None: Keine
 'Nordic Ski': 'Nordischer Skilanglauf'
+Normal: Normal
 'Normalized power': 'Normalisierte Leistung'
 'Not fitted': 'nicht montiert'
 'Not supported': 'Nicht unterstützt'
@@ -352,6 +354,7 @@ Padel: Padel
 'Peak fresh': Topfit
 'Peak power outputs': Spitzenleistungen
 'Per {unit}': 'Pro {unit}'
+'Perceived exertion': 'Perceived exertion'
 'Personal bests': 'Persönliche Bestleistungen'
 Photo: Foto
 Photos: Fotos
@@ -448,6 +451,7 @@ Stages: Etappen
 Status: Status
 'Streak started on {date}': 'Die Serie begann am {date}'
 Streaks: Serien
+Strong: Strong
 Sun: So
 Sun.: So.
 Surfing: Surfen
@@ -599,6 +603,8 @@ Usage: Verwendung
 'Velo Mobile': Velomobil
 'Velo Mobiles': Velomobile
 'Very high': 'Sehr hoch'
+'Very strong': 'Very strong'
+'Very weak': 'Very weak'
 'View all': 'Alle anzeigen'
 'View details': 'Details anzeigen'
 'View this month': 'Diesen Monat anzeigen'
@@ -619,6 +625,7 @@ Walks: Spaziergänge
 'Waxing the chain...': 'Kette wird gewachst...'
 'We detected following issues': 'Wir haben die folgenden Probleme festgestellt'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "Wir waren fleißig! Schau dir die Neuerungen an und informiere dich vor dem Update über mögliche inkompatible Änderungen."
+Weak: Weak
 Weather: Weather
 Wed: Mi
 Wed.: Mi.

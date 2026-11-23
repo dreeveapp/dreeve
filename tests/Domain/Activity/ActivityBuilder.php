@@ -12,6 +12,7 @@ use App\Domain\Activity\ActivityName;
 use App\Domain\Activity\ImportSource;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\WorkoutRpe;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
@@ -60,7 +61,7 @@ final class ActivityBuilder
     private bool $isCommute = false;
     private bool $isGroupActivity = false;
     private ?WorkoutType $workoutType = null;
-    private ?int $workoutRpe = null;
+    private ?WorkoutRpe $workoutRpe = null;
     private ?int $workoutFeel = null;
     private ActivityExclusions $excludedFrom;
 
@@ -404,7 +405,7 @@ final class ActivityBuilder
         return $this;
     }
 
-    public function withWorkoutRpe(?int $workoutRpe): self
+    public function withWorkoutRpe(?WorkoutRpe $workoutRpe): self
     {
         $this->workoutRpe = $workoutRpe;
 

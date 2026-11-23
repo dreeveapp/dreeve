@@ -20,6 +20,7 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Activity\WorkoutRpe;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Media\MediaItemId;
@@ -124,6 +125,8 @@ class ActivityRequestHandlerTest extends AdminWebTestCase
                 ->withSportType($sportType)
                 ->withIsCommute(true)
                 ->withIsGroupActivity(true)
+                ->withWorkoutRpe(WorkoutRpe::fromFitValue(68))
+                ->withWorkoutFeel(80)
                 ->withPolyline((string) EncodedPolyline::fromCoordinates([[51.51, -0.08], [51.52, -0.07]]))
                 ->withMediaItemIds(
                     MediaItemId::fromUnprefixed('aea2d7b4-53a7-11ee-a5e1-9a34a3268d74'),

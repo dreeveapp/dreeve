@@ -12,6 +12,7 @@ use App\Domain\Activity\Math;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Activity\WorkoutRpe;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\Sensor\ConnectedSensor;
 use App\Domain\Gear\Sensor\ConnectedSensors;
@@ -235,7 +236,7 @@ final readonly class FitFileParser implements ActivityFileParser
             isCommute: false,
             isGroupActivity: false,
             workoutType: null,
-            workoutRpe: is_numeric($session['workout_rpe'] ?? null) ? (int) $session['workout_rpe'] : null,
+            workoutRpe: is_numeric($session['workout_rpe'] ?? null) ? WorkoutRpe::fromFitValue((int) $session['workout_rpe']) : null,
             workoutFeel: is_numeric($session['workout_feel'] ?? null) ? (int) $session['workout_feel'] : null,
         );
 

@@ -162,6 +162,7 @@ Event: Event
 Fastest: Snelste
 Favourite: Favoriet
 Feb: Feb
+Feel: Feel
 'Filling up the bottles...': 'De bidons aan het vullen...'
 'Filter on KOM segments': 'Filteren op KOM-segmenten'
 'Filter on country': 'Filteren op land'
@@ -321,6 +322,7 @@ Night: Nacht
 'No purchase price set': 'No purchase price set'
 None: Geen
 'Nordic Ski': Langlaufen
+Normal: Normal
 'Normalized power': 'Genormaliseerd vermogen'
 'Not fitted': 'Not fitted'
 'Not supported': 'Niet ondersteund'
@@ -352,6 +354,7 @@ Padel: Padel
 'Peak fresh': 'Maximaal fris'
 'Peak power outputs': Piekvermogens
 'Per {unit}': 'Per {unit}'
+'Perceived exertion': 'Perceived exertion'
 'Personal bests': 'Persoonlijke records'
 Photo: Foto
 Photos: "Foto's"
@@ -448,6 +451,7 @@ Stages: Stages
 Status: Status
 'Streak started on {date}': 'Reeks gestart op {date}'
 Streaks: Reeksen
+Strong: Strong
 Sun: Zon
 Sun.: Zo.
 Surfing: Surfen
@@ -599,6 +603,8 @@ Usage: Usage
 'Velo Mobile': Velomobiel
 'Velo Mobiles': Velomobielen
 'Very high': 'Heel hoog'
+'Very strong': 'Very strong'
+'Very weak': 'Very weak'
 'View all': 'Bekijk alles'
 'View details': 'Details bekijken'
 'View this month': 'Deze maand bekijken'
@@ -619,6 +625,7 @@ Walks: Wandelingen
 'Waxing the chain...': 'De ketting aan het waxen...'
 'We detected following issues': 'We hebben de volgende problemen gedetecteerd'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+Weak: Weak
 Weather: Weather
 Wed: Woe
 Wed.: Wo.

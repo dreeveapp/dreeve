@@ -96,7 +96,7 @@ final readonly class ActivityHydrator
             isCommute: (bool) $result['isCommute'],
             isGroupActivity: (bool) $result['isGroupActivity'],
             workoutType: WorkoutType::tryFrom($result['workoutType'] ?? ''),
-            workoutRpe: null !== ($result['workoutRpe'] ?? null) ? (int) $result['workoutRpe'] : null,
+            workoutRpe: null !== ($result['workoutRpe'] ?? null) ? WorkoutRpe::fromFitValue((int) $result['workoutRpe']) : null,
             workoutFeel: null !== ($result['workoutFeel'] ?? null) ? (int) $result['workoutFeel'] : null,
             excludedFrom: ActivityExclusions::fromValues(Json::decode($result['excludedFrom'] ?? '[]')),
         );

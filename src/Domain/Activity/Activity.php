@@ -126,7 +126,7 @@ final class Activity
         #[ORM\Column(type: 'string', nullable: true)]
         private readonly ?WorkoutType $workoutType,
         #[ORM\Column(type: 'integer', nullable: true)]
-        private readonly ?int $workoutRpe,
+        private readonly ?WorkoutRpe $workoutRpe,
         #[ORM\Column(type: 'integer', nullable: true)]
         private readonly ?int $workoutFeel,
         #[ORM\Column(type: 'json', nullable: true)]
@@ -223,7 +223,7 @@ final class Activity
         bool $isCommute,
         bool $isGroupActivity,
         ?WorkoutType $workoutType,
-        ?int $workoutRpe,
+        ?WorkoutRpe $workoutRpe,
         ?int $workoutFeel,
     ): self {
         $activity = self::fromState(
@@ -306,7 +306,7 @@ final class Activity
         bool $isCommute,
         bool $isGroupActivity,
         ?WorkoutType $workoutType,
-        ?int $workoutRpe,
+        ?WorkoutRpe $workoutRpe,
         ?int $workoutFeel,
         ActivityExclusions $excludedFrom,
     ): self {
@@ -783,19 +783,24 @@ final class Activity
         ]));
     }
 
-    public function getWorkoutRpe(): ?int
+    public function getWorkoutRpe(): ?WorkoutRpe
     {
         return $this->workoutRpe;
     }
 
-    public function withWorkoutRpe(?int $workoutRpe): self
+    public function withWorkoutRpe(?WorkoutRpe $workoutRpe): self
     {
         return $this->recordUpdate(clone ($this, [
             'workoutRpe' => $workoutRpe,
         ]));
     }
 
-    public function getWorkoutFeel(): ?int
+    public function getWorkoutFeel(): ?WorkoutFeel
+    {
+        return null !== $this->workoutFeel ? WorkoutFeel::fromRaw($this->workoutFeel) : null;
+    }
+
+    public function getRawWorkoutFeel(): ?int
     {
         return $this->workoutFeel;
     }
@@ -964,7 +969,7 @@ final class Activity
             'isCommute' => $this->isCommute,
             'isGroupActivity' => $this->isGroupActivity,
             'workoutType' => $this->workoutType?->value,
-            'workoutRpe' => $this->workoutRpe,
+            'workoutRpe' => $this->workoutRpe?->toInt(),
             'workoutFeel' => $this->workoutFeel,
             'excludedFrom' => $this->excludedFrom->toValues(),
         ];

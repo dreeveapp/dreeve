@@ -186,8 +186,8 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'isCommute' => (int) $activity->isCommute(),
             'isGroupActivity' => (int) $activity->isGroupActivity(),
             'workoutType' => $activity->getWorkoutType()?->value,
-            'workoutRpe' => $activity->getWorkoutRpe(),
-            'workoutFeel' => $activity->getWorkoutFeel(),
+            'workoutRpe' => $activity->getWorkoutRpe()?->toInt(),
+            'workoutFeel' => $activity->getRawWorkoutFeel(),
             'excludedFrom' => $activity->getExcludedFrom()->isEmpty() ? null : Json::encode($activity->getExcludedFrom()),
         ]);
 
@@ -262,8 +262,8 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             'isCommute' => (int) $activity->isCommute(),
             'isGroupActivity' => (int) $activity->isGroupActivity(),
             'workoutType' => $activity->getWorkoutType()?->value,
-            'workoutRpe' => $activity->getWorkoutRpe(),
-            'workoutFeel' => $activity->getWorkoutFeel(),
+            'workoutRpe' => $activity->getWorkoutRpe()?->toInt(),
+            'workoutFeel' => $activity->getRawWorkoutFeel(),
             'excludedFrom' => $activity->getExcludedFrom()->isEmpty() ? null : Json::encode($activity->getExcludedFrom()),
             'data' => Json::encode($this->cleanData($activityWithRawData->getRawData())),
         ]);

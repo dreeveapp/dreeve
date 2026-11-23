@@ -162,6 +162,7 @@ Event: Event
 Fastest: Fastest
 Favourite: Favorito
 Feb: Fev
+Feel: Feel
 'Filling up the bottles...': 'Filling up the bottles...'
 'Filter on KOM segments': 'Filtrar por segmentos KOM'
 'Filter on country': 'Filtrar por país'
@@ -321,6 +322,7 @@ Night: Noite
 'No purchase price set': 'No purchase price set'
 None: None
 'Nordic Ski': 'Esqui Nórdico'
+Normal: Normal
 'Normalized power': 'Normalized power'
 'Not fitted': 'Not fitted'
 'Not supported': 'Not supported'
@@ -352,6 +354,7 @@ Padel: Padel
 'Peak fresh': 'Peak fresh'
 'Peak power outputs': 'Picos de potência'
 'Per {unit}': 'Per {unit}'
+'Perceived exertion': 'Perceived exertion'
 'Personal bests': 'Personal bests'
 Photo: Foto
 Photos: Fotos
@@ -448,6 +451,7 @@ Stages: Stages
 Status: Status
 'Streak started on {date}': 'Streak started on {date}'
 Streaks: Sequências
+Strong: Strong
 Sun: Dom
 Sun.: Sun.
 Surfing: Surf
@@ -599,6 +603,8 @@ Usage: Usage
 'Velo Mobile': 'Velo Mobile'
 'Velo Mobiles': 'Velo Móveis'
 'Very high': 'Muito alta'
+'Very strong': 'Very strong'
+'Very weak': 'Very weak'
 'View all': 'Ver tudo'
 'View details': 'Ver detalhes'
 'View this month': 'View this month'
@@ -619,6 +625,7 @@ Walks: Passeios
 'Waxing the chain...': 'Waxing the chain...'
 'We detected following issues': 'Foram detectadas as seguintes situações'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+Weak: Weak
 Weather: Weather
 Wed: Qua
 Wed.: Wed.
