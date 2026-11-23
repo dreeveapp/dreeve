@@ -18,11 +18,15 @@ final class Version20261121193000 extends ActivityFieldRefreshMigration
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE Activity ADD COLUMN descent INTEGER DEFAULT NULL');
+        $this->addSql('ALTER TABLE Activity ADD COLUMN workoutRpe INTEGER DEFAULT NULL');
+        $this->addSql('ALTER TABLE Activity ADD COLUMN workoutFeel INTEGER DEFAULT NULL');
     }
 
     public function postUp(Schema $schema): void
     {
         $this->activityFieldsToRefresh->add(RefreshableActivityField::DESCENT);
+        $this->activityFieldsToRefresh->add(RefreshableActivityField::WORKOUT_RPE);
+        $this->activityFieldsToRefresh->add(RefreshableActivityField::WORKOUT_FEEL);
     }
 
     public function down(Schema $schema): void
