@@ -377,7 +377,7 @@ Operator: Operador
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Peças para as quais você acompanha a manutenção, ex: correntes, cassetes, pastilhas de freio...'
 'Passes near': 'Passa perto de'
 Password: Senha
-'Paste the value above, replacing any key that is already there.': 'Cole o valor acima, substituindo qualquer chave existente.'
+'Paste the value above, separated by a comma from any keys you want to keep.': 'Paste the value above, separated by a comma from any keys you want to keep.'
 'Performed on': 'Realizado em'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Fotos anexadas às suas atividades do Strava não serão baixadas nem armazenadas em disco. Fotos baixadas anteriormente serão mantidas.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos dos tipos de esporte selecionados são excluídas da galeria de fotos.'
@@ -466,6 +466,7 @@ Security: Segurança
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Envia uma notificação quando a manutenção do equipamento está vencida. Requer um serviço de notificação configurado.'
 Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Os sensores só são registrados para atividades importadas de arquivos FIT. Atividades do Strava, GPX ou TCX nunca correspondem a esta condição.'
+'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Número de série, tamanho, onde você comprou, ...'
 'Set description': 'Definir descrição'
 'Set its status to Retired instead to hide it from your active gear.': 'Altere o status para Aposentado para ocultá-lo dos seus equipamentos ativos.'
@@ -688,6 +689,7 @@ then: então
 '{count} files ready to upload': '{count} arquivos prontos para enviar'
 '{count} files uploaded': '{count} arquivos enviados'
 '{count} images selected': '{count} imagens selecionadas'
+'{count} key(s) configured': '{count} key(s) configured'
 '{count} rules apply': '{count} regras se aplicam'
 '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.'
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'

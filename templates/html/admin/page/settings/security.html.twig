@@ -124,9 +124,10 @@
             <div>
                 <label for="apiKeyState" class="mt-0!">{{ "API key"|trans({}, 'admin') }}</label>
                 <input type="text" id="apiKeyState" disabled
-                       value="{{ apiKey.isEmpty() ? "Not configured, API access is disabled"|trans({}, 'admin') : "Configured"|trans({}, 'admin') }}">
+                       value="{{ apiKey.isEmpty() ? "Not configured, API access is disabled"|trans({}, 'admin') : "{count} key(s) configured"|trans({'{count}': apiKey|length}, 'admin') }}">
                 <p class="description">
                     {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'DREEVE_API_KEY'}, 'admin') }}
+                    {{ "Separate several keys with a comma, so each integration can have its own key."|trans({}, 'admin') }}
                 </p>
             </div>
             <div class="flex">
@@ -154,9 +155,10 @@
             <div>
                 <label for="mcpKeyState" class="mt-0!">{{ "MCP key"|trans({}, 'admin') }}</label>
                 <input type="text" id="mcpKeyState" disabled
-                       value="{{ mcpKey.isEmpty() ? "Not configured, MCP server is disabled"|trans({}, 'admin') : "Configured"|trans({}, 'admin') }}">
+                       value="{{ mcpKey.isEmpty() ? "Not configured, MCP server is disabled"|trans({}, 'admin') : "{count} key(s) configured"|trans({'{count}': mcpKey|length}, 'admin') }}">
                 <p class="description">
                     {{ "Set through the {envVar} environment variable and cannot be changed here."|trans({'{envVar}': 'DREEVE_MCP_KEY'}, 'admin') }}
+                    {{ "Separate several keys with a comma, so each integration can have its own key."|trans({}, 'admin') }}
                 </p>
             </div>
             <div class="flex">

@@ -377,7 +377,7 @@ Operator: Operator
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Teile, deren Wartung du verfolgst, z. B. Ketten, Kassetten, Bremsbeläge ...'
 'Passes near': 'Führt vorbei an'
 Password: Passwort
-'Paste the value above, replacing any key that is already there.': 'Füge den oben stehenden Wert ein und ersetze alle bereits vorhandenen Schlüssel.'
+'Paste the value above, separated by a comma from any keys you want to keep.': 'Paste the value above, separated by a comma from any keys you want to keep.'
 'Performed on': 'Durchgeführt am'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Fotos von Strava-Aktivitäten werden nicht heruntergeladen oder auf der Festplatte gespeichert. Bereits heruntergeladene Fotos bleiben erhalten.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos der ausgewählten Sportarten werden von der Fotogalerie ausgeschlossen.'
@@ -466,6 +466,7 @@ Security: Sicherheit
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Sendet eine Benachrichtigung, wenn eine Ausrüstungswartung fällig ist. Erfordert einen konfigurierten Benachrichtigungsdienst.'
 Sensors: Sensors
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensoren gibt es nur für Aktivitäten die aus FIT-Dateien importiert wurden. Aktivitäten von Strava, GPX oder TCX erfüllen diese Bedingung nie.'
+'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Seriennummer, Größe, Bezugsquelle, ...'
 'Set description': 'Beschreibung festlegen'
 'Set its status to Retired instead to hide it from your active gear.': 'Setze den Status stattdessen auf Ausgemustert, um sie aus deiner aktiven Ausrüstung auszublenden.'
@@ -688,6 +689,7 @@ then: dann
 '{count} files ready to upload': '{count} Dateien zum Hochladen bereit'
 '{count} files uploaded': '{count} Dateien hochgeladen'
 '{count} images selected': '{count} Bilder ausgewählt'
+'{count} key(s) configured': '{count} key(s) configured'
 '{count} rules apply': '{count} Regeln treffen zu'
 '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} ist gesetzt, aber der Schlüssel wurde nicht von dieser App generiert. Daher bleibt der API-Zugriff deaktiviert. Generiere einen neuen Schlüssel und ersetze ihn.'
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} ist gesetzt, aber der Schlüssel wurde nicht von dieser App generiert. Daher bleibt der MCP-Server deaktiviert. Generiere einen neuen Schlüssel und ersetze ihn.'

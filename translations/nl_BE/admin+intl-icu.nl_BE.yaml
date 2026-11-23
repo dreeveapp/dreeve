@@ -377,7 +377,7 @@ Operator: Operator
 'Parts you track maintenance for, eg: chains, cassettes, brake pads...': 'Onderdelen waarvan je het onderhoud bijhoudt, bv.: kettingen, cassettes, remblokken...'
 'Passes near': 'Passeert nabij'
 Password: Wachtwoord
-'Paste the value above, replacing any key that is already there.': 'Plak de waarde hierboven en vervang een eventueel bestaande sleutel.'
+'Paste the value above, separated by a comma from any keys you want to keep.': 'Paste the value above, separated by a comma from any keys you want to keep.'
 'Performed on': 'Uitgevoerd op'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': "Foto's bij je Strava-activiteiten worden niet gedownload of op schijf opgeslagen. Eerder gedownloade foto's blijven bewaard."
 'Photos of the selected sport types are excluded from the photo gallery.': "Foto's van de geselecteerde sporttypes worden uitgesloten van de fotogalerij."
@@ -466,6 +466,7 @@ Security: Beveiliging
 'Sends a notification when gear maintenance is due. Requires a configured notification service.': 'Stuurt een melding wanneer onderhoud van uitrusting nodig is. Vereist een geconfigureerde meldingsdienst.'
 Sensors: Sensoren
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensoren worden enkel geregistreerd voor activiteiten die geïmporteerd zijn uit FIT-bestanden. Activiteiten van Strava, GPX of TCX voldoen nooit aan deze voorwaarde.'
+'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
 'Set description': 'Beschrijving instellen'
 'Set its status to Retired instead to hide it from your active gear.': 'Zet de status op Buiten gebruik om het te verbergen tussen je actieve uitrusting.'
@@ -688,6 +689,7 @@ then: dan
 '{count} files ready to upload': '{count} bestanden klaar om te uploaden'
 '{count} files uploaded': '{count} bestanden geüpload'
 '{count} images selected': '{count} afbeeldingen geselecteerd'
+'{count} key(s) configured': '{count} key(s) configured'
 '{count} rules apply': '{count} regels van toepassing'
 '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so API access stays disabled. Generate a new one and replace it.'
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
