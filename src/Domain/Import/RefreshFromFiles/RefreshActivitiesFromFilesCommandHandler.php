@@ -51,7 +51,7 @@ final readonly class RefreshActivitiesFromFilesCommandHandler implements Command
                 $activity = match ($field) {
                     RefreshableActivityField::DESCENT => $activity->withDescent($parsedActivityFile->getActivity()->getDescent()),
                     RefreshableActivityField::WORKOUT_RPE => $activity->withWorkoutRpe($parsedActivityFile->getActivity()->getWorkoutRpe()),
-                    RefreshableActivityField::WORKOUT_FEEL => $activity->withWorkoutFeel($parsedActivityFile->getActivity()->getWorkoutFeel()),
+                    RefreshableActivityField::WORKOUT_FEEL => $activity->withWorkoutFeel($parsedActivityFile->getActivity()->getRawWorkoutFeel()),
                 };
             }
 

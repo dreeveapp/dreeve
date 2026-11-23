@@ -162,6 +162,7 @@ Event: Event
 Fastest: Leggyorsabb
 Favourite: Kedvenc
 Feb: Febr
+Feel: Feel
 'Filling up the bottles...': 'Kulacsok feltöltése...'
 'Filter on KOM segments': 'Szűrés KOM szegmensekre'
 'Filter on country': 'Szűrés országra'
@@ -321,6 +322,7 @@ Night: Éjjel
 'No purchase price set': 'No purchase price set'
 None: 'Egyik sem'
 'Nordic Ski': Sífutás
+Normal: Normal
 'Normalized power': 'Normalizált teljesítmény'
 'Not fitted': 'Not fitted'
 'Not supported': 'Nem támogatott'
@@ -352,6 +354,7 @@ Padel: Padel
 'Peak fresh': Csúcsfriss
 'Peak power outputs': 'Csúcsteljesítmény értékek'
 'Per {unit}': 'Per {unit}'
+'Perceived exertion': 'Perceived exertion'
 'Personal bests': 'Személyes csúcsok'
 Photo: Fotó
 Photos: Fotók
@@ -448,6 +451,7 @@ Stages: Stages
 Status: Állapot
 'Streak started on {date}': 'Sorozat kezdete: {date}'
 Streaks: Sorozatok
+Strong: Strong
 Sun: V
 Sun.: Vas.
 Surfing: Szörfözés
@@ -599,6 +603,8 @@ Usage: Usage
 'Velo Mobile': Velomobil
 'Velo Mobiles': Velomobil
 'Very high': 'Nagyon magas'
+'Very strong': 'Very strong'
+'Very weak': 'Very weak'
 'View all': 'Összes megtekintése'
 'View details': 'Részletek megtekintése'
 'View this month': 'Ez a hónap megtekintése'
@@ -619,6 +625,7 @@ Walks: Séták
 'Waxing the chain...': 'Lánc viaszolása...'
 'We detected following issues': 'A következő problémákat észleltük'
 "We've been busy! Check out what's new and read about any breaking changes before you update.": "We've been busy! Check out what's new and read about any breaking changes before you update."
+Weak: Weak
 Weather: Weather
 Wed: Sze
 Wed.: Szer.

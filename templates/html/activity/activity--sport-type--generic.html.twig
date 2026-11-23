@@ -66,6 +66,14 @@
                         </span>
                     {% endif %}
                     <span class="inline-flex" data-async-content-url="{{ relativeUrl(path('activity_explorer_tiles', {'activityId': activity.getId()})) }}"></span>
+                    {% set workoutRpe = activity.getWorkoutRpe() -%}
+                    {% set workoutFeel = activity.getWorkoutFeel() -%}
+                    {% if workoutRpe or workoutFeel -%}
+                        <span class="inline-flex items-center gap-1.5" title="{% if workoutRpe %}{{ "Perceived exertion"|trans }}{% endif %}{% if workoutRpe and workoutFeel %} · {% endif %}{% if workoutFeel %}{{ "Feel"|trans }}{% endif %}">
+                    {{ svg('fire', 'size-3.5', 'text-gray-400') }}
+                            {% if workoutRpe %}{{ workoutRpe.toScore() ~ '/10' }}{% endif %}{% if workoutRpe and workoutFeel %} · {% endif %}{% if workoutFeel %}{{ workoutFeel|trans }}{% endif %}
+                </span>
+                    {% endif -%}
                     {% set weather = activity.getWeather() %}
                     {% if weather %}
                         <span class="inline-flex items-center gap-1.5">

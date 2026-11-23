@@ -15,6 +15,7 @@ use App\Domain\Activity\ActivityWasUpdated;
 use App\Domain\Activity\RealWorldMap;
 use App\Domain\Activity\Route\RouteGeography;
 use App\Domain\Activity\SportType\SportType;
+use App\Domain\Activity\WorkoutRpe;
 use App\Domain\Activity\WorkoutType;
 use App\Domain\Activity\WorldType;
 use App\Domain\Gear\GearId;
@@ -445,7 +446,7 @@ class ActivityTest extends TestCase
         yield 'commute' => [fn (Activity $activity): Activity => $activity->withCommute(true)];
         yield 'group activity' => [fn (Activity $activity): Activity => $activity->withGroupActivity(true)];
         yield 'workout type' => [fn (Activity $activity): Activity => $activity->withWorkoutType(WorkoutType::RACE)];
-        yield 'workout rpe' => [fn (Activity $activity): Activity => $activity->withWorkoutRpe(70)];
+        yield 'workout rpe' => [fn (Activity $activity): Activity => $activity->withWorkoutRpe(WorkoutRpe::fromFitValue(70))];
         yield 'workout feel' => [fn (Activity $activity): Activity => $activity->withWorkoutFeel(75)];
         yield 'weather' => [fn (Activity $activity): Activity => $activity->withWeather(Weather::fromState(['temperature' => 18.3]))];
         yield 'excluded from' => [fn (Activity $activity): Activity => $activity->withExcludedFrom(

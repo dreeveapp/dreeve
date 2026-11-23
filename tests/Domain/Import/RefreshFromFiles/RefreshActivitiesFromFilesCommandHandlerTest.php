@@ -7,6 +7,7 @@ namespace App\Tests\Domain\Import\RefreshFromFiles;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
+use App\Domain\Activity\WorkoutRpe;
 use App\Domain\Import\FileImportId;
 use App\Domain\Import\FileImportRepository;
 use App\Domain\Import\RefreshFromFiles\ActivityFieldsToRefresh;
@@ -34,7 +35,7 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
                     ->withName(sprintf('Activity %s', $activityId))
                     ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 08:00:00'))
                     ->withDescent(null)
-                    ->withWorkoutRpe(70)
+                    ->withWorkoutRpe(WorkoutRpe::fromFitValue(70))
                     ->withWorkoutFeel(75)
                     ->build(),
                 rawData: ['raw' => $activityId],
@@ -89,8 +90,8 @@ class RefreshActivitiesFromFilesCommandHandlerTest extends ContainerTestCase
         $this->assertSame(10, $activityRepository->find(ActivityId::fromUnprefixed('gpx'))->getDescent()?->toInt());
         $this->assertNull($activityRepository->find(ActivityId::fromUnprefixed('broken'))->getDescent());
         $this->assertNull($activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getDescent());
-        $this->assertSame(70, $activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getWorkoutRpe());
-        $this->assertSame(75, $activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getWorkoutFeel());
+        $this->assertSame(70, $activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getWorkoutRpe()?->toInt());
+        $this->assertSame(75, $activityRepository->find(ActivityId::fromUnprefixed('untouched'))->getRawWorkoutFeel());
 
         $this->assertFalse($this->getContainer()->get(ActivityFieldsToRefresh::class)->hasAny());
     }
