@@ -15,6 +15,7 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\StreamType;
+use App\Domain\Activity\WorkoutRpe;
 use App\Domain\Challenge\ChallengeId;
 use App\Domain\Challenge\ChallengeRepository;
 use App\Domain\Gear\GearId;
@@ -228,6 +229,8 @@ class ToolboxTest extends ContainerTestCase
                 ->withGearId(GearId::fromUnprefixed('b12659861'))
                 ->withStartDateTime(SerializableDateTime::fromString('2025-01-01 02:00:00'))
                 ->withMovingTimeInSeconds(3600)
+                ->withWorkoutRpe(WorkoutRpe::fromFitValue(70))
+                ->withWorkoutFeel(75)
                 ->build(),
             []
         ));

@@ -26,6 +26,8 @@
     "isCommute": false,
     "isGroupActivity": false,
     "workoutType": null,
+    "perceivedExertionOutOf10": 7,
+    "feel": "STRONG",
     "stravaUrl": "https://www.strava.com/activities/123456789",
     "url": "http://localhost:8080/activities/activity-123456789"
 }
