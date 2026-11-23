@@ -55,24 +55,13 @@ abstract readonly class Token implements \Stringable, \Countable
             return false;
         }
 
-        foreach ($this->tokens as $token) {
-            if (1 !== preg_match('/^'.static::getPrefix().'[a-f0-9]{'.(self::LENGTH_IN_BYTES * 2).'}$/', $token)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all($this->tokens, fn (string $token): bool => 1 === preg_match('/^'.static::getPrefix().'[a-f0-9]{'.(self::LENGTH_IN_BYTES * 2).'}$/', $token));
     }
 
-    public function matches(#[\SensitiveParameter] string $token): bool
-    {
-        foreach ($this->tokens as $configuredToken) {
-            if (hash_equals($configuredToken, $token)) {
-                return true;
-            }
-        }
-
-        return false;
+    public function matches(
+        #[\SensitiveParameter] string $token,
+    ): bool {
+        return array_any($this->tokens, fn (string $configuredToken): bool => hash_equals($configuredToken, $token));
     }
 
     public function __toString(): string
