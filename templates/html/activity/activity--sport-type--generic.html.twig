@@ -70,7 +70,7 @@
                     {% set workoutFeel = activity.getWorkoutFeel() -%}
                     {% if workoutRpe or workoutFeel -%}
                         <span class="inline-flex items-center gap-1.5" title="{% if workoutRpe %}{{ "Perceived exertion"|trans }}{% endif %}{% if workoutRpe and workoutFeel %} · {% endif %}{% if workoutFeel %}{{ "Feel"|trans }}{% endif %}">
-                    {{ svg('fire', 'size-3.5', 'text-gray-400') }}
+                    {{ svg('muscle', 'size-3.5', 'text-gray-400') }}
                             {% if workoutRpe %}{{ workoutRpe.toScore() ~ '/10' }}{% endif %}{% if workoutRpe and workoutFeel %} · {% endif %}{% if workoutFeel %}{{ workoutFeel|trans }}{% endif %}
                 </span>
                     {% endif -%}
