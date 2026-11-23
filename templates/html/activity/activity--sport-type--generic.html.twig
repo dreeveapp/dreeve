@@ -76,6 +76,7 @@
                     {% endif -%}
                     {% set weather = activity.getWeather() %}
                     {% if weather %}
+                        <span class="text-gray-300" aria-hidden="true">|</span>
                         <span class="inline-flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5 text-yellow-500" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none"/></svg>
                     {{ weather.getWeatherCodeDescription() }}, {{ weather.getTemperatureInCelsius()|renderMeasurement(1) }}
