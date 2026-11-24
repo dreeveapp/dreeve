@@ -39,6 +39,28 @@ class PathTest extends TestCase
         yield 'mixed case name' => ['/var/data/MyRide.Gpx', 'MyRide.Gpx'];
     }
 
+    #[DataProvider('provideImagePaths')]
+    public function testItShouldTellWhetherThePathIsAServableImage(
+        string $path,
+        bool $expectedContainsTraversal,
+        bool $expectedIsSupportedImage,
+    ): void {
+        self::assertSame($expectedContainsTraversal, Path::fromString($path)->containsTraversal());
+        self::assertSame($expectedIsSupportedImage, Path::fromString($path)->isSupportedImage());
+    }
+
+    /**
+     * @return iterable<string, array{string, bool, bool}>
+     */
+    public static function provideImagePaths(): iterable
+    {
+        yield 'valid png' => ['activities/photo.png', false, true];
+        yield 'uppercase extension' => ['activities/PHOTO.JPG', false, true];
+        yield 'traversal' => ['../database/photo.png', true, true];
+        yield 'gif' => ['activities/photo.gif', false, false];
+        yield 'svg' => ['activities/photo.svg', false, false];
+    }
+
     /**
      * @return iterable<string, array{string, string, string, string}>
      */

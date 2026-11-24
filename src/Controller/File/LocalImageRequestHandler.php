@@ -11,6 +11,7 @@ use App\Infrastructure\ValueObject\String\Path;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -20,8 +21,6 @@ use Time\Duration;
 #[AsController]
 final readonly class LocalImageRequestHandler
 {
-    /** @var list<string> */
-    private const array ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'svg'];
     private const int ANONYMIZED_IMAGE_COUNT = 20;
 
     public function __construct(
@@ -34,39 +33,67 @@ final readonly class LocalImageRequestHandler
     #[Route(path: '/files/{path}', name: 'local_image', requirements: ['path' => '.+'], methods: ['GET'])]
     public function handle(string $path): Response
     {
-        if (str_contains($path, '..')
-            || !in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), self::ALLOWED_EXTENSIONS, true)
-            || !$this->fileStorage->fileExists($path)) {
+        if (!$this->findServableImage($path) instanceof Path) {
             return new Response('', Response::HTTP_NOT_FOUND);
         }
 
-        $isActivityPhoto = str_starts_with($path, MediaItemDirectory::ACTIVITIES->value.'/');
-        // Activity photos are the only ones that get anonymized, so the same URL can answer with
-        // the real photo or with a placeholder depending on state the browser cannot observe.
-        // Storing them would keep serving the real photo after demo mode is switched on.
-        // Every other file is written once under a unique name and never changes in place.
-        $cachePolicy = $isActivityPhoto ? CachePolicy::private()->noStore() : CachePolicy::private()->maxAge(Duration::fromHours(365 * 24))->immutable();
-        $cachingHeaders = ['Vary' => 'Cookie'];
+        $stream = $this->fileStorage->readStream($path);
 
-        if ($isActivityPhoto && !$this->visitor->isTrusted()) {
-            // Not a trusted visitor: serve a stable photo from the bundled anonymized set instead of the real one.
-            $seed = Path::fromString($path)->getFilenameWithoutExtension();
+        return CachePolicy::private()->maxAge(Duration::fromHours(365 * 24))->immutable()->applyTo(new StreamedResponse(
+            function () use ($stream): void {
+                fpassthru($stream);
+            },
+            Response::HTTP_OK,
+            ['Vary' => 'Cookie', 'Content-Type' => $this->fileStorage->mimeType($path)]
+        ));
+    }
 
-            return $cachePolicy->applyTo(new RedirectResponse(
-                url: sprintf('/assets/images/anonymized/%02d.webp', crc32($seed) % self::ANONYMIZED_IMAGE_COUNT + 1),
+    #[Route(path: '/files/activities/{filename}', name: 'activity_photo', requirements: ['filename' => '.+'], methods: ['GET'], priority: 1)]
+    public function handleActivityPhoto(string $filename, Request $request): Response
+    {
+        $path = MediaItemDirectory::ACTIVITIES->value.'/'.$filename;
+
+        $image = $this->findServableImage($path);
+        if (!$image instanceof Path) {
+            return new Response('', Response::HTTP_NOT_FOUND);
+        }
+
+        if (!$this->visitor->isTrusted()) {
+            return CachePolicy::private()->noStore()->applyTo(new RedirectResponse(
+                url: sprintf('/assets/images/anonymized/%02d.webp', crc32($image->getFilenameWithoutExtension()) % self::ANONYMIZED_IMAGE_COUNT + 1),
                 status: Response::HTTP_FOUND,
-                headers: $cachingHeaders
+                headers: ['Vary' => 'Cookie'],
             ));
+        }
+
+        $headers = ['Vary' => 'Cookie', 'Content-Type' => $this->fileStorage->mimeType($path)];
+        $etag = hash('xxh128', $path.'|'.$this->fileStorage->lastModified($path).'|'.$this->fileStorage->fileSize($path));
+        $cachePolicy = CachePolicy::private()->revalidateWithEtag($etag);
+
+        $notModifiedResponse = $cachePolicy->applyTo(new Response(headers: $headers));
+        if ($notModifiedResponse->isNotModified($request)) {
+            return $notModifiedResponse;
         }
 
         $stream = $this->fileStorage->readStream($path);
 
         return $cachePolicy->applyTo(new StreamedResponse(
-            function () use ($stream): void {
+            callbackOrChunks: function () use ($stream): void {
                 fpassthru($stream);
             },
-            Response::HTTP_OK,
-            [...$cachingHeaders, 'Content-Type' => $this->fileStorage->mimeType($path)]
+            status: Response::HTTP_OK,
+            headers: $headers,
         ));
+    }
+
+    private function findServableImage(string $path): ?Path
+    {
+        $image = Path::fromString($path);
+
+        if ($image->containsTraversal() || !$image->isSupportedImage() || !$this->fileStorage->fileExists($path)) {
+            return null;
+        }
+
+        return $image;
     }
 }
