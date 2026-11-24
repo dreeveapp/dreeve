@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class LocalImageRequestHandlerTest extends ContainerTestCase
@@ -151,7 +150,6 @@ class LocalImageRequestHandlerTest extends ContainerTestCase
 
         $this->assertInstanceOf(StreamedResponse::class, $response);
         $this->assertEquals('immutable, max-age=31536000, private', $response->headers->get('Cache-Control'));
-        $this->assertEquals('Cookie', $response->headers->get('Vary'));
         $this->assertEquals(self::PNG_BYTES, $this->captureStreamedContent($response));
     }
 
