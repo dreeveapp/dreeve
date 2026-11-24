@@ -4,6 +4,7 @@ namespace App\Domain\Activity\Stream;
 
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
+use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
@@ -97,10 +98,16 @@ final readonly class DbalActivityStreamRepository extends DbalRepository impleme
      */
     private function hydrate(array $result): ActivityStream
     {
+        try {
+            $streamData = Json::uncompressAndDecode($result['data']);
+        } catch (\JsonException $e) {
+            throw CorruptedData::invalidJson($e);
+        }
+
         return ActivityStream::fromState(
             activityId: ActivityId::fromString($result['activityId']),
             streamType: StreamType::from($result['streamType']),
-            streamData: Json::uncompressAndDecode($result['data']),
+            streamData: $streamData,
             createdOn: SerializableDateTime::fromString($result['createdOn']),
         );
     }
