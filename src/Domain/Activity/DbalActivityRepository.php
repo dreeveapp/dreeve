@@ -8,6 +8,7 @@ use App\Domain\Activity\SportType\SportTypes;
 use App\Domain\Gear\Sensor\ConnectedSensors;
 use App\Domain\Integration\Weather\OpenMeteo\Weather;
 use App\Infrastructure\Eventing\EventBus;
+use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
@@ -119,9 +120,15 @@ final readonly class DbalActivityRepository extends DbalRepository implements Ac
             throw new EntityNotFound(sprintf('Activity "%s" not found', $activityId));
         }
 
+        try {
+            $rawData = Json::decode($result['data']);
+        } catch (\JsonException $e) {
+            throw CorruptedData::invalidJson($e);
+        }
+
         return ActivityWithRawData::fromState(
             activity: ActivityHydrator::hydrate($result),
-            rawData: Json::decode($result['data']),
+            rawData: $rawData,
         );
     }
 

@@ -7,6 +7,7 @@ namespace App\Domain\Activity\Stream\CombinedStream;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\ActivityType;
+use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Repository\DbalRepository;
@@ -86,11 +87,17 @@ final readonly class DbalCombinedActivityStreamRepository extends DbalRepository
             throw new EntityNotFound('CombinedActivityStream not found');
         }
 
+        try {
+            $data = Json::uncompressAndDecode($result['data']);
+        } catch (\JsonException $e) {
+            throw CorruptedData::invalidJson($e);
+        }
+
         return CombinedActivityStream::fromState(
             activityId: ActivityId::fromString($result['activityId']),
             unitSystem: UnitSystem::from($result['unitSystem']),
             streamTypes: CombinedStreamTypes::fromValues(explode(',', (string) $result['streamTypes'])),
-            data: Json::uncompressAndDecode($result['data']),
+            data: $data,
             maxYAxisValue: $result['maxYAxisValue'],
         );
     }

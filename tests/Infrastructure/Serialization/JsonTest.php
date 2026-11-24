@@ -51,10 +51,14 @@ class JsonTest extends TestCase
 
     public function testDecodeWhenInvalidJson(): void
     {
-        $this->expectExceptionObject(new CorruptedData('Invalid JSON detected (Syntax error near location 1:33). This is usually caused by corrupted activity data.
-Please see the troubleshooting guide for steps to resolve the issue: https://docs.dreeve.app/troubleshooting/import-build-fails/ for more information.'));
-
-        Json::decode('{"name": "Ride", "distance": 42,}');
+        try {
+            Json::decode('{"name": "Ride", "distance": 42,}');
+            $this->fail('Expected CorruptedData to be thrown');
+        } catch (CorruptedData $e) {
+            $this->assertSame('Invalid JSON detected (Syntax error near location 1:33). This is usually caused by corrupted activity data.
+Please see the troubleshooting guide for steps to resolve the issue: https://docs.dreeve.app/troubleshooting/import-build-fails/ for more information.', $e->getMessage());
+            $this->assertInstanceOf(\JsonException::class, $e->getPrevious());
+        }
     }
 
     /**

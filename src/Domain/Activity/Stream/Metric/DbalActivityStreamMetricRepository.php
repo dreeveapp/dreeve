@@ -7,6 +7,7 @@ namespace App\Domain\Activity\Stream\Metric;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityIds;
 use App\Domain\Activity\Stream\StreamType;
+use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Repository\DbalRepository;
 use App\Infrastructure\Serialization\Json;
 use Doctrine\DBAL\ArrayParameterType;
@@ -146,11 +147,17 @@ final readonly class DbalActivityStreamMetricRepository extends DbalRepository i
      */
     private function hydrate(array $result): ActivityStreamMetric
     {
+        try {
+            $data = Json::uncompressAndDecode($result['data']);
+        } catch (\JsonException $e) {
+            throw CorruptedData::invalidJson($e);
+        }
+
         return ActivityStreamMetric::fromState(
             activityId: ActivityId::fromString($result['activityId']),
             streamType: StreamType::from($result['streamType']),
             metricType: ActivityStreamMetricType::from($result['metricType']),
-            data: Json::uncompressAndDecode($result['data']),
+            data: $data,
         );
     }
 }
