@@ -44,7 +44,7 @@ final readonly class LocalImageRequestHandler
                 fpassthru($stream);
             },
             Response::HTTP_OK,
-            ['Vary' => 'Cookie', 'Content-Type' => $this->fileStorage->mimeType($path)]
+            ['Content-Type' => $this->fileStorage->mimeType($path)]
         ));
     }
 
