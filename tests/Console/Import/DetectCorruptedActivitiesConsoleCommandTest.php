@@ -278,7 +278,7 @@ class DetectCorruptedActivitiesConsoleCommandTest extends ConsoleCommandTestCase
                 'activityId' => 'activity-test-2',
                 'streamType' => StreamType::WATTS->value,
                 'metricType' => ActivityStreamMetricType::NORMALIZED_POWER->value,
-                'data' => 'this is not a valid ZSTD frame',
+                'data' => (string) CompressedString::fromUncompressed('{"name": "Ride", "distance": 42,}'),
             ]
         );
 

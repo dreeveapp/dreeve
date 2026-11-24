@@ -89,6 +89,27 @@ class LatestReleaseRequestHandlerTest extends ContainerTestCase
         $this->assertEquals(['latestVersion' => 'v999.0.0', 'updateAvailable' => false], Json::decode((string) $handler->handle()->getContent()));
     }
 
+    public function testHandleWhenWorkflowRunsCannotBeFetched(): void
+    {
+        $client = $this->createMock(Client::class);
+        $client
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->willReturnCallback(fn (string $method, string $uri, array $options = []): Response => match ($uri) {
+                'https://api.github.com/repos/dreeveapp/dreeve/releases/latest' => new Response(200, body: Json::encode(['name' => 'v999.0.0'])),
+                'https://api.github.com/repos/dreeveapp/dreeve/actions/runs' => throw new ConnectException(message: 'Connection timed out', request: new Request('GET', $uri)),
+                default => throw new \LogicException(sprintf('Unexpected request to "%s"', $uri)),
+            });
+
+        $handler = new LatestReleaseRequestHandler(
+            new GitHub($client),
+            $this->getContainer()->get(CacheableRenderer::class),
+            ManagedMode::fromString('0'),
+        );
+
+        $this->assertEquals(['latestVersion' => 'v999.0.0', 'updateAvailable' => false], Json::decode((string) $handler->handle()->getContent()));
+    }
+
     public function testHandleWhenGitHubIsUnreachable(): void
     {
         $client = $this->createMock(Client::class);
