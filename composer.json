@@ -19,7 +19,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.5",
+        "php": ">=8.6",
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-dom": "*",

@@ -7,7 +7,7 @@ RUN go mod download
 COPY docker/fit-tool/ ./
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -ldflags="-s -w" -o /out/fit-tool .
 
-FROM php:8.5-cli
+FROM php:8.6-cli
 
 COPY docker/php-cli/php.ini "${PHP_INI_DIR}/conf.d/docker-php-config.ini"
 
@@ -45,7 +45,7 @@ RUN curl -L -o "pie.phar" https://github.com/php/pie/releases/download/1.5.5/pie
 RUN php pie.phar install kjdev/zstd
 
 # Install Xdebug
-RUN php pie.phar install xdebug/xdebug
+RUN php pie.phar install xdebug/xdebug:^3.6@alpha
 RUN docker-php-ext-enable xdebug
 COPY docker/php-cli/xdebug.ini "${PHP_INI_DIR}/conf.d"
 RUN rm pie.phar

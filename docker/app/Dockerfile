@@ -7,7 +7,7 @@ RUN go mod download
 COPY docker/fit-tool/ ./
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -ldflags="-s -w" -o /out/fit-tool .
 
-FROM dunglas/frankenphp:1-php8.5-alpine
+FROM dunglas/frankenphp:1-php8.6-alpine
 
 WORKDIR /var/www
 
