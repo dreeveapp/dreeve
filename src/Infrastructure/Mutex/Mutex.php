@@ -7,13 +7,13 @@ namespace App\Infrastructure\Mutex;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use Doctrine\DBAL\Connection;
+use Time\Duration;
 
 final class Mutex
 {
     /** @var array<string, bool> */
     private static array $shutdownRegistered = [];
 
-    private const int STALE_THRESHOLD_IN_SECONDS = 1200; // 20 minutes.
     private const string HEARTBEAT_KEY = 'heartbeat';
     private const string LOCK_ACQUIRED_BY_KEY = 'lockAcquiredBy';
 
@@ -50,7 +50,7 @@ final class Mutex
 
         $data = Json::decode($row);
         $heartbeat = $data[self::HEARTBEAT_KEY] ?? null;
-        $isStale = $now - $heartbeat > self::STALE_THRESHOLD_IN_SECONDS;
+        $isStale = $now - $heartbeat > Duration::fromMinutes(20)->seconds;
 
         if ($isStale) {
             $this->updateLockRow(

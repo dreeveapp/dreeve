@@ -13,6 +13,7 @@ use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Identifier\UuidFactory;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\Target;
+use Time\Duration;
 
 final readonly class ImportChallengesCommandHandler implements CommandHandler
 {
@@ -103,7 +104,7 @@ final readonly class ImportChallengesCommandHandler implements CommandHandler
             }
             $this->challengeRepository->add($challenge);
             $command->getOutput()->writeln(sprintf('  => Imported challenge "%s"', $challenge->getName()));
-            $this->clock->sleep(1); // Make sure timestamp is increased by at least one second.
+            $this->clock->sleep(Duration::fromSeconds(1)); // Make sure timestamp is increased by at least one second.
         }
 
         $this->challengeRepository->deleteWithNonAlphanumericIds();
