@@ -62,7 +62,7 @@ final readonly class SearchActivities implements AITool
 
         $pagination = Pagination::fromPageNumberAndSize(
             pageNumber: max(1, $arguments->getInt('page') ?? 1),
-            pageSize: max(1, min($arguments->getInt('size') ?? self::DEFAULT_SIZE, self::MAX_SIZE)),
+            pageSize: clamp($arguments->getInt('size') ?? self::DEFAULT_SIZE, 1, self::MAX_SIZE),
         );
 
         $activities = $this->activitySearchRepository->find($pagination, ActivitySearchFilters::fromValues(

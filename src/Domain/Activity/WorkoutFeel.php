@@ -17,7 +17,7 @@ enum WorkoutFeel: int implements TranslatableInterface
 
     public static function fromRaw(int $value): self
     {
-        return self::from((int) (round(max(0, min(100, $value)) / 25) * 25));
+        return self::from((int) (round(clamp($value, 0, 100) / 25) * 25));
     }
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string

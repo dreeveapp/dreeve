@@ -85,8 +85,8 @@ final readonly class ExplorerTileGrid
      */
     private static function project(float $latitude, float $longitude): array
     {
-        $latitude = max(-self::MAX_LATITUDE, min(self::MAX_LATITUDE, $latitude));
-        $longitude = max(-180.0, min(180.0, $longitude));
+        $latitude = clamp($latitude, -self::MAX_LATITUDE, self::MAX_LATITUDE);
+        $longitude = clamp($longitude, -180.0, 180.0);
         $maxTileCoordinate = self::TILES_PER_AXIS - 1e-9;
 
         return [

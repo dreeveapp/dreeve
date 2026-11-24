@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Gap;
 
-use App\Domain\Activity\Math;
-
 final readonly class StravaLikeGapAdjustmentModel
 {
     /**
@@ -34,7 +32,7 @@ final readonly class StravaLikeGapAdjustmentModel
 
     public static function calculateAdjustmentFactor(float $grade): float
     {
-        $grade = Math::clamp($grade, -0.50, 0.50);
+        $grade = clamp($grade, -0.50, 0.50);
         $previousGrade = self::FACTORS_BY_GRADE[0][0];
         $previousFactor = self::FACTORS_BY_GRADE[0][1];
 

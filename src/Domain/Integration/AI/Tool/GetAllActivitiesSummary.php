@@ -53,7 +53,7 @@ final readonly class GetAllActivitiesSummary implements AITool
 
     public function __invoke(ToolArguments $arguments): array
     {
-        $limit = max(1, min($arguments->getInt('limit') ?? self::DEFAULT_LIMIT, self::MAX_LIMIT));
+        $limit = clamp($arguments->getInt('limit') ?? self::DEFAULT_LIMIT, 1, self::MAX_LIMIT);
         $from = $arguments->getString('from');
         $to = $arguments->getString('to');
         $activities = null === $from && null === $to
