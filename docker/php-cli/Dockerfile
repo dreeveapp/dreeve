@@ -28,7 +28,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxslt1-dev \
     acl \
-    zstd
+    zstd \
+    libzstd-dev
 
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install zip
@@ -39,12 +40,12 @@ RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install intl
 
+RUN curl -L -o "pie.phar" https://github.com/php/pie/releases/download/1.5.5/pie.phar
+
 # Install zstd
-RUN pecl install zstd \
-    && docker-php-ext-enable zstd
+RUN php pie.phar install kjdev/zstd
 
 # Install Xdebug
-RUN curl -L -o "pie.phar" https://github.com/php/pie/releases/download/1.3.1/pie.phar
 RUN php pie.phar install xdebug/xdebug
 RUN docker-php-ext-enable xdebug
 COPY docker/php-cli/xdebug.ini "${PHP_INI_DIR}/conf.d"
