@@ -159,6 +159,28 @@ After changing it, run `docker compose up -d --force-recreate`.
 > docker compose exec garmin-connector dreeve-garmin-connector status
 ```
 
+## Elevation on watches without a barometer
+
+Garmin watches without a barometer (Forerunner 245, 55, 165…) record altitude from GPS, so the
+elevation gain written in their `.fit` files is often inflated. Dreeve uses the values exactly as the
+watch recorded them.
+
+If you want Garmin Connect's corrected values instead (its "Elevation Corrections" setting),
+**[dreeve-garmin-elevation](https://github.com/M3c4tr0x/dreeve-garmin-elevation)** is a
+community-maintained add-on that sits between the connector and the `watch/` folder. For each new
+activity it downloads Garmin's corrected TCX, writes its altitude and elevation gain into the `.fit`
+and keeps everything else as is.
+
+```text
+Garmin Connect → connector → dreeve-garmin-elevation → watch/ → Dreeve imports it
+```
+
+:::note
+This is a third-party project, maintained separately from Dreeve. See its
+[repository and setup guide](https://github.com/M3c4tr0x/dreeve-garmin-elevation#readme)
+for current requirements and support.
+:::
+
 ## An unofficial API
 
 The connector is built on [cyberjunky/python-garminconnect](https://github.com/cyberjunky/python-garminconnect), which talks to
