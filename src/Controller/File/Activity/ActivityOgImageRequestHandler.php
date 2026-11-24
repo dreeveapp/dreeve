@@ -11,6 +11,7 @@ use App\Infrastructure\Http\Response\CachePolicy;
 use App\Infrastructure\Http\Response\PngResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Time\Duration;
 
 #[AsController]
 final readonly class ActivityOgImageRequestHandler
@@ -26,7 +27,7 @@ final readonly class ActivityOgImageRequestHandler
     {
         $activity = $this->activityRepository->find(ActivityId::fromString($activityId));
 
-        return CachePolicy::public()->maxAge(3600)->applyTo(
+        return CachePolicy::public()->maxAge(Duration::fromHours(1))->applyTo(
             new PngResponse($this->activityOpenGraphImage->render($activity)),
         );
     }

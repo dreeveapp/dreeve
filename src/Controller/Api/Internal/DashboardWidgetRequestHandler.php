@@ -48,7 +48,7 @@ final readonly class DashboardWidgetRequestHandler
                     sha1(Json::encode($configuredWidget->getConfiguration()->toArray())),
                 ),
                 cacheTags: $widget->getCacheTags(),
-                ttlInSeconds: $widget instanceof DependsOnCurrentDay ? $now->getSecondsUntilMidnight() : null,
+                ttl: $widget instanceof DependsOnCurrentDay ? $now->getDurationUntilMidnight() : null,
             ),
             render: fn (): ?string => $widget->render(
                 dashboardWidgetId: $dashboardWidgetId,
