@@ -5,6 +5,7 @@ $finder = new PhpCsFixer\Finder()
     ->exclude('var');
 
 return new PhpCsFixer\Config()
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setRules([
         '@Symfony' => true,

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1bbde22ca47d6b8254441c9501a851f",
+    "content-hash": "471ae7b542802dfe5160cf3b1115e9fe",
     "packages": [
         {
             "name": "adrenalinkin/doctrine-naming-strategy",
@@ -2537,27 +2537,26 @@
         },
         {
             "name": "moneyphp/money",
-            "version": "v4.9.0",
+            "version": "v4.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moneyphp/money.git",
-                "reference": "d49ee625c6ba79b9d7a228ce153b02fc1032152b"
+                "reference": "8b7d0557d5583999f656cce22f0a177d3d040039"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moneyphp/money/zipball/d49ee625c6ba79b9d7a228ce153b02fc1032152b",
-                "reference": "d49ee625c6ba79b9d7a228ce153b02fc1032152b",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/8b7d0557d5583999f656cce22f0a177d3d040039",
+                "reference": "8b7d0557d5583999f656cce22f0a177d3d040039",
                 "shasum": ""
             },
             "require": {
                 "ext-bcmath": "*",
                 "ext-filter": "*",
-                "ext-json": "*",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0"
+                "php": "~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
             },
             "require-dev": {
                 "cache/taggable-cache": "^1.1.0",
-                "doctrine/coding-standard": "^12.0",
+                "doctrine/coding-standard": "^14.0",
                 "doctrine/instantiator": "^1.5.0 || ^2.0",
                 "ext-gmp": "*",
                 "ext-intl": "*",
@@ -2568,9 +2567,9 @@
                 "php-http/message": "^1.16.0",
                 "php-http/mock-client": "^1.6.0",
                 "phpbench/phpbench": "^1.2.5",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan": "^2.1.9",
-                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/extension-installer": "^1.4.3",
+                "phpstan/phpstan": "^2.3.7",
+                "phpstan/phpstan-phpunit": "^2.1.2",
                 "phpunit/phpunit": "^10.5.9",
                 "psr/cache": "^1.0.1 || ^2.0 || ^3.0",
                 "ticketswap/phpstan-error-formatter": "^1.1"
@@ -2621,10 +2620,10 @@
             ],
             "support": {
                 "issues": "https://github.com/moneyphp/money/issues",
-                "source": "https://github.com/moneyphp/money/tree/v4.9.0"
+                "source": "https://github.com/moneyphp/money/tree/v4.10.0"
             },
-            "time": "2026-05-04T20:23:15+00:00",
-            "published-time": "2026-05-04T20:25:20+00:00"
+            "time": "2026-11-23T19:18:31+00:00",
+            "published-time": "2026-11-23T19:19:11+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -15226,7 +15225,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.5",
+        "php": ">=8.6",
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-dom": "*",

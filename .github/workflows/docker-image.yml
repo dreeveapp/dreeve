@@ -22,10 +22,10 @@ jobs:
       attestations: write
       id-token: write
     steps:
-      - name: Setup PHP 8.5
+      - name: Setup PHP 8.6
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.5'
+          php-version: '8.6'
           extensions: zstd
 
       - name: Check out the repo
