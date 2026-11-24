@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1\Settings;
 
-use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
@@ -26,7 +25,7 @@ final readonly class AthleteWeightRequest
     {
         try {
             $payload = Json::decode($request->getContent());
-        } catch (CorruptedData) {
+        } catch (\JsonException) {
             throw new BadRequestHttpException('The request body must be a valid JSON object.');
         }
 
