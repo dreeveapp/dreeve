@@ -53,7 +53,7 @@ final readonly class PowerOutputRequestHandler
                 cacheKey: 'dashboard.power-output',
                 cacheTags: CacheTags::of(RootCacheTag::ACTIVITIES, RootCacheTag::SETTINGS_ATHLETE_WEIGHT),
                 cacheContexts: CacheContexts::of(AuthenticatedCacheContext::class),
-                ttlInSeconds: $this->clock->now()->getSecondsUntilMidnight(),
+                ttl: $this->clock->now()->getDurationUntilMidnight(),
             ),
             render: fn (): ?string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,

@@ -53,7 +53,7 @@ final readonly class TrainingLoadRequestHandler
                     RootCacheTag::SETTINGS_GENERAL,
                     RootCacheTag::SETTINGS_ATHLETE_FTP
                 ),
-                ttlInSeconds: $this->clock->now()->getSecondsUntilMidnight(),
+                ttl: $this->clock->now()->getDurationUntilMidnight(),
             ),
             render: fn (): string => $this->renderFor(),
             navigationSection: NavigationSection::DASHBOARD,

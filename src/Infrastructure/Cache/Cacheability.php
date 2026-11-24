@@ -7,6 +7,7 @@ namespace App\Infrastructure\Cache;
 use App\Infrastructure\Cache\Context\CacheContexts;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
+use Time\Duration;
 
 final readonly class Cacheability
 {
@@ -14,7 +15,7 @@ final readonly class Cacheability
         private string $cacheKey,
         private CacheTags $cacheTags,
         private CacheContexts $cacheContexts,
-        private ?int $ttlInSeconds,
+        private ?Duration $ttl,
     ) {
     }
 
@@ -22,13 +23,13 @@ final readonly class Cacheability
         string $cacheKey,
         CacheTags $cacheTags,
         ?CacheContexts $cacheContexts = null,
-        ?int $ttlInSeconds = null,
+        ?Duration $ttl = null,
     ): self {
         return new self(
             cacheKey: $cacheKey,
             cacheTags: CacheTags::of(...RootCacheTag::crossCutting(), ...$cacheTags->toArray()),
             cacheContexts: $cacheContexts ?? CacheContexts::none(),
-            ttlInSeconds: $ttlInSeconds,
+            ttl: $ttl,
         );
     }
 
@@ -47,8 +48,8 @@ final readonly class Cacheability
         return $this->cacheContexts;
     }
 
-    public function getTtlInSeconds(): ?int
+    public function getTtl(): ?Duration
     {
-        return $this->ttlInSeconds;
+        return $this->ttl;
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Cache\Render;
 
+use Time\Duration;
+
 final readonly class Render
 {
     /**
@@ -14,7 +16,7 @@ final readonly class Render
         private CacheStatus $cacheStatus,
         private ?string $cacheKey,
         private array $cacheTags,
-        private ?int $ttlInSeconds,
+        private ?Duration $ttl,
     ) {
     }
 
@@ -25,28 +27,28 @@ final readonly class Render
         ?string $content,
         string $cacheKey,
         array $cacheTags = [],
-        ?int $ttlInSeconds = null): self
+        ?Duration $ttl = null): self
     {
         return new self(
             content: $content,
             cacheStatus: CacheStatus::HIT,
             cacheKey: $cacheKey,
             cacheTags: $cacheTags,
-            ttlInSeconds: $ttlInSeconds,
+            ttl: $ttl,
         );
     }
 
     /**
      * @param string[] $cacheTags
      */
-    public static function freshlyRendered(?string $content, string $cacheKey, array $cacheTags = [], ?int $ttlInSeconds = null): self
+    public static function freshlyRendered(?string $content, string $cacheKey, array $cacheTags = [], ?Duration $ttl = null): self
     {
         return new self(
             content: $content,
             cacheStatus: CacheStatus::MISS,
             cacheKey: $cacheKey,
             cacheTags: $cacheTags,
-            ttlInSeconds: $ttlInSeconds,
+            ttl: $ttl,
         );
     }
 
@@ -73,9 +75,9 @@ final readonly class Render
         return $this->cacheTags;
     }
 
-    public function getTtlInSeconds(): ?int
+    public function getTtl(): ?Duration
     {
-        return $this->ttlInSeconds;
+        return $this->ttl;
     }
 
     /**
@@ -91,8 +93,8 @@ final readonly class Render
         if ([] !== $this->cacheTags) {
             $headers['X-Dreeve-Cache-Tags'] = implode(', ', $this->cacheTags);
         }
-        if (!is_null($this->ttlInSeconds)) {
-            $headers['X-Dreeve-Cache-TTL'] = (string) $this->ttlInSeconds;
+        if (!is_null($this->ttl)) {
+            $headers['X-Dreeve-Cache-TTL'] = (string) $this->ttl->seconds;
         }
 
         return $headers;

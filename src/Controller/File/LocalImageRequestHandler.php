@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Time\Duration;
 
 #[AsController]
 final readonly class LocalImageRequestHandler
@@ -44,7 +45,7 @@ final readonly class LocalImageRequestHandler
         // the real photo or with a placeholder depending on state the browser cannot observe.
         // Storing them would keep serving the real photo after demo mode is switched on.
         // Every other file is written once under a unique name and never changes in place.
-        $cachePolicy = $isActivityPhoto ? CachePolicy::private()->noStore() : CachePolicy::private()->maxAge(31536000)->immutable();
+        $cachePolicy = $isActivityPhoto ? CachePolicy::private()->noStore() : CachePolicy::private()->maxAge(Duration::fromHours(365 * 24))->immutable();
         $cachingHeaders = ['Vary' => 'Cookie'];
 
         if ($isActivityPhoto && !$this->visitor->isTrusted()) {

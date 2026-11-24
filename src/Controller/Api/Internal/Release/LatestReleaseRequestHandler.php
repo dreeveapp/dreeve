@@ -17,12 +17,11 @@ use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
+use Time\Duration;
 
 #[AsController]
 final readonly class LatestReleaseRequestHandler
 {
-    private const int SIX_HOURS_IN_SECONDS = 6 * 3600;
-
     public function __construct(
         private GitHub $gitHub,
         private CacheableRenderer $cacheableRenderer,
@@ -37,16 +36,17 @@ final readonly class LatestReleaseRequestHandler
             return new JsonResponse(['latestVersion' => null, 'updateAvailable' => false]);
         }
 
+        $ttl = Duration::fromHours(6);
         $render = $this->cacheableRenderer->render(
             cacheability: Cacheability::for(
                 cacheKey: 'app.latest-release',
                 cacheTags: CacheTags::empty(),
-                ttlInSeconds: self::SIX_HOURS_IN_SECONDS,
+                ttl: $ttl,
             ),
             render: fn (): string => $this->renderFor(),
         );
 
-        return CachePolicy::private()->maxAge($render->getTtlInSeconds() ?? self::SIX_HOURS_IN_SECONDS)->applyTo(new JsonResponse(
+        return CachePolicy::private()->maxAge($render->getTtl() ?? $ttl)->applyTo(new JsonResponse(
             $render->getContent() ?? '{}',
             headers: $render->getCacheHeaders(),
             json: true,

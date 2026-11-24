@@ -7,6 +7,7 @@ namespace App\Tests\Infrastructure\Cache\Render;
 use App\Infrastructure\Cache\Render\CacheStatus;
 use App\Infrastructure\Cache\Render\Render;
 use PHPUnit\Framework\TestCase;
+use Time\Duration;
 
 class RenderTest extends TestCase
 {
@@ -16,7 +17,7 @@ class RenderTest extends TestCase
             '<html lang="en"></html>',
             'v5.1.5.best-efforts',
             ['activities', 'settings.appearance', 'settings.general'],
-            19784,
+            Duration::fromSeconds(19784),
         );
 
         $this->assertEquals(CacheStatus::HIT, $render->getCacheStatus());
@@ -34,7 +35,7 @@ class RenderTest extends TestCase
 
     public function testGetCacheHeadersForAMiss(): void
     {
-        $render = Render::freshlyRendered('<html lang="en"></html>', 'v5.1.5.heatmap', ['activity.route'], 86400);
+        $render = Render::freshlyRendered('<html lang="en"></html>', 'v5.1.5.heatmap', ['activity.route'], Duration::fromSeconds(86400));
 
         $this->assertEquals(CacheStatus::MISS, $render->getCacheStatus());
         $this->assertFalse($render->wasServedFromCache());

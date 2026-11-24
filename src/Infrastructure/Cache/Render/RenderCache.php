@@ -14,6 +14,7 @@ use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Cache\PruneableInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Cache\ItemInterface;
+use Time\Duration;
 
 final readonly class RenderCache
 {
@@ -48,27 +49,25 @@ final readonly class RenderCache
                 content: $cached,
                 cacheKey: $prefixedCacheKey,
                 cacheTags: $this->storedCacheTags($item) ?? $cacheability->getCacheTags()->toTagStrings(),
-                ttlInSeconds: $this->remainingTtlInSeconds($item),
+                ttl: $this->remainingTtl($item),
             );
         }
 
         $rendered = $callback();
-        $ttlInSeconds = $cacheability->getTtlInSeconds();
+        $ttl = $cacheability->getTtl();
 
         $item->set($rendered);
         if (!$cacheability->getCacheTags()->isEmpty()) {
             $item->tag($cacheability->getCacheTags()->toTagStrings());
         }
-        if (!is_null($ttlInSeconds)) {
-            $item->expiresAfter($ttlInSeconds);
-        }
+        $item->expiresAfter($ttl?->seconds);
         $this->cache->save($item);
 
         return Render::freshlyRendered(
             content: $rendered,
             cacheKey: $prefixedCacheKey,
             cacheTags: $cacheability->getCacheTags()->toTagStrings(),
-            ttlInSeconds: $ttlInSeconds,
+            ttl: $ttl,
         );
     }
 
@@ -111,7 +110,7 @@ final readonly class RenderCache
         return is_null($tags) ? null : array_values($tags);
     }
 
-    private function remainingTtlInSeconds(CacheItemInterface $item): ?int
+    private function remainingTtl(CacheItemInterface $item): ?Duration
     {
         if (!$item instanceof ItemInterface) {
             return null;
@@ -122,10 +121,10 @@ final readonly class RenderCache
             return null;
         }
 
-        $remainingTtlInSeconds = max(0, (int) ceil($expiry - microtime(true)));
+        $remainingSeconds = max(0, (int) ceil($expiry - microtime(true)));
 
         // A render without a TTL never expires, which metadata cannot express: Symfony round trips
         // it as a far future timestamp instead.
-        return $remainingTtlInSeconds > self::LONGEST_REPORTABLE_TTL_IN_SECONDS ? null : $remainingTtlInSeconds;
+        return $remainingSeconds > self::LONGEST_REPORTABLE_TTL_IN_SECONDS ? null : Duration::fromSeconds($remainingSeconds);
     }
 }

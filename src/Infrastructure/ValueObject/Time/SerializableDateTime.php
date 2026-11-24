@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\ValueObject\Time;
 
 use Carbon\Carbon;
+use Time\Duration;
 
 class SerializableDateTime extends \DateTimeImmutable implements \JsonSerializable, \Stringable
 {
@@ -91,9 +92,9 @@ class SerializableDateTime extends \DateTimeImmutable implements \JsonSerializab
         return $this->setTimezone($timezone);
     }
 
-    public function getSecondsUntilMidnight(): int
+    public function getDurationUntilMidnight(): Duration
     {
-        return $this->modify('tomorrow midnight')->getTimestamp() - $this->getTimestamp();
+        return Duration::fromSeconds($this->modify('tomorrow midnight')->getTimestamp() - $this->getTimestamp());
     }
 
     public function getHourWithoutLeadingZero(): int
