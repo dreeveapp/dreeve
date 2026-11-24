@@ -10,7 +10,6 @@ use App\Infrastructure\Cache\Cacheability;
 use App\Infrastructure\Cache\CacheableRenderer;
 use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Config\ManagedMode;
-use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Http\Response\CachePolicy;
 use App\Infrastructure\Serialization\Json;
 use GuzzleHttp\Exception\GuzzleException;
@@ -57,7 +56,7 @@ final readonly class LatestReleaseRequestHandler
     {
         try {
             $latestRelease = $this->gitHub->getLatestRelease();
-        } catch (GuzzleException|CorruptedData) {
+        } catch (GuzzleException|\JsonException) {
             return Json::encode(['latestVersion' => null, 'updateAvailable' => false]);
         }
 
@@ -81,7 +80,7 @@ final readonly class LatestReleaseRequestHandler
                 'exclude_pull_requests' => 'true',
                 'branch' => $latestRelease,
             ]);
-        } catch (GuzzleException|CorruptedData) {
+        } catch (GuzzleException|\JsonException) {
             return false;
         }
 

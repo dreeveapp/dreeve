@@ -2,7 +2,6 @@
 
 namespace App\Domain\Integration\Weather\OpenMeteo;
 
-use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -61,7 +60,7 @@ final readonly class LiveOpenMeteo implements OpenMeteo
 
             try {
                 return Json::decode($this->request('v1/archive', 'GET', $options));
-            } catch (CorruptedData|NetworkException|RequestException) {
+            } catch (\JsonException|NetworkException|RequestException) {
             }
             throw new OpenMeteoArchiveApiCallHasFailed();
         }
@@ -73,7 +72,7 @@ final readonly class LiveOpenMeteo implements OpenMeteo
 
         try {
             return Json::decode($this->request('v1/forecast', 'GET', $options));
-        } catch (CorruptedData|NetworkException|RequestException) {
+        } catch (\JsonException|NetworkException|RequestException) {
         }
 
         throw new OpenMeteoForecastApiCallHasFailed();

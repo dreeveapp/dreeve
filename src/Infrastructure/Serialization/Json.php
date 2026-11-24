@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Serialization;
 
-use App\Infrastructure\Exception\CorruptedData;
 use App\Infrastructure\ValueObject\String\CompressedString;
 use JsonMachine\Items;
 use JsonMachine\JsonDecoder\ExtJsonDecoder;
@@ -23,11 +22,7 @@ final readonly class Json
 
     public static function decode(string $json, bool $assoc = true, int $depth = 512): mixed
     {
-        try {
-            return json_decode($json ?: '', $assoc, max(1, $depth), JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
-        } catch (\JsonException $e) {
-            throw CorruptedData::invalidJson($e);
-        }
+        return json_decode($json ?: '', $assoc, max(1, $depth), JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
     }
 
     public static function decodeLazyFromFile(string $filePath, string $pointer): Items
