@@ -15,6 +15,7 @@ final readonly class CachePolicy
         private bool $revalidate = false,
         private ?Duration $maxAge = null,
         private bool $immutable = false,
+        private ?string $etag = null,
     ) {
     }
 
@@ -36,6 +37,11 @@ final readonly class CachePolicy
     public function revalidate(): self
     {
         return clone ($this, ['revalidate' => true]);
+    }
+
+    public function revalidateWithEtag(string $etag): self
+    {
+        return clone ($this, ['revalidate' => true, 'etag' => $etag]);
     }
 
     public function maxAge(Duration $maxAge): self
@@ -66,7 +72,7 @@ final readonly class CachePolicy
         ]);
 
         if ($this->revalidate) {
-            $response->setEtag(hash('xxh128', (string) $response->getContent()));
+            $response->setEtag($this->etag ?? hash('xxh128', (string) $response->getContent()));
         }
 
         return $response;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\ValueObject\String;
 
+use App\Domain\Media\ImageExtension;
+
 final readonly class Path extends NonEmptyStringLiteral
 {
     public function getExtension(): string
@@ -29,5 +31,15 @@ final readonly class Path extends NonEmptyStringLiteral
     public function getBasename(): string
     {
         return pathinfo((string) $this, PATHINFO_BASENAME);
+    }
+
+    public function containsTraversal(): bool
+    {
+        return str_contains((string) $this, '..');
+    }
+
+    public function isSupportedImage(): bool
+    {
+        return ImageExtension::isSupported($this->getExtension());
     }
 }
