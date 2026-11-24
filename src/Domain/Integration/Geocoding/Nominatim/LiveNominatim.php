@@ -13,6 +13,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\NetworkException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
+use Time\Duration;
 
 final readonly class LiveNominatim implements Nominatim
 {
@@ -41,7 +42,7 @@ final readonly class LiveNominatim implements Nominatim
             );
 
             $response = Json::decode($response->getBody()->getContents());
-            $this->clock->sleep(1);
+            $this->clock->sleep(Duration::fromSeconds(1));
         } catch (NetworkException|RequestException) {
             throw new CouldNotReverseGeocodeAddress();
         }

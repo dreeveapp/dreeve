@@ -6,6 +6,7 @@ namespace App\Infrastructure\Time\Clock;
 
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\Clock\ClockInterface;
+use Time\Duration;
 
 readonly class SystemClock implements Clock
 {
@@ -19,8 +20,8 @@ readonly class SystemClock implements Clock
         return SerializableDateTime::createFromInterface($this->clock->now());
     }
 
-    public function sleep(int $seconds): void
+    public function sleep(Duration $duration): void
     {
-        $this->clock->sleep($seconds);
+        $this->clock->sleep($duration->seconds);
     }
 }

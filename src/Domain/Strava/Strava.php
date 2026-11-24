@@ -22,6 +22,7 @@ use GuzzleHttp\RequestOptions;
 use League\Flysystem\FilesystemOperator;
 use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
+use Time\Duration;
 
 #[WithMonologChannel('strava-api')]
 class Strava
@@ -60,7 +61,6 @@ class Strava
         ], $options);
         // An application's 15-minute limit is reset at natural 15-minute intervals corresponding to 0, 15, 30 and 45 minutes after the hour.
         $minutesUntilNextFifteenMinuteInterval = (15 - ($this->clock->now()->getMinutesWithoutLeadingZero() % 15)) + 1;
-        $secondsUntilNextFifteenMinuteInterval = $minutesUntilNextFifteenMinuteInterval * 60;
 
         try {
             $response = $this->client->request($method, $path, $options);
@@ -107,7 +107,7 @@ class Strava
                     '<comment>Whoa there! We are about to hit Strava’s 15-minute API rate limit. Taking a short %s-minute breather before getting back on track. Please be patient</comment>',
                     $minutesUntilNextFifteenMinuteInterval
                 ));
-                $this->clock->sleep($secondsUntilNextFifteenMinuteInterval);
+                $this->clock->sleep(Duration::fromMinutes($minutesUntilNextFifteenMinuteInterval));
             }
         }
 
