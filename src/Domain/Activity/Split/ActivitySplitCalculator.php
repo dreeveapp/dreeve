@@ -195,7 +195,7 @@ final readonly class ActivitySplitCalculator
         bool $isFullLength,
     ): array {
         $elapsedTimeInSeconds = max(0, (int) round($elapsedSeconds));
-        $movingTimeInSeconds = min($elapsedTimeInSeconds, max(0, (int) round($movingSeconds)));
+        $movingTimeInSeconds = clamp((int) round($movingSeconds), 0, $elapsedTimeInSeconds);
         $timeForAverageSpeed = $movingTimeInSeconds > 0 ? $movingTimeInSeconds : $elapsedTimeInSeconds;
 
         return [

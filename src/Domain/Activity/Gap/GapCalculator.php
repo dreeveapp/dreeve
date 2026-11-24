@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Activity\Gap;
 
-use App\Domain\Activity\Math;
 use App\Infrastructure\ValueObject\Geography\GeoMath;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
@@ -201,7 +200,7 @@ final readonly class GapCalculator
         $rawGrade = $rise / $run;
         $grade = abs($rise) < self::MIN_ELEVATION_CHANGE_THRESHOLD_M || abs($rawGrade) < self::GRADE_DEAD_ZONE
             ? 0.0
-            : Math::clamp($rawGrade, $this->minGrade, $this->maxGrade);
+            : clamp($rawGrade, $this->minGrade, $this->maxGrade);
 
         $duration = $endTimestamp - $startTimestamp;
         if ($duration <= 0.0) {

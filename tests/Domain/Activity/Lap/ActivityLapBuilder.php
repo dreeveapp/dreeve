@@ -15,9 +15,9 @@ final class ActivityLapBuilder
     private ActivityLapId $lapId;
     private ActivityId $activityId;
     private int $lapNumber = 1;
-    private readonly string $name;
-    private readonly int $elapsedTimeInSeconds;
-    private readonly int $movingTimeInSeconds;
+    private readonly string $name = 'test';
+    private readonly int $elapsedTimeInSeconds = 120;
+    private readonly int $movingTimeInSeconds = 110;
     private readonly Meter $distance;
     private MetersPerSecond $averageSpeed;
     private readonly MetersPerSecond $minAverageSpeed;
@@ -29,10 +29,7 @@ final class ActivityLapBuilder
     {
         $this->lapId = ActivityLapId::fromUnprefixed('test');
         $this->activityId = ActivityId::fromUnprefixed('test');
-        $this->name = 'test';
         $this->distance = Meter::from(100);
-        $this->elapsedTimeInSeconds = 120;
-        $this->movingTimeInSeconds = 110;
         $this->elevationDifference = Meter::from(2);
         $this->averageSpeed = MetersPerSecond::from(3);
         $this->minAverageSpeed = MetersPerSecond::from(1);

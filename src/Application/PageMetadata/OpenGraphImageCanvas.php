@@ -92,7 +92,7 @@ final readonly class OpenGraphImageCanvas
         $radius = self::AVATAR_SIZE / 2;
         for ($x = 0; $x < self::AVATAR_SIZE; ++$x) {
             for ($y = 0; $y < self::AVATAR_SIZE; ++$y) {
-                $coverage = max(0.0, min(1.0, $radius - hypot($x + 0.5 - $radius, $y + 0.5 - $radius)));
+                $coverage = clamp($radius - hypot($x + 0.5 - $radius, $y + 0.5 - $radius), 0.0, 1.0);
                 if ($coverage >= 1.0) {
                     continue;
                 }
@@ -102,7 +102,7 @@ final readonly class OpenGraphImageCanvas
                     red: ($rgb >> 16) & 0xFF,
                     green: ($rgb >> 8) & 0xFF,
                     blue: $rgb & 0xFF,
-                    alpha: max(0, min(127, (int) round(127 * (1 - $coverage)))),
+                    alpha: clamp((int) round(127 * (1 - $coverage)), 0, 127),
                 ));
             }
         }

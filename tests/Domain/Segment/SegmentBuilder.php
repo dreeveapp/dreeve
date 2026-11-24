@@ -22,7 +22,7 @@ final class SegmentBuilder
     private float $maxGradient = 5.3;
     private bool $isFavourite = false;
     private string $deviceName = 'Polar';
-    private readonly string $countryCode;
+    private readonly string $countryCode = 'BE';
     private bool $detailsHaveBeenImported = false;
     private ?EncodedPolyline $polyline = null;
     private ?Coordinate $startingCoordinate = null;
@@ -34,7 +34,6 @@ final class SegmentBuilder
         $this->segmentId = SegmentId::fromUnprefixed('1');
         $this->name = Name::fromString('Segment');
         $this->distance = Kilometer::from(1);
-        $this->countryCode = 'BE';
     }
 
     public static function fromDefaults(): self

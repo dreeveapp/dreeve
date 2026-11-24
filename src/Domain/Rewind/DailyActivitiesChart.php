@@ -60,7 +60,7 @@ final readonly class DailyActivitiesChart
             $movingTimeInSeconds = $this->movingTimePerDay[$day] ?? 0;
             $movingTimeInMinutes = (int) round($movingTimeInSeconds / 60);
             $data[] = [
-                'value' => [$day, array_key_exists($day, $this->movingTimePerDay) ? max(min(floor($movingTimeInSeconds / 1000), 4), 1) : 0],
+                'value' => [$day, array_key_exists($day, $this->movingTimePerDay) ? clamp(floor($movingTimeInSeconds / 1000), 1, 4) : 0],
                 'tooltip' => sprintf(
                     '%s: %02dh%02d',
                     htmlspecialchars(SerializableDateTime::fromDateTimeImmutable($dt)->translatedFormat((string) $this->dateFormat)),

@@ -99,7 +99,7 @@ final readonly class EncodedPolyline extends NonEmptyStringLiteral
             $deltaY = $toLatitude - $fromLatitude;
             $lengthSquared = $deltaX ** 2 + $deltaY ** 2;
             $projection = $lengthSquared > 0.0
-                ? max(0.0, min(1.0, ((($longitude - $fromLongitude) * $longitudeScale) * $deltaX + ($latitude - $fromLatitude) * $deltaY) / $lengthSquared))
+                ? clamp(((($longitude - $fromLongitude) * $longitudeScale) * $deltaX + ($latitude - $fromLatitude) * $deltaY) / $lengthSquared, 0.0, 1.0)
                 : 0.0;
 
             $shortestDistance = min($shortestDistance, GeoMath::haversineDistance(
