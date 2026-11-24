@@ -28,8 +28,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxslt1-dev \
     acl \
-    zstd \
-    libzstd-dev
+    zstd
 
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install zip
