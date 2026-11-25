@@ -24,7 +24,6 @@ return RectorConfig::configure()
         deadCode: true,
         codeQuality: true,
         typeDeclarations: true,
-        earlyReturn: true,
     )
     ->withSkip([
         OrdSingleByteRector::class,
