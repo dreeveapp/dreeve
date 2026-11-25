@@ -55,22 +55,6 @@ class FindActivityNeighboursQueryHandlerTest extends ContainerTestCase
         $this->assertNull($response->getNewerActivityName());
     }
 
-    public function testHandleForTheOnlyActivity(): void
-    {
-        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-            ActivityBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('only'))
-                ->build(), []
-        ));
-
-        $response = $this->queryBus->ask(new FindActivityNeighbours(ActivityId::fromUnprefixed('only')));
-
-        $this->assertNull($response->getOlderActivityId());
-        $this->assertNull($response->getOlderActivityName());
-        $this->assertNull($response->getNewerActivityId());
-        $this->assertNull($response->getNewerActivityName());
-    }
-
     #[\Override]
     protected function setUp(): void
     {

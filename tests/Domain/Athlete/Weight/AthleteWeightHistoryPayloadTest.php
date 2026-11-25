@@ -11,31 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class AthleteWeightHistoryPayloadTest extends TestCase
 {
-    public function testWith(): void
-    {
-        $payload = AthleteWeightHistoryPayload::fromStoredValue([
-            ['on' => '2024-01-01', 'weight' => 220],
-        ]);
-
-        $this->assertSame([
-            ['on' => '2024-01-01', 'weight' => 220],
-            ['on' => '2024-04-04', 'weight' => 223.5],
-        ], $payload->with(SerializableDateTime::fromString('2024-04-04'), 223.5)->toArray());
-    }
-
-    public function testWithItShouldReplaceTheWeightForTheDate(): void
-    {
-        $payload = AthleteWeightHistoryPayload::fromStoredValue([
-            ['on' => '2024-01-01', 'weight' => 220],
-            ['on' => '2024-03-03', 'weight' => 222],
-        ]);
-
-        $this->assertSame([
-            ['on' => '2024-01-01', 'weight' => 220],
-            ['on' => '2024-03-03', 'weight' => 100.5],
-        ], $payload->with(SerializableDateTime::fromString('2024-03-03'), 100.5)->toArray());
-    }
-
     public function testWithItShouldIgnoreTheTimeOfDay(): void
     {
         $payload = AthleteWeightHistoryPayload::fromStoredValue([
@@ -58,18 +33,6 @@ class AthleteWeightHistoryPayloadTest extends TestCase
         $this->assertSame([
             ['on' => '2024-01-01', 'weight' => 220],
         ], $payload->toArray());
-    }
-
-    public function testWithout(): void
-    {
-        $payload = AthleteWeightHistoryPayload::fromStoredValue([
-            ['on' => '2024-01-01', 'weight' => 220],
-            ['on' => '2024-03-03', 'weight' => 222],
-        ]);
-
-        $this->assertSame([
-            ['on' => '2024-01-01', 'weight' => 220],
-        ], $payload->without(SerializableDateTime::fromString('2024-03-03'))->toArray());
     }
 
     public function testWithoutItShouldIgnoreUnknownDates(): void

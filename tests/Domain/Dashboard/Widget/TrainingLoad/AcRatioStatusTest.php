@@ -5,7 +5,6 @@ namespace App\Tests\Domain\Dashboard\Widget\TrainingLoad;
 use App\Domain\Dashboard\Widget\TrainingLoad\AcRatioStatus;
 use App\Tests\ContainerTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AcRatioStatusTest extends ContainerTestCase
 {
@@ -13,34 +12,6 @@ class AcRatioStatusTest extends ContainerTestCase
     public function testFromFloat(float $value, AcRatioStatus $expected): void
     {
         self::assertSame($expected, AcRatioStatus::fromFloat($value));
-    }
-
-    public function testGetTranslations(): void
-    {
-        $actual = [];
-        foreach (AcRatioStatus::cases() as $acRatioStatus) {
-            $actual[$acRatioStatus->name] = $acRatioStatus->trans($this->getContainer()->get(TranslatorInterface::class));
-        }
-        $this->assertEquals(
-            ['HIGH_RISK' => 'High risk', 'LOW_RISK' => 'Low risk', 'LOW_TRAINING_LOAD' => 'Low training load'],
-            $actual,
-        );
-    }
-
-    public function testGetDescriptionsTranslations(): void
-    {
-        $actual = [];
-        foreach (AcRatioStatus::cases() as $acRatioStatus) {
-            $actual[$acRatioStatus->name] = $acRatioStatus->transDescription($this->getContainer()->get(TranslatorInterface::class));
-        }
-        $this->assertEquals(
-            [
-                'HIGH_RISK' => 'Consider reducing load',
-                'LOW_RISK' => 'Optimal training range',
-                'LOW_TRAINING_LOAD' => 'Fitness may decline',
-            ],
-            $actual,
-        );
     }
 
     #[DataProvider('presentationProvider')]

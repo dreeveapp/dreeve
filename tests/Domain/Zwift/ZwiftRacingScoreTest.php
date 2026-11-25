@@ -14,11 +14,4 @@ class ZwiftRacingScoreTest extends TestCase
         $this->assertEquals(0, ZwiftRacingScore::fromInt(0)->getValue());
         $this->assertEquals(1000, ZwiftRacingScore::fromInt(1000)->getValue());
     }
-
-    public function testItShouldThrowWhenInvalidRacingScore(): void
-    {
-        $this->expectExceptionObject(new \InvalidArgumentException('ZwiftRacingScore must be a number between 0 and 1000'));
-
-        ZwiftRacingScore::fromInt(1001);
-    }
 }

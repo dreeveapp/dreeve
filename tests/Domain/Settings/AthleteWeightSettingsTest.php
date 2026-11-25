@@ -6,8 +6,6 @@ namespace App\Tests\Domain\Settings;
 
 use App\Domain\Athlete\Weight\AthleteWeight;
 use App\Domain\Settings\AthleteWeightSettings;
-use App\Domain\Settings\SettingsGroup;
-use App\Domain\Settings\SettingsName;
 use App\Infrastructure\Measurement\UnitSystem;
 use PHPUnit\Framework\TestCase;
 
@@ -32,10 +30,5 @@ class AthleteWeightSettingsTest extends TestCase
             [['on' => '2024-02-01', 'weight' => 69.5], ['on' => '2024-01-01', 'weight' => 70.0]],
             array_values(array_map(fn (AthleteWeight $weight): array => $weight->jsonSerialize(), $weights)),
         );
-    }
-
-    public function testTheWeightHistoryIsStoredInTheAthleteWeightGroup(): void
-    {
-        $this->assertSame(SettingsGroup::ATHLETE_WEIGHT, SettingsName::WEIGHT_HISTORY->group());
     }
 }

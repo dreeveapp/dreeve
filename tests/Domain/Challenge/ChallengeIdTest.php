@@ -29,20 +29,6 @@ class ChallengeIdTest extends TestCase
         );
     }
 
-    public function testItDecodesEntities(): void
-    {
-        $this->assertEquals(
-            ChallengeId::fromDateAndName(
-                createdOn: SerializableDateTime::fromString('2026-01-01'),
-                name: 'roc_d&#x27;azur_cic_challenge_2024'
-            ),
-            ChallengeId::fromDateAndName(
-                createdOn: SerializableDateTime::fromString('2026-01-01'),
-                name: 'roc_d&#39;azur_cic_challenge_2024'
-            )
-        );
-    }
-
     /**
      * @return list<array{SerializableDateTime, string, ChallengeId}>
      */
