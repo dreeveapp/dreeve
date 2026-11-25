@@ -1,3 +1,41 @@
+# [v5.9.2](https://github.com/dreeveapp/dreeve/releases/tag/v5.9.2) - 2026-11-25
+
+## New features
+* Add Disc golf as an outdoor activity
+* Add a "System" option for dark mode
+* Import total descent from FIT, TCX and GPX files
+* Import perceived exertion (RPE) and feel from FIT files
+* Allow users to configure multiple API keys at once
+
+## Improvements
+* Allow to preview suggested collections before creating them
+* Speed up FIT imports
+* Allow existing activities to be refreshed from their stored files
+
+## Big fixes
+* Hide fullscreen controls when the Fullscreen API isn't available
+* Make the heart rate chart's x-axis end at the athlete's maximum heart rate
+
+## Technical details
+* ISSUE #3085: Add "Disc golf" sport type as an outdoor activity by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3086
+* ISSUE #3087: ISSUE #3087: Hide fullscreen controls when Fullscreen API is unavailable by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3091
+* ISSUE #3088: Support "System" option for dark mode by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3092
+* ISSUE #3090: Allow a first look at suggested collections before creation by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3095
+* ISSUE #3094: End heart rate chart x-axis at the athlete's max heart rate by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3099
+* ISSUE #3071: Speed up FIT imports by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3101
+* ISSUE #3071: Import "total descent" from FIT/TCX/GPX files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3102
+* ISSUE #3103: Refresh existing activities from their stored files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3104
+* ISSUE #3081: Add ability to request multiple API Keys by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3105
+* ISSUE #3089: Import perceived exertion (RPE) and feel from FIT files by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3106
+* ISSUE #3107: Upgrade to PHP8.6 by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3110
+* docs: mention dreeve-garmin-elevation on the Garmin Connect page by @M3c4tr0x in https://github.com/dreeveapp/dreeve/pull/3114
+* ISSUE #3112: Serve activity photos from their own route with ETag revalidation by @robiningelbrecht in https://github.com/dreeveapp/dreeve/pull/3115
+
+## New Contributors
+* @M3c4tr0x made their first contribution in https://github.com/dreeveapp/dreeve/pull/3114
+
+**Full Changelog**: https://github.com/dreeveapp/dreeve/compare/v5.9.1...v5.9.2
+
 # [v5.9.1](https://github.com/dreeveapp/dreeve/releases/tag/v5.9.1) - 2026-11-20
 
 > [!WARNING]
