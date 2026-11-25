@@ -14,5 +14,10 @@ interface ActivityPowerRepository
 
     public function findBestForSportTypes(SportTypes $sportTypes): PowerOutputs;
 
-    public function findBestForSportTypesInDateRange(SportTypes $sportTypes, DateRange $dateRange): PowerOutputs;
+    /**
+     * @param array<string, DateRange> $dateRanges
+     *
+     * @return array<string, PowerOutputs>
+     */
+    public function findBestForSportTypesPerDateRange(SportTypes $sportTypes, array $dateRanges): array;
 }

@@ -25,45 +25,30 @@ final readonly class StreamBasedActivityPowerRepository implements ActivityPower
 
     public function findBestForSportTypes(SportTypes $sportTypes): PowerOutputs
     {
-        return $this->buildBestFor(
+        return $this->findBestForSportTypesPerDateRange(
             sportTypes: $sportTypes,
-            dateRange: null
-        );
+            dateRanges: [
+                'allTime' => DateRange::fromDates(
+                    from: SerializableDateTime::fromString('1970-01-01 00:00:00'),
+                    till: SerializableDateTime::fromString('2100-01-01 00:00:00')
+                ),
+            ],
+        )['allTime'];
     }
 
-    public function findBestForSportTypesInDateRange(SportTypes $sportTypes, DateRange $dateRange): PowerOutputs
+    public function findBestForSportTypesPerDateRange(SportTypes $sportTypes, array $dateRanges): array
     {
-        return $this->buildBestFor(
-            sportTypes: $sportTypes,
-            dateRange: $dateRange
-        );
-    }
-
-    private function buildBestFor(SportTypes $sportTypes, ?DateRange $dateRange): PowerOutputs
-    {
-        $powerOutputs = PowerOutputs::empty();
-
-        if (!$dateRange instanceof DateRange) {
-            $dateRange = DateRange::fromDates(
-                from: SerializableDateTime::fromString('1970-01-01 00:00:00'),
-                till: SerializableDateTime::fromString('2100-01-01 00:00:00')
-            );
-        }
-
         $sql = 'SELECT m.activityId, m.data, a.startDateTime FROM ActivityStreamMetric m
                 INNER JOIN Activity a ON a.activityId = m.activityId
                 WHERE m.streamType = :streamType
                 AND m.metricType = :metricType
                 AND a.sportType IN(:sportTypes)
-                AND a.startDateTime >= :dateFrom AND a.startDateTime <= :dateTill
                 AND NOT EXISTS (SELECT 1 FROM json_each(a.excludedFrom) WHERE json_each.value = :excludedFrom)';
 
         $params = [
             'streamType' => StreamType::WATTS->value,
             'metricType' => ActivityStreamMetricType::BEST_AVERAGES->value,
             'sportTypes' => $sportTypes->toValues(),
-            'dateFrom' => $dateRange->getFrom()->format('Y-m-d 00:00:00'),
-            'dateTill' => $dateRange->getTill()->format('Y-m-d 23:59:59'),
             'excludedFrom' => ActivityExclusion::PEAK_POWER_OUTPUTS->value,
         ];
         $types = [
@@ -74,47 +59,65 @@ final readonly class StreamBasedActivityPowerRepository implements ActivityPower
 
         $athleteWeightHistory = $this->settingsRepository->athleteWeight()->getHistory($this->settingsRepository->appearance()->getUnitSystem());
 
-        /** @var array<int, array{activityId: string, startDateTime: string, power: int}> $bestPerInterval */
-        $bestPerInterval = [];
+        $dateBoundsPerRange = array_map(
+            fn (DateRange $dateRange): array => [
+                'from' => $dateRange->getFrom()->format('Y-m-d 00:00:00'),
+                'till' => $dateRange->getTill()->format('Y-m-d 23:59:59'),
+            ],
+            $dateRanges,
+        );
+
+        /** @var array<string, array<int, array{activityId: string, startDateTime: string, power: int}>> $bestPerIntervalPerRange */
+        $bestPerIntervalPerRange = array_map(fn (): array => [], $dateRanges);
         foreach ($results as $result) {
             $bestAverages = Json::uncompressAndDecode($result['data']);
-            foreach (self::TIME_INTERVALS_IN_SECONDS_ALL as $timeIntervalInSeconds) {
-                if (!isset($bestAverages[$timeIntervalInSeconds])) {
+            foreach ($dateBoundsPerRange as $rangeKey => $dateBounds) {
+                if ($result['startDateTime'] < $dateBounds['from'] || $result['startDateTime'] > $dateBounds['till']) {
                     continue;
                 }
-                $power = $bestAverages[$timeIntervalInSeconds];
-                if (!isset($bestPerInterval[$timeIntervalInSeconds]) || $power > $bestPerInterval[$timeIntervalInSeconds]['power']) {
-                    $bestPerInterval[$timeIntervalInSeconds] = [
-                        'activityId' => $result['activityId'],
-                        'startDateTime' => $result['startDateTime'],
-                        'power' => $power,
-                    ];
+                foreach (self::TIME_INTERVALS_IN_SECONDS_ALL as $timeIntervalInSeconds) {
+                    if (!isset($bestAverages[$timeIntervalInSeconds])) {
+                        continue;
+                    }
+                    $power = $bestAverages[$timeIntervalInSeconds];
+                    if (!isset($bestPerIntervalPerRange[$rangeKey][$timeIntervalInSeconds]) || $power > $bestPerIntervalPerRange[$rangeKey][$timeIntervalInSeconds]['power']) {
+                        $bestPerIntervalPerRange[$rangeKey][$timeIntervalInSeconds] = [
+                            'activityId' => $result['activityId'],
+                            'startDateTime' => $result['startDateTime'],
+                            'power' => $power,
+                        ];
+                    }
                 }
             }
         }
 
-        foreach ($bestPerInterval as $timeIntervalInSeconds => $best) {
-            $activityId = ActivityId::fromString($best['activityId']);
-            $interval = CarbonInterval::seconds($timeIntervalInSeconds);
+        $powerOutputsPerRange = [];
+        foreach ($bestPerIntervalPerRange as $rangeKey => $bestPerInterval) {
+            $powerOutputs = PowerOutputs::empty();
+            foreach ($bestPerInterval as $timeIntervalInSeconds => $best) {
+                $activityId = ActivityId::fromString($best['activityId']);
+                $interval = CarbonInterval::seconds($timeIntervalInSeconds);
 
-            $athleteWeight = null;
-            try {
-                $athleteWeight = $athleteWeightHistory->find(SerializableDateTime::fromString($best['startDateTime']))->getWeightInKg();
-            } catch (EntityNotFound) {
+                $athleteWeight = null;
+                try {
+                    $athleteWeight = $athleteWeightHistory->find(SerializableDateTime::fromString($best['startDateTime']))->getWeightInKg();
+                } catch (EntityNotFound) {
+                }
+
+                $relativePower = $athleteWeight?->toFloat() > 0 ? round($best['power'] / $athleteWeight->toFloat(), 2) : null;
+                $powerOutputs->add(
+                    PowerOutput::fromState(
+                        timeIntervalInSeconds: $timeIntervalInSeconds,
+                        formattedTimeInterval: 0 !== (int) $interval->totalHours ? $interval->totalHours.' h' : (0 !== (int) $interval->totalMinutes ? $interval->totalMinutes.' m' : $interval->totalSeconds.' s'),
+                        power: $best['power'],
+                        relativePower: $relativePower,
+                        activityId: $activityId,
+                    )
+                );
             }
-
-            $relativePower = $athleteWeight?->toFloat() > 0 ? round($best['power'] / $athleteWeight->toFloat(), 2) : null;
-            $powerOutputs->add(
-                PowerOutput::fromState(
-                    timeIntervalInSeconds: $timeIntervalInSeconds,
-                    formattedTimeInterval: 0 !== (int) $interval->totalHours ? $interval->totalHours.' h' : (0 !== (int) $interval->totalMinutes ? $interval->totalMinutes.' m' : $interval->totalSeconds.' s'),
-                    power: $best['power'],
-                    relativePower: $relativePower,
-                    activityId: $activityId,
-                )
-            );
+            $powerOutputsPerRange[$rangeKey] = $powerOutputs;
         }
 
-        return $powerOutputs;
+        return $powerOutputsPerRange;
     }
 }

@@ -15,6 +15,7 @@ use App\Domain\Activity\Stream\Metric\ActivityStreamMetric;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricRepository;
 use App\Domain\Activity\Stream\Metric\ActivityStreamMetricType;
 use App\Domain\Activity\Stream\PowerOutput;
+use App\Domain\Activity\Stream\PowerOutputs;
 use App\Domain\Activity\Stream\StreamType;
 use App\Infrastructure\ValueObject\Time\DateRange;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -96,7 +97,7 @@ class StreamBasedActivityPowerRepositoryTest extends ContainerTestCase
         )->isEmpty());
     }
 
-    public function testFindBestForSportTypesInDateRange(): void
+    public function testFindBestForSportTypesPerDateRange(): void
     {
         $this->addRideWithBestAverages(
             activityId: ActivityId::fromUnprefixed('1'),
@@ -109,17 +110,34 @@ class StreamBasedActivityPowerRepositoryTest extends ContainerTestCase
             bestAverages: [5 => 400],
         );
 
-        $powerOutputs = $this->activityPowerRepository->findBestForSportTypesInDateRange(
+        $powerOutputsPerDateRange = $this->activityPowerRepository->findBestForSportTypesPerDateRange(
             sportTypes: SportTypes::thatSupportPeakPowerOutputs(ActivityType::RIDE),
-            dateRange: DateRange::fromDates(
-                from: SerializableDateTime::fromString('2021-01-01 00:00:00'),
-                till: SerializableDateTime::fromString('2021-12-31 00:00:00'),
-            ),
+            dateRanges: [
+                'all' => DateRange::fromDates(
+                    from: SerializableDateTime::fromString('2020-01-01 00:00:00'),
+                    till: SerializableDateTime::fromString('2021-12-31 00:00:00'),
+                ),
+                'in2021' => DateRange::fromDates(
+                    from: SerializableDateTime::fromString('2021-01-01 00:00:00'),
+                    till: SerializableDateTime::fromString('2021-12-31 00:00:00'),
+                ),
+                'in2022' => DateRange::fromDates(
+                    from: SerializableDateTime::fromString('2022-01-01 00:00:00'),
+                    till: SerializableDateTime::fromString('2022-12-31 00:00:00'),
+                ),
+            ],
         );
 
         $this->assertEquals(
-            [400],
-            $powerOutputs->map(fn (PowerOutput $powerOutput): int => $powerOutput->getPower()),
+            [
+                'all' => [900],
+                'in2021' => [400],
+                'in2022' => [],
+            ],
+            array_map(
+                fn (PowerOutputs $powerOutputs): array => $powerOutputs->map(fn (PowerOutput $powerOutput): int => $powerOutput->getPower()),
+                $powerOutputsPerDateRange,
+            ),
         );
     }
 

@@ -67,8 +67,9 @@ final readonly class PowerOutputRequestHandler
     {
         $now = $this->clock->now();
 
-        $allYears = null;
         $allTimeLabel = $this->translator->trans('All time');
+        /** @var array<string, DateRange> $dateRanges */
+        $dateRanges = [];
         /** @var array<string, BestPowerOutputs> $bestPowerOutputsPerActivityType */
         $bestPowerOutputsPerActivityType = [];
         /** @var array<string, string> $powerOutputChartsPerActivityType */
@@ -79,39 +80,35 @@ final readonly class PowerOutputRequestHandler
             if (!$activityType->supportsPowerData()) {
                 continue; // @codeCoverageIgnore
             }
-            $sportTypes = SportTypes::thatSupportPeakPowerOutputs($activityType);
-            $bestAllTimePowerOutputs = $this->activityPowerRepository->findBestForSportTypes($sportTypes);
 
-            if ($bestAllTimePowerOutputs->isEmpty()) {
+            if ([] === $dateRanges) {
+                $firstActivityStartDate = $this->queryBus->ask(new FindFirstActivityStartDate())->getStartDate();
+                $dateRanges[$allTimeLabel] = DateRange::fromDates(
+                    from: $firstActivityStartDate,
+                    till: $now,
+                );
+                foreach ([45, 90] as $numberOfDays) {
+                    $dateRanges[$this->translator->trans('Last {numberOfDays} days', ['{numberOfDays}' => $numberOfDays])] = DateRange::lastXDays($now, $numberOfDays);
+                }
+                foreach (Years::create(startDate: $firstActivityStartDate, endDate: $now)->reverse() as $year) {
+                    $dateRanges[(string) $year] = $year->getRange();
+                }
+            }
+
+            $powerOutputsPerDateRange = $this->activityPowerRepository->findBestForSportTypesPerDateRange(
+                sportTypes: SportTypes::thatSupportPeakPowerOutputs($activityType),
+                dateRanges: $dateRanges,
+            );
+
+            if ($powerOutputsPerDateRange[$allTimeLabel]->isEmpty()) {
                 continue;
             }
 
-            $allYears ??= Years::create(
-                startDate: $this->queryBus->ask(new FindFirstActivityStartDate())->getStartDate(),
-                endDate: $now
-            );
-
             $bestPowerOutputs = BestPowerOutputs::empty();
-            $bestPowerOutputs->add(
-                description: $allTimeLabel,
-                powerOutputs: $bestAllTimePowerOutputs,
-            );
-            foreach ([45, 90] as $numberOfDays) {
+            foreach ($powerOutputsPerDateRange as $description => $powerOutputs) {
                 $bestPowerOutputs->add(
-                    description: $this->translator->trans('Last {numberOfDays} days', ['{numberOfDays}' => $numberOfDays]),
-                    powerOutputs: $this->activityPowerRepository->findBestForSportTypesInDateRange(
-                        sportTypes: $sportTypes,
-                        dateRange: DateRange::lastXDays($now, $numberOfDays)
-                    )
-                );
-            }
-            foreach ($allYears->reverse() as $year) {
-                $bestPowerOutputs->add(
-                    description: (string) $year,
-                    powerOutputs: $this->activityPowerRepository->findBestForSportTypesInDateRange(
-                        sportTypes: $sportTypes,
-                        dateRange: $year->getRange(),
-                    )
+                    description: (string) $description,
+                    powerOutputs: $powerOutputs,
                 );
             }
 
