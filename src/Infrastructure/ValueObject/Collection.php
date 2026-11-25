@@ -149,15 +149,7 @@ abstract class Collection implements \Countable, \IteratorAggregate, \JsonSerial
      */
     public function getFirst(): mixed
     {
-        if ($this->isEmpty()) {
-            return null;
-        }
-
-        $items = $this->toArray();
-        /** @var T $item */
-        $item = reset($items);
-
-        return $item;
+        return array_first($this->items);
     }
 
     /**
@@ -165,15 +157,7 @@ abstract class Collection implements \Countable, \IteratorAggregate, \JsonSerial
      */
     public function getLast(): mixed
     {
-        if ($this->isEmpty()) {
-            return null;
-        }
-
-        $items = $this->toArray();
-        /** @var T $item */
-        $item = end($items);
-
-        return $item;
+        return array_last($this->items);
     }
 
     /**
