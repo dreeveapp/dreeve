@@ -14,8 +14,11 @@ class GateRegistrationTest extends ContainerTestCase
 {
     public function testGatesAreRegisteredAndOrderedByPriority(): void
     {
+        /** @var iterable<Gate> $gates */
+        $gates = new \ReflectionProperty(GateRequestListener::class, 'gates')->getValue($this->getContainer()->get(GateRequestListener::class));
+
         $gateClasses = [];
-        foreach ($this->registeredGates() as $gate) {
+        foreach ($gates as $gate) {
             $gateClasses[] = $gate::class;
         }
 
@@ -25,18 +28,5 @@ class GateRegistrationTest extends ContainerTestCase
             ValidAppSettingsGate::class,        // priority 80
             AppHasActivitiesGate::class,        // priority 70
         ], $gateClasses);
-    }
-
-    /**
-     * @return iterable<Gate>
-     */
-    private function registeredGates(): iterable
-    {
-        $listener = $this->getContainer()->get(GateRequestListener::class);
-
-        /** @var iterable<Gate> $gates */
-        $gates = new \ReflectionProperty(GateRequestListener::class, 'gates')->getValue($listener);
-
-        return $gates;
     }
 }

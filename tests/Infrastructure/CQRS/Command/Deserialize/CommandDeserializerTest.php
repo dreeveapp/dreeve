@@ -38,7 +38,8 @@ class CommandDeserializerTest extends TestCase
 
     public function testDeserializeWithUnknownCommand(): void
     {
-        $this->expectExceptionObject(CouldNotDeserializeCommand::unknownCommand('not-a-known-command'));
+        $this->expectException(CouldNotDeserializeCommand::class);
+        $this->expectExceptionMessage('Could not deserialize command, "not-a-known-command" is not a known command.');
 
         $this->commandDeserializer->deserialize(Json::encode([
             'commandName' => 'not-a-known-command',

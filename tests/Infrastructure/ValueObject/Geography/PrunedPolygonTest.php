@@ -4,7 +4,6 @@ namespace App\Tests\Infrastructure\ValueObject\Geography;
 
 use App\Infrastructure\ValueObject\Geography\BoundingBox;
 use App\Infrastructure\ValueObject\Geography\Polygon;
-use App\Infrastructure\ValueObject\Geography\PrunedPolygon;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +21,10 @@ class PrunedPolygonTest extends TestCase
     #[TestWith([5.0, 11.0, false, 'north of it'])]
     public function testContainsAnyOfASquare(float $longitude, float $latitude, bool $expected, string $description): void
     {
-        $this->assertEquals($expected, $this->pruned([self::SQUARE])->containsAnyOf([[$longitude, $latitude]]), $description);
+        $polygon = Polygon::fromLngLatRings([self::SQUARE])->pruned(BoundingBox::fromArray([-180.0, -90.0, 180.0, 90.0]));
+        $this->assertNotNull($polygon);
+
+        $this->assertEquals($expected, $polygon->containsAnyOf([[$longitude, $latitude]]), $description);
     }
 
     #[TestWith([5.0, 5.0, false, 'inside the hole'])]
@@ -32,7 +34,10 @@ class PrunedPolygonTest extends TestCase
     #[TestWith([20.0, 5.0, false, 'outside the polygon entirely'])]
     public function testContainsAnyOfASquareWithAHole(float $longitude, float $latitude, bool $expected, string $description): void
     {
-        $this->assertEquals($expected, $this->pruned([self::SQUARE, self::HOLE])->containsAnyOf([[$longitude, $latitude]]), $description);
+        $polygon = Polygon::fromLngLatRings([self::SQUARE, self::HOLE])->pruned(BoundingBox::fromArray([-180.0, -90.0, 180.0, 90.0]));
+        $this->assertNotNull($polygon);
+
+        $this->assertEquals($expected, $polygon->containsAnyOf([[$longitude, $latitude]]), $description);
     }
 
     #[TestWith([5.0, 5.0, false, 'inside the first hole'])]
@@ -40,7 +45,8 @@ class PrunedPolygonTest extends TestCase
     #[TestWith([8.0, 8.0, true, 'inside neither hole'])]
     public function testContainsAnyOfAPolygonWithSeveralHoles(float $longitude, float $latitude, bool $expected, string $description): void
     {
-        $polygon = $this->pruned([self::SQUARE, self::HOLE, self::SECOND_HOLE]);
+        $polygon = Polygon::fromLngLatRings([self::SQUARE, self::HOLE, self::SECOND_HOLE])->pruned(BoundingBox::fromArray([-180.0, -90.0, 180.0, 90.0]));
+        $this->assertNotNull($polygon);
 
         $this->assertEquals($expected, $polygon->containsAnyOf([[$longitude, $latitude]]), $description);
     }
@@ -56,12 +62,18 @@ class PrunedPolygonTest extends TestCase
             [7.0, 4.0], [3.0, 4.0], [3.0, 10.0], [0.0, 10.0], [0.0, 0.0],
         ];
 
-        $this->assertEquals($expected, $this->pruned([$u])->containsAnyOf([[$longitude, $latitude]]), $description);
+        $polygon = Polygon::fromLngLatRings([$u])->pruned(BoundingBox::fromArray([-180.0, -90.0, 180.0, 90.0]));
+        $this->assertNotNull($polygon);
+
+        $this->assertEquals($expected, $polygon->containsAnyOf([[$longitude, $latitude]]), $description);
     }
 
     public function testContainsAnyOfIsTrueWhenASingleCoordinateMatches(): void
     {
-        $this->assertTrue($this->pruned([self::SQUARE])->containsAnyOf([
+        $polygon = Polygon::fromLngLatRings([self::SQUARE])->pruned(BoundingBox::fromArray([-180.0, -90.0, 180.0, 90.0]));
+        $this->assertNotNull($polygon);
+
+        $this->assertTrue($polygon->containsAnyOf([
             [-5.0, -5.0],
             [-4.0, -4.0],
             [5.0, 5.0],
@@ -71,7 +83,10 @@ class PrunedPolygonTest extends TestCase
 
     public function testContainsAnyOfIsFalseWhenNoCoordinateMatches(): void
     {
-        $this->assertFalse($this->pruned([self::SQUARE])->containsAnyOf([
+        $polygon = Polygon::fromLngLatRings([self::SQUARE])->pruned(BoundingBox::fromArray([-180.0, -90.0, 180.0, 90.0]));
+        $this->assertNotNull($polygon);
+
+        $this->assertFalse($polygon->containsAnyOf([
             [-5.0, -5.0],
             [-4.0, -4.0],
             [50.0, 50.0],
@@ -80,19 +95,9 @@ class PrunedPolygonTest extends TestCase
 
     public function testContainsAnyOfWithoutCoordinates(): void
     {
-        $this->assertFalse($this->pruned([self::SQUARE])->containsAnyOf([]));
-    }
+        $polygon = Polygon::fromLngLatRings([self::SQUARE])->pruned(BoundingBox::fromArray([-180.0, -90.0, 180.0, 90.0]));
+        $this->assertNotNull($polygon);
 
-    /**
-     * @param list<list<array{float, float}>> $rings
-     */
-    private function pruned(array $rings): PrunedPolygon
-    {
-        $pruned = Polygon::fromLngLatRings($rings)
-            ->pruned(BoundingBox::fromArray([-180.0, -90.0, 180.0, 90.0]));
-
-        $this->assertNotNull($pruned);
-
-        return $pruned;
+        $this->assertFalse($polygon->containsAnyOf([]));
     }
 }
