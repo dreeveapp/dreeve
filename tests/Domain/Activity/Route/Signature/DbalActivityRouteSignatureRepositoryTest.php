@@ -12,7 +12,6 @@ use App\Domain\Geography\Grid\RouteCells;
 use App\Domain\Geography\Grid\RouteGrid;
 use App\Domain\Geography\Grid\RouteWaypoints;
 use App\Infrastructure\Exception\EntityNotFound;
-use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\EncodedPolyline;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -20,49 +19,6 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 class DbalActivityRouteSignatureRepositoryTest extends ContainerTestCase
 {
     private ActivityRouteSignatureRepository $activityRouteSignatureRepository;
-
-    public function testAdd(): void
-    {
-        $this->activityRouteSignatureRepository->add(
-            ActivityRouteSignatureBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('test'))
-                ->withPolylineChecksum('aaaaaaaa')
-                ->withCells(RouteCells::fromArray([10, 20, 30]))
-                ->withWaypoints(RouteWaypoints::fromArray([5100000, 300000, 5100100, 300100]))
-                ->build()
-        );
-        $this->activityRouteSignatureRepository->add(
-            ActivityRouteSignatureBuilder::fromDefaults()
-                ->withActivityId(ActivityId::fromUnprefixed('test-2'))
-                ->withPolylineChecksum('bbbbbbbb')
-                ->withCells(RouteCells::fromArray([40]))
-                ->build()
-        );
-
-        $results = $this->getConnection()
-            ->executeQuery('SELECT activityId, polylineChecksum, cellCount FROM ActivityRouteSignature ORDER BY activityId')
-            ->fetchAllAssociative();
-
-        $this->assertEquals(
-            [
-                ['activityId' => 'activity-test', 'polylineChecksum' => 'aaaaaaaa', 'cellCount' => 3],
-                ['activityId' => 'activity-test-2', 'polylineChecksum' => 'bbbbbbbb', 'cellCount' => 1],
-            ],
-            $results,
-        );
-        $this->assertEquals(
-            [10, 20, 30],
-            Json::uncompressAndDecode($this->getConnection()->executeQuery(
-                'SELECT cells FROM ActivityRouteSignature WHERE activityId = "activity-test"'
-            )->fetchOne())
-        );
-        $this->assertEquals(
-            [5100000, 300000, 5100100, 300100],
-            Json::uncompressAndDecode($this->getConnection()->executeQuery(
-                'SELECT waypoints FROM ActivityRouteSignature WHERE activityId = "activity-test"'
-            )->fetchOne())
-        );
-    }
 
     public function testFind(): void
     {

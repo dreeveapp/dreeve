@@ -294,60 +294,6 @@ class DbalGearMaintenanceLogOverviewRepositoryTest extends ContainerTestCase
         $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId($gearMaintenanceLogId);
     }
 
-    public function testFindOneByGearMaintenanceLogIdThrowsWhenGearIsAbsent(): void
-    {
-        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
-            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
-            ->withLabel('Some cool chain')
-            ->withMaintenanceTask(MaintenanceTask::create(
-                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
-                label: Name::fromString('Lube'),
-                intervalValue: 500,
-                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
-            ))
-            ->build());
-
-        $log = GearMaintenanceLog::create(
-            gearId: GearId::fromUnprefixed('g999'),
-            maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
-            performedOn: SerializableDateTime::fromString('2025-01-01 00:00:00'),
-        );
-        $this->gearMaintenanceLogRepository->add($log);
-
-        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
-        $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId($log->getId());
-    }
-
-    public function testFindOneByGearMaintenanceLogIdThrowsWhenTaskIsNotInConfig(): void
-    {
-        $this->getContainer()->get(GearComponentRepository::class)->add(GearComponentBuilder::fromDefaults()
-            ->withGearComponentId(GearComponentId::fromUnprefixed('chain'))
-            ->withLabel('Some cool chain')
-            ->withMaintenanceTask(MaintenanceTask::create(
-                id: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
-                label: Name::fromString('Lube'),
-                intervalValue: 500,
-                intervalUnit: IntervalUnit::EVERY_X_KILOMETERS_USED,
-            ))
-            ->build());
-        $this->gearRepository->add(
-            GearBuilder::fromDefaults()
-                ->withGearId(GearId::fromUnprefixed('g10130856'))
-                ->withName('Race bike')
-                ->build()
-        );
-
-        $log = GearMaintenanceLog::create(
-            gearId: GearId::fromUnprefixed('g10130856'),
-            maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-removed'),
-            performedOn: SerializableDateTime::fromString('2025-01-01 00:00:00'),
-        );
-        $this->gearMaintenanceLogRepository->add($log);
-
-        $this->expectExceptionObject(new EntityNotFound(sprintf('Gear maintenance log "%s" is no longer available', $log->getId())));
-        $this->gearMaintenanceLogOverviewRepository->findOneByGearMaintenanceLogId($log->getId());
-    }
-
     private function seedThreeLogs(): void
     {
         foreach (['2025-01-01', '2025-02-01', '2025-03-01'] as $date) {

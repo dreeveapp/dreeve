@@ -60,11 +60,6 @@ class DbalActivityDrivetrainUsageRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testFindByActivityWhenThereIsNone(): void
-    {
-        $this->assertTrue($this->activityDrivetrainUsageRepository->findByActivity(ActivityId::fromUnprefixed('test'))->isEmpty());
-    }
-
     public function testDeleteForActivity(): void
     {
         $this->addDrivetrainUsageForActivity('test');

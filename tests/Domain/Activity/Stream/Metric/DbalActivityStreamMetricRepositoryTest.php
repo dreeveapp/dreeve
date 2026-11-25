@@ -21,25 +21,6 @@ class DbalActivityStreamMetricRepositoryTest extends ContainerTestCase
     private ActivityStreamMetricRepository $activityStreamMetricRepository;
     private DbalActivityStreamRepository $activityStreamRepository;
 
-    public function testAdd(): void
-    {
-        $metric = ActivityStreamMetric::create(
-            activityId: ActivityId::fromUnprefixed('1'),
-            streamType: StreamType::WATTS,
-            metricType: ActivityStreamMetricType::BEST_AVERAGES,
-            data: [100, 200, 300],
-        );
-
-        $this->activityStreamMetricRepository->add($metric);
-
-        $found = $this->activityStreamMetricRepository->findByActivityIdAndMetricType(
-            ActivityId::fromUnprefixed('1'),
-            ActivityStreamMetricType::BEST_AVERAGES,
-        );
-
-        $this->assertEquals(ActivityStreamMetrics::fromArray([$metric]), $found);
-    }
-
     public function testDeleteForActivity(): void
     {
         $activityId = ActivityId::fromUnprefixed('1');

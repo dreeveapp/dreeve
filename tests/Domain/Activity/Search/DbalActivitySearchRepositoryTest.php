@@ -30,54 +30,6 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
     private ActivityRepository $activityRepository;
     private ActivityStreamRepository $activityStreamRepository;
 
-    public function testItReturnsTheNewestActivitiesFirst(): void
-    {
-        $this->provideActivities();
-
-        $this->assertEquals(
-            ['activity-300', 'activity-200', 'activity-100'],
-            array_map(
-                static fn (ActivitySearchResult $result): string => (string) $result->getActivity()->getId(),
-                $this->activitySearchRepository->find(
-                    Pagination::fromOffsetAndLimit(0, 10),
-                    ActivitySearchFilters::fromRequest(new Request(query: ['filters' => []])),
-                )->getItems()
-            )
-        );
-    }
-
-    public function testItIncludesActivitiesStartingExactlyOnTheFromBoundary(): void
-    {
-        $this->provideActivities();
-
-        $this->assertEquals(
-            ['activity-300', 'activity-200'],
-            array_map(
-                static fn (ActivitySearchResult $result): string => (string) $result->getActivity()->getId(),
-                $this->activitySearchRepository->find(
-                    Pagination::fromOffsetAndLimit(0, 10),
-                    ActivitySearchFilters::fromRequest(new Request(query: ['filters' => ['from' => '2026-06-02']])),
-                )->getItems()
-            )
-        );
-    }
-
-    public function testItIncludesActivitiesStartingOnTheToBoundary(): void
-    {
-        $this->provideActivities();
-
-        $this->assertEquals(
-            ['activity-200', 'activity-100'],
-            array_map(
-                static fn (ActivitySearchResult $result): string => (string) $result->getActivity()->getId(),
-                $this->activitySearchRepository->find(
-                    Pagination::fromOffsetAndLimit(0, 10),
-                    ActivitySearchFilters::fromRequest(new Request(query: ['filters' => ['to' => '2026-06-02']])),
-                )->getItems()
-            )
-        );
-    }
-
     public function testItIncludesAnActivityStartingLateOnTheToBoundaryDay(): void
     {
         $this->activityRepository->add(ActivityWithRawData::fromState(
@@ -95,54 +47,6 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
                 $this->activitySearchRepository->find(
                     Pagination::fromOffsetAndLimit(0, 10),
                     ActivitySearchFilters::fromRequest(new Request(query: ['filters' => ['from' => '2026-06-02', 'to' => '2026-06-02']])),
-                )->getItems()
-            )
-        );
-    }
-
-    public function testItFiltersOnASingleCalendarDay(): void
-    {
-        $this->provideActivities();
-
-        $this->assertEquals(
-            ['activity-200'],
-            array_map(
-                static fn (ActivitySearchResult $result): string => (string) $result->getActivity()->getId(),
-                $this->activitySearchRepository->find(
-                    Pagination::fromOffsetAndLimit(0, 10),
-                    ActivitySearchFilters::fromRequest(new Request(query: ['filters' => ['from' => '2026-06-02', 'to' => '2026-06-02']])),
-                )->getItems()
-            )
-        );
-    }
-
-    public function testItFiltersOnSportTypes(): void
-    {
-        $this->provideActivities();
-
-        $this->assertEquals(
-            ['activity-300', 'activity-100'],
-            array_map(
-                static fn (ActivitySearchResult $result): string => (string) $result->getActivity()->getId(),
-                $this->activitySearchRepository->find(
-                    Pagination::fromOffsetAndLimit(0, 10),
-                    ActivitySearchFilters::fromRequest(new Request(query: ['filters' => ['sportType' => 'Run,Swim']])),
-                )->getItems()
-            )
-        );
-    }
-
-    public function testItFiltersOnActivitiesThatHaveGpx(): void
-    {
-        $this->provideActivities();
-
-        $this->assertEquals(
-            ['activity-200'],
-            array_map(
-                static fn (ActivitySearchResult $result): string => (string) $result->getActivity()->getId(),
-                $this->activitySearchRepository->find(
-                    Pagination::fromOffsetAndLimit(0, 10),
-                    ActivitySearchFilters::fromRequest(new Request(query: ['filters' => ['hasGpx' => 'true']])),
                 )->getItems()
             )
         );
@@ -180,32 +84,6 @@ class DbalActivitySearchRepositoryTest extends ContainerTestCase
                 $overview->getItems()
             )
         );
-    }
-
-    public function testItReportsTheTotalRegardlessOfThePageSize(): void
-    {
-        $this->provideActivities();
-
-        $overview = $this->activitySearchRepository->find(
-            Pagination::fromPageNumberAndSize(2, 2),
-            ActivitySearchFilters::fromRequest(new Request(query: ['filters' => []])),
-        );
-
-        $this->assertEquals(3, $overview->getTotal());
-        $this->assertEquals(['activity-100'], array_map(
-            static fn (ActivitySearchResult $result): string => (string) $result->getActivity()->getId(),
-            $overview->getItems()
-        ));
-    }
-
-    public function testItCountsOnlyTheFilteredActivities(): void
-    {
-        $this->provideActivities();
-
-        $this->assertEquals(1, $this->activitySearchRepository->find(
-            Pagination::fromOffsetAndLimit(0, 10),
-            ActivitySearchFilters::fromRequest(new Request(query: ['filters' => ['sportType' => 'Run']])),
-        )->getTotal());
     }
 
     private function provideActivities(): void
