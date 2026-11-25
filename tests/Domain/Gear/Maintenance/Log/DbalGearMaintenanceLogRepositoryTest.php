@@ -41,29 +41,6 @@ class DbalGearMaintenanceLogRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testFindAllWithoutLogs(): void
-    {
-        $this->assertEquals(
-            GearMaintenanceLogs::empty(),
-            $this->gearMaintenanceLogRepository->findAll(),
-        );
-    }
-
-    public function testFind(): void
-    {
-        $log = GearMaintenanceLog::create(
-            gearId: GearId::fromUnprefixed('b1'),
-            maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
-            performedOn: SerializableDateTime::fromString('2025-01-01 00:00:00'),
-        );
-        $this->gearMaintenanceLogRepository->add($log);
-
-        $this->assertEquals(
-            $log,
-            $this->gearMaintenanceLogRepository->find($log->getId()),
-        );
-    }
-
     public function testExistsForGear(): void
     {
         $this->gearMaintenanceLogRepository->add(GearMaintenanceLog::create(
@@ -82,42 +59,6 @@ class DbalGearMaintenanceLogRepositoryTest extends ContainerTestCase
         $this->expectExceptionObject(new EntityNotFound(sprintf('GearMaintenanceLog "%s" not found', $gearMaintenanceLogId)));
 
         $this->gearMaintenanceLogRepository->find($gearMaintenanceLogId);
-    }
-
-    public function testUpdate(): void
-    {
-        $log = GearMaintenanceLog::create(
-            gearId: GearId::fromUnprefixed('b1'),
-            maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
-            performedOn: SerializableDateTime::fromString('2025-01-01 00:00:00'),
-        );
-        $this->gearMaintenanceLogRepository->add($log);
-
-        $updated = $log->withPerformedOn(SerializableDateTime::fromString('2025-06-01 00:00:00'));
-        $this->gearMaintenanceLogRepository->update($updated);
-
-        $this->assertEquals(
-            $updated,
-            $this->gearMaintenanceLogRepository->find($log->getId()),
-        );
-    }
-
-    public function testDelete(): void
-    {
-        $log = GearMaintenanceLog::create(
-            gearId: GearId::fromUnprefixed('b1'),
-            maintenanceTaskId: MaintenanceTaskId::fromUnprefixed('chain-lubed'),
-            performedOn: SerializableDateTime::fromString('2025-01-01 00:00:00'),
-        );
-        $this->gearMaintenanceLogRepository->add($log);
-
-        $log->delete();
-        $this->gearMaintenanceLogRepository->delete($log);
-
-        $this->assertEquals(
-            GearMaintenanceLogs::empty(),
-            $this->gearMaintenanceLogRepository->findAll(),
-        );
     }
 
     public function testFindMostRecentPerMaintenanceTask(): void

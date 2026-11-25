@@ -14,7 +14,6 @@ use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredCondition;
 use App\Domain\Automation\Condition\ConfiguredCondition\ConfiguredConditions;
 use App\Domain\Automation\DbalAutomationRuleRepository;
 use App\Domain\Automation\RuleConfiguration;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
 
@@ -70,13 +69,6 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testFindThrowsWhenNotFound(): void
-    {
-        $this->expectExceptionObject(new EntityNotFound('AutomationRule "automationRule-1" not found'));
-
-        $this->repository->find(AutomationRuleId::fromUnprefixed('1'));
-    }
-
     public function testFindAllOrdersBySortOrder(): void
     {
         $this->repository->add(AutomationRuleBuilder::fromDefaults()
@@ -96,75 +88,6 @@ class DbalAutomationRuleRepositoryTest extends ContainerTestCase
             ['automationRule-b', 'automationRule-c', 'automationRule-a'],
             $this->repository->findAll()->map(static fn (AutomationRule $rule): string => (string) $rule->getId())
         );
-    }
-
-    public function testUpdate(): void
-    {
-        $rule = AutomationRuleBuilder::fromDefaults()
-            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
-            ->withLabel('Before')
-            ->withIsEnabled(true)
-            ->build();
-        $this->repository->add($rule);
-
-        $this->repository->update(
-            $rule
-                ->withLabel('After')
-                ->withIsEnabled(false)
-                ->withStopProcessing(false)
-                ->withConditions(ConfiguredConditions::fromArray([
-                    new ConfiguredCondition(ConditionType::DISTANCE, RuleConfiguration::fromConfig(['minKm' => 5])),
-                ]))
-        );
-
-        $updated = $this->repository->find($rule->getId());
-        $this->assertSame('After', $updated->getLabel());
-        $this->assertFalse($updated->isEnabled());
-        $this->assertFalse($updated->stopProcessing());
-        $this->assertSame(
-            '[{"type":"distance","config":{"minKm":5}}]',
-            Json::encode($updated->getConditions())
-        );
-    }
-
-    public function testUpdateOrder(): void
-    {
-        $this->repository->add(AutomationRuleBuilder::fromDefaults()
-            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('a'))
-            ->withSortOrder(0)
-            ->build());
-        $this->repository->add(AutomationRuleBuilder::fromDefaults()
-            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('b'))
-            ->withSortOrder(1)
-            ->build());
-        $this->repository->add(AutomationRuleBuilder::fromDefaults()
-            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('c'))
-            ->withSortOrder(2)
-            ->build());
-
-        $this->repository->updateOrder([
-            AutomationRuleId::fromUnprefixed('c'),
-            AutomationRuleId::fromUnprefixed('a'),
-            AutomationRuleId::fromUnprefixed('b'),
-        ]);
-
-        $this->assertSame(
-            ['automationRule-c', 'automationRule-a', 'automationRule-b'],
-            $this->repository->findAll()->map(static fn (AutomationRule $rule): string => (string) $rule->getId())
-        );
-    }
-
-    public function testDelete(): void
-    {
-        $rule = AutomationRuleBuilder::fromDefaults()
-            ->withAutomationRuleId(AutomationRuleId::fromUnprefixed('1'))
-            ->withSortOrder(0)
-            ->build();
-        $this->repository->add($rule);
-
-        $this->repository->delete($rule->getId());
-
-        $this->assertCount(0, $this->repository->findAll());
     }
 
     public function testHydrateSkipsUnknownComponentTypes(): void

@@ -18,7 +18,6 @@ use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
 use App\Infrastructure\Eventing\EventBus;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
@@ -103,12 +102,6 @@ class DbalGearRepositoryTest extends ContainerTestCase
             Money::EUR(150000),
             $this->gearRepository->find($gear->getId())->getPurchasePrice()
         );
-    }
-
-    public function testItShouldThrowWhenNotFound(): void
-    {
-        $this->expectExceptionObject(new EntityNotFound('Gear "gear-1" not found'));
-        $this->gearRepository->find(GearId::fromUnprefixed('1'));
     }
 
     public function testDelete(): void

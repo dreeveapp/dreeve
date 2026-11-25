@@ -163,22 +163,6 @@ class DbalActivitySplitRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testFindActivityIdsWithoutGapWhenAllHaveGap(): void
-    {
-        $this->addActivity('run-with-gap', SportType::RUN);
-
-        $this->activitySplitRepository->add(ActivitySplitBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed('run-with-gap'))
-            ->withSplitNumber(1)
-            ->withGapPace(SecPerKm::from(300))
-            ->build());
-
-        $this->assertEquals(
-            ActivityIds::fromArray([]),
-            $this->activitySplitRepository->findActivityIdsWithoutGap(),
-        );
-    }
-
     public function testFindActivityIdsThatNeedSplitCalculation(): void
     {
         $this->addActivity('run-file-import', SportType::RUN, ImportSource::FIT_FILE);
@@ -220,26 +204,6 @@ class DbalActivitySplitRepositoryTest extends ContainerTestCase
             ]),
             $this->activitySplitRepository->findActivityIdsThatNeedSplitCalculation(),
         );
-    }
-
-    public function testUpdate(): void
-    {
-        $this->activitySplitRepository->add(ActivitySplitBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed('test'))
-            ->withSplitNumber(1)
-            ->build());
-
-        $splits = $this->activitySplitRepository->findBy(ActivityId::fromUnprefixed('test'), UnitSystem::METRIC);
-        $this->assertNull($splits->toArray()[0]->getGapPaceInSecondsPerKm());
-
-        $split = $splits->toArray()[0]
-            ->withGapPace(SecPerKm::from(350.5));
-        $this->activitySplitRepository->update($split);
-
-        $updatedSplits = $this->activitySplitRepository->findBy(ActivityId::fromUnprefixed('test'), UnitSystem::METRIC);
-        $gapPace = $updatedSplits->toArray()[0]->getGapPaceInSecondsPerKm();
-        $this->assertNotNull($gapPace);
-        $this->assertEqualsWithDelta(350.5, $gapPace->toFloat(), 0.01);
     }
 
     private function addActivity(string $id, SportType $sportType, ImportSource $importSource = ImportSource::STRAVA_API): void

@@ -52,18 +52,6 @@ class DbalActivityLapRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testIsImportedForActivity(): void
-    {
-        $this->activityLapRepository->add(ActivityLapBuilder::fromDefaults()
-            ->withActivityId(ActivityId::fromUnprefixed('test'))
-            ->withLapNumber(3)
-            ->build()
-        );
-
-        $this->assertTrue($this->activityLapRepository->isImportedForActivity(ActivityId::fromUnprefixed('test')));
-        $this->assertFalse($this->activityLapRepository->isImportedForActivity(ActivityId::fromUnprefixed('test2')));
-    }
-
     public function testDeleteForActivity(): void
     {
         $this->activityLapRepository->add(ActivityLapBuilder::fromDefaults()

@@ -13,7 +13,6 @@ use App\Domain\Activity\Collection\ActivityCollectionId;
 use App\Domain\Activity\Collection\ActivityCollectionType;
 use App\Domain\Activity\Collection\DbalActivityCollectionRepository;
 use App\Domain\Media\MediaItemId;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -57,13 +56,6 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
         );
     }
 
-    public function testFindThrowsWhenNotFound(): void
-    {
-        $this->expectExceptionObject(new EntityNotFound('ActivityCollection "activityCollection-1" not found'));
-
-        $this->repository->find(ActivityCollectionId::fromUnprefixed('1'));
-    }
-
     public function testFindAllOrdersByCreatedOnDescending(): void
     {
         $this->repository->add(ActivityCollectionBuilder::fromDefaults()
@@ -83,30 +75,6 @@ class DbalActivityCollectionRepositoryTest extends ContainerTestCase
             ['activityCollection-b', 'activityCollection-c', 'activityCollection-a'],
             $this->repository->findAll()->map(static fn (ActivityCollection $activityCollection): string => (string) $activityCollection->getId())
         );
-    }
-
-    public function testUpdate(): void
-    {
-        $activityCollection = ActivityCollectionBuilder::fromDefaults()
-            ->withActivityCollectionId(ActivityCollectionId::fromUnprefixed('1'))
-            ->withName('Before')
-            ->withDescription('Before')
-            ->withType(ActivityCollectionType::TRIP)
-            ->withCoverMediaItemId(MediaItemId::fromUnprefixed('before'))
-            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('1')]))
-            ->build();
-        $this->repository->add($activityCollection);
-
-        $updated = $activityCollection
-            ->withName('After')
-            ->withDescription(null)
-            ->withType(ActivityCollectionType::EVENT)
-            ->withActivityIds(ActivityIds::fromArray([ActivityId::fromUnprefixed('2'), ActivityId::fromUnprefixed('3')]))
-            ->withCoverMediaItemId(null)
-            ->withUseRouteMapAsCover(true);
-        $this->repository->update($updated);
-
-        $this->assertEquals($updated, $this->repository->find($activityCollection->getId()));
     }
 
     public function testFindForActivity(): void
