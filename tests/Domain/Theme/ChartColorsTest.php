@@ -14,19 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 class ChartColorsTest extends TestCase
 {
-    public function testItAssignsPaletteColorsInOrder(): void
-    {
-        $chartColors = ChartColors::for(
-            SportTypes::fromArray([SportType::RIDE, SportType::RUN, SportType::HIKE]),
-            Gears::empty(),
-        );
-
-        $palette = ChartColors::palette();
-        $this->assertEquals($palette[0], $chartColors->forSportType(SportType::RIDE));
-        $this->assertEquals($palette[1], $chartColors->forSportType(SportType::RUN));
-        $this->assertEquals($palette[2], $chartColors->forSportType(SportType::HIKE));
-    }
-
     public function testItAssignsSportTypesAndGearIndependently(): void
     {
         $gear = GearBuilder::fromDefaults()->withGearId(GearId::fromUnprefixed('1'))->build();

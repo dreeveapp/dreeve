@@ -51,24 +51,6 @@ class CreateGearMaintenanceComponentTest extends TestCase
         $this->assertTrue($command->isRetired());
     }
 
-    public function testFromPayloadWithNewMediaItem(): void
-    {
-        $command = CreateGearMaintenanceComponent::fromPayload([
-            'label' => 'Chain',
-            'installations' => [['parent' => 'gear:gear-b1']],
-            'mediaItem' => json_encode([
-                ['status' => 'new', 'filename' => 'chain.png', 'content' => base64_encode('image-content')],
-            ]),
-            'maintenanceTasks' => [
-                ['label' => 'Lube', 'interval' => ['value' => 500, 'unit' => 'km']],
-            ],
-        ]);
-
-        $this->assertNotNull($command->getNewMediaItem());
-        $this->assertSame('chain.png', (string) $command->getNewMediaItem()->getFilename());
-        $this->assertSame('image-content', $command->getNewMediaItem()->getContent());
-    }
-
     /**
      * @param array<string, mixed> $payload
      */

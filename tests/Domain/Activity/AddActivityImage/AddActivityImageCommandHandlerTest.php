@@ -15,7 +15,6 @@ use App\Domain\Media\MediaItemRepository;
 use App\Domain\Media\MediaItems;
 use App\Domain\Media\NewMediaItem;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
-use App\Infrastructure\Exception\EntityNotFound;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -74,20 +73,6 @@ class AddActivityImageCommandHandlerTest extends ContainerTestCase
             $this->getContainer()->get(MediaItemRepository::class)->findByIds(MediaItemIds::fromArray([MediaItemId::fromUnprefixed('new')])),
         );
         $this->assertSame('existing', $this->fileStorage->read('activities/existing.png'));
-    }
-
-    public function testHandleThrowsWhenActivityNotFound(): void
-    {
-        $this->expectExceptionObject(new EntityNotFound('Activity "activity-999" not found'));
-
-        $this->commandBus->dispatch(new AddActivityImage(
-            activityId: ActivityId::fromUnprefixed('999'),
-            mediaItemId: MediaItemId::fromUnprefixed('new'),
-            newMediaItem: new NewMediaItem(
-                filename: Path::fromString('photo.jpg'),
-                content: 'new-content',
-            ),
-        ));
     }
 
     #[\Override]

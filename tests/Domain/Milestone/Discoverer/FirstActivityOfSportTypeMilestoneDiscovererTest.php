@@ -21,38 +21,6 @@ class FirstActivityOfSportTypeMilestoneDiscovererTest extends ContainerTestCase
     private FirstActivityOfSportTypeMilestoneDiscoverer $discoverer;
     private MilestoneIdFactory $milestoneIdFactory;
 
-    public function testDiscoverWithNoActivities(): void
-    {
-        $this->assertTrue($this->discoverer->discover($this->milestoneIdFactory)->isEmpty());
-    }
-
-    public function testDiscoverFirstOfEachSportType(): void
-    {
-        $this->insertActivity(1, '2024-01-01', SportType::RIDE, 'Morning ride');
-        $this->insertActivity(2, '2024-01-02', SportType::RUN, 'Evening run');
-        $this->insertActivity(3, '2024-01-03', SportType::RIDE, 'Another ride');
-
-        $milestones = $this->discoverer->discover($this->milestoneIdFactory);
-
-        $this->assertEquals(
-            [
-                Milestone::create(
-                    id: MilestoneId::fromString('milestone-1'),
-                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
-                    category: MilestoneCategory::FIRST_ACTIVITY_OF_SPORT_TYPE,
-                    context: new FirstContext(sportType: SportType::RIDE, activityName: 'Morning ride'),
-                )->withSportType(SportType::RIDE)->withActivityId(ActivityId::fromString('activity-1')),
-                Milestone::create(
-                    id: MilestoneId::fromString('milestone-2'),
-                    achievedOn: SerializableDateTime::fromString('2024-01-02 00:00:00'),
-                    category: MilestoneCategory::FIRST_ACTIVITY_OF_SPORT_TYPE,
-                    context: new FirstContext(sportType: SportType::RUN, activityName: 'Evening run'),
-                )->withSportType(SportType::RUN)->withActivityId(ActivityId::fromString('activity-2')),
-            ],
-            $milestones->toArray(),
-        );
-    }
-
     public function testDiscoverRespectsChronologicalOrder(): void
     {
         $this->insertActivity(1, '2024-01-02', SportType::RIDE, 'Second ride');

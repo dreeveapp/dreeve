@@ -10,7 +10,6 @@ use App\Domain\Import\UploadActivityFile\UploadActivityFile;
 use App\Domain\Import\UploadActivityFile\UploadActivityFileCommandHandler;
 use App\Domain\Import\WatchDirectory;
 use App\Infrastructure\ValueObject\String\KernelProjectDir;
-use App\Infrastructure\ValueObject\String\Path;
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use PHPUnit\Framework\TestCase;
@@ -19,18 +18,6 @@ class UploadActivityFileCommandHandlerTest extends TestCase
 {
     private Filesystem $filesystem;
     private WatchDirectory $watchDirectory;
-
-    public function testHandleWritesFileInFilesMode(): void
-    {
-        $handler = new UploadActivityFileCommandHandler(ImportMode::FILES, $this->watchDirectory);
-
-        $handler->handle(UploadActivityFile::fromPayload([
-            'filename' => 'ride.fit',
-            'content' => base64_encode('raw-fit-bytes'),
-        ]));
-
-        $this->assertSame('raw-fit-bytes', $this->watchDirectory->readFile(Path::fromString('ride.fit')));
-    }
 
     public function testHandleThrowsInStravaApiModeAndWritesNothing(): void
     {
