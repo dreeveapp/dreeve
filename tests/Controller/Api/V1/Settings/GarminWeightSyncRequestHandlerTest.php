@@ -64,7 +64,9 @@ class GarminWeightSyncRequestHandlerTest extends ControllerWebTestCase
         $this->assertFalse($settings->athleteWeight()->isGarminWeightSyncEnabled());
         $this->request('POST', ['weights' => [['on' => '2026-11-25', 'weightKg' => 69]]]);
         $this->assertResponseStatusCodeSame(409);
-        $this->assertSame(71.0, array_values($settings->athleteWeight()->getHistory(UnitSystem::METRIC)->findAll())[0]->getWeight()->toFloat());
+        $weight = array_first($settings->athleteWeight()->getHistory(UnitSystem::METRIC)->findAll());
+        $this->assertNotNull($weight);
+        $this->assertSame(71.0, $weight->getWeight()->toFloat());
     }
 
     /** @param array<string, mixed> $payload */

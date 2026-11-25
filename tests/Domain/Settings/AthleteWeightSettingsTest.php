@@ -54,7 +54,8 @@ class AthleteWeightSettingsTest extends TestCase
             'garminWeightSyncEnabled' => '1',
             'garminWeightHistory' => [['on' => '2026-11-25', 'weightKg' => 70]],
         ]);
-        $weight = array_values($settings->getHistory(UnitSystem::IMPERIAL)->findAll())[0];
+        $weight = array_first($settings->getHistory(UnitSystem::IMPERIAL)->findAll());
+        $this->assertNotNull($weight);
         $this->assertEqualsWithDelta(154.3234, $weight->getWeight()->toFloat(), 0.0001);
         $this->assertTrue($settings->isGarminWeightSyncEnabled());
     }

@@ -13,6 +13,7 @@ use App\Infrastructure\Measurement\UnitSystem;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\DomCrawler\Crawler;
 
 class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
 {
@@ -26,7 +27,7 @@ class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="athleteWeight"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] [data-repeater]'));
-        $this->assertContains('Weigh-ins', $crawler->filter('section h3')->each(fn ($node): string => $node->text()));
+        $this->assertContains('Weigh-ins', $crawler->filter('section h3')->each(fn (Crawler $node): string => $node->text()));
         $this->assertStringContainsString('Needed to calculate relative w/kg.', $crawler->filter('form[data-dispatch-command="update-settings"]')->text());
         $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[garminWeightSyncEnabled]"]'));
         $this->assertSame(
@@ -58,7 +59,7 @@ class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
         $crawler = $this->client->request('GET', '/admin/settings/athlete-weight');
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('table'));
-        $this->assertContains('Source', $crawler->filter('th')->each(fn ($node): string => $node->text()));
+        $this->assertContains('Source', $crawler->filter('th')->each(fn (Crawler $node): string => $node->text()));
         $rows = json_decode((string) $crawler->filter('[data-repeater-list]')->attr('data-repeater-initial'), true);
         $this->assertCount(6, $rows);
         $this->assertSame(['on' => '2026-11-25', 'weight' => 70.125, 'source' => 'garmin'], $rows[0]);

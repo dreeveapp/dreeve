@@ -698,3 +698,12 @@ then: dan
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': "{shoutrrr}-URL's voor meldingsdiensten (bv. discord://token@id, telegram://token@telegram/?channels=channel). Laat leeg om meldingen volledig uit te schakelen."
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Sleep bestanden hierheen{strongClose} of {strongOpen}blader{strongClose} om bestanden te kiezen'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Sleep afbeeldingen hierheen{strongClose} of {strongOpen}blader{strongClose} om afbeeldingen te kiezen'
+Date: Date
+Garmin: Garmin
+'Garmin Connect': 'Garmin Connect'
+'Garmin entries are read-only. Add a manual entry to override an imported weight for the same date.': 'Garmin entries are read-only. Add a manual entry to override an imported weight for the same date.'
+Manual: Manual
+'Requires the Garmin connector to be connected to this Dreeve instance. Turning sync off keeps previously imported weigh-ins.': 'Requires the Garmin connector to be connected to this Dreeve instance. Turning sync off keeps previously imported weigh-ins.'
+'Sync weight from Garmin Connect': 'Sync weight from Garmin Connect'
+'Sync your weight with Garmin Connect on the same schedule as your activities. Manual entries remain available and take priority for the same date.': 'Sync your weight with Garmin Connect on the same schedule as your activities. Manual entries remain available and take priority for the same date.'
+Weight: Weight
