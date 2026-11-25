@@ -3,13 +3,13 @@
 namespace App\Tests\Controller\Page\Rewind;
 
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class RewindRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRenderForAllTime(): void

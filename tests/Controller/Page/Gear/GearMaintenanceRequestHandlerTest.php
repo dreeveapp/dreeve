@@ -30,12 +30,12 @@ use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
 use App\Tests\Domain\Gear\Maintenance\GearComponentBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
+use App\Tests\MatchesVersionlessSnapshots;
 use Money\Money;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class GearMaintenanceRequestHandlerTest extends AdminWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
 
     public function testRender(): void
     {

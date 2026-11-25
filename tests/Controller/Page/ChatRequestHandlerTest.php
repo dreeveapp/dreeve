@@ -18,9 +18,9 @@ use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Infrastructure\CQRS\Command\Bus\SpyCommandBus;
 use App\Tests\Infrastructure\Eventing\SpyEventBus;
 use App\Tests\Infrastructure\Time\Clock\PausedClock;
+use App\Tests\MatchesVersionlessSnapshots;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\MockObject\Stub;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\AI\Agent\Agent;
 use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Platform\Message\Role;
@@ -33,7 +33,7 @@ use Twig\Environment;
 
 class ChatRequestHandlerTest extends AdminWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
 
     /**
      * @var Stub&AgentInterface

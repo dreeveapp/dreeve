@@ -5,15 +5,15 @@ namespace App\Tests\Controller\Page\Calendar;
 use App\Controller\Page\Calendar\MonthlyStatsRequestHandler;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class MonthlyStatsRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

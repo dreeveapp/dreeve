@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Api\Internal\Activity;
 
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityBestEffortsRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

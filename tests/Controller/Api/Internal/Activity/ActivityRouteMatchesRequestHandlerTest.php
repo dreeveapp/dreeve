@@ -4,13 +4,13 @@ namespace App\Tests\Controller\Api\Internal\Activity;
 
 use App\Application\Import\CalculateActivityMetrics\Pipeline\CalculateActivityRouteSignatures;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
 use App\Tests\SpyOutput;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityRouteMatchesRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

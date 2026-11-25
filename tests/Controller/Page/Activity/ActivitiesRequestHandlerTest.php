@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Page\Activity;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivitiesRequestHandlerTest extends AdminWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

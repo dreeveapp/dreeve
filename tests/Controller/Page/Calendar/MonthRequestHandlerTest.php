@@ -4,13 +4,13 @@ namespace App\Tests\Controller\Page\Calendar;
 
 use App\Controller\Page\Calendar\MonthRequestHandler;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MonthRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

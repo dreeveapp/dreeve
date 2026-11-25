@@ -12,13 +12,13 @@ use App\Domain\Strava\StravaClientId;
 use App\Domain\Strava\StravaClientSecret;
 use App\Infrastructure\Serialization\Json;
 use App\Tests\ContainerTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ use Twig\Environment;
 
 class StravaOAuthRequestHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
 
     private StravaOAuthRequestHandler $stravaOAuthRequestHandler;
     private Strava&MockObject $strava;
