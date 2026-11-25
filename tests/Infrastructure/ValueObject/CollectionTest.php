@@ -16,6 +16,8 @@ class CollectionTest extends TestCase
             ATestCollection::fromArray([])
         );
         $this->assertTrue(ATestCollection::empty()->isEmpty());
+        $this->assertNull(ATestCollection::empty()->getFirst());
+        $this->assertNull(ATestCollection::empty()->getLast());
     }
 
     public function testHas(): void
