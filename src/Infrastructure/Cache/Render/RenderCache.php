@@ -19,7 +19,6 @@ use Time\Duration;
 final readonly class RenderCache
 {
     private const string CHARACTERS_RESERVED_IN_A_CACHE_KEY = '/[{}()\/\\\\@:\s\x00-\x1F]+/';
-    private const int LONGEST_REPORTABLE_TTL_IN_SECONDS = 365 * 86400;
 
     public function __construct(
         #[Autowire(service: 'render.cache')]
@@ -121,10 +120,6 @@ final readonly class RenderCache
             return null;
         }
 
-        $remainingSeconds = max(0, (int) ceil($expiry - microtime(true)));
-
-        // A render without a TTL never expires, which metadata cannot express: Symfony round trips
-        // it as a far future timestamp instead.
-        return $remainingSeconds > self::LONGEST_REPORTABLE_TTL_IN_SECONDS ? null : Duration::fromSeconds($remainingSeconds);
+        return Duration::fromSeconds(max(0, (int) ceil($expiry - microtime(true))));
     }
 }
