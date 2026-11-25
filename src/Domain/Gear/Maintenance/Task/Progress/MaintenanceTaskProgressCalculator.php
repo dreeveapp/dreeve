@@ -54,16 +54,11 @@ final readonly class MaintenanceTaskProgressCalculator
         return $this->calculateStatusesFor($this->gearComponentRepository->findAll());
     }
 
-    public function getGearIdsThatHaveDueTasks(): GearIds
+    public function getGearIdsThatHaveDueTasks(MaintenanceTaskStatuses $maintenanceTaskStatuses): GearIds
     {
         $gearIdsThatHaveDueTasks = GearIds::empty();
         $gearMaintenanceConfig = $this->gearMaintenanceRepository->find();
-        if (!$gearMaintenanceConfig->isFeatureEnabled()) {
-            return $gearIdsThatHaveDueTasks;
-        }
-
         $gearComponents = $this->gearComponentRepository->findAll();
-        $maintenanceTaskStatuses = $this->calculateStatusesFor($gearComponents);
         $retiredGearIds = $gearMaintenanceConfig->ignoreRetiredGear()
             ? $this->gearIdRepository->findRetired()
             : GearIds::empty();

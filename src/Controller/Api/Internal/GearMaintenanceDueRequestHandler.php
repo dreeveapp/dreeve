@@ -48,7 +48,9 @@ final readonly class GearMaintenanceDueRequestHandler
     private function renderFor(): string
     {
         return $this->twig->load('html/gear/maintenance/_maintenance-due.html.twig')->render([
-            'maintenanceTaskIsDue' => !$this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks()->isEmpty(),
+            'maintenanceTaskIsDue' => !$this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks(
+                $this->maintenanceTaskProgressCalculator->calculateStatuses(),
+            )->isEmpty(),
         ]);
     }
 }
