@@ -7,13 +7,13 @@ namespace App\Controller\Page\Gear;
 use App\Application\Navigation\NavigationSection;
 use App\Application\PageMetadata\PageMetadata;
 use App\Application\PageRenderer;
-use App\Domain\Activity\Activity;
-use App\Domain\Activity\ActivityRepository;
+use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
 use App\Domain\Calendar\Months;
 use App\Domain\Gear\DistanceOverTimePerGearChart;
 use App\Domain\Gear\DistancePerMonthPerGearChart;
 use App\Domain\Gear\FindGearStatsPerDay\FindGearStatsPerDay;
 use App\Domain\Gear\FindGearUsagePerMonth\FindGearUsagePerMonth;
+use App\Domain\Gear\FindTotalsForActivitiesWithoutGear\FindTotalsForActivitiesWithoutGear;
 use App\Domain\Gear\Gear;
 use App\Domain\Gear\GearId;
 use App\Domain\Gear\GearRepository;
@@ -28,7 +28,6 @@ use App\Infrastructure\Cache\Tag\CacheTags;
 use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Infrastructure\CQRS\Query\Bus\QueryBus;
 use App\Infrastructure\Http\Response\HtmlResponse;
-use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\Time\Clock\Clock;
@@ -44,7 +43,6 @@ final readonly class GearStatsRequestHandler
 {
     public function __construct(
         private GearRepository $gearRepository,
-        private ActivityRepository $activityRepository,
         private SettingsRepository $settingsRepository,
         private QueryBus $queryBus,
         private TranslatorInterface $translator,
@@ -80,30 +78,30 @@ final readonly class GearStatsRequestHandler
     {
         $now = $this->clock->now();
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
-        $activities = $this->activityRepository->findAll();
+        $firstActivityStartDate = $this->queryBus->ask(new FindFirstActivityStartDate())->getStartDate();
         $allUsedGear = $this->gearRepository->findAllUsed();
         $gearStats = $this->queryBus->ask(new FindGearStatsPerDay());
         $gearUsage = $this->queryBus->ask(new FindGearUsagePerMonth());
         $allMonths = Months::create(
-            startDate: $activities->getFirstActivityStartDate(),
+            startDate: $firstActivityStartDate,
             endDate: $now
         );
 
         $activeGear = $allUsedGear->filter(fn (Gear $gear): bool => !$gear->isRetired());
-        $activitiesWithoutGear = $activities->filter(fn (Activity $activity): bool => !$activity->getGearId() instanceof GearId);
-        if (!$activitiesWithoutGear->isEmpty()) {
+        $totalsWithoutGear = $this->queryBus->ask(new FindTotalsForActivitiesWithoutGear());
+        if ($totalsWithoutGear->getNumberOfActivities() > 0) {
             $activeGear->add(Gear::fromState(
                 gearId: GearId::none(),
-                distanceInMeter: Meter::from($activitiesWithoutGear->sum(fn (Activity $activity): float => $activity->getDistance()->toMeter()->toFloat())),
+                distanceInMeter: $totalsWithoutGear->getDistance(),
                 createdOn: SerializableDateTime::fromString('1970-01-01'),
                 name: 'Unspecified',
                 isRetired: false,
                 type: GearType::IMPORTED,
                 mediaItemId: null,
-                movingTime: Seconds::from((int) $activitiesWithoutGear->sum(fn (Activity $activity): int => $activity->getMovingTimeInSeconds())),
-                elevation: Meter::from($activitiesWithoutGear->sum(fn (Activity $activity): float => $activity->getElevation()->toFloat())),
-                numberOfActivities: count($activitiesWithoutGear),
-                totalCalories: (int) $activitiesWithoutGear->sum(fn (Activity $activity): int => $activity->getCalories() ?? 0),
+                movingTime: $totalsWithoutGear->getMovingTime(),
+                elevation: $totalsWithoutGear->getElevation(),
+                numberOfActivities: $totalsWithoutGear->getNumberOfActivities(),
+                totalCalories: $totalsWithoutGear->getCalories(),
                 purchasePrice: null,
                 notes: null,
             ));
@@ -133,7 +131,7 @@ final readonly class GearStatsRequestHandler
                 DistanceOverTimePerGearChart::create(
                     gears: $allUsedGear,
                     gearStats: $gearStats,
-                    startDate: $activities->getFirstActivityStartDate(),
+                    startDate: $firstActivityStartDate,
                     unitSystem: $unitSystem,
                     translator: $this->translator,
                     now: $now,
