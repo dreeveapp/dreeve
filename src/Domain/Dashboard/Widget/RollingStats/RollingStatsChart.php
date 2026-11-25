@@ -64,9 +64,9 @@ final readonly class RollingStatsChart
         $xAxisLabels = [];
         $previousLabel = null;
         /** @var RollingWindow $rollingWindow */
-        foreach ($this->rollingWindows as $rollingWindow) {
+        foreach ($this->rollingWindows as $index => $rollingWindow) {
             $label = $rollingWindow->getLabel();
-            $xAxisLabels[] = $rollingWindow == $this->rollingWindows->getFirst() || $label === $previousLabel ? '' : $label;
+            $xAxisLabels[] = 0 === $index || $label === $previousLabel ? '' : $label;
             $previousLabel = $label;
         }
 

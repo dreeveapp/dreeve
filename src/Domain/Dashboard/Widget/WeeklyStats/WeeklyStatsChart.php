@@ -66,13 +66,16 @@ final readonly class WeeklyStatsChart
         }
 
         $xAxisLabels = [];
+        $seenLabels = [];
         /** @var Week $week */
-        foreach ($weeks as $week) {
-            if ($week == $weeks->getFirst() || in_array($week->getLabel(), $xAxisLabels, true)) {
+        foreach ($weeks as $index => $week) {
+            $label = $week->getLabel();
+            if (0 === $index || isset($seenLabels[$label])) {
                 $xAxisLabels[] = '';
                 continue;
             }
-            $xAxisLabels[] = $week->getLabel();
+            $xAxisLabels[] = $label;
+            $seenLabels[$label] = true;
         }
 
         $series = [];
