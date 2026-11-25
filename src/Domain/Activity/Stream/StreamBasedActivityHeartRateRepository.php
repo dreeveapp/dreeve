@@ -67,7 +67,7 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
         $athlete = $this->settingsRepository->general()->getAthlete();
 
         $secondsPerPercentage = [];
-        foreach ($this->fetchHeartRateDistributions() as $result) {
+        foreach ($this->fetchHeartRateDistributions(from: null) as $result) {
             $heartRateDistribution = Json::uncompressAndDecode($result['data']);
             $athleteMaxHeartRate = $athlete->getMaxHeartRate(SerializableDateTime::fromString($result['startDateTime']));
 
@@ -100,7 +100,7 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
         $inLastXDays = $this->emptyZones();
         $inLastXDaysAsOfPreviousDay = $this->emptyZones();
 
-        foreach ($this->fetchHeartRateDistributions() as $result) {
+        foreach ($this->fetchHeartRateDistributions(from: $previousDayWindowStart) as $result) {
             $heartRateDistribution = Json::uncompressAndDecode($result['data']);
             if ([] === $heartRateDistribution) {
                 continue;
@@ -137,19 +137,24 @@ final readonly class StreamBasedActivityHeartRateRepository implements ActivityH
     /**
      * @return list<array{startDateTime: string, sportType: string, data: string}>
      */
-    private function fetchHeartRateDistributions(): array
+    private function fetchHeartRateDistributions(?SerializableDateTime $from): array
     {
-        /** @var list<array{startDateTime: string, sportType: string, data: string}> $results */
-        $results = $this->connection->executeQuery(
-            'SELECT a.startDateTime, a.sportType, m.data
+        $sql = 'SELECT a.startDateTime, a.sportType, m.data
              FROM ActivityStreamMetric m
              INNER JOIN Activity a ON a.activityId = m.activityId
-             WHERE m.streamType = :streamType AND m.metricType = :metricType',
-            [
-                'streamType' => StreamType::HEART_RATE->value,
-                'metricType' => ActivityStreamMetricType::VALUE_DISTRIBUTION->value,
-            ]
-        )->fetchAllAssociative();
+             WHERE m.streamType = :streamType AND m.metricType = :metricType';
+        $params = [
+            'streamType' => StreamType::HEART_RATE->value,
+            'metricType' => ActivityStreamMetricType::VALUE_DISTRIBUTION->value,
+        ];
+
+        if ($from instanceof SerializableDateTime) {
+            $sql .= ' AND a.startDateTime >= :from';
+            $params['from'] = $from->format('Y-m-d H:i:s');
+        }
+
+        /** @var list<array{startDateTime: string, sportType: string, data: string}> $results */
+        $results = $this->connection->executeQuery($sql, $params)->fetchAllAssociative();
 
         return $results;
     }
