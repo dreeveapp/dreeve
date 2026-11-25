@@ -38,32 +38,40 @@ class RewindRequestHandlerTest extends ControllerWebTestCase
     }
 
     /**
-     * @param non-empty-string|null $expectedCacheKey
+     * @param non-empty-string $expectedCacheKey
      */
-    #[DataProvider('provideUrls')]
-    public function testItResolvesTheRewindOption(string $url, ?string $expectedCacheKey): void
+    #[DataProvider('provideResolvableUrls')]
+    public function testItResolvesTheRewindOption(string $url, string $expectedCacheKey): void
     {
         $this->provideFullTestSet();
 
         $this->client->request('GET', $url);
 
-        if (null === $expectedCacheKey) {
-            $this->assertResponseStatusCodeSame(404);
-
-            return;
-        }
-
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith($expectedCacheKey, (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'));
     }
 
-    public static function provideUrls(): \Generator
+    public static function provideResolvableUrls(): \Generator
     {
         yield 'the bare path renders the first available option' => ['/rewind', 'rewind.all-time'];
         yield 'all time' => ['/rewind/all-time', 'rewind.all-time'];
         yield 'a year with activities' => ['/rewind/2023', 'rewind.2023'];
-        yield 'a year without activities' => ['/rewind/2021', null];
-        yield 'not a year at all' => ['/rewind/last-week', null];
+    }
+
+    #[DataProvider('provideUnresolvableUrls')]
+    public function testItReturnsNotFoundWhenTheRewindOptionDoesNotResolve(string $url): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', $url);
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public static function provideUnresolvableUrls(): \Generator
+    {
+        yield 'a year without activities' => ['/rewind/2021'];
+        yield 'not a year at all' => ['/rewind/last-week'];
     }
 
     public function testGetCacheabilityForAllTime(): void

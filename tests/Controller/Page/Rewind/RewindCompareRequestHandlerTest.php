@@ -32,34 +32,42 @@ class RewindCompareRequestHandlerTest extends ControllerWebTestCase
     }
 
     /**
-     * @param non-empty-string|null $expectedCacheKey
+     * @param non-empty-string $expectedCacheKey
      */
-    #[DataProvider('provideUrls')]
-    public function testItResolvesBothRewindOptions(string $url, ?string $expectedCacheKey): void
+    #[DataProvider('provideResolvableUrls')]
+    public function testItResolvesBothRewindOptions(string $url, string $expectedCacheKey): void
     {
         $this->provideFullTestSet();
 
         $this->client->request('GET', $url);
 
-        if (null === $expectedCacheKey) {
-            $this->assertResponseStatusCodeSame(404);
-
-            return;
-        }
-
         $this->assertResponseIsSuccessful();
         $this->assertStringEndsWith($expectedCacheKey, (string) $this->client->getResponse()->headers->get('X-Dreeve-Cache-Key'));
     }
 
-    public static function provideUrls(): \Generator
+    public static function provideResolvableUrls(): \Generator
     {
         yield 'two years' => ['/rewind/2023/compare/2022', 'rewind.2023.compare.2022'];
         yield 'a year and all time' => ['/rewind/2023/compare/all-time', 'rewind.2023.compare.all-time'];
         yield 'without a counterpart falls back to the first option' => ['/rewind/2023/compare', 'rewind.2023.compare.all-time'];
         yield 'all time without a counterpart falls back to the second option' => ['/rewind/all-time/compare', 'rewind.all-time.compare.2023'];
-        yield 'comparing an option with itself' => ['/rewind/2023/compare/2023', null];
-        yield 'a year without activities' => ['/rewind/2021/compare/2023', null];
-        yield 'a counterpart without activities' => ['/rewind/2023/compare/2021', null];
+    }
+
+    #[DataProvider('provideUnresolvableUrls')]
+    public function testItReturnsNotFoundWhenTheRewindOptionsDoNotResolve(string $url): void
+    {
+        $this->provideFullTestSet();
+
+        $this->client->request('GET', $url);
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public static function provideUnresolvableUrls(): \Generator
+    {
+        yield 'comparing an option with itself' => ['/rewind/2023/compare/2023'];
+        yield 'a year without activities' => ['/rewind/2021/compare/2023'];
+        yield 'a counterpart without activities' => ['/rewind/2023/compare/2021'];
     }
 
     public function testItDoesNotResolveWhenThereIsNothingToCompare(): void

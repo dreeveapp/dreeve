@@ -25,14 +25,18 @@ class ActivityIntensityTest extends ContainerTestCase
 
     public function testCalculateWithPower(): void
     {
-        $enrichedActivity = $this->persist(
-            ActivityBuilder::fromDefaults()
-                ->withAverageHeartRate(250)
-                ->withMovingTimeInSeconds(3600)
-                ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
-                ->build(),
-            normalizedPower: 250,
-        );
+        $activity = ActivityBuilder::fromDefaults()
+            ->withAverageHeartRate(250)
+            ->withMovingTimeInSeconds(3600)
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
+            activityId: $activity->getId(),
+            streamType: StreamType::WATTS,
+            metricType: ActivityStreamMetricType::NORMALIZED_POWER,
+            data: [250],
+        ));
+        $enrichedActivity = $this->persist($activity);
 
         $this->assertEquals(
             100,
@@ -75,14 +79,18 @@ class ActivityIntensityTest extends ContainerTestCase
         // Remove the FTP history so the power-based calculation cannot find an FTP.
         $this->getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::ATHLETE_FTP, []);
 
-        $enrichedActivity = $this->persist(
-            ActivityBuilder::fromDefaults()
-                ->withAverageHeartRate(250)
-                ->withMovingTimeInSeconds(3600)
-                ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
-                ->build(),
-            normalizedPower: 250,
-        );
+        $activity = ActivityBuilder::fromDefaults()
+            ->withAverageHeartRate(250)
+            ->withMovingTimeInSeconds(3600)
+            ->withStartDateTime(SerializableDateTime::fromString('2023-10-10'))
+            ->build();
+        $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
+            activityId: $activity->getId(),
+            streamType: StreamType::WATTS,
+            metricType: ActivityStreamMetricType::NORMALIZED_POWER,
+            data: [250],
+        ));
+        $enrichedActivity = $this->persist($activity);
 
         $this->expectExceptionObject(new CouldNotDetermineActivityIntensity('Ftp not found'));
         $this->activityIntensity->calculatePowerBased($enrichedActivity);
@@ -120,21 +128,12 @@ class ActivityIntensityTest extends ContainerTestCase
         );
     }
 
-    private function persist(Activity $activity, ?int $normalizedPower = null): EnrichedActivity
+    private function persist(Activity $activity): EnrichedActivity
     {
         $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
             $activity,
             []
         ));
-
-        if (null !== $normalizedPower) {
-            $this->getContainer()->get(ActivityStreamMetricRepository::class)->add(ActivityStreamMetric::create(
-                activityId: $activity->getId(),
-                streamType: StreamType::WATTS,
-                metricType: ActivityStreamMetricType::NORMALIZED_POWER,
-                data: [$normalizedPower],
-            ));
-        }
 
         return $this->getContainer()->get(EnrichedActivityRepository::class)->find($activity->getId());
     }

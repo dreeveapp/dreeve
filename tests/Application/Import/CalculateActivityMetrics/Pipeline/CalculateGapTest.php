@@ -7,6 +7,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Activity\Gap\GapSegment;
+use App\Domain\Activity\Split\ActivitySplit;
 use App\Domain\Activity\Split\ActivitySplitRepository;
 use App\Domain\Activity\Split\ActivitySplits;
 use App\Domain\Activity\SportType\SportType;
@@ -613,7 +614,7 @@ class CalculateGapTest extends ContainerTestCase
                 $segments,
             ),
             ActivitySplits::fromArray(array_map(
-                fn (int $index, array $split): \App\Domain\Activity\Split\ActivitySplit => ActivitySplitBuilder::fromDefaults()
+                fn (int $index, array $split): ActivitySplit => ActivitySplitBuilder::fromDefaults()
                     ->withSplitNumber($index + 1)
                     ->withDistanceInMeter($split[0])
                     ->withAverageSpeed(MetersPerSecond::from($split[1]))
@@ -623,14 +624,12 @@ class CalculateGapTest extends ContainerTestCase
             )),
         );
 
-        $this->assertCount(count($expectedGapPaces), $mappedSplits);
-        foreach ($expectedGapPaces as $index => $expectedGapPace) {
-            if (null === $expectedGapPace) {
-                $this->assertNull($mappedSplits[$index]->getGapPaceInSecondsPerKm());
-                continue;
-            }
-            $this->assertEqualsWithDelta($expectedGapPace, $mappedSplits[$index]->getGapPaceInSecondsPerKm()?->toFloat(), 0.01);
-        }
+        $actualGapPaces = array_map(
+            fn (ActivitySplit $split): ?float => $split->getGapPaceInSecondsPerKm()?->toFloat(),
+            $mappedSplits,
+        );
+        $this->assertSame(array_map(is_null(...), $expectedGapPaces), array_map(is_null(...), $actualGapPaces));
+        $this->assertEqualsWithDelta($expectedGapPaces, $actualGapPaces, 0.01);
     }
 
     /**
@@ -656,10 +655,22 @@ class CalculateGapTest extends ContainerTestCase
         yield 'segment portions with different multipliers are combined' => [[[500.0, 100, 2.0], [500.0, 200, 1.0]], [[1000.0, 4.0]], [200.0]];
     }
 
-    #[TestWith([1000.0, 200.0, 800.0, 250.0])]
-    #[TestWith([1000.0, 250.0, 0.0, null])]
-    #[TestWith([999.0, 250.0, 1000.0, null])]
-    public function testFinalizeSplitGap(float $distanceInSplit, float $durationInSplit, float $adjustedDistanceInSplit, ?float $expectedGapPace): void
+    public function testFinalizeSplitGap(): void
+    {
+        $split = ActivitySplitBuilder::fromDefaults()
+            ->withDistanceInMeter(1000.0)
+            ->withAverageSpeed(MetersPerSecond::from(4.0))
+            ->build();
+
+        $method = new \ReflectionMethod($this->calculateGap, 'finalizeSplitGap');
+        $finalizedSplit = $method->invoke($this->calculateGap, $split, 1000.0, 1000.0, 200.0, 800.0);
+
+        $this->assertEqualsWithDelta(250.0, $finalizedSplit->getGapPaceInSecondsPerKm()?->toFloat(), 0.01);
+    }
+
+    #[TestWith([1000.0, 250.0, 0.0])]
+    #[TestWith([999.0, 250.0, 1000.0])]
+    public function testFinalizeSplitGapLeavesSplitUnchanged(float $distanceInSplit, float $durationInSplit, float $adjustedDistanceInSplit): void
     {
         $split = ActivitySplitBuilder::fromDefaults()
             ->withDistanceInMeter(1000.0)
@@ -669,16 +680,11 @@ class CalculateGapTest extends ContainerTestCase
         $method = new \ReflectionMethod($this->calculateGap, 'finalizeSplitGap');
         $finalizedSplit = $method->invoke($this->calculateGap, $split, 1000.0, $distanceInSplit, $durationInSplit, $adjustedDistanceInSplit);
 
-        if (null === $expectedGapPace) {
-            $this->assertSame($split, $finalizedSplit);
-
-            return;
-        }
-        $this->assertEqualsWithDelta($expectedGapPace, $finalizedSplit->getGapPaceInSecondsPerKm()?->toFloat(), 0.01);
+        $this->assertSame($split, $finalizedSplit);
     }
 
     #[DataProvider('provideResolveGapPaceScenarios')]
-    public function testResolveGapPace(float $calculatedGapPace, float $mappedDistanceInMeter, ?float $expectedGapPace): void
+    public function testResolveGapPace(float $calculatedGapPace, float $mappedDistanceInMeter, float $expectedGapPace): void
     {
         $split = ActivitySplitBuilder::fromDefaults()
             ->withDistanceInMeter(1000.0)
@@ -690,25 +696,22 @@ class CalculateGapTest extends ContainerTestCase
 
         $this->assertInstanceOf(SecPerKm::class, $gapPace);
         $this->assertEqualsWithDelta(
-            $expectedGapPace ?? $split->getPaceInSecPerKm()->toFloat(),
+            $expectedGapPace,
             $gapPace->toFloat(),
             0.01,
         );
     }
 
     /**
-     * A null expected GAP pace means "the actual pace of the split", which is
-     * 250 sec/km (1000 meter at 4 m/s).
-     *
-     * @return iterable<string, array{float, float, ?float}>
+     * @return iterable<string, array{float, float, float}>
      */
     public static function provideResolveGapPaceScenarios(): iterable
     {
-        yield 'infinite calculated gap falls back to actual pace' => [INF, 1000.0, null];
-        yield 'NAN calculated gap falls back to actual pace' => [NAN, 1000.0, null];
-        yield 'zero mapped distance falls back to actual pace' => [200.0, 0.0, null];
-        yield 'zero calculated gap falls back to actual pace' => [0.0, 1000.0, null];
-        yield 'negative calculated gap falls back to actual pace' => [-1.0, 1000.0, null];
+        yield 'infinite calculated gap falls back to actual pace' => [INF, 1000.0, 250.0];
+        yield 'NAN calculated gap falls back to actual pace' => [NAN, 1000.0, 250.0];
+        yield 'zero mapped distance falls back to actual pace' => [200.0, 0.0, 250.0];
+        yield 'zero calculated gap falls back to actual pace' => [0.0, 1000.0, 250.0];
+        yield 'negative calculated gap falls back to actual pace' => [-1.0, 1000.0, 250.0];
         yield 'calculated gap inside clamp bounds is preserved' => [240.0, 1000.0, 240.0];
         yield 'exact lower clamp boundary is preserved' => [250.0 * 0.5, 1000.0, 250.0 * 0.5];
         yield 'exact upper clamp boundary is preserved' => [250.0 * 1.6, 1000.0, 250.0 * 1.6];

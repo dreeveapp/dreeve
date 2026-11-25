@@ -166,35 +166,87 @@ class DbalActivitySplitRepositoryTest extends ContainerTestCase
     public function testFindActivityIdsThatNeedSplitCalculation(): void
     {
         $this->addActivity('run-file-import', SportType::RUN, ImportSource::FIT_FILE);
-        $this->addStreams('run-file-import', [0, 1, 2], [0.0, 100.0, 200.0]);
+        $this->addStreams(
+            id: 'run-file-import',
+            streams: [
+                StreamType::TIME->value => [0, 1, 2],
+                StreamType::DISTANCE->value => [0.0, 100.0, 200.0],
+            ],
+        );
 
         $this->addActivity('walk-file-import', SportType::WALK, ImportSource::TCX_FILE);
-        $this->addStreams('walk-file-import', [0, 1, 2], [0.0, 100.0, 200.0]);
+        $this->addStreams(
+            id: 'walk-file-import',
+            streams: [
+                StreamType::TIME->value => [0, 1, 2],
+                StreamType::DISTANCE->value => [0.0, 100.0, 200.0],
+            ],
+        );
 
         $this->addActivity('swim-file-import', SportType::POOL_SWIM, ImportSource::GPX_FILE);
-        $this->addStreams('swim-file-import', [0, 1, 2], [0.0, 100.0, 200.0]);
+        $this->addStreams(
+            id: 'swim-file-import',
+            streams: [
+                StreamType::TIME->value => [0, 1, 2],
+                StreamType::DISTANCE->value => [0.0, 100.0, 200.0],
+            ],
+        );
 
         $this->addActivity('run-imported-from-strava', SportType::RUN, ImportSource::STRAVA_API);
-        $this->addStreams('run-imported-from-strava', [0, 1, 2], [0.0, 100.0, 200.0]);
+        $this->addStreams(
+            id: 'run-imported-from-strava',
+            streams: [
+                StreamType::TIME->value => [0, 1, 2],
+                StreamType::DISTANCE->value => [0.0, 100.0, 200.0],
+            ],
+        );
 
         $this->addActivity('ride-file-import', SportType::RIDE, ImportSource::FIT_FILE);
-        $this->addStreams('ride-file-import', [0, 1, 2], [0.0, 100.0, 200.0]);
+        $this->addStreams(
+            id: 'ride-file-import',
+            streams: [
+                StreamType::TIME->value => [0, 1, 2],
+                StreamType::DISTANCE->value => [0.0, 100.0, 200.0],
+            ],
+        );
 
         $this->addActivity('run-with-splits', SportType::RUN, ImportSource::FIT_FILE);
-        $this->addStreams('run-with-splits', [0, 1, 2], [0.0, 100.0, 200.0]);
+        $this->addStreams(
+            id: 'run-with-splits',
+            streams: [
+                StreamType::TIME->value => [0, 1, 2],
+                StreamType::DISTANCE->value => [0.0, 100.0, 200.0],
+            ],
+        );
         $this->activitySplitRepository->add(ActivitySplitBuilder::fromDefaults()
             ->withActivityId(ActivityId::fromUnprefixed('run-with-splits'))
             ->withSplitNumber(1)
             ->build());
 
         $this->addActivity('run-without-time-stream', SportType::RUN, ImportSource::FIT_FILE);
-        $this->addStreams('run-without-time-stream', null, [0.0, 100.0, 200.0]);
+        $this->addStreams(
+            id: 'run-without-time-stream',
+            streams: [
+                StreamType::DISTANCE->value => [0.0, 100.0, 200.0],
+            ],
+        );
 
         $this->addActivity('run-without-distance-stream', SportType::RUN, ImportSource::FIT_FILE);
-        $this->addStreams('run-without-distance-stream', [0, 1, 2], null);
+        $this->addStreams(
+            id: 'run-without-distance-stream',
+            streams: [
+                StreamType::TIME->value => [0, 1, 2],
+            ],
+        );
 
         $this->addActivity('run-with-empty-distance-stream', SportType::RUN, ImportSource::FIT_FILE);
-        $this->addStreams('run-with-empty-distance-stream', [0, 1, 2], []);
+        $this->addStreams(
+            id: 'run-with-empty-distance-stream',
+            streams: [
+                StreamType::TIME->value => [0, 1, 2],
+                StreamType::DISTANCE->value => [],
+            ],
+        );
 
         $this->assertEquals(
             ActivityIds::fromArray([
@@ -219,15 +271,11 @@ class DbalActivitySplitRepositoryTest extends ContainerTestCase
     }
 
     /**
-     * @param list<int>|null   $time
-     * @param list<float>|null $distance
+     * @param array<string, list<int|float>> $streams
      */
-    private function addStreams(string $id, ?array $time, ?array $distance): void
+    private function addStreams(string $id, array $streams): void
     {
-        foreach ([StreamType::TIME->value => $time, StreamType::DISTANCE->value => $distance] as $streamType => $data) {
-            if (null === $data) {
-                continue;
-            }
+        foreach ($streams as $streamType => $data) {
             $this->activityStreamRepository->add(ActivityStreamBuilder::fromDefaults()
                 ->withActivityId(ActivityId::fromUnprefixed($id))
                 ->withStreamType(StreamType::from($streamType))

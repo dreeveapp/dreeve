@@ -62,16 +62,11 @@ class YearlyStatisticsChartTest extends TestCase
                 enableLastXYearsByDefault: 10,
             );
 
-            $result = $chart->build();
-            $data = $result['series'][0]['data'];
+            $data = $chart->build()['series'][0]['data'];
+            $sortedData = $data;
+            sort($sortedData);
 
-            for ($i = 1; $i < count($data); ++$i) {
-                if ($data[$i] < $data[$i - 1]) {
-                    $this->fail('Detected downwards trent in yearly stats chart');
-                }
-            }
+            $this->assertSame($sortedData, $data);
         }
-
-        $this->addToAssertionCount(1);
     }
 }
