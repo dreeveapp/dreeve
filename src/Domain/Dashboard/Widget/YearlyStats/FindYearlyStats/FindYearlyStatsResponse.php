@@ -10,6 +10,7 @@ use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Measurement\Time\Seconds;
 use App\Infrastructure\ValueObject\Time\Year;
+use App\Infrastructure\ValueObject\Time\Years;
 
 readonly class FindYearlyStatsResponse implements Response
 {
@@ -36,5 +37,19 @@ readonly class FindYearlyStatsResponse implements Response
         }
 
         return null;
+    }
+
+    public function getUniqueYearsFor(ActivityType $activityType): Years
+    {
+        $years = array_map(
+            static fn (array $yearlyStat): int => $yearlyStat['year']->toInt(),
+            array_filter(
+                $this->yearlyStats,
+                static fn (array $yearlyStat): bool => $activityType === $yearlyStat['activityType'],
+            ),
+        );
+        rsort($years);
+
+        return Years::fromArray(array_map(Year::fromInt(...), $years));
     }
 }

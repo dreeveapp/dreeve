@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Dashboard\Widget;
 
-use App\Domain\Activity\ActivityRepository;
-use App\Domain\Activity\ActivityType;
 use App\Domain\Activity\ActivityTypeRepository;
+use App\Domain\Activity\FindFirstActivityStartDate\FindFirstActivityStartDate;
 use App\Domain\Dashboard\DashboardWidgetId;
 use App\Domain\Dashboard\InvalidDashboardLayout;
 use App\Domain\Dashboard\StatsContext;
@@ -26,7 +25,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
 {
     public function __construct(
-        private ActivityRepository $activityRepository,
         private ActivityTypeRepository $activityTypeRepository,
         private QueryBus $queryBus,
         private SettingsRepository $settingsRepository,
@@ -90,11 +88,8 @@ final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
     {
         $yearlyStatChartsPerContext = [];
         $yearlyStatistics = [];
-        $allActivities = $this->activityRepository->findAll();
-        $activitiesPerActivityType = $allActivities->groupByActivityType($this->activityTypeRepository->findAll());
-
         $allYears = Years::create(
-            startDate: $allActivities->getFirstActivityStartDate(),
+            startDate: $this->queryBus->ask(new FindFirstActivityStartDate())->getStartDate(),
             endDate: $now
         );
 
@@ -104,12 +99,12 @@ final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
         $enableLastXYearsByDefault = $configuration->get('enableLastXYearsByDefault');
         assert(is_int($enableLastXYearsByDefault));
 
-        foreach ($activitiesPerActivityType as $activityType => $activities) {
-            if ($activities->isEmpty()) {
+        foreach ($this->activityTypeRepository->findAll() as $activityType) {
+            $uniqueYears = $yearlyStats->getUniqueYearsFor($activityType);
+            if ($uniqueYears->isEmpty()) {
                 continue;
             }
 
-            $activityType = ActivityType::from($activityType);
             foreach (StatsContext::cases() as $yearlyStatsContext) {
                 if (in_array($yearlyStatsContext, [StatsContext::DISTANCE, StatsContext::ELEVATION], true) && !$activityType->supportsDistanceAndElevation()) {
                     continue;
@@ -118,7 +113,7 @@ final readonly class YearlyStatsWidget implements Widget, DependsOnCurrentDay
                 $yearlyStatChartsPerContext[$yearlyStatsContext->value][$activityType->value] = Json::encode(
                     YearlyStatisticsChart::create(
                         yearStats: $yearlyStatsPerDay,
-                        uniqueYears: $activitiesPerActivityType[$activityType->value]->getUniqueYears(),
+                        uniqueYears: $uniqueYears,
                         activityType: $activityType,
                         context: $yearlyStatsContext,
                         unitSystem: $this->settingsRepository->appearance()->getUnitSystem(),
