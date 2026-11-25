@@ -6,7 +6,6 @@ namespace App\Controller\Admin\Settings;
 
 use App\Application\AppUrl;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
-use App\Domain\Athlete\Weight\AthleteWeightHistory;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
@@ -74,23 +73,27 @@ final readonly class SettingsRequestHandler
         ));
     }
 
-    /** @return list<array{on: string, weight: float, source: string}> */
+    /** @return list<array{on: string, weight: mixed, source: string}> */
     private function weightHistoryRows(): array
     {
         $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
-        $histories = [
-            'manual' => AthleteWeightHistory::fromArray($this->settingsRepository->find(SettingsName::WEIGHT_HISTORY) ?? [], $unitSystem),
-            'garmin' => $this->settingsRepository->athleteWeight()->getGarminHistory($unitSystem),
-        ];
         $rows = [];
-        foreach ($histories as $source => $history) {
-            foreach ($history->findAll() as $weighIn) {
-                $rows[] = [
-                    'on' => $weighIn->getOn()->format('Y-m-d'),
-                    'weight' => $weighIn->getWeight()->toFloat(),
-                    'source' => $source,
-                ];
-            }
+        $manualHistory = $this->settingsRepository->find(SettingsName::WEIGHT_HISTORY);
+        // The editor must retain every manual record, even when several share a date.
+        // Only the effective history used for calculations is deduplicated by date.
+        foreach (is_array($manualHistory) ? $manualHistory : [] as $entry) {
+            $rows[] = [
+                'on' => is_array($entry) && is_string($entry['on'] ?? null) ? $entry['on'] : '',
+                'weight' => is_array($entry) ? ($entry['weight'] ?? null) : null,
+                'source' => 'manual',
+            ];
+        }
+        foreach ($this->settingsRepository->athleteWeight()->getGarminHistory($unitSystem)->findAll() as $weighIn) {
+            $rows[] = [
+                'on' => $weighIn->getOn()->format('Y-m-d'),
+                'weight' => $weighIn->getWeight()->toFloat(),
+                'source' => 'garmin',
+            ];
         }
         usort($rows, static fn (array $a, array $b): int => strcmp($b['on'], $a['on']) ?: strcmp($b['source'], $a['source']));
 

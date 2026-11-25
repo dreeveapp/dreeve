@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin\Settings;
 
+use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
+use App\Domain\Settings\UpdateSettings\UpdateSettings;
+use App\Infrastructure\CQRS\Command\Bus\CommandBus;
+use App\Infrastructure\Measurement\UnitSystem;
+use App\Infrastructure\Serialization\Json;
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use Doctrine\DBAL\Connection;
 
 class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
 {
@@ -78,5 +84,39 @@ class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('garmin', $rows[0]['source']);
         $this->assertSame(68, $rows[1]['weight']);
         $this->assertSame('manual', $rows[1]['source']);
+    }
+
+    public function testSavingTheEditorRetainsEveryManualRecordOnTheSameDate(): void
+    {
+        $settings = $this->getContainer()->get(SettingsRepository::class);
+        $manual = [
+            ['on' => '2026-11-25', 'weight' => 70],
+            ['on' => '2026-11-25', 'weight' => 71],
+        ];
+        $garmin = [['on' => '2026-11-25', 'weightKg' => 69.5]];
+        $settings->save(SettingsName::WEIGHT_HISTORY, $manual);
+        $settings->save(SettingsName::GARMIN_WEIGHT_HISTORY, $garmin);
+        $this->client->loginUser($this->adminUser());
+        $crawler = $this->client->request('GET', '/admin/settings/athlete-weight');
+        $this->assertResponseIsSuccessful();
+        $rows = Json::decode((string) $crawler->filter('[data-repeater-list]')->attr('data-repeater-initial'));
+        $this->assertSame([
+            ['on' => '2026-11-25', 'weight' => 70, 'source' => 'manual'],
+            ['on' => '2026-11-25', 'weight' => 71, 'source' => 'manual'],
+            ['on' => '2026-11-25', 'weight' => 69.5, 'source' => 'garmin'],
+        ], $rows);
+        $editedManual = array_map(
+            static fn (array $row): array => ['on' => $row['on'], 'weight' => $row['weight']],
+            array_filter($rows, static fn (array $row): bool => 'manual' === $row['source']),
+        );
+        $this->getContainer()->get(CommandBus::class)->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::ATHLETE_WEIGHT->value,
+            'data' => ['weightHistory' => $editedManual, 'garminWeightSyncEnabled' => true],
+        ]));
+        $connection = $this->getContainer()->get(Connection::class);
+        $this->assertSame($manual, Json::decode($connection->fetchOne('SELECT value FROM Setting WHERE name = ?', ['weightHistory'])));
+        $this->assertSame($garmin, Json::decode($connection->fetchOne('SELECT value FROM Setting WHERE name = ?', ['garminWeightHistory'])));
+        $effective = array_values($settings->athleteWeight()->getHistory(UnitSystem::METRIC)->findAll());
+        $this->assertSame(71.0, $effective[0]->getWeight()->toFloat());
     }
 }

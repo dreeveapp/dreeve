@@ -89,6 +89,8 @@ Both sources appear in a single **Weigh-ins** table, ordered by date, with a
 **Source** column showing **Garmin** or **Manual**. Garmin rows are read-only;
 manual rows can be added, edited and removed. If both sources have a weigh-in on
 the same date, both rows remain visible, while the manual value is used for calculations.
+Multiple manual records on the same date also remain visible and editable; saving
+the editor retains them all. The last manual record for that date is used for calculations.
 
 Configure the connector with your Dreeve URL and an API key generated under
 **Settings → Security → API access**:
@@ -108,6 +110,10 @@ including cycles with no new activities. The connector reuses the existing Garmi
 session and checks the Dreeve switch before requesting weight data. It follows the
 activity date window (`SINCE` on the first run, then `LOOKBACK_DAYS`), picks the
 latest weigh-in for each Garmin calendar date, and converts Garmin's grams to kilograms.
+Weight requests include one extra calendar day on each side of that window to cover
+the difference between UTC activity dates and local Garmin dates. This also applies
+when `LOOKBACK_DAYS=0`. If the connector stops before processing weights, it retains
+the previous checkpoint and retries the outstanding window after restarting.
 
 Imported weights are stored separately from manual history. Dreeve converts them
 to pounds when Appearance uses Imperial. Repeated imports update the same date
