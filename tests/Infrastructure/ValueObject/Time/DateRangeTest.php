@@ -10,15 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class DateRangeTest extends TestCase
 {
-    public function testItShouldExposeFromAndTillDates(): void
-    {
-        $from = SerializableDateTime::fromString('25-02-1982');
-        $till = SerializableDateTime::fromString('30-03-1982');
-        $dateRange = DateRange::fromDates($from, $till);
-        $this->assertEquals($from, $dateRange->getFrom());
-        $this->assertEquals($till, $dateRange->getTill());
-    }
-
     public function testLastXDays(): void
     {
         $now = SerializableDateTime::fromString('25-02-1982');

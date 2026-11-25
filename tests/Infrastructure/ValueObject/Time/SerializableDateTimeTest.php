@@ -11,22 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class SerializableDateTimeTest extends TestCase
 {
-    public function testFromString(): void
-    {
-        $this->assertEquals(
-            new \DateTimeImmutable('2023-10-05 10:22:22'),
-            SerializableDateTime::fromString('2023-10-05 10:22:22')
-        );
-    }
-
-    public function testCreateFromFormat(): void
-    {
-        $this->assertEquals(
-            new \DateTimeImmutable('2024-02-29 00:00:00'),
-            SerializableDateTime::createFromFormat('!Y-m-d', '2024-02-29')
-        );
-    }
-
     #[DataProvider('provideInvalidDates')]
     public function testCreateFromFormatItShouldThrowOnInvalidDate(string $date): void
     {

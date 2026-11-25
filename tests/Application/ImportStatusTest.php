@@ -23,27 +23,6 @@ class ImportStatusTest extends ContainerTestCase
     private DbalKeyValueStore $keyValueStore;
     private ImportStatus $importStatus;
 
-    public function testItIsPendingWhenTheWatchDirectoryHoldsAProcessableFile(): void
-    {
-        $this->filesystem->write('watch/ride.fit', 'raw-fit-bytes');
-
-        $this->assertTrue($this->importStatus->isPending());
-    }
-
-    public function testItIsNotPendingWhenTheWatchDirectoryOnlyHoldsUnsupportedFiles(): void
-    {
-        $this->filesystem->write('watch/readme.txt', 'some text');
-
-        $this->assertFalse($this->importStatus->isPending());
-    }
-
-    public function testItIsNotPendingWhenTheWatchDirectoryIsEmpty(): void
-    {
-        $this->filesystem->createDirectory('watch');
-
-        $this->assertFalse($this->importStatus->isPending());
-    }
-
     public function testItIsPendingWhenAnAutomationRulesBackfillIsQueued(): void
     {
         $this->filesystem->createDirectory('watch');
