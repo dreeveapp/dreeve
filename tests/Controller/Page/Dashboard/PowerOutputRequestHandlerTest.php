@@ -14,13 +14,13 @@ use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\DomCrawler\Crawler;
 
 class PowerOutputRequestHandlerTest extends AdminWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

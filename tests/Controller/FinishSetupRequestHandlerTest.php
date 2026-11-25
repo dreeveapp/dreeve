@@ -8,14 +8,14 @@ use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\ActivityWithRawData;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
+use App\Tests\MatchesVersionlessSnapshots;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 class FinishSetupRequestHandlerTest extends ContainerTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
 
     private FinishSetupRequestHandler $finishSetupRequestHandler;
 

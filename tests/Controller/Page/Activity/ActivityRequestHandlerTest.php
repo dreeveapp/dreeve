@@ -43,13 +43,13 @@ use App\Tests\Domain\Activity\Split\ActivitySplitBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Import\FileImportBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ActivityRequestHandlerTest extends AdminWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

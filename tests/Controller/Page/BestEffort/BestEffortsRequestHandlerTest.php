@@ -12,12 +12,12 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\BestEffort\ActivityBestEffortBuilder;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class BestEffortsRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

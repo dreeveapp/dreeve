@@ -8,13 +8,13 @@ use App\Domain\Geography\ExplorerTile\ExplorerTileGrid;
 use App\Domain\Geography\ExplorerTile\ExplorerTiles;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesBuilder;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
 use Doctrine\DBAL\Connection;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class MilestonesRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

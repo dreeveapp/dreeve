@@ -5,13 +5,13 @@ namespace App\Tests\Controller\Page\BestEffort;
 use App\Domain\Activity\ActivityType;
 use App\Infrastructure\Measurement\Length\ConvertableToMeter;
 use App\Tests\Controller\ControllerWebTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
 use PHPUnit\Framework\Attributes\TestWith;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class BestEffortsHistoryRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

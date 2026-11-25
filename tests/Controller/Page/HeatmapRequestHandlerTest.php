@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Page;
 
 use App\Tests\Controller\Admin\AdminWebTestCase;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class HeatmapRequestHandlerTest extends AdminWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

@@ -11,11 +11,11 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Route\ExplorerTile\ActivityExplorerTilesBuilder;
-use Spatie\Snapshots\MatchesSnapshots;
+use App\Tests\MatchesVersionlessSnapshots;
 
 class ActivityNewExplorerTilesRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
 
     public function testRender(): void
     {

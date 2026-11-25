@@ -15,13 +15,13 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\Controller\ControllerWebTestCase;
 use App\Tests\Domain\Segment\SegmentBuilder;
 use App\Tests\Domain\Segment\SegmentEffort\SegmentEffortBuilder;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\DomCrawler\Crawler;
 
 class SegmentRequestHandlerTest extends ControllerWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void

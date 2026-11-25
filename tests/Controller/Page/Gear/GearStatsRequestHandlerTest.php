@@ -11,14 +11,14 @@ use App\Infrastructure\Measurement\Length\Kilometer;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Gear\GearBuilder;
+use App\Tests\MatchesVersionlessSnapshots;
 use App\Tests\ProvideTestData;
 use Money\Money;
-use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\DomCrawler\Crawler;
 
 class GearStatsRequestHandlerTest extends AdminWebTestCase
 {
-    use MatchesSnapshots;
+    use MatchesVersionlessSnapshots;
     use ProvideTestData;
 
     public function testRender(): void
