@@ -212,7 +212,7 @@ class DbalActivityBestEffortRepositoryTest extends ContainerTestCase
             ->build());
 
         $this->activityBestEffortRepository->add(ActivityBestEffortBuilder::fromDefaults()
-            ->withDistanceInMeter(Meter::from(000))
+            ->withDistanceInMeter(Meter::from(5000))
             ->withActivityId(ActivityId::fromUnprefixed('test'))
             ->build());
 

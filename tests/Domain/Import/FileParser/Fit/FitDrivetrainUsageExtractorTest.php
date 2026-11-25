@@ -27,7 +27,12 @@ class FitDrivetrainUsageExtractorTest extends TestCase
                 'rear 7 (15T) 1s 1x',
                 'rear 8 (14T) 0s 1x',
             ],
-            $this->describe($this->extract([0, 1, 5]))
+            $this->describe(FitDrivetrainUsageExtractor::extract(
+                $this->eventMessagesFromFixture(),
+                self::START_FIT_SECONDS,
+                [0, 1, 5],
+                ActivityId::fromUnprefixed('test'),
+            ))
         );
     }
 
@@ -36,19 +41,6 @@ class FitDrivetrainUsageExtractorTest extends TestCase
         $this->assertEquals(
             ActivityDrivetrainUsages::empty(),
             FitDrivetrainUsageExtractor::extract([], self::START_FIT_SECONDS, range(0, 8), ActivityId::fromUnprefixed('test'))
-        );
-    }
-
-    /**
-     * @param array<int, mixed> $timeStream
-     */
-    private function extract(array $timeStream): ActivityDrivetrainUsages
-    {
-        return FitDrivetrainUsageExtractor::extract(
-            $this->eventMessagesFromFixture(),
-            self::START_FIT_SECONDS,
-            $timeStream,
-            ActivityId::fromUnprefixed('test'),
         );
     }
 
