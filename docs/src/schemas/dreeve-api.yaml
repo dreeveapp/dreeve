@@ -55,6 +55,7 @@ paths:
   /api/v1/segments: { $ref: './segments.yaml#/paths/list' }
   /api/v1/segments/{segmentId}: { $ref: './segments.yaml#/paths/detail' }
   /api/v1/athlete/weights: { $ref: './weight.yaml#/paths/list' }
+  /api/v1/athlete/weights/garmin: { $ref: './weight.yaml#/paths/garmin' }
   /api/v1/athlete/weights/{on}: { $ref: './weight.yaml#/paths/detail' }
   /api/v1/metrics/training-load: { $ref: './metrics.yaml#/paths/trainingLoad' }
   /api/v1/metrics/training-volume: { $ref: './metrics.yaml#/paths/trainingVolume' }

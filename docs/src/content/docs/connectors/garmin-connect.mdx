@@ -13,8 +13,8 @@ Garmin Connect → connector → watch/ → Dreeve imports it
 
 The connector is a **separate container** from its own repository,
 [dreeveapp/dreeve-garmin-connector](https://github.com/dreeveapp/dreeve-garmin-connector). It is not
-part of Dreeve itself, it only writes files into the folder you
-already mount.
+part of Dreeve itself. Activity imports use the folder you already mount;
+optional weight synchronization uses Dreeve's authenticated HTTP API.
 
 :::note[Important]
 This uses Garmin's unofficial API. Garmin does not document or support it and has
@@ -79,6 +79,37 @@ remove `GARMIN_PASSWORD` from your `.env` afterward; nothing else needs it.
 A cycle runs immediately, then one every hour. Files land in the watch folder as
 `<activityId>.fit`, and the daemon container will import them, exactly as if you had
 dropped them there yourself.
+
+## Weight synchronization
+
+Enable **Settings → Weight history → Sync weight from Garmin Connect** in Dreeve.
+Manual weigh-ins remain available. A manual entry takes priority over a Garmin entry
+on the same date; removing that manual entry reveals the synced value again.
+
+Configure the connector with your Dreeve URL and an API key generated under
+**Settings → Security → API access**:
+
+```dotenv title=".env"
+DREEVE_URL=http://app:8080
+DREEVE_API_KEY=drv_...
+# Alternatively: DREEVE_API_KEY_FILE=/run/secrets/dreeve_api_key
+```
+
+Use an address reachable from the connector container. `app` works when the two
+services share a Docker network. Recreate the connector after changing its environment.
+Use an API key, not the read-only MCP key.
+
+Weights run in the **same cycle and at the same `POLL_INTERVAL` as activities**,
+including cycles with no new activities. The connector reuses the existing Garmin
+session and checks the Dreeve switch before requesting weight data. It follows the
+activity date window (`SINCE` on the first run, then `LOOKBACK_DAYS`), picks the
+latest weigh-in for each Garmin calendar date, and converts Garmin's grams to kilograms.
+
+Imported weights are stored separately from manual history. Dreeve converts them
+to pounds when Appearance uses Imperial. Repeated imports update the same date
+rather than adding duplicates. Switching synchronization off stops new imports
+and preserves previously imported measurements. Activity-only deployments need
+no additional configuration and retain their existing behavior.
 
 ## Why the first sync is slow
 

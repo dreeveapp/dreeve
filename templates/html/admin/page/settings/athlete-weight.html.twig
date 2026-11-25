@@ -3,6 +3,30 @@
 
 {% block sections %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {
+        title: "Garmin Connect"|trans({}, 'admin'),
+        description: "Sync your weight with Garmin Connect on the same schedule as your activities. Manual entries remain available and take priority for the same date."|trans({}, 'admin'),
+    } %}
+        {% block body %}
+            <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                <input type="hidden" name="data[garminWeightSyncEnabled]" value="0">
+                <input type="checkbox" name="data[garminWeightSyncEnabled]" value="1"
+                       {{ (settings.garminWeightSyncEnabled ?? false) ? 'checked' : '' }}>
+                <span>{{ "Sync weight from Garmin Connect"|trans({}, 'admin') }}</span>
+            </label>
+            <p class="description">{{ "Requires the Garmin connector to be connected to this Dreeve instance. Turning sync off keeps previously imported weigh-ins."|trans({}, 'admin') }}</p>
+            {% if garminWeightHistory|default([]) is not empty %}
+                <table>
+                    <thead><tr><th>{{ "Date"|trans }}</th><th>{{ "Weight"|trans }}</th></tr></thead>
+                    <tbody>
+                    {% for weighIn in garminWeightHistory %}
+                        <tr><td>{{ weighIn.getOn().format('Y-m-d') }}</td><td>{{ weighIn.getWeight().toFloat()|round(2) }} {{ weighIn.getWeight().getSymbol() }}</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {
         title: "Weigh-ins"|trans({}, 'admin'),
         description: "History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg."|trans({}, 'admin'),
     } %}

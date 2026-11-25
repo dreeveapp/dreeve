@@ -18,6 +18,8 @@ enum SettingsName: string
     case HEART_RATE_ZONES = 'heartRateZones';
     case FTP_HISTORY = 'ftpHistory';
     case WEIGHT_HISTORY = 'weightHistory';
+    case GARMIN_WEIGHT_SYNC_ENABLED = 'garminWeightSyncEnabled';
+    case GARMIN_WEIGHT_HISTORY = 'garminWeightHistory';
     case APP_SUB_TITLE = 'appSubTitle';
     case UNIT_SYSTEM = 'unitSystem';
     case LOCALE = 'locale';
@@ -53,7 +55,7 @@ enum SettingsName: string
             self::FIRST_NAME, self::LAST_NAME, self::BIRTHDAY, self::GENDER, self::PROFILE_PICTURE_URL,
             self::MAX_HEART_RATE_FORMULA, self::RESTING_HEART_RATE_FORMULA, self::HEART_RATE_ZONES => SettingsGroup::GENERAL,
             self::FTP_HISTORY => SettingsGroup::ATHLETE_FTP,
-            self::WEIGHT_HISTORY => SettingsGroup::ATHLETE_WEIGHT,
+            self::WEIGHT_HISTORY, self::GARMIN_WEIGHT_SYNC_ENABLED, self::GARMIN_WEIGHT_HISTORY => SettingsGroup::ATHLETE_WEIGHT,
             self::APP_SUB_TITLE, self::UNIT_SYSTEM, self::LOCALE, self::TIME_FORMAT, self::DATE_FORMAT,
             self::PHOTOS, self::SPORT_TYPES_SORTING_ORDER => SettingsGroup::APPEARANCE,
             self::EDDINGTON => SettingsGroup::METRICS,

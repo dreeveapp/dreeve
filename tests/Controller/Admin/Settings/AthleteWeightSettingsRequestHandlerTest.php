@@ -18,8 +18,9 @@ class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
 
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="athleteWeight"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] [data-repeater]'));
-        $this->assertSame('Weigh-ins', $crawler->filter('section h3')->text());
-        $this->assertStringContainsString('Needed to calculate relative w/kg.', $crawler->filter('section p.description')->text());
+        $this->assertContains('Weigh-ins', $crawler->filter('section h3')->each(fn ($node): string => $node->text()));
+        $this->assertStringContainsString('Needed to calculate relative w/kg.', $crawler->filter('form[data-dispatch-command="update-settings"]')->text());
+        $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[garminWeightSyncEnabled]"]'));
         $this->assertSame(
             [
                 ['on' => '2020-01-01', 'weight' => 68],

@@ -67,6 +67,8 @@ final readonly class SettingsRequestHandler
                 'appUrl' => $this->appUrl,
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
                 'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
+                'garminWeightHistory' => $this->settingsRepository->athleteWeight()
+                    ->getGarminHistory($this->settingsRepository->appearance()->getUnitSystem())->findAll(),
             ],
         ));
     }

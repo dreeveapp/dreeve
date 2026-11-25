@@ -1,4 +1,63 @@
 paths:
+  garmin:
+    get:
+      operationId: getGarminWeightSyncStatus
+      tags: [Weight]
+      summary: Read the Garmin weight synchronization switch
+      responses:
+        '200':
+          description: The switch configured under Settings > Weight history.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [enabled]
+                properties:
+                  enabled: { type: boolean }
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+    post:
+      operationId: importGarminWeights
+      tags: [Weight]
+      summary: Import Garmin weigh-ins without replacing manual entries
+      description: >-
+        Requires Garmin weight synchronization to be enabled. Measurements always use kilograms,
+        independently of the appearance unit system. The same date is updated idempotently in
+        separate Garmin history. Manual history is never modified and takes priority for that date.
+        The entire batch is validated before any measurements are saved.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [weights]
+              properties:
+                weights:
+                  type: array
+                  maxItems: 366
+                  items:
+                    type: object
+                    required: [on, weightKg]
+                    properties:
+                      on: { type: string, format: date }
+                      weightKg: { type: number, exclusiveMinimum: 0 }
+      responses:
+        '200':
+          description: All measurements were accepted. Repeated dates update their previous value.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [imported]
+                properties:
+                  imported: { type: integer, minimum: 0 }
+        '400':
+          description: The JSON body or a measurement is invalid; no measurements were saved.
+        '401':
+          $ref: './dreeve-api.yaml#/components/responses/Unauthorized'
+        '409':
+          description: Garmin weight synchronization is disabled.
   list:
     get:
       operationId: listAthleteWeights
