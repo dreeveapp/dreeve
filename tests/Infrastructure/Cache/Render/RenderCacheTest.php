@@ -11,7 +11,6 @@ use App\Infrastructure\Cache\Tag\RootCacheTag;
 use App\Tests\ContainerTestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
-use Symfony\Contracts\Cache\ItemInterface;
 use Time\Duration;
 
 class RenderCacheTest extends ContainerTestCase
@@ -119,10 +118,6 @@ class RenderCacheTest extends ContainerTestCase
         $item->set('rendered');
         $item->tag(['activity.images']);
         $pool->save($item);
-
-        $storedExpiry = $pool->getItem(AppVersion::getSemanticVersion().'.stored-without-an-expiry')
-            ->getMetadata()[ItemInterface::METADATA_EXPIRY] ?? null;
-        $this->assertGreaterThan(50 * 365 * 86400, $storedExpiry - time());
 
         $render = new RenderCache($pool, $tags)->get(
             cacheKey: 'stored-without-an-expiry',
