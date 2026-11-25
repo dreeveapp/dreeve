@@ -931,7 +931,6 @@ class StravaTest extends TestCase
             logger: $this->logger,
             clock: $this->clock = PausedClock::fromString('2025-11-02 12:43:20')
         );
-        $this->strava::$cachedAccessToken = null;
-        $this->strava::$cachedActivitiesResponse = null;
+        $this->strava->reset();
     }
 }

@@ -22,17 +22,18 @@ use GuzzleHttp\RequestOptions;
 use League\Flysystem\FilesystemOperator;
 use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Service\ResetInterface;
 use Time\Duration;
 
 #[WithMonologChannel('strava-api')]
-class Strava
+class Strava implements ResetInterface
 {
     use ConsoleOutputAware;
 
-    public static ?string $cachedAccessToken = null;
+    private ?string $cachedAccessToken = null;
     /** @var array<mixed>|null */
-    public static ?array $cachedActivitiesResponse = null;
-    private static ?StravaRateLimits $stravaRateLimits = null;
+    private ?array $cachedActivitiesResponse = null;
+    private ?StravaRateLimits $stravaRateLimits = null;
 
     public function __construct(
         private readonly Client $client,
@@ -46,6 +47,13 @@ class Strava
         private readonly LoggerInterface $logger,
         private readonly Clock $clock,
     ) {
+    }
+
+    public function reset(): void
+    {
+        $this->cachedAccessToken = null;
+        $this->cachedActivitiesResponse = null;
+        $this->stravaRateLimits = null;
     }
 
     /**
@@ -100,7 +108,7 @@ class Strava
         ));
 
         if (($stravaRateLimits = StravaRateLimits::fromResponse($response)) instanceof StravaRateLimits) {
-            self::$stravaRateLimits = $stravaRateLimits;
+            $this->stravaRateLimits = $stravaRateLimits;
             if ($stravaRateLimits->fifteenMinReadRateLimitHasBeenReached()) {
                 // The next request will hit the 15-minute rate limit. Pause and make sure the import does not crash.
                 $this->getConsoleOutput()->writeln(sprintf(
@@ -116,7 +124,7 @@ class Strava
 
     public function getRateLimit(): ?StravaRateLimits
     {
-        return self::$stravaRateLimits;
+        return $this->stravaRateLimits;
     }
 
     public function verifyAccessToken(): void
@@ -161,8 +169,8 @@ class Strava
 
     public function getAccessToken(): string
     {
-        if (!is_null(Strava::$cachedAccessToken)) {
-            return Strava::$cachedAccessToken;
+        if (!is_null($this->cachedAccessToken)) {
+            return $this->cachedAccessToken;
         }
 
         $response = $this->request('oauth/token', 'POST', [
@@ -179,7 +187,7 @@ class Strava
             throw new \RuntimeException('Could not fetch Strava accessToken');
         }
 
-        Strava::$cachedAccessToken = $decodedResponse['access_token'];
+        $this->cachedAccessToken = $decodedResponse['access_token'];
 
         return $decodedResponse['access_token'];
     }
@@ -201,11 +209,11 @@ class Strava
      */
     public function getActivities(): array
     {
-        if (!is_null(Strava::$cachedActivitiesResponse)) {
-            return Strava::$cachedActivitiesResponse;
+        if (!is_null($this->cachedActivitiesResponse)) {
+            return $this->cachedActivitiesResponse;
         }
 
-        Strava::$cachedActivitiesResponse = [];
+        $this->cachedActivitiesResponse = [];
 
         $page = 1;
         do {
@@ -219,14 +227,14 @@ class Strava
                 ],
             ]));
 
-            Strava::$cachedActivitiesResponse = array_merge(
-                Strava::$cachedActivitiesResponse,
+            $this->cachedActivitiesResponse = array_merge(
+                $this->cachedActivitiesResponse,
                 $activities
             );
             ++$page;
         } while (count($activities) > 0);
 
-        return Strava::$cachedActivitiesResponse;
+        return $this->cachedActivitiesResponse;
     }
 
     /**
