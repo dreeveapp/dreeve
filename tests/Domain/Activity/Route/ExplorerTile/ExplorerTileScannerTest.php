@@ -34,35 +34,69 @@ class ExplorerTileScannerTest extends ContainerTestCase
         ];
         $polyline = (string) EncodedPolyline::fromCoordinates([[51.048301, 3.724365]]);
 
-        foreach ([
-            'with-stream' => [WorldType::REAL_WORLD, $streamData, true],
-            'with-polyline-only' => [WorldType::REAL_WORLD, null, true],
-            'virtual' => [WorldType::ZWIFT, $streamData, true],
-            'streams-not-fetched' => [WorldType::REAL_WORLD, $streamData, false],
-        ] as $activityId => [$worldType, $latLng, $streamsFetched]) {
-            $activityId = ActivityId::fromUnprefixed($activityId);
-            $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
-                ActivityBuilder::fromDefaults()
-                    ->withActivityId($activityId)
-                    ->withWorldType($worldType)
-                    ->withPolyline($polyline)
-                    ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
-                    ->build(),
-                []
-            ));
-            if (null !== $latLng) {
-                $this->getContainer()->get(ActivityStreamRepository::class)->add(ActivityStreamBuilder::fromDefaults()
-                    ->withActivityId($activityId)
-                    ->withStreamType(StreamType::LAT_LNG)
-                    ->withData($latLng)
-                    ->build());
-            }
-            if ($streamsFetched) {
-                $this->getContainer()->get(ActivityScanRepository::class)->add(
-                    ActivityScan::create(activityId: $activityId, type: ActivityScanType::STREAMS)
-                );
-            }
-        }
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('with-stream'))
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline($polyline)
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityStreamRepository::class)->add(ActivityStreamBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('with-stream'))
+            ->withStreamType(StreamType::LAT_LNG)
+            ->withData($streamData)
+            ->build());
+        $this->getContainer()->get(ActivityScanRepository::class)->add(
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed('with-stream'), type: ActivityScanType::STREAMS)
+        );
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('with-polyline-only'))
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline($polyline)
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityScanRepository::class)->add(
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed('with-polyline-only'), type: ActivityScanType::STREAMS)
+        );
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('virtual'))
+                ->withWorldType(WorldType::ZWIFT)
+                ->withPolyline($polyline)
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityStreamRepository::class)->add(ActivityStreamBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('virtual'))
+            ->withStreamType(StreamType::LAT_LNG)
+            ->withData($streamData)
+            ->build());
+        $this->getContainer()->get(ActivityScanRepository::class)->add(
+            ActivityScan::create(activityId: ActivityId::fromUnprefixed('virtual'), type: ActivityScanType::STREAMS)
+        );
+
+        $this->getContainer()->get(ActivityRepository::class)->add(ActivityWithRawData::fromState(
+            ActivityBuilder::fromDefaults()
+                ->withActivityId(ActivityId::fromUnprefixed('streams-not-fetched'))
+                ->withWorldType(WorldType::REAL_WORLD)
+                ->withPolyline($polyline)
+                ->withRouteGeography(RouteGeography::create(['country_code' => 'BE']))
+                ->build(),
+            []
+        ));
+        $this->getContainer()->get(ActivityStreamRepository::class)->add(ActivityStreamBuilder::fromDefaults()
+            ->withActivityId(ActivityId::fromUnprefixed('streams-not-fetched'))
+            ->withStreamType(StreamType::LAT_LNG)
+            ->withData($streamData)
+            ->build());
 
         $scanner = new ExplorerTileScanner(
             $this->getContainer()->get(ActivityRepository::class),

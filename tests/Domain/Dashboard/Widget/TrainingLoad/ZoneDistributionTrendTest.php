@@ -18,20 +18,12 @@ class ZoneDistributionTrendTest extends ContainerTestCase
 
     public function testGetSvgIcon(): void
     {
-        $kernelProjectDir = $this->getContainer()->get(KernelProjectDir::class);
-
         $actual = [];
         foreach (ZoneDistributionTrend::cases() as $trend) {
-            $svgIcon = $trend->getSvgIcon();
             $actual[$trend->name] = [
-                'svgIcon' => $svgIcon,
+                'svgIcon' => $trend->getSvgIcon(),
                 'svgIconClasses' => $trend->getSvgIconClasses(),
             ];
-
-            if (is_null($svgIcon)) {
-                continue;
-            }
-            self::assertFileExists($kernelProjectDir.'/templates/svg/icons/'.$svgIcon.'.svg');
         }
         $this->assertEquals(
             [
@@ -41,6 +33,7 @@ class ZoneDistributionTrendTest extends ContainerTestCase
             ],
             $actual,
         );
+        self::assertFileExists($this->getContainer()->get(KernelProjectDir::class).'/templates/svg/icons/chevron.svg');
     }
 
     public function testGetTranslations(): void

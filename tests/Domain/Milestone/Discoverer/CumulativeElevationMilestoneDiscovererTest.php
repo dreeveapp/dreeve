@@ -16,6 +16,7 @@ use App\Domain\Milestone\MilestoneIdFactory;
 use App\Domain\Milestone\PreviousMilestone;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
+use App\Infrastructure\Measurement\Length\Foot;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
@@ -119,7 +120,23 @@ class CumulativeElevationMilestoneDiscovererTest extends ContainerTestCase
         );
         $milestones = $discoverer->discover($this->milestoneIdFactory);
 
-        $this->assertGreaterThanOrEqual(2, count($milestones));
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_ELEVATION,
+                    context: new CumulativeElevationContext(threshold: Foot::from(1000.0)),
+                )->withFunComparison(ElevationFunComparison::EIFFEL_TOWER),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_ELEVATION,
+                    context: new CumulativeElevationContext(threshold: Foot::from(1000.0)),
+                )->withSportType(SportType::RIDE)->withFunComparison(ElevationFunComparison::EIFFEL_TOWER),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverWithMultipleSportTypes(): void

@@ -17,6 +17,7 @@ use App\Domain\Milestone\PreviousMilestone;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Measurement\Length\Kilometer;
+use App\Infrastructure\Measurement\Length\Mile;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
@@ -138,7 +139,24 @@ class CumulativeDistanceMilestoneDiscovererTest extends ContainerTestCase
             $settingsRepository,
         );
         $milestones = $discoverer->discover($this->milestoneIdFactory);
-        $this->assertGreaterThanOrEqual(2, count($milestones));
+
+        $this->assertEquals(
+            [
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-1'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Mile::from(100.0)),
+                )->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+                Milestone::create(
+                    id: MilestoneId::fromString('milestone-2'),
+                    achievedOn: SerializableDateTime::fromString('2024-01-01 00:00:00'),
+                    category: MilestoneCategory::CUMULATIVE_DISTANCE,
+                    context: new CumulativeDistanceContext(threshold: Mile::from(100.0)),
+                )->withSportType(SportType::RIDE)->withFunComparison(DistanceFunComparison::EDGE_OF_SPACE),
+            ],
+            $milestones->toArray(),
+        );
     }
 
     public function testDiscoverWithMultipleSportTypes(): void
