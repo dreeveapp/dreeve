@@ -108,12 +108,14 @@ final readonly class GearMaintenanceRequestHandler
             }
         }
 
+        $maintenanceTaskStatuses = $this->maintenanceTaskProgressCalculator->calculateStatuses();
+
         return $this->twig->load('html/gear/maintenance/gear-maintenance.html.twig')->render([
             'gearsWithComponents' => array_values($gearsWithComponents),
             'componentsNotFitted' => $componentsNotFitted,
             'parentComponentLabels' => $parentComponentLabels,
-            'gearIdsThatHaveDueTasks' => $this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks(),
-            'maintenanceTaskStatuses' => $this->maintenanceTaskProgressCalculator->calculateStatuses(),
+            'gearIdsThatHaveDueTasks' => $this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks($maintenanceTaskStatuses),
+            'maintenanceTaskStatuses' => $maintenanceTaskStatuses,
             'isFeatureEnabled' => true,
         ]);
     }

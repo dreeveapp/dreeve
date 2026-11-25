@@ -30,7 +30,9 @@ final class GearMaintenanceNotificationConsoleCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks()->isEmpty()) {
+        if ($this->maintenanceTaskProgressCalculator->getGearIdsThatHaveDueTasks(
+            $this->maintenanceTaskProgressCalculator->calculateStatuses(),
+        )->isEmpty()) {
             return Command::SUCCESS;
         }
         $this->commandBus->dispatch(new SendNotification(
