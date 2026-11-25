@@ -706,3 +706,9 @@ then: then
 "Sync your weight with Garmin Connect on the same schedule as your activities. Manual entries remain available and take priority for the same date.": "Sync your weight with Garmin Connect on the same schedule as your activities. Manual entries remain available and take priority for the same date."
 
 "Requires the Garmin connector to be connected to this Dreeve instance. Turning sync off keeps previously imported weigh-ins.": "Requires the Garmin connector to be connected to this Dreeve instance. Turning sync off keeps previously imported weigh-ins."
+
+"Manual": "Manual"
+"Garmin": "Garmin"
+"Date": "Date"
+"Weight": "Weight"
+"Garmin entries are read-only. Add a manual entry to override an imported weight for the same date.": "Garmin entries are read-only. Add a manual entry to override an imported weight for the same date."

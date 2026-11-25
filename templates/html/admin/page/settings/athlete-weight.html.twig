@@ -14,16 +14,6 @@
                 <span>{{ "Sync weight from Garmin Connect"|trans({}, 'admin') }}</span>
             </label>
             <p class="description">{{ "Requires the Garmin connector to be connected to this Dreeve instance. Turning sync off keeps previously imported weigh-ins."|trans({}, 'admin') }}</p>
-            {% if garminWeightHistory|default([]) is not empty %}
-                <table>
-                    <thead><tr><th>{{ "Date"|trans }}</th><th>{{ "Weight"|trans }}</th></tr></thead>
-                    <tbody>
-                    {% for weighIn in garminWeightHistory %}
-                        <tr><td>{{ weighIn.getOn().format('Y-m-d') }}</td><td>{{ weighIn.getWeight().toFloat()|round(2) }} {{ weighIn.getWeight().getSymbol() }}</td></tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
         {% endblock %}
     {% endembed %}
     {% embed 'html/admin/page/settings/component/section.html.twig' with {
@@ -31,17 +21,8 @@
         description: "History of weight (in kg or pounds, depending on the appearance unit system). Needed to calculate relative w/kg."|trans({}, 'admin'),
     } %}
         {% block body %}
-            {% import 'html/admin/page/settings/macro/history-editor.html.twig' as editor %}
-            {{ editor.historyEditor(
-                'data[weightHistory]',
-                settings.weightHistory ?? [],
-                null,
-                null,
-                "Weight"|trans,
-                "Add weight"|trans({}, 'admin'),
-                'weight',
-                'any'
-            ) }}
+            <p class="description mb-2">{{ "Garmin entries are read-only. Add a manual entry to override an imported weight for the same date."|trans({}, 'admin') }}</p>
+            {% include 'html/admin/page/settings/component/weight-history-editor.html.twig' with {rows: weightHistoryRows} %}
         {% endblock %}
     {% endembed %}
 {% endblock sections %}

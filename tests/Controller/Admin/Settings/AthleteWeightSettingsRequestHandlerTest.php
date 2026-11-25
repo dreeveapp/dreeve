@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin\Settings;
 
+use App\Domain\Settings\SettingsName;
+use App\Domain\Settings\SettingsRepository;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 
 class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
@@ -23,19 +25,58 @@ class AthleteWeightSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[garminWeightSyncEnabled]"]'));
         $this->assertSame(
             [
-                ['on' => '2020-01-01', 'weight' => 68],
-                ['on' => '2019-12-01', 'weight' => 69],
-                ['on' => '2019-08-01', 'weight' => 70],
-                ['on' => '2019-07-01', 'weight' => 71],
+                ['on' => '2020-01-01', 'weight' => 68, 'source' => 'manual'],
+                ['on' => '2019-12-01', 'weight' => 69, 'source' => 'manual'],
+                ['on' => '2019-08-01', 'weight' => 70, 'source' => 'manual'],
+                ['on' => '2019-07-01', 'weight' => 71, 'source' => 'manual'],
             ],
             json_decode((string) $crawler->filter('[data-repeater-list]')->attr('data-repeater-initial'), true),
         );
-        $this->assertCount(1, $crawler->filter('template[data-repeater-template]'));
-        $this->assertStringContainsString('data[weightHistory][__index__][weight]', $crawler->filter('template[data-repeater-template]')->html());
+        $this->assertCount(2, $crawler->filter('template[data-repeater-template]'));
+        $this->assertStringContainsString('data[weightHistory][__index__][weight]', $crawler->filter('template[data-repeater-template=""]')->html());
 
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');
         $this->assertCount(1, $selectedLink);
         $this->assertStringContainsString('Weight history', $selectedLink->text());
+    }
+
+    public function testItCombinesBothSourcesWithoutLosingSameDayWeighIns(): void
+    {
+        $settings = $this->getContainer()->get(SettingsRepository::class);
+        $settings->save(SettingsName::GARMIN_WEIGHT_HISTORY, [
+            ['on' => '2026-11-25', 'weightKg' => 70.125],
+            ['on' => '2020-01-01', 'weightKg' => 67.5],
+        ]);
+        $this->client->loginUser($this->adminUser());
+        $crawler = $this->client->request('GET', '/admin/settings/athlete-weight');
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('table'));
+        $this->assertContains('Source', $crawler->filter('th')->each(fn ($node): string => $node->text()));
+        $rows = json_decode((string) $crawler->filter('[data-repeater-list]')->attr('data-repeater-initial'), true);
+        $this->assertCount(6, $rows);
+        $this->assertSame(['on' => '2026-11-25', 'weight' => 70.125, 'source' => 'garmin'], $rows[0]);
+        $this->assertSame(['on' => '2020-01-01', 'weight' => 68, 'source' => 'manual'], $rows[1]);
+        $this->assertSame(['on' => '2020-01-01', 'weight' => 67.5, 'source' => 'garmin'], $rows[2]);
+
+        $garmin = $crawler->filter('template[data-repeater-template="garmin"]')->html();
+        $this->assertStringNotContainsString('name=', $garmin);
+        $this->assertStringNotContainsString('data-repeater-remove', $garmin);
+        $this->assertStringContainsString('readonly', $garmin);
+    }
+
+    public function testItConvertsOnlyGarminRowsToTheSelectedUnitSystem(): void
+    {
+        $settings = $this->getContainer()->get(SettingsRepository::class);
+        $settings->save(SettingsName::UNIT_SYSTEM, 'imperial');
+        $settings->save(SettingsName::GARMIN_WEIGHT_HISTORY, [['on' => '2026-11-25', 'weightKg' => 70]]);
+        $this->client->loginUser($this->adminUser());
+        $crawler = $this->client->request('GET', '/admin/settings/athlete-weight');
+        $this->assertResponseIsSuccessful();
+        $rows = json_decode((string) $crawler->filter('[data-repeater-list]')->attr('data-repeater-initial'), true);
+        $this->assertEqualsWithDelta(154.32, $rows[0]['weight'], 0.01);
+        $this->assertSame('garmin', $rows[0]['source']);
+        $this->assertSame(68, $rows[1]['weight']);
+        $this->assertSame('manual', $rows[1]['source']);
     }
 }

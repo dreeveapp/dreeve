@@ -57,6 +57,8 @@ class Repeater {
         this.root = root;
         this.list = root.querySelector('[data-repeater-list]');
         this.template = root.querySelector('[data-repeater-template]');
+        this.templates = Array.from(root.querySelectorAll('[data-repeater-template]'));
+        this.templateKey = root.getAttribute('data-repeater-template-key');
         this.addButton = root.querySelector('[data-repeater-add]');
         this.min = parseInt(root.getAttribute('data-repeater-min') ?? '0', 10) || 0;
         this.indexedAttributes = new WeakMap();
@@ -88,7 +90,10 @@ class Repeater {
     }
 
     addRow(data) {
-        const row = this.template.content.firstElementChild.cloneNode(true);
+        const template = (data && this.templateKey
+            ? this.templates.find((template) => template.getAttribute('data-repeater-template') === data[this.templateKey])
+            : null) || this.template;
+        const row = template.content.firstElementChild.cloneNode(true);
 
         row.querySelectorAll(INDEXED_SELECTOR).forEach((element) => {
             const templates = {};

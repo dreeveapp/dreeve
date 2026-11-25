@@ -698,11 +698,3 @@ then: then
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'
-
-"Garmin Connect": "Garmin Connect"
-
-"Sync weight from Garmin Connect": "Sincronizza il peso da Garmin Connect"
-
-"Sync your weight with Garmin Connect on the same schedule as your activities. Manual entries remain available and take priority for the same date.": "Sincronizza il peso da Garmin Connect con la stessa frequenza delle attività. Puoi sempre inserire il peso manualmente: nella stessa data, il valore manuale ha la precedenza."
-
-"Requires the Garmin connector to be connected to this Dreeve instance. Turning sync off keeps previously imported weigh-ins.": "Richiede che il connettore Garmin sia collegato a questa istanza Dreeve. Disattivando la sincronizzazione, le pesate già importate vengono conservate."

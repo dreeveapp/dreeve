@@ -1,0 +1,41 @@
+<div class="p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater data-repeater-min="0" data-repeater-template-key="source">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+            <thead>
+                <tr>
+                    <th scope="col" class="p-2">{{ "Date"|trans({}, 'admin') }}</th>
+                    <th scope="col" class="p-2">{{ "Weight"|trans({}, 'admin') }}</th>
+                    <th scope="col" class="p-2">{{ "Source"|trans({}, 'admin') }}</th>
+                    <th scope="col" class="p-2"><span class="sr-only">{{ "Actions"|trans({}, 'admin') }}</span></th>
+                </tr>
+            </thead>
+            <tbody data-repeater-list data-repeater-initial="{{ rows|json_encode|e('html_attr') }}"></tbody>
+        </table>
+    </div>
+    <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+        {{ svg('plus', 'size-4') }}
+        <span>{{ "Add weight"|trans({}, 'admin') }}</span>
+    </button>
+    <template data-repeater-template>
+        <tr data-repeater-item data-weight-source="manual">
+            <td class="p-2"><input type="date" name="data[weightHistory][__index__][on]" data-repeater-field="on" aria-label="{{ "Date"|trans({}, 'admin') }}" required></td>
+            <td class="p-2"><input type="number" step="any" min="0" name="data[weightHistory][__index__][weight]" data-repeater-field="weight" aria-label="{{ "Weight"|trans({}, 'admin') }}" required></td>
+            <td class="p-2">{{ "Manual"|trans({}, 'admin') }}</td>
+            <td class="p-2">
+                <button type="button" data-repeater-remove
+                        class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
+                        aria-label="{{ "Remove"|trans({}, 'admin') }}">
+                    {{ svg('close', 'size-4') }}
+                </button>
+            </td>
+        </tr>
+    </template>
+    <template data-repeater-template="garmin">
+        <tr data-weight-source="garmin">
+            <td class="p-2"><input type="date" data-repeater-field="on" aria-label="{{ "Date"|trans({}, 'admin') }}" readonly></td>
+            <td class="p-2"><input type="number" step="any" data-repeater-field="weight" aria-label="{{ "Weight"|trans({}, 'admin') }}" readonly></td>
+            <td class="p-2">{{ "Garmin"|trans({}, 'admin') }}</td>
+            <td class="p-2"></td>
+        </tr>
+    </template>
+</div>

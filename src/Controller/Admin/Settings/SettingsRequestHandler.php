@@ -6,8 +6,10 @@ namespace App\Controller\Admin\Settings;
 
 use App\Application\AppUrl;
 use App\Domain\Athlete\HeartRateZone\HeartRateZoneConfiguration;
+use App\Domain\Athlete\Weight\AthleteWeightHistory;
 use App\Domain\Settings\DbalSettingsRepository;
 use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
 use App\Domain\Settings\UpdateAthleteSettings\UpdateAthleteSettings;
 use App\Domain\Settings\UpdateSettings\UpdateSettings;
@@ -67,9 +69,31 @@ final readonly class SettingsRequestHandler
                 'appUrl' => $this->appUrl,
                 'sportTypes' => $this->settingsRepository->appearance()->getSportTypesSortingOrder(),
                 'defaultHeartRateZones' => HeartRateZoneConfiguration::getDefaultZones(),
-                'garminWeightHistory' => $this->settingsRepository->athleteWeight()
-                    ->getGarminHistory($this->settingsRepository->appearance()->getUnitSystem())->findAll(),
+                'weightHistoryRows' => SettingsGroup::ATHLETE_WEIGHT === $settingsGroup ? $this->weightHistoryRows() : [],
             ],
         ));
+    }
+
+    /** @return list<array{on: string, weight: float, source: string}> */
+    private function weightHistoryRows(): array
+    {
+        $unitSystem = $this->settingsRepository->appearance()->getUnitSystem();
+        $histories = [
+            'manual' => AthleteWeightHistory::fromArray($this->settingsRepository->find(SettingsName::WEIGHT_HISTORY) ?? [], $unitSystem),
+            'garmin' => $this->settingsRepository->athleteWeight()->getGarminHistory($unitSystem),
+        ];
+        $rows = [];
+        foreach ($histories as $source => $history) {
+            foreach ($history->findAll() as $weighIn) {
+                $rows[] = [
+                    'on' => $weighIn->getOn()->format('Y-m-d'),
+                    'weight' => $weighIn->getWeight()->toFloat(),
+                    'source' => $source,
+                ];
+            }
+        }
+        usort($rows, static fn (array $a, array $b): int => strcmp($b['on'], $a['on']) ?: strcmp($b['source'], $a['source']));
+
+        return $rows;
     }
 }
