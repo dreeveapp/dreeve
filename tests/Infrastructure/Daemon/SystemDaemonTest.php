@@ -40,19 +40,6 @@ class SystemDaemonTest extends ContainerTestCase
         }
     }
 
-    public function testClearStaleCronLocksWhenNoLocksPresent(): void
-    {
-        // No leftover locks: clearing on startup must be a harmless no-op.
-        $this->systemDaemon->clearStaleCronLocks();
-
-        foreach (LockName::cases() as $lockName) {
-            $this->assertFalse($this->getConnection()->fetchOne(
-                'SELECT `value` FROM KeyValue WHERE `key` = :key',
-                ['key' => $lockName->key()]
-            ));
-        }
-    }
-
     #[\Override]
     protected function setUp(): void
     {

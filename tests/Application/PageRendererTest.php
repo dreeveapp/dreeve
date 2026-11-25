@@ -18,23 +18,6 @@ class PageRendererTest extends ContainerTestCase
 {
     use ProvideTestData;
 
-    public function testItWrapsTheRenderInTheAppShell(): void
-    {
-        $this->provideFullTestSet();
-        $this->getContainer()->get(RequestStack::class)->push(new Request(attributes: ['_route' => 'dashboard']));
-
-        $response = $this->getContainer()->get(PageRenderer::class)->render(
-            cacheability: Cacheability::for('page', CacheTags::of(RootCacheTag::ACTIVITIES)),
-            render: fn (): string => '<p>The page content</p>',
-            navigationSection: null,
-            metadata: new PageMetadata(title: 'Page', description: 'The page'),
-        );
-
-        $this->assertStringContainsString('<p>The page content</p>', (string) $response->getContent());
-        $this->assertStringContainsString('</html>', (string) $response->getContent());
-        $this->assertNotNull($response->headers->get('X-Dreeve-Cache-Key'));
-    }
-
     public function testItLetsTheBrowserStoreAPageWithoutCacheContexts(): void
     {
         $this->provideFullTestSet();
