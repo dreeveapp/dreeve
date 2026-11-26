@@ -59,7 +59,7 @@ final readonly class HeartRateDistributionChart
         $axisBpmRange = $step * count($xAxisValues);
         $zoneStartPositions = [];
         foreach ($this->heartRateZones->getZones() as $zone) {
-            $zoneStartPositions[] = 1 + 98 * min(1, max(0, ($zone->getRangeInBpm($this->athleteMaxHeartRate)[0] - $minHeartRate) / $axisBpmRange));
+            $zoneStartPositions[] = 1 + 98 * clamp(($zone->getRangeInBpm($this->athleteMaxHeartRate)[0] - $minHeartRate) / $axisBpmRange, 0, 1);
         }
 
         [$zoneOneStart, $zoneTwoStart, $zoneThreeStart, $zoneFourStart, $zoneFiveStart] = $zoneStartPositions;
