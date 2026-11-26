@@ -46,7 +46,7 @@ final readonly class HeartRateDistributionChart
         /** @var non-empty-array<int, int> $heartRateData */
         $heartRates = array_keys($heartRateData);
         $minHeartRate = (int) min(60, floor(min($heartRates) / 10) * 10);
-        $maxHeartRate = (int) max($this->athleteMaxHeartRate, ceil(max($heartRates) / 10) * 10);
+        $maxHeartRate = (int) max(ceil($this->athleteMaxHeartRate / 10) * 10, ceil(max($heartRates) / 10) * 10);
 
         [$step, $xAxisValues, $data] = $this->distributeOverSteps($heartRateData, $minHeartRate, $maxHeartRate);
         $yAxisMax = max($data) * 1.40;
