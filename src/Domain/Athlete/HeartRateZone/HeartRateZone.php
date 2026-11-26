@@ -51,11 +51,6 @@ final readonly class HeartRateZone
         return $this->to;
     }
 
-    public function getDifferenceBetweenFromAndToPercentage(int $athleteMaxHeartRate): int
-    {
-        return abs($this->getToPercentage($athleteMaxHeartRate) - $this->getFromPercentage($athleteMaxHeartRate));
-    }
-
     public function getFromPercentage(int $athleteMaxHeartRate): int
     {
         if (HeartRateZoneMode::RELATIVE === $this->mode) {
