@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Integration\AI\Chat;
 
 use App\Domain\Integration\AI\AIPlatformFactory;
-use App\Domain\Settings\SettingsRepository;
 use Symfony\AI\Agent\Agent;
 use Symfony\AI\Agent\AgentInterface;
 use Symfony\AI\Agent\Execution\Execution;
@@ -14,7 +13,6 @@ use Symfony\AI\Agent\Toolbox\FaultTolerantToolbox;
 use Symfony\AI\Platform\Capability;
 use Symfony\AI\Platform\Message\MessageBag;
 use Symfony\AI\Platform\Message\UserMessage;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final readonly class ChatAgent implements AgentInterface
 {
@@ -39,17 +37,10 @@ final readonly class ChatAgent implements AgentInterface
         - If you do not know the answer to a question, admit it honestly; do not fabricate information.
         PROMPT;
 
-    private AIPlatformFactory $platformFactory;
-
     public function __construct(
-        SettingsRepository $settingsRepository,
+        private AIPlatformFactory $platformFactory,
         private Toolbox $toolbox,
-        HttpClientInterface $httpClient,
     ) {
-        $this->platformFactory = new AIPlatformFactory(
-            settingsRepository: $settingsRepository,
-            httpClient: $httpClient,
-        );
     }
 
     public function call(string|MessageBag|UserMessage $input, array $options = []): Execution

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Integration\AI\Chat;
 
+use App\Domain\Integration\AI\AIPlatformFactory;
 use App\Domain\Integration\AI\Chat\ChatAgent;
 use App\Domain\Integration\AI\Chat\Toolbox;
 use App\Domain\Settings\IntegrationsSettings;
@@ -48,7 +49,13 @@ class ChatAgentTest extends TestCase
         ]]));
 
         try {
-            new ChatAgent($settingsRepository, new Toolbox([]), $httpClient)->call('Hi')->getResult();
+            new ChatAgent(
+                platformFactory: new AIPlatformFactory(
+                    settingsRepository: $settingsRepository,
+                    httpClient: $httpClient,
+                ),
+                toolbox: new Toolbox([]),
+            )->call('Hi')->getResult();
         } catch (ExceptionInterface) {
         }
 
