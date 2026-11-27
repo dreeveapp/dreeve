@@ -44,7 +44,7 @@ final readonly class LocateActivityMediaItemByTimeRequestHandler
         try {
             $takenOn = SerializableDateTime::fromLocalDateTimeString($request->request->getString('takenOn'));
         } catch (\InvalidArgumentException) {
-            return new JsonResponse(['error' => $this->translator->trans('Set a time first', [], 'admin')], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse(['error' => $this->translator->trans('Fill in “Taken on” first.', [], 'admin')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $coordinate = $this->activityRouteLocator->locateAt(
@@ -52,7 +52,7 @@ final readonly class LocateActivityMediaItemByTimeRequestHandler
             on: $takenOn,
         );
         if (null === $coordinate) {
-            return new JsonResponse(['error' => $this->translator->trans('This time falls outside the activity', [], 'admin')], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse(['error' => $this->translator->trans('The “Taken on” time falls outside this activity.', [], 'admin')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse([

@@ -217,6 +217,7 @@ Female: Female
 'File upload': 'File upload'
 'File upload is only available in file import mode': 'File upload is only available in file import mode'
 Filename: Filename
+'Fill in “Taken on” first.': 'Fill in “Taken on” first.'
 Filter: Filter
 'First name': 'First name'
 'Fixed value': 'Fixed value'
@@ -471,7 +472,6 @@ Sensors: Sensors
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
-'Set a time first': 'Set a time first'
 'Set description': 'Set description'
 'Set its status to Retired instead to hide it from your active gear.': 'Set its status to Retired instead to hide it from your active gear.'
 'Set name': 'Set name'
@@ -576,6 +576,7 @@ Tasks: Tasks
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities'
+'The “Taken on” time falls outside this activity.': 'The “Taken on” time falls outside this activity.'
 'Then do this': 'Then do this'
 'These rules will be applied to your existing activities on the next import cycle.': 'These rules will be applied to your existing activities on the next import cycle.'
 'This action cannot be undone.': 'This action cannot be undone.'
@@ -584,7 +585,6 @@ Tasks: Tasks
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'This page shows a different key every time it is opened, and only the one in your environment file is applied.'
-'This time falls outside the activity': 'This time falls outside the activity'
 "This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
 'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'

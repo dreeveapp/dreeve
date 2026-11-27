@@ -203,7 +203,7 @@ export default function initDispatchCommandForm(rootNode = document) {
 
         const commandName = form.getAttribute('data-dispatch-command');
         const errorBox = form.querySelector('[data-form-error]');
-        const loadingButtons = form.querySelectorAll('button[data-has-loading-state]');
+        const loadingButtons = form.querySelectorAll('button[type="submit"][data-has-loading-state]');
 
         // Required checkbox groups and multiselects aren't native-required fields, so the submit
         // event fires even when they're empty. Gate on them here.

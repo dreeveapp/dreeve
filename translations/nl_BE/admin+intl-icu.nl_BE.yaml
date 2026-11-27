@@ -217,6 +217,7 @@ Female: Vrouw
 'File upload': 'Bestand uploaden'
 'File upload is only available in file import mode': 'Bestanden uploaden is enkel beschikbaar in de modus bestandsimport'
 Filename: Bestandsnaam
+'Fill in “Taken on” first.': 'Fill in “Taken on” first.'
 Filter: Filter
 'First name': Voornaam
 'Fixed value': 'Vaste waarde'
@@ -471,7 +472,6 @@ Sensors: Sensoren
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensoren worden enkel geregistreerd voor activiteiten die geïmporteerd zijn uit FIT-bestanden. Activiteiten van Strava, GPX of TCX voldoen nooit aan deze voorwaarde.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
-'Set a time first': 'Set a time first'
 'Set description': 'Beschrijving instellen'
 'Set its status to Retired instead to hide it from your active gear.': 'Zet de status op Buiten gebruik om het te verbergen tussen je actieve uitrusting.'
 'Set name': 'Naam instellen'
@@ -576,6 +576,7 @@ Tasks: Taken
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'Het beeld waarin de heatmap opent. Zowel het middelpunt als het zoomniveau zijn nodig; laat ze leeg om automatisch op je meest actieve gebied in te zoomen.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'De breedte van deze widget moet ingesteld worden op de pagina met dashboardinstellingen. Ze schaalt niet automatisch mee met het aantal activiteiten dat je instelt.'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'Het type training zoals ingesteld op Strava (Race, Workout of Long run), leeg voor de meeste activiteiten'
+'The “Taken on” time falls outside this activity.': 'The “Taken on” time falls outside this activity.'
 'Then do this': 'Doe dan dit'
 'These rules will be applied to your existing activities on the next import cycle.': 'Deze regels worden bij de volgende importcyclus op je bestaande activiteiten toegepast.'
 'This action cannot be undone.': 'Deze actie kan niet ongedaan gemaakt worden.'
@@ -584,7 +585,6 @@ Tasks: Taken
 'This component is fitted to multiple gears, pick the one you serviced.': 'Dit onderdeel zit op meerdere uitrustingen, kies degene die je onderhouden hebt.'
 'This only removes the import record, the imported activity is kept.': 'Dit verwijdert enkel het importrecord, de geïmporteerde activiteit blijft behouden.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Deze pagina toont bij elke opening een andere sleutel, en enkel die in je omgevingsbestand wordt toegepast.'
-'This time falls outside the activity': 'This time falls outside the activity'
 "This value is imported from Strava and can't be edited here.": 'Deze waarde wordt geïmporteerd van Strava en kan hier niet bewerkt worden.'
 'This widget still needs to be configured.': 'Deze widget moet nog geconfigureerd worden.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Dit verwijdert je huidige dashboardindeling en herstelt de standaardwidgets.'

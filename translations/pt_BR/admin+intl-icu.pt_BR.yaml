@@ -217,6 +217,7 @@ Female: Feminino
 'File upload': 'Envio de arquivo'
 'File upload is only available in file import mode': 'O envio de arquivo só está disponível no modo de importação de arquivo'
 Filename: 'Nome do arquivo'
+'Fill in “Taken on” first.': 'Fill in “Taken on” first.'
 Filter: Filtro
 'First name': Nome
 'Fixed value': 'Valor fixo'
@@ -471,7 +472,6 @@ Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Os sensores só são registrados para atividades importadas de arquivos FIT. Atividades do Strava, GPX ou TCX nunca correspondem a esta condição.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Número de série, tamanho, onde você comprou, ...'
-'Set a time first': 'Set a time first'
 'Set description': 'Definir descrição'
 'Set its status to Retired instead to hide it from your active gear.': 'Altere o status para Aposentado para ocultá-lo dos seus equipamentos ativos.'
 'Set name': 'Definir nome'
@@ -576,6 +576,7 @@ Tasks: Tarefas
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'A área de visualização em que o mapa de calor é aberto. Tanto o centro quanto o nível de zoom são necessários; deixe-os vazios para se ajustar automaticamente à sua área mais ativa.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'A largura deste widget precisa ser configurada na página de configurações do painel. Ele não redimensionará automaticamente com base no número de atividades configuradas.'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'O tipo de treino definido no Strava (Prova, Treino ou Longão), vazio para a maioria das atividades'
+'The “Taken on” time falls outside this activity.': 'The “Taken on” time falls outside this activity.'
 'Then do this': 'Então faça isso'
 'These rules will be applied to your existing activities on the next import cycle.': 'Estas regras serão aplicadas às suas atividades existentes no próximo ciclo de importação.'
 'This action cannot be undone.': 'Esta ação não pode ser desfeita.'
@@ -584,7 +585,6 @@ Tasks: Tarefas
 'This component is fitted to multiple gears, pick the one you serviced.': 'Este componente está instalado em vários equipamentos, escolha aquele em que você fez a manutenção.'
 'This only removes the import record, the imported activity is kept.': 'Isso remove apenas o registro de importação; a atividade importada é mantida.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Esta página mostra uma chave diferente a cada vez que é aberta, e apenas aquela no seu arquivo de ambiente é aplicada.'
-'This time falls outside the activity': 'This time falls outside the activity'
 "This value is imported from Strava and can't be edited here.": 'Este valor é importado do Strava e não pode ser editado aqui.'
 'This widget still needs to be configured.': 'Este widget ainda precisa ser configurado.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Isso descartará o layout atual do seu painel e restaurará os widgets padrão.'

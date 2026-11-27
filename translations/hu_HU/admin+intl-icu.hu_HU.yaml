@@ -217,6 +217,7 @@ Female: Nő
 'File upload': Fájlfeltöltés
 'File upload is only available in file import mode': 'A fájlfeltöltés csak fájlimportálás módban érhető el'
 Filename: Fájlnév
+'Fill in “Taken on” first.': 'Fill in “Taken on” first.'
 Filter: Szűrő
 'First name': Keresztnév
 'Fixed value': 'Rögzített érték'
@@ -471,7 +472,6 @@ Sensors: Érzékelők
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Az érzékelők csak a FIT-fájlokból importált tevékenységeknél kerülnek rögzítésre. A Stravából, GPX- vagy TCX-fájlokból származó tevékenységek soha nem illeszkednek erre a feltételre.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
-'Set a time first': 'Set a time first'
 'Set description': 'Leírás beállítása'
 'Set its status to Retired instead to hide it from your active gear.': 'Állítsd inkább Nyugdíjazott státuszra, hogy elrejtsd az aktív felszerelések közül.'
 'Set name': 'Név beállítása'
@@ -576,6 +576,7 @@ Tasks: Feladatok
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'A nézet, amelyen a hőtérkép megnyílik. A középpont és a nagyítási szint is szükséges; hagyd üresen, hogy automatikusan a legaktívabb területedhez igazodjon.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'Ennek a widgetnek a szélességét a dashboard beállításai oldalon kell megadni. Nem méreteződik automatikusan a beállított tevékenységek száma alapján.'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'Az edzéstípus a Stravában beállítva (Verseny, Edzés vagy Hosszú futás), a legtöbb tevékenységnél üres'
+'The “Taken on” time falls outside this activity.': 'The “Taken on” time falls outside this activity.'
 'Then do this': 'Akkor tedd ezt'
 'These rules will be applied to your existing activities on the next import cycle.': 'Ezek a szabályok a következő importálási ciklusban lesznek alkalmazva a meglévő tevékenységeidre.'
 'This action cannot be undone.': 'Ez a művelet nem vonható vissza.'
@@ -584,7 +585,6 @@ Tasks: Feladatok
 'This component is fitted to multiple gears, pick the one you serviced.': 'Ez a komponens több felszerelésre is fel van szerelve, válaszd ki azt, amelyiket szervizelted.'
 'This only removes the import record, the imported activity is kept.': 'Ez csak az importálási rekordot távolítja el, az importált tevékenység megmarad.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Ez az oldal minden megnyitáskor más kulcsot mutat, és csak a környezeti fájlodban lévő érvényesül.'
-'This time falls outside the activity': 'This time falls outside the activity'
 "This value is imported from Strava and can't be edited here.": 'Ez az érték a Stravából van importálva, és itt nem szerkeszthető.'
 'This widget still needs to be configured.': 'Ezt a widgetet még be kell állítani.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Ez elveti a jelenlegi dashboard-elrendezésedet, és visszaállítja az alapértelmezett widgeteket.'

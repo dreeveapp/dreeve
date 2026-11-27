@@ -5,7 +5,7 @@ export default function initFormLoadingState() {
             return;
         }
 
-        form.querySelectorAll('button[data-has-loading-state]').forEach(function (button) {
+        form.querySelectorAll('button[type="submit"][data-has-loading-state]').forEach(function (button) {
             button.classList.add('is-loading');
             button.disabled = true;
         });

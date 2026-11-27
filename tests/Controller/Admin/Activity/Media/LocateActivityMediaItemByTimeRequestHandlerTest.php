@@ -51,14 +51,14 @@ class LocateActivityMediaItemByTimeRequestHandlerTest extends AdminWebTestCase
         $this->client->request('POST', $url, ['takenOn' => '']);
         $this->assertResponseStatusCodeSame(422);
         $this->assertSame(
-            ['error' => 'Set a time first'],
+            ['error' => 'Fill in “Taken on” first.'],
             Json::decode((string) $this->client->getResponse()->getContent()),
         );
 
         $this->client->request('POST', $url, ['takenOn' => '2026-06-01T10:00:21']);
         $this->assertResponseStatusCodeSame(422);
         $this->assertSame(
-            ['error' => 'This time falls outside the activity'],
+            ['error' => 'The “Taken on” time falls outside this activity.'],
             Json::decode((string) $this->client->getResponse()->getContent()),
         );
 
