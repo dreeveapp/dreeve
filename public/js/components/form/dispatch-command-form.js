@@ -1,6 +1,6 @@
 import {dispatchCommand} from "../../utils";
 import {eventBus, Events} from "../../core/event-bus";
-import {showToast} from "../toast";
+import {showError, hideError} from "./form-error";
 import {validateMultiselects} from "./checkbox-multiselect";
 
 // Turns a field name into its path segments:
@@ -149,22 +149,6 @@ class Repeater {
         eventBus.emit(Events.REPEATER_CHANGED, {repeater: this.root});
     }
 }
-
-const showError = (box, message) => {
-    // Forms rendered inside a table row have nowhere to put an error box, so fall back to a toast.
-    if (!box) {
-        showToast('error', message);
-        return;
-    }
-    box.textContent = message;
-    box.classList.remove('hidden');
-};
-
-const hideError = (box) => {
-    if (!box) return;
-    box.textContent = '';
-    box.classList.add('hidden');
-};
 
 const resetLoading = (buttons) => {
     buttons.forEach((button) => {

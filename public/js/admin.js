@@ -1,6 +1,7 @@
 import "./core/public-path";
 import initPasswordToggle from "./components/form/password-toggle";
 import initFormLoadingState from "./components/form/form-loading-state";
+import initFillFields from "./components/form/fill-fields";
 import initDispatchCommandForm from "./components/form/dispatch-command-form";
 import initCheckboxMultiselects from "./components/form/checkbox-multiselect";
 import initCheckboxGroupToggles from "./components/form/checkbox-group-toggle";
@@ -25,6 +26,7 @@ initDrawers();
 
 initPasswordToggle();
 initFormLoadingState();
+initFillFields();
 initDispatchCommandForm();
 initCheckboxMultiselects(document);
 initCheckboxGroupToggles();

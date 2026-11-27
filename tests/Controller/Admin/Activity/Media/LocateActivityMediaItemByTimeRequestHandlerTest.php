@@ -39,33 +39,37 @@ class LocateActivityMediaItemByTimeRequestHandlerTest extends AdminWebTestCase
             ->build());
 
         $this->client->loginUser($this->adminUser());
+        $csrfToken = (string) $this->client->request('GET', '/admin/upload')->filter('meta[name="csrf-token"]')->attr('content');
         $url = '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time';
 
-        $this->client->request('POST', $url, ['takenOn' => '2026-06-01T10:00:15']);
+        $this->client->request('POST', $url, ['takenOn' => '2026-06-01T10:00:15'], server: ['HTTP_X_CSRF_TOKEN' => $csrfToken]);
         $this->assertResponseIsSuccessful();
         $this->assertSame(
-            ['latitude' => 51.5, 'longitude' => 5.5],
+            ['fields' => ['latitude' => 51.5, 'longitude' => 5.5]],
             Json::decode((string) $this->client->getResponse()->getContent()),
         );
 
-        $this->client->request('POST', $url, ['takenOn' => '']);
+        $this->client->request('POST', $url, ['takenOn' => ''], server: ['HTTP_X_CSRF_TOKEN' => $csrfToken]);
         $this->assertResponseStatusCodeSame(422);
         $this->assertSame(
             ['error' => 'Fill in “Taken on” first.'],
             Json::decode((string) $this->client->getResponse()->getContent()),
         );
 
-        $this->client->request('POST', $url, ['takenOn' => '2026-06-01T10:00:21']);
+        $this->client->request('POST', $url, ['takenOn' => '2026-06-01T10:00:21'], server: ['HTTP_X_CSRF_TOKEN' => $csrfToken]);
         $this->assertResponseStatusCodeSame(422);
         $this->assertSame(
             ['error' => 'The “Taken on” time falls outside this activity.'],
             Json::decode((string) $this->client->getResponse()->getContent()),
         );
 
-        $this->client->request('POST', '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('other').'/locate-by-time', ['takenOn' => '2026-06-01T10:00:15']);
+        $this->client->request('POST', $url, ['takenOn' => '2026-06-01T10:00:15'], server: ['HTTP_X_CSRF_TOKEN' => 'a-tampered-token']);
+        $this->assertResponseStatusCodeSame(403);
+
+        $this->client->request('POST', '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('other').'/locate-by-time', ['takenOn' => '2026-06-01T10:00:15'], server: ['HTTP_X_CSRF_TOKEN' => $csrfToken]);
         $this->assertResponseStatusCodeSame(404);
 
-        $this->client->request('POST', '/admin/activities/'.ActivityId::fromUnprefixed('unknown').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time', ['takenOn' => '2026-06-01T10:00:15']);
+        $this->client->request('POST', '/admin/activities/'.ActivityId::fromUnprefixed('unknown').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time', ['takenOn' => '2026-06-01T10:00:15'], server: ['HTTP_X_CSRF_TOKEN' => $csrfToken]);
         $this->assertResponseStatusCodeSame(404);
     }
 }

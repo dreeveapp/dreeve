@@ -3,12 +3,10 @@ import {initComponents} from '../../core/component-registry';
 import {fetchJson} from '../../utils';
 import {createAdminLeafletMap, MAX_ZOOM} from '../../features/maps/admin-leaflet-map';
 import {PRIMARY_COLOR} from '../../features/maps/map-colors';
-import {showToast} from '../toast';
 
 const ROOT_SELECTOR = '[data-coordinate-picker]';
 const MAP_SELECTOR = '[data-coordinate-picker-map]';
 const WARNING_SELECTOR = '[data-coordinate-picker-warning]';
-const SUGGEST_SELECTOR = 'button[data-coordinate-picker-suggest]';
 const MIN_ZOOM = 1;
 const WORLD_ZOOM = 2;
 const COORDINATE_ZOOM = 13;
@@ -34,7 +32,6 @@ class CoordinatePicker {
         this.polylineUrl = options.polylineUrl || null;
         this.maxDistanceFromRouteInMeter = options.maxDistanceFromRouteInMeter || null;
         this.warning = root.querySelector(WARNING_SELECTOR);
-        this.suggestButtons = root.querySelectorAll(SUGGEST_SELECTOR);
 
         this.map = null;
         this.marker = null;
@@ -56,8 +53,6 @@ class CoordinatePicker {
             this.fields.longitude.addEventListener(eventName, () => this.syncFromFields());
             this.fields.radius?.addEventListener(eventName, () => this.syncFromFields());
         });
-
-        this.suggestButtons.forEach((button) => button.addEventListener('click', () => this.suggest(button)));
 
         this.resizeObserver = new ResizeObserver(() => this.handleResize());
         this.resizeObserver.observe(this.mapNode);
@@ -174,53 +169,17 @@ class CoordinatePicker {
         return null !== radius && radius > 0 ? radius * this.radiusToMeter : null;
     }
 
-    fillFields({lat, lng}) {
+    writeCoordinate({lat, lng}) {
+        this.isWriting = true;
         this.fields.latitude.value = lat.toFixed(6);
         this.fields.longitude.value = lng.toFixed(6);
         [this.fields.latitude, this.fields.longitude].forEach((field) => {
             field.dispatchEvent(new Event('input', {bubbles: true}));
             field.dispatchEvent(new Event('change', {bubbles: true}));
         });
-    }
-
-    writeCoordinate(latLng) {
-        this.isWriting = true;
-        this.fillFields(latLng);
         this.isWriting = false;
 
         this.render();
-    }
-
-    async suggest(button) {
-        const form = button.closest('form');
-        const errorBox = form?.querySelector('[data-form-error]');
-        errorBox?.classList.add('hidden');
-        button.classList.add('is-loading');
-        button.disabled = true;
-
-        try {
-            const response = await fetch(button.getAttribute('data-coordinate-picker-suggest'), {
-                method: 'POST',
-                body: form ? new FormData(form) : null,
-            });
-            const result = await response.json().catch(() => ({}));
-            if (!response.ok) {
-                throw new Error(result.error ?? `Failed to suggest a location: ${response.status}`);
-            }
-
-            this.fillFields({lat: result.latitude, lng: result.longitude});
-        } catch (error) {
-            if (!errorBox) {
-                showToast('error', error.message);
-
-                return;
-            }
-            errorBox.textContent = error.message;
-            errorBox.classList.remove('hidden');
-        } finally {
-            button.classList.remove('is-loading');
-            button.disabled = false;
-        }
     }
 
     syncFromFields() {
