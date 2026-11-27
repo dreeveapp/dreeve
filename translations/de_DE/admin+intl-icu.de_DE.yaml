@@ -388,7 +388,6 @@ Password: Passwort
 'Pick an activity to select the segment on its route.': 'Wähle eine Aktivität aus und markiere das Segment auf der Strecke.'
 'Pick the rules you want to apply to see which activities would change.': 'Wähle die Regeln aus, die du anwenden möchten, um zu sehen, welche Aktivitäten sich ändern würden.'
 Places: Orte
-'Places the photo where you were at its taken-on time, using the activity''s GPS track.': 'Places the photo where you were at its taken-on time, using the activity''s GPS track.'
 'Polyline color': Routenfarbe
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Bevorzugst du einen eigenen KI-Client, wie z. B. Claude oder Cursor? Verbinde ihn stattdessen mit dem MCP-Server unter {linkOpen}Security{linkClose}.'
 'Preview selection': Vorschaubereich
