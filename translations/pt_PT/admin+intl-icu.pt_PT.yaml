@@ -287,6 +287,8 @@ Latitude: Latitude
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Locale
+'Locate by time': 'Locate by time'
+'Locating...': 'Locating...'
 'Location set': 'Location set'
 Log: Log
 'Log maintenance': 'Log maintenance'
@@ -385,6 +387,7 @@ Password: Password
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Pick the rules you want to apply to see which activities would change.'
 Places: Places
+'Places the photo where you were at its taken-on time, using the activity''s GPS track.': 'Places the photo where you were at its taken-on time, using the activity''s GPS track.'
 'Polyline color': 'Polyline color'
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Preview selection'
@@ -468,6 +471,7 @@ Sensors: Sensors
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
+'Set a time first': 'Set a time first'
 'Set description': 'Set description'
 'Set its status to Retired instead to hide it from your active gear.': 'Set its status to Retired instead to hide it from your active gear.'
 'Set name': 'Set name'
@@ -580,6 +584,7 @@ Tasks: Tasks
 'This component is fitted to multiple gears, pick the one you serviced.': 'This component is fitted to multiple gears, pick the one you serviced.'
 'This only removes the import record, the imported activity is kept.': 'This only removes the import record, the imported activity is kept.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'This page shows a different key every time it is opened, and only the one in your environment file is applied.'
+'This time falls outside the activity': 'This time falls outside the activity'
 "This value is imported from Strava and can't be edited here.": "This value is imported from Strava and can't be edited here."
 'This widget still needs to be configured.': 'This widget still needs to be configured.'
 'This will discard your current dashboard layout and restore the default widgets.': 'This will discard your current dashboard layout and restore the default widgets.'

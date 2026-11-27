@@ -287,6 +287,8 @@ Latitude: Latitude
 'Loading the route...': 'Carregando a rota...'
 'Local backup': 'Local backup'
 Locale: Localidade
+'Locate by time': 'Locate by time'
+'Locating...': 'Locating...'
 'Location set': 'Location set'
 Log: Registro
 'Log maintenance': 'Registrar manutenção'
@@ -385,6 +387,7 @@ Password: Senha
 'Pick an activity to select the segment on its route.': 'Escolha uma atividade para selecionar o segmento na rota dela.'
 'Pick the rules you want to apply to see which activities would change.': 'Escolha as regras que você deseja aplicar para ver quais atividades mudariam.'
 Places: Places
+'Places the photo where you were at its taken-on time, using the activity''s GPS track.': 'Places the photo where you were at its taken-on time, using the activity''s GPS track.'
 'Polyline color': 'Cor da polilinha'
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Pré-visualizar seleção'
@@ -468,6 +471,7 @@ Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Os sensores só são registrados para atividades importadas de arquivos FIT. Atividades do Strava, GPX ou TCX nunca correspondem a esta condição.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Número de série, tamanho, onde você comprou, ...'
+'Set a time first': 'Set a time first'
 'Set description': 'Definir descrição'
 'Set its status to Retired instead to hide it from your active gear.': 'Altere o status para Aposentado para ocultá-lo dos seus equipamentos ativos.'
 'Set name': 'Definir nome'
@@ -580,6 +584,7 @@ Tasks: Tarefas
 'This component is fitted to multiple gears, pick the one you serviced.': 'Este componente está instalado em vários equipamentos, escolha aquele em que você fez a manutenção.'
 'This only removes the import record, the imported activity is kept.': 'Isso remove apenas o registro de importação; a atividade importada é mantida.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Esta página mostra uma chave diferente a cada vez que é aberta, e apenas aquela no seu arquivo de ambiente é aplicada.'
+'This time falls outside the activity': 'This time falls outside the activity'
 "This value is imported from Strava and can't be edited here.": 'Este valor é importado do Strava e não pode ser editado aqui.'
 'This widget still needs to be configured.': 'Este widget ainda precisa ser configurado.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Isso descartará o layout atual do seu painel e restaurará os widgets padrão.'

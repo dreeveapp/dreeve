@@ -287,6 +287,8 @@ Latitude: Breedtegraad
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Taalinstelling
+'Locate by time': 'Locate by time'
+'Locating...': 'Locating...'
 'Location set': 'Location set'
 Log: Log
 'Log maintenance': 'Onderhoud loggen'
@@ -385,6 +387,7 @@ Password: Wachtwoord
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Kies de regels die je wil toepassen om te zien welke activiteiten zouden wijzigen.'
 Places: Places
+'Places the photo where you were at its taken-on time, using the activity''s GPS track.': 'Places the photo where you were at its taken-on time, using the activity''s GPS track.'
 'Polyline color': Routekleur
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Selectie bekijken'
@@ -468,6 +471,7 @@ Sensors: Sensoren
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Sensoren worden enkel geregistreerd voor activiteiten die geïmporteerd zijn uit FIT-bestanden. Activiteiten van Strava, GPX of TCX voldoen nooit aan deze voorwaarde.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
+'Set a time first': 'Set a time first'
 'Set description': 'Beschrijving instellen'
 'Set its status to Retired instead to hide it from your active gear.': 'Zet de status op Buiten gebruik om het te verbergen tussen je actieve uitrusting.'
 'Set name': 'Naam instellen'
@@ -580,6 +584,7 @@ Tasks: Taken
 'This component is fitted to multiple gears, pick the one you serviced.': 'Dit onderdeel zit op meerdere uitrustingen, kies degene die je onderhouden hebt.'
 'This only removes the import record, the imported activity is kept.': 'Dit verwijdert enkel het importrecord, de geïmporteerde activiteit blijft behouden.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Deze pagina toont bij elke opening een andere sleutel, en enkel die in je omgevingsbestand wordt toegepast.'
+'This time falls outside the activity': 'This time falls outside the activity'
 "This value is imported from Strava and can't be edited here.": 'Deze waarde wordt geïmporteerd van Strava en kan hier niet bewerkt worden.'
 'This widget still needs to be configured.': 'Deze widget moet nog geconfigureerd worden.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Dit verwijdert je huidige dashboardindeling en herstelt de standaardwidgets.'

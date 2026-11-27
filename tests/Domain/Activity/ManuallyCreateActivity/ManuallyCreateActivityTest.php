@@ -52,14 +52,14 @@ class ManuallyCreateActivityTest extends TestCase
         $this->assertSame([], $command->getNewMediaItems());
     }
 
-    public function testFromPayloadWithSecondsInStartDateTime(): void
+    public function testFromPayloadKeepsTheSecondsOfTheStartDateTime(): void
     {
         $command = ManuallyCreateActivity::fromPayload([
             ...$this->validPayload(),
             'startDateTime' => '2023-10-17T16:15:32',
         ]);
 
-        $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:00'), $command->getStartDateTime());
+        $this->assertEquals(SerializableDateTime::fromString('2023-10-17 16:15:32'), $command->getStartDateTime());
     }
 
     public function testFromPayloadWithEmptyOptionalFields(): void

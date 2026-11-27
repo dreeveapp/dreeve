@@ -79,11 +79,16 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
             'maxDistanceFromRouteInMeter' => 300,
         ], Json::decode((string) $form->filter('[data-coordinate-picker]')->attr('data-coordinate-picker')));
         $this->assertCount(1, $form->filter('[data-coordinate-picker] [data-coordinate-picker-warning].hidden'));
+        $this->assertSame(
+            '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time',
+            $form->filter('[data-coordinate-picker] button[data-coordinate-picker-suggest]')->attr('data-coordinate-picker-suggest'),
+        );
 
         $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('indoor').'/media/'.MediaItemId::fromUnprefixed('indoor').'/edit');
         $this->assertResponseIsSuccessful();
         $this->assertSame('[]', $crawler->filter('[data-coordinate-picker]')->attr('data-coordinate-picker'));
         $this->assertCount(0, $crawler->filter('[data-coordinate-picker-warning]'));
+        $this->assertCount(0, $crawler->filter('[data-coordinate-picker-suggest]'));
 
         $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('unknown').'/media/'.MediaItemId::fromUnprefixed('photo').'/edit');
         $this->assertResponseStatusCodeSame(404);

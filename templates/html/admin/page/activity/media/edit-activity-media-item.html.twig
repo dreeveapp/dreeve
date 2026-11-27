@@ -38,6 +38,16 @@
                                        data-coordinate-picker-field="longitude" placeholder="3.7174"
                                        value="{{ coordinate ? coordinate.getLongitude().toFloat() }}">
                             </div>
+                            {% if coordinatePickerOptions %}
+                                <div>
+                                    <button type="button" data-has-loading-state class="group"
+                                            data-coordinate-picker-suggest="{{ relativeUrl(path('admin_locate_activity_media_item_by_time', {activityId: activity.getId(), mediaItemId: mediaItem.getId()})) }}">
+                                        <span class="label">{{ "Locate by time"|trans({}, 'admin') }}</span>
+                                        <span class="label--loading">{{ "Locating..."|trans({}, 'admin') }}</span>
+                                    </button>
+                                    <p class="mt-1 text-xxs text-gray-500">{{ "Places the photo where you were at its taken-on time, using the activity's GPS track."|trans({}, 'admin') }}</p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div>

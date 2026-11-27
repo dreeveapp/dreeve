@@ -287,6 +287,8 @@ Latitude: Szélesség
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Nyelv
+'Locate by time': 'Locate by time'
+'Locating...': 'Locating...'
 'Location set': 'Location set'
 Log: Napló
 'Log maintenance': 'Karbantartás naplózása'
@@ -385,6 +387,7 @@ Password: Jelszó
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Válaszd ki az alkalmazandó szabályokat, hogy lásd, mely tevékenységek változnának.'
 Places: Places
+'Places the photo where you were at its taken-on time, using the activity''s GPS track.': 'Places the photo where you were at its taken-on time, using the activity''s GPS track.'
 'Polyline color': 'Vonallánc színe'
 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.': 'Prefer your own AI client, such as Claude or Cursor? Connect it to the MCP server instead, under {linkOpen}Security{linkClose}.'
 'Preview selection': 'Kiválasztás előnézete'
@@ -468,6 +471,7 @@ Sensors: Érzékelők
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Az érzékelők csak a FIT-fájlokból importált tevékenységeknél kerülnek rögzítésre. A Stravából, GPX- vagy TCX-fájlokból származó tevékenységek soha nem illeszkednek erre a feltételre.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
+'Set a time first': 'Set a time first'
 'Set description': 'Leírás beállítása'
 'Set its status to Retired instead to hide it from your active gear.': 'Állítsd inkább Nyugdíjazott státuszra, hogy elrejtsd az aktív felszerelések közül.'
 'Set name': 'Név beállítása'
@@ -580,6 +584,7 @@ Tasks: Feladatok
 'This component is fitted to multiple gears, pick the one you serviced.': 'Ez a komponens több felszerelésre is fel van szerelve, válaszd ki azt, amelyiket szervizelted.'
 'This only removes the import record, the imported activity is kept.': 'Ez csak az importálási rekordot távolítja el, az importált tevékenység megmarad.'
 'This page shows a different key every time it is opened, and only the one in your environment file is applied.': 'Ez az oldal minden megnyitáskor más kulcsot mutat, és csak a környezeti fájlodban lévő érvényesül.'
+'This time falls outside the activity': 'This time falls outside the activity'
 "This value is imported from Strava and can't be edited here.": 'Ez az érték a Stravából van importálva, és itt nem szerkeszthető.'
 'This widget still needs to be configured.': 'Ezt a widgetet még be kell állítani.'
 'This will discard your current dashboard layout and restore the default widgets.': 'Ez elveti a jelenlegi dashboard-elrendezésedet, és visszaállítja az alapértelmezett widgeteket.'
