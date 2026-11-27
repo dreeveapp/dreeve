@@ -23,8 +23,8 @@
                         <div class="flex min-w-0 flex-1 flex-col gap-4">
                             <div>
                                 <label for="media-item-taken-on">{{ "Taken on"|trans({}, 'admin') }}</label>
-                                <input type="datetime-local" id="media-item-taken-on" name="takenOn"
-                                       value="{{ mediaItem.getTakenOn() ? mediaItem.getTakenOn().format('Y-m-d\\TH:i') }}">
+                                <input type="datetime-local" step="1" id="media-item-taken-on" name="takenOn"
+                                       value="{{ mediaItem.getTakenOn() ? mediaItem.getTakenOn().format('Y-m-d\\TH:i:s') }}">
                             </div>
                             <div>
                                 <label for="media-item-latitude">{{ "Latitude"|trans({}, 'admin') }}</label>

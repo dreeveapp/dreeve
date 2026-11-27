@@ -70,7 +70,8 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('/admin/activities/'.ActivityId::fromUnprefixed('ride').'/edit', $form->attr('data-redirect'));
         $this->assertSame((string) MediaItemId::fromUnprefixed('photo'), $form->filter('input[name="mediaItemId"]')->attr('value'));
         $this->assertSame('/files/activities/photo.jpg', $form->filter('img')->attr('src'));
-        $this->assertSame('2025-06-14T09:30', $form->filter('input[name="takenOn"]')->attr('value'));
+        $this->assertSame('2025-06-14T09:30:45', $form->filter('input[name="takenOn"]')->attr('value'));
+        $this->assertSame('1', $form->filter('input[name="takenOn"]')->attr('step'));
         $this->assertSame('51.0543', $form->filter('input[name="latitude"]')->attr('value'));
         $this->assertSame('3.7174', $form->filter('input[name="longitude"]')->attr('value'));
         $this->assertSame([

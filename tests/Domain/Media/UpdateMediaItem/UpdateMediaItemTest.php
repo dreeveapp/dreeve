@@ -33,7 +33,7 @@ class UpdateMediaItemTest extends TestCase
             ),
             $command->getCoordinate(),
         );
-        $this->assertEquals(SerializableDateTime::fromString('2025-04-20 10:15:00'), $command->getTakenOn());
+        $this->assertEquals(SerializableDateTime::fromString('2025-04-20 10:15:30'), $command->getTakenOn());
 
         $command = UpdateMediaItem::fromPayload([
             'mediaItemId' => 'mediaItem-1',
