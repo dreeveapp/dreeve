@@ -9,6 +9,7 @@ use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Route\ActivityRouteLocator;
 use App\Domain\Media\MediaItemId;
+use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,7 +61,7 @@ final readonly class LocateActivityMediaItemByTimeRequestHandler
             activity: $activity,
             on: $takenOn,
         );
-        if (null === $coordinate) {
+        if (!$coordinate instanceof Coordinate) {
             return new JsonResponse(['error' => $this->translator->trans('The “Taken on” time falls outside this activity.', [], 'admin')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

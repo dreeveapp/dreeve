@@ -14,7 +14,7 @@ use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
 final readonly class ActivityRouteLocator
 {
-    public const int MAX_INTERPOLATION_GAP_IN_SECONDS = 30;
+    private const int MAX_INTERPOLATION_GAP_IN_SECONDS = 30;
 
     public function __construct(
         private ActivityStreamRepository $activityStreamRepository,
@@ -31,7 +31,7 @@ final readonly class ActivityRouteLocator
         }
 
         $offset = $on->getTimestamp() - $activity->getStartDate()->getTimestamp();
-        if ($offset < 0 || $offset > $times[array_key_last($times)]) {
+        if ($offset < 0 || $offset > array_last($times)) {
             return null;
         }
 
