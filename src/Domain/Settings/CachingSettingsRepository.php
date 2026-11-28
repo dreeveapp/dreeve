@@ -17,7 +17,8 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
     private ?ImportSettings $importSettings = null;
     private ?MetricsSettings $metricsSettings = null;
     private ?ZwiftSettings $zwiftSettings = null;
-    private ?IntegrationsSettings $integrationsSettings = null;
+    private ?AISettings $aiSettings = null;
+    private ?NotificationSettings $notificationSettings = null;
     private ?DaemonSettings $daemonSettings = null;
     private ?SecuritySettings $securitySettings = null;
     private ?AthleteWeightSettings $athleteWeightSettings = null;
@@ -62,7 +63,8 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
         $this->importSettings = null;
         $this->metricsSettings = null;
         $this->zwiftSettings = null;
-        $this->integrationsSettings = null;
+        $this->aiSettings = null;
+        $this->notificationSettings = null;
         $this->daemonSettings = null;
         $this->securitySettings = null;
         $this->athleteWeightSettings = null;
@@ -99,9 +101,14 @@ final class CachingSettingsRepository implements SettingsRepository, ResetInterf
         return $this->zwiftSettings ??= $this->settingsRepository->zwift();
     }
 
-    public function integrations(): IntegrationsSettings
+    public function ai(): AISettings
     {
-        return $this->integrationsSettings ??= $this->settingsRepository->integrations();
+        return $this->aiSettings ??= $this->settingsRepository->ai();
+    }
+
+    public function notifications(): NotificationSettings
+    {
+        return $this->notificationSettings ??= $this->settingsRepository->notifications();
     }
 
     public function daemon(): DaemonSettings

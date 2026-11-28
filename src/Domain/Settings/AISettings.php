@@ -8,10 +8,9 @@ use App\Domain\Integration\AI\AIApiKey;
 use App\Domain\Integration\AI\AIProvider;
 use App\Domain\Integration\AI\Chat\ChatCommands;
 use App\Domain\Integration\AI\InvalidAIConfiguration;
-use App\Domain\Integration\Notification\Shoutrrr\ConfiguredNotificationUrls;
 use App\Infrastructure\ValueObject\String\Url;
 
-final readonly class IntegrationsSettings
+final readonly class AISettings
 {
     private function __construct(
         private bool $aiChatEnabled,
@@ -20,8 +19,6 @@ final readonly class IntegrationsSettings
         #[\SensitiveParameter]
         private array $aiConfig,
         private ChatCommands $chatCommands,
-        private ConfiguredNotificationUrls $configuredNotificationUrls,
-        private bool $notifyOnSuccessfulImport,
     ) {
     }
 
@@ -56,20 +53,11 @@ final readonly class IntegrationsSettings
             }
         }
 
-        $notifications = is_array($data['notifications'] ?? null) ? $data['notifications'] : [];
-        $services = $notifications['services'] ?? [];
-        $services = array_values(array_filter(
-            is_array($services) ? $services : [],
-            static fn (mixed $service): bool => is_string($service) && '' !== trim($service)
-        ));
-
         return new self(
             aiChatEnabled: $aiEnabled && filter_var($aiConfig['agent']['enabled'] ?? true, FILTER_VALIDATE_BOOLEAN),
             aiMediaLocationSuggestionEnabled: $aiEnabled && filter_var($aiConfig['mediaLocation']['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN),
             aiConfig: $aiConfig,
             chatCommands: ChatCommands::fromArray($aiConfig['agent']['commands'] ?? []),
-            configuredNotificationUrls: ConfiguredNotificationUrls::fromConfig($services),
-            notifyOnSuccessfulImport: filter_var($notifications['notifyOnSuccessfulBuild'] ?? true, FILTER_VALIDATE_BOOLEAN),
         );
     }
 
@@ -86,16 +74,6 @@ final readonly class IntegrationsSettings
     public function getChatCommands(): ChatCommands
     {
         return $this->chatCommands;
-    }
-
-    public function getConfiguredNotificationUrls(): ConfiguredNotificationUrls
-    {
-        return $this->configuredNotificationUrls;
-    }
-
-    public function shouldNotifyOnSuccessfulImport(): bool
-    {
-        return $this->notifyOnSuccessfulImport;
     }
 
     public function getAIProvider(): AIProvider

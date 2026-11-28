@@ -132,7 +132,7 @@ Configured: Configurado
 'Configured via an environment variable and cannot be changed here.': 'Configurado mediante una variable de entorno y no se puede cambiar aquí.'
 'Configured via environment variables and cannot be changed here.': 'Configurado mediante variables de entorno y no se puede cambiar aquí.'
 'Connected sensors': 'Sensores conectados'
-'Connects Dreeve to an AI provider for the features below.': 'Connects Dreeve to an AI provider for the features below.'
+'Connects Dreeve to an AI provider for the features you enable.': 'Connects Dreeve to an AI provider for the features you enable.'
 'Continues to next rule': 'Continúa con la siguiente regla'
 'Copy this API key': 'Copiar esta clave API'
 'Copy this MCP key': 'Copy this MCP key'
@@ -193,6 +193,7 @@ Edit: Editar
 Efforts: Efforts
 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.'
 Elevation: Desnivel
+Enable: Enable
 'Enable AI integration': 'Activar integración con IA'
 'Enable Strava webhooks': 'Activar webhooks de Strava'
 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
@@ -272,7 +273,6 @@ Import: Importar
 Info: Info
 'Installed on': 'Installed on'
 Instance: Instance
-Integrations: Integraciones
 'Intro text': 'Texto de introducción'
 'Invalid CSRF token.': 'Token CSRF no válido.'
 'Issuer URL': 'Issuer URL'

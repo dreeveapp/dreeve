@@ -44,7 +44,7 @@ final readonly class AIPlatformFactory
      */
     public function getModel(): string
     {
-        $settings = $this->settingsRepository->integrations();
+        $settings = $this->settingsRepository->ai();
         /** @var non-empty-string $model */
         $model = $settings->getAIConfiguration()['model'];
 
@@ -56,7 +56,7 @@ final readonly class AIPlatformFactory
      */
     public function createPlatform(array $capabilities): PlatformInterface
     {
-        $settings = $this->settingsRepository->integrations();
+        $settings = $this->settingsRepository->ai();
         $configuration = $settings->getAIConfiguration();
         $model = $configuration['model'];
         $apiKey = (string) AIApiKey::fromServerVar();

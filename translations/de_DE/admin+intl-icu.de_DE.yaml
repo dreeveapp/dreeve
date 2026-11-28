@@ -132,7 +132,7 @@ Configured: Konfiguriert
 'Configured via an environment variable and cannot be changed here.': 'Wird über eine Umgebungsvariable konfiguriert und kann hier nicht geändert werden.'
 'Configured via environment variables and cannot be changed here.': 'Wird über Umgebungsvariablen konfiguriert und kann hier nicht geändert werden.'
 'Connected sensors': 'Verbundene Sensoren'
-'Connects Dreeve to an AI provider for the features below.': 'Connects Dreeve to an AI provider for the features below.'
+'Connects Dreeve to an AI provider for the features you enable.': 'Connects Dreeve to an AI provider for the features you enable.'
 'Continues to next rule': 'Fortsetzung mit der nächsten Regel'
 'Copy this API key': 'Diesen API-Schlüssel kopieren'
 'Copy this MCP key': 'Diesen MCP-Schlüssel kopieren'
@@ -193,6 +193,7 @@ Edit: Bearbeiten
 Efforts: Leistungen
 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Die Auswertung erfolgt nicht sofort. Deine Aktivitäten werden beim nächsten Import (alle 5 Minuten) auf dieses Segment geprüft.'
 Elevation: Höhenmeter
+Enable: Enable
 'Enable AI integration': 'KI-Integration aktivieren'
 'Enable Strava webhooks': 'Strava webhooks aktivieren'
 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Aktiviere die lokale Datensicherung in den Einstellungen für geplante Aktionen oder erstelle eine manuelle Datensicherung, wie in {linkOpen}der Dokumentation{linkClose} beschrieben.'
@@ -272,7 +273,6 @@ Import: Import
 Info: Info
 'Installed on': 'Hinzugefügt am'
 Instance: Instanz
-Integrations: Integrationen
 'Intro text': Einleitungstext
 'Invalid CSRF token.': 'Ungültiger CSRF token.'
 'Issuer URL': 'Issuer URL'

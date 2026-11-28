@@ -107,7 +107,7 @@ class SendImportSuccessfulNotificationCommandHandlerTest extends ContainerTestCa
     public function testHandleWhenTheSuccessfulImportNotificationIsDisabled(): void
     {
         $settingsRepository = $this->getContainer()->get(DbalSettingsRepository::class);
-        $settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
+        $settingsRepository->saveGroup(SettingsGroup::NOTIFICATIONS, [
             'notifications' => ['notifyOnSuccessfulBuild' => false],
         ]);
 

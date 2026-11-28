@@ -62,7 +62,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
 
         $this->assertResponseStatusCodeSame(404);
 
-        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::AI, [
             'ai' => [
                 'enabled' => true,
                 'provider' => 'openAI',
@@ -86,7 +86,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
      */
     private function enableAssistant(bool $enabled, array $commands = []): void
     {
-        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::AI, [
             'ai' => [
                 'enabled' => $enabled,
                 'provider' => 'openAI',
@@ -107,14 +107,14 @@ class ChatRequestHandlerTest extends AdminWebTestCase
 
         $this->client->request('GET', '/chat');
         $this->assertStringNotContainsString(
-            'admin/settings/integrations',
+            'admin/settings/ai',
             (string) $this->client->getResponse()->getContent(),
         );
 
         $this->client->loginUser($this->adminUser());
         $this->client->request('GET', '/chat');
         $this->assertStringContainsString(
-            'admin/settings/integrations?redirectTo=%2Fchat',
+            'admin/settings/ai?redirectTo=%2Fchat',
             (string) $this->client->getResponse()->getContent(),
         );
     }
@@ -292,7 +292,7 @@ class ChatRequestHandlerTest extends AdminWebTestCase
             eventBus: new SpyEventBus(),
             managedMode: ManagedMode::fromString('0'),
         );
-        $settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
+        $settingsRepository->saveGroup(SettingsGroup::AI, [
             'ai' => [
                 'enabled' => $aiEnabled,
                 'provider' => 'openAI',

@@ -7,34 +7,30 @@ namespace App\Tests\Controller\Admin\Settings;
 use App\Tests\Controller\Admin\AdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
-class IntegrationsSettingsRequestHandlerTest extends AdminWebTestCase
+class AISettingsRequestHandlerTest extends AdminWebTestCase
 {
-    public function testItRendersTheIntegrationsSettingsPage(): void
+    public function testItRendersTheAISettingsPage(): void
     {
         $this->client->loginUser($this->adminUser());
 
-        $crawler = $this->client->request('GET', '/admin/settings/integrations');
+        $crawler = $this->client->request('GET', '/admin/settings/ai');
 
         $this->assertResponseIsSuccessful();
 
-        // The integrations settings form.
+        // The AI settings form.
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
-        $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="integrations"]'));
+        $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="ai"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[ai][enabled]"]'));
-        $this->assertCount(1, $crawler->filter('[data-dependent-on="aiEnabled"] input[type="checkbox"][name="data[ai][agent][enabled]"][checked]'));
+        $this->assertCount(1, $crawler->filter('section[data-dependent-on="aiEnabled"][data-visible-when="checked"] input#aiAgentEnabled[type="checkbox"][name="data[ai][agent][enabled]"][checked]'));
         $this->assertCount(1, $crawler->filter('input[type="hidden"][name="data[ai][agent][enabled]"][value="0"]'));
         $this->assertSame(
             'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.',
-            $crawler->filter('input[type="checkbox"][name="data[ai][agent][enabled]"]')->closest('div')?->filter('.description')->text(),
+            $crawler->filter('input#aiAgentEnabled')->closest('section')?->filter('h3 + .description')->text(),
         );
-        $this->assertCount(1, $crawler->filter('[data-dependent-on="aiEnabled"] input[type="checkbox"][name="data[ai][mediaLocation][enabled]"]:not([checked])'));
+        $this->assertCount(1, $crawler->filter('section[data-dependent-on="aiEnabled"][data-visible-when="checked"] input[type="checkbox"][name="data[ai][mediaLocation][enabled]"]:not([checked])'));
         $this->assertCount(1, $crawler->filter('input[type="hidden"][name="data[ai][mediaLocation][enabled]"][value="0"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[ai][agent][commands][__index__][command]"]'));
-        $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[notifications][services][]"]'));
-        $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[notifications][notifyOnSuccessfulBuild]"][checked]'));
-        $this->assertCount(1, $crawler->filter('input[type="hidden"][name="data[notifications][notifyOnSuccessfulBuild]"][value="0"]'));
-        $this->assertCount(1, $crawler->filter('a[href="https://shoutrrr.nickfedor.com/dev/services/overview/"]'));
-        $this->assertCount(1, $crawler->filter('section[data-dependent-on="aiEnabled"][data-visible-when="checked"] [data-repeater]'));
+        $this->assertCount(1, $crawler->filter('section[data-dependent-on="aiEnabled"][data-visible-when="checked"] [data-dependent-on="aiAgentEnabled"][data-visible-when="checked"] [data-repeater]'));
         $this->assertSame(
             ['', 'anthropic', 'azureOpenAI', 'deepseek', 'gemini', 'grok', 'huggingFace', 'ollama', 'openAI', 'openAILike', 'openAIResponses', 'mistral'],
             $crawler->filter('select#aiProvider option')->each(static fn (Crawler $option): string => (string) $option->attr('value')),
@@ -47,11 +43,11 @@ class IntegrationsSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('openAILike', $crawler->filter('#aiBaseUri')->ancestors()->first()->attr('data-visible-when'));
         $this->assertSame('azureOpenAI', $crawler->filter('#aiEndpoint')->ancestors()->first()->attr('data-visible-when'));
 
-        // The settings navigation, with "Integrations" active.
+        // The settings navigation, with "AI" active.
         $settingsPanel = $crawler->filter('nav.contextual-panel[aria-label="Settings"]');
         $this->assertCount(1, $settingsPanel);
         $selectedLink = $settingsPanel->filter('a[aria-selected="true"]');
         $this->assertCount(1, $selectedLink);
-        $this->assertStringContainsString('Integrations', $selectedLink->text());
+        $this->assertSame('AI', $selectedLink->text());
     }
 }

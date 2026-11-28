@@ -1,0 +1,52 @@
+{% extends "html/admin/page/settings/template.html.twig" %}
+{% set settingsTitle = "Notifications"|trans({}, 'admin') %}
+{% set formRedirect = redirectUrl('') %}
+
+{% block sections %}
+    {% set notifications = settings.notifications ?? {} %}
+    {% set notificationServiceRows = [] %}
+    {% for service in notifications.services ?? [] %}
+        {% set notificationServiceRows = notificationServiceRows|merge([{'value': service}]) %}
+    {% endfor %}
+    {% set notificationServicesDescription %}
+        {{ "{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely."|trans({'{shoutrrr}': '<a class="underline" href="https://shoutrrr.nickfedor.com/dev/services/overview/" target="_blank" rel="noopener">Shoutrrr</a>'}, 'admin')|raw }}
+    {% endset %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Notifications"|trans({}, 'admin')} %}
+        {% block body %}
+            <div>
+                <label class="mt-0!">{{ "Notification services"|trans({}, 'admin') }}</label>
+                <p class="description mb-2">{{ notificationServicesDescription }}</p>
+                <div class="p-3 bg-gray-50 rounded-lg border border-gray-200" data-repeater data-repeater-min="0">
+                    <div class="flex flex-col gap-2" data-repeater-list data-repeater-initial="{{ notificationServiceRows|json_encode|e('html_attr') }}"></div>
+                    <button type="button" data-repeater-add class="mt-2 btn--secondary inline-flex items-center gap-1.5">
+                        {{ svg('plus', 'size-4') }}
+                        <span>{{ "Add service"|trans({}, 'admin') }}</span>
+                    </button>
+                    <template data-repeater-template>
+                        <div class="flex items-end gap-2" data-repeater-item>
+                            <div class="flex-1">
+                                <input type="text" name="data[notifications][services][]" data-repeater-field="value" placeholder="{{ "discord://token@id"|trans({}, 'admin') }}">
+                            </div>
+                            <button type="button" data-repeater-remove
+                                    class="unstyled cursor-pointer grid place-items-center size-9 shrink-0 text-gray-400 transition-colors hover:text-red-600"
+                                    aria-label="{{ "Remove"|trans({}, 'admin') }}">
+                                {{ svg('close', 'size-4') }}
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div>
+                <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                    <input type="hidden" name="data[notifications][notifyOnSuccessfulBuild]" value="0">
+                    <input type="checkbox" name="data[notifications][notifyOnSuccessfulBuild]" value="1"
+                           {{ (notifications.notifyOnSuccessfulBuild ?? true) ? 'checked' : '' }}>
+                    <span>{{ "Notify when an import was successful"|trans({}, 'admin') }}</span>
+                </label>
+                <p class="description">
+                    {{ "Sends a notification after every successful import."|trans({}, 'admin') }}
+                </p>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock sections %}

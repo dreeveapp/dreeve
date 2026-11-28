@@ -63,7 +63,8 @@ enum SettingsName: string
             self::SKIP_ACTIVITIES_RECORDED_BEFORE, self::ACTIVITIES_TO_SKIP_DURING_IMPORT, self::OPT_IN_TO_SEGMENT_DETAIL_IMPORT,
             self::SKIP_IMAGE_DOWNLOAD_DURING_IMPORT, self::WEBHOOKS => SettingsGroup::IMPORT,
             self::CRON => SettingsGroup::DAEMON,
-            self::AI, self::NOTIFICATIONS => SettingsGroup::INTEGRATIONS,
+            self::AI => SettingsGroup::AI,
+            self::NOTIFICATIONS => SettingsGroup::NOTIFICATIONS,
             self::REQUIRES_AUTHENTICATION, self::VISITORS_CAN_DOWNLOAD_ORIGINAL_FILES => SettingsGroup::SECURITY,
             self::ZWIFT_LEVEL, self::ZWIFT_RACING_SCORE => SettingsGroup::ZWIFT,
         };

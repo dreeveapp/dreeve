@@ -87,7 +87,7 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
         );
         $this->assertCount(0, $form->filter('[data-fill-fields-message]'));
 
-        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::AI, [
             'ai' => [
                 'enabled' => true,
                 'provider' => 'anthropic',
@@ -100,7 +100,7 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $form->filter('[data-coordinate-picker] button[data-fill-fields]'));
         $this->assertCount(0, $form->filter('[data-fill-fields-message]'));
 
-        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::AI, [
             'ai' => [
                 'enabled' => true,
                 'provider' => 'anthropic',

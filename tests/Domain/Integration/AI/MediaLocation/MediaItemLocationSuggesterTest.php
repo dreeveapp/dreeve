@@ -15,7 +15,7 @@ use App\Domain\Integration\AI\MediaLocation\LocationSuggestionConfidence;
 use App\Domain\Integration\AI\MediaLocation\MediaItemLocationSuggester;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\Metadata\MediaItemMetadataReader;
-use App\Domain\Settings\IntegrationsSettings;
+use App\Domain\Settings\AISettings;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
@@ -60,7 +60,7 @@ class MediaItemLocationSuggesterTest extends ContainerTestCase
         $fileStorage->write('activities/photo.jpg', (string) file_get_contents(__DIR__.'/fixtures/photo-with-orientation-6.jpg'));
 
         $settingsRepository = $this->createStub(SettingsRepository::class);
-        $settingsRepository->method('integrations')->willReturn(IntegrationsSettings::fromArray(['ai' => [
+        $settingsRepository->method('ai')->willReturn(AISettings::fromArray(['ai' => [
             'enabled' => true,
             'provider' => 'anthropic',
             'configuration' => ['model' => 'model'],
@@ -115,7 +115,7 @@ class MediaItemLocationSuggesterTest extends ContainerTestCase
         $fileStorage->write('activities/photo.jpg', (string) file_get_contents(__DIR__.'/fixtures/photo-with-orientation-6.jpg'));
 
         $settingsRepository = $this->createStub(SettingsRepository::class);
-        $settingsRepository->method('integrations')->willReturn(IntegrationsSettings::fromArray(['ai' => [
+        $settingsRepository->method('ai')->willReturn(AISettings::fromArray(['ai' => [
             'enabled' => true,
             'provider' => 'anthropic',
             'configuration' => ['model' => 'model'],

@@ -36,13 +36,13 @@ final readonly class NavigationTwigExtension
     #[AsTwigFunction('isAIChatEnabled')]
     public function isAIChatEnabled(): bool
     {
-        return $this->settingsRepository->integrations()->isAIChatEnabled();
+        return $this->settingsRepository->ai()->isAIChatEnabled();
     }
 
     #[AsTwigFunction('isAIMediaLocationSuggestionEnabled')]
     public function isAIMediaLocationSuggestionEnabled(): bool
     {
-        return $this->settingsRepository->integrations()->isAIMediaLocationSuggestionEnabled();
+        return $this->settingsRepository->ai()->isAIMediaLocationSuggestionEnabled();
     }
 
     /**

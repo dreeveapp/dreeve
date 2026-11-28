@@ -6,7 +6,7 @@ description: "Configure a cloud provider, a local Ollama model or OpenRouter for
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 Dreeve ships with an AI-powered workout assistant. To use it, you configure an AI provider under
-**Settings → Integrations**.
+**Settings → AI**.
 
 :::caution
 Use caution when enabling this feature if your app is publicly accessible.
@@ -83,7 +83,7 @@ Make sure you're running the latest version of Ollama. Streaming responses with 
 
 [OpenRouter](https://openrouter.ai) provides access to hundreds of models (OpenAI, Anthropic, Google and more) through a single API key, including free-tier models. This makes it easy to get started or test different models.
 
-To use OpenRouter, pick the **openAILike** provider under **Settings → Integrations** and set:
+To use OpenRouter, pick the **openAILike** provider under **Settings → AI** and set:
 
 * **Base URI**: `https://openrouter.ai/api/v1`
 * **Model**: e.g. `anthropic/claude-sonnet-4.5`. See [openrouter.ai/models](https://openrouter.ai/models).

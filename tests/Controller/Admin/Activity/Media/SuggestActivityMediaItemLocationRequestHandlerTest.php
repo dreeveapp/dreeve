@@ -74,7 +74,7 @@ class SuggestActivityMediaItemLocationRequestHandlerTest extends AdminWebTestCas
         $this->client->request('POST', $url, ['takenOn' => '2026-06-01T10:00:15'], server: ['HTTP_X_CSRF_TOKEN' => $csrfToken]);
         $this->assertResponseStatusCodeSame(404);
 
-        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::AI, [
             'ai' => [
                 'enabled' => true,
                 'provider' => 'anthropic',
@@ -85,7 +85,7 @@ class SuggestActivityMediaItemLocationRequestHandlerTest extends AdminWebTestCas
         $this->client->request('POST', $url, ['takenOn' => '2026-06-01T10:00:15'], server: ['HTTP_X_CSRF_TOKEN' => $csrfToken]);
         $this->assertResponseStatusCodeSame(404);
 
-        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::AI, [
             'ai' => [
                 'enabled' => true,
                 'provider' => 'anthropic',

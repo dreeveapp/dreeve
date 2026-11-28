@@ -100,7 +100,8 @@
         {% set inImport = isActiveNavItem({'/admin/settings/import': false}) %}
         {% set inMetrics = isActiveNavItem({'/admin/settings/metrics': false}) %}
         {% set inZwift = isActiveNavItem({'/admin/settings/zwift': false}) %}
-        {% set inIntegrations = isActiveNavItem({'/admin/settings/integrations': false}) %}
+        {% set inAI = isActiveNavItem({'/admin/settings/ai': false}) %}
+        {% set inNotifications = isActiveNavItem({'/admin/settings/notifications': false}) %}
         {% set inDaemon = isActiveNavItem({'/admin/settings/daemon': false}) %}
         {% set inSecurity = isActiveNavItem({'/admin/settings/security': false}) %}
         {% set inDashboard = isActiveNavItem({'/admin/settings/dashboard': false}) %}
@@ -167,8 +168,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'integrations'})) }}" {{ inIntegrations ? 'aria-selected="true"' : '' }}>
-                        {{ "Integrations"|trans({}, 'admin') }}
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'ai'})) }}" {{ inAI ? 'aria-selected="true"' : '' }}>
+                        {{ "AI"|trans({}, 'admin') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ relativeUrl(path('admin_settings', {'group': 'notifications'})) }}" {{ inNotifications ? 'aria-selected="true"' : '' }}>
+                        {{ "Notifications"|trans({}, 'admin') }}
                     </a>
                 </li>
             </ul>

@@ -24,7 +24,7 @@ final readonly class SendNotificationCommandHandler implements CommandHandler
         assert($command instanceof SendNotification);
 
         /** @var ShoutrrrUrl $configuredNotificationUrl */
-        foreach ($this->settingsRepository->integrations()->getConfiguredNotificationUrls() as $configuredNotificationUrl) {
+        foreach ($this->settingsRepository->notifications()->getConfiguredNotificationUrls() as $configuredNotificationUrl) {
             if ($configuredNotificationUrl->isNtfyUrl()) {
                 $configuredNotificationUrl = $configuredNotificationUrl->withParams([
                     'click' => (string) $command->getActionUrl(),
