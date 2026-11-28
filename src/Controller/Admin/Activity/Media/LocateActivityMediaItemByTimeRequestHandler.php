@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin\Activity\Media;
 
-use App\Controller\Admin\DispatchCommandRequestHandler;
 use App\Domain\Activity\ActivityId;
 use App\Domain\Activity\ActivityRepository;
 use App\Domain\Activity\Route\ActivityRouteLocator;
 use App\Domain\Media\MediaItemId;
+use App\Infrastructure\Security\AdminCsrfToken;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +35,7 @@ final readonly class LocateActivityMediaItemByTimeRequestHandler
     #[Route(path: '/admin/activities/{activityId}/media/{mediaItemId}/locate-by-time', name: 'admin_locate_activity_media_item_by_time', methods: ['POST'], priority: 10)]
     public function handle(string $activityId, string $mediaItemId, Request $request): JsonResponse
     {
-        $token = new CsrfToken(DispatchCommandRequestHandler::CSRF_TOKEN_ID, $request->headers->get(DispatchCommandRequestHandler::CSRF_TOKEN_HEADER, ''));
+        $token = new CsrfToken(AdminCsrfToken::ID, $request->headers->get(AdminCsrfToken::HEADER, ''));
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             return new JsonResponse(['error' => $this->translator->trans('Invalid CSRF token.', [], 'admin')], Response::HTTP_FORBIDDEN);
         }

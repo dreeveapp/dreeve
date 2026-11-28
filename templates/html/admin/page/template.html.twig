@@ -8,7 +8,7 @@
         <meta name="theme-color" content="#F26822">
         <meta name="mobile-web-app-title" content="{{ appName }}">
         <meta name="mobile-web-app-capable" content="yes">
-        <meta name="csrf-token" content="{{ csrf_token('dispatch-command') }}">
+        <meta name="csrf-token" content="{{ csrf_token(constant('App\\Infrastructure\\Security\\AdminCsrfToken::ID')) }}">
         <meta name="dispatch-command-url" content="{{ relativeUrl(path('admin_dispatch_command')) }}">
         <meta name="import-status-url" content="{{ relativeUrl(path('admin_import_status')) }}">
         <meta name="js-dist-url" content="{{ relativeUrl('js/dist/') }}">

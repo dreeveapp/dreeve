@@ -1,7 +1,7 @@
-# Enable stateless CSRF protection for logins/logouts and admin commands
+# Enable stateless CSRF protection for logins/logouts and the admin panel
 framework:
     csrf_protection:
         stateless_token_ids:
             - authenticate
             - logout
-            - dispatch-command
+            - !php/const App\Infrastructure\Security\AdminCsrfToken::ID
