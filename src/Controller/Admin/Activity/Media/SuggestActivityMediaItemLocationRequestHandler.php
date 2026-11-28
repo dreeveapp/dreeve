@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpClientException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -42,8 +41,7 @@ final readonly class SuggestActivityMediaItemLocationRequestHandler
     #[Route(path: '/admin/activities/{activityId}/media/{mediaItemId}/suggest-location', name: 'admin_suggest_activity_media_item_location', methods: ['POST'], priority: 10)]
     public function handle(string $activityId, string $mediaItemId, Request $request): JsonResponse
     {
-        $token = new CsrfToken(AdminCsrfToken::ID, $request->headers->get(AdminCsrfToken::HEADER, ''));
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
+        if (!$this->csrfTokenManager->isTokenValid(AdminCsrfToken::fromRequest($request))) {
             return new JsonResponse(['error' => $this->translator->trans('Invalid CSRF token.', [], 'admin')], Response::HTTP_FORBIDDEN);
         }
 

@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,8 +35,7 @@ final readonly class DispatchCommandRequestHandler
     #[Route(path: '/admin/dispatch-command', name: 'admin_dispatch_command', methods: ['POST'], priority: 10)]
     public function handle(Request $request): JsonResponse
     {
-        $token = new CsrfToken(AdminCsrfToken::ID, $request->headers->get(AdminCsrfToken::HEADER, ''));
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
+        if (!$this->csrfTokenManager->isTokenValid(AdminCsrfToken::fromRequest($request))) {
             return new JsonResponse(['error' => $this->translator->trans('Invalid CSRF token.', [], 'admin')], Response::HTTP_FORBIDDEN);
         }
 
