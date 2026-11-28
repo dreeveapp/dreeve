@@ -113,6 +113,8 @@ Clear: Törlés
 'Clear filters': 'Szűrők törlése'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Kattints a térképre a középpont beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Kattints a térképre a hely beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
+'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.': 'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.'
+'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.': 'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.'
 'This location is far from the route, so the photo will not show on the activity map.': 'This location is far from the route, so the photo will not show on the activity map.'
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
@@ -386,7 +388,6 @@ Password: Jelszó
 'Photo location suggestions': 'Photo location suggestions'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'A kiválasztott sporttípusok fotói ki vannak zárva a fotógalériából.'
-'Photos you ask a location suggestion for are sent to your AI provider.': 'Photos you ask a location suggestion for are sent to your AI provider.'
 'Pick a device you already recorded with, or type a new name.': 'Válassz egy eszközt, amellyel már rögzítettél, vagy írj be egy új nevet.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Válaszd ki az alkalmazandó szabályokat, hogy lásd, mely tevékenységek változnának.'
@@ -618,7 +619,6 @@ Until: Until
 'Upload files': 'Fájlok feltöltése'
 Uploaded: Feltöltve
 Uploading...: Feltöltés...
-'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: Felhasználónév

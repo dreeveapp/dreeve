@@ -113,6 +113,8 @@ Clear: Borrar
 'Clear filters': 'Borrar filtros'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Haz clic en el mapa para establecer el centro o arrastra el marcador para ajustarlo.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Haz clic en el mapa para establecer la ubicación o arrastra el marcador para ajustarla.'
+'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.': 'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.'
+'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.': 'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.'
 'This location is far from the route, so the photo will not show on the activity map.': 'This location is far from the route, so the photo will not show on the activity map.'
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
@@ -386,7 +388,6 @@ Password: Contraseña
 'Photo location suggestions': 'Photo location suggestions'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Las fotos de los tipos de deporte seleccionados se excluyen de la galería de fotos.'
-'Photos you ask a location suggestion for are sent to your AI provider.': 'Photos you ask a location suggestion for are sent to your AI provider.'
 'Pick a device you already recorded with, or type a new name.': 'Elige un dispositivo con el que ya hayas grabado, o escribe un nombre nuevo.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Elige las reglas que quieres aplicar para ver qué actividades cambiarían.'
@@ -618,7 +619,6 @@ Until: Until
 'Upload files': 'Subir archivos'
 Uploaded: Subido
 Uploading...: Subiendo...
-'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: 'Nombre de usuario'

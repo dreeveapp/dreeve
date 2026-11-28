@@ -113,6 +113,8 @@ Clear: Wissen
 'Clear filters': 'Filters wissen'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Klik op de kaart om het middelpunt in te stellen, of sleep de markering om het te verfijnen.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Klik op de kaart om de locatie in te stellen, of sleep de markering om ze te verfijnen.'
+'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.': 'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.'
+'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.': 'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.'
 'This location is far from the route, so the photo will not show on the activity map.': 'This location is far from the route, so the photo will not show on the activity map.'
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
@@ -386,7 +388,6 @@ Password: Wachtwoord
 'Photo location suggestions': 'Photo location suggestions'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': "Foto's bij je Strava-activiteiten worden niet gedownload of op schijf opgeslagen. Eerder gedownloade foto's blijven bewaard."
 'Photos of the selected sport types are excluded from the photo gallery.': "Foto's van de geselecteerde sporttypes worden uitgesloten van de fotogalerij."
-'Photos you ask a location suggestion for are sent to your AI provider.': 'Photos you ask a location suggestion for are sent to your AI provider.'
 'Pick a device you already recorded with, or type a new name.': 'Kies een toestel waarmee je al geregistreerd hebt, of typ een nieuwe naam.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Kies de regels die je wil toepassen om te zien welke activiteiten zouden wijzigen.'
@@ -618,7 +619,6 @@ Until: Until
 'Upload files': 'Bestanden uploaden'
 Uploaded: Geüpload
 Uploading...: 'Aan het uploaden...'
-'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': 'Gebruikt om de trainingsbelasting van deze activiteit te berekenen'
 Username: Gebruikersnaam
