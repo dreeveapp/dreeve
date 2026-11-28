@@ -130,6 +130,7 @@ Configured: Beállítva
 'Configured via an environment variable and cannot be changed here.': 'Környezeti változón keresztül van beállítva, itt nem módosítható.'
 'Configured via environment variables and cannot be changed here.': 'Környezeti változókon keresztül van beállítva, itt nem módosítható.'
 'Connected sensors': 'Csatlakoztatott érzékelők'
+'Connects Dreeve to an AI provider for the features below.': 'Connects Dreeve to an AI provider for the features below.'
 'Continues to next rule': 'Folytatja a következő szabállyal'
 'Copy this API key': 'Másold ki ezt az API-kulcsot'
 'Copy this MCP key': 'Copy this MCP key'
@@ -382,6 +383,7 @@ Operator: Operátor
 Password: Jelszó
 'Paste the value above, separated by a comma from any keys you want to keep.': 'Paste the value above, separated by a comma from any keys you want to keep.'
 'Performed on': 'Elvégezve ekkor'
+'Photo location suggestions': 'Photo location suggestions'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'A kiválasztott sporttípusok fotói ki vannak zárva a fotógalériából.'
 'Photos you ask a location suggestion for are sent to your AI provider.': 'Photos you ask a location suggestion for are sent to your AI provider.'
@@ -602,7 +604,6 @@ To: Eddig
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Kövesd a felszerelés használatát a tevékenységeidből, és tartsd kézben a használat- és időalapú karbantartást.'
 Tuesday: Kedd
 'Turn gear maintenance tracking on or off.': 'A felszerelés-karbantartás követésének be- vagy kikapcsolása.'
-'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.': 'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.'
 Type: Típus
 URL: URL
 'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'

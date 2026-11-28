@@ -21,6 +21,10 @@ class IntegrationsSettingsRequestHandlerTest extends AdminWebTestCase
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"]'));
         $this->assertCount(1, $crawler->filter('form[data-dispatch-command="update-settings"] input[name="group"][value="integrations"]'));
         $this->assertCount(1, $crawler->filter('input[name="data[ai][enabled]"]'));
+        $this->assertCount(1, $crawler->filter('[data-dependent-on="aiEnabled"] input[type="checkbox"][name="data[ai][agent][enabled]"][checked]'));
+        $this->assertCount(1, $crawler->filter('input[type="hidden"][name="data[ai][agent][enabled]"][value="0"]'));
+        $this->assertCount(1, $crawler->filter('[data-dependent-on="aiEnabled"] input[type="checkbox"][name="data[ai][mediaLocation][enabled]"]:not([checked])'));
+        $this->assertCount(1, $crawler->filter('input[type="hidden"][name="data[ai][mediaLocation][enabled]"][value="0"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[ai][agent][commands][__index__][command]"]'));
         $this->assertCount(1, $crawler->filter('template[data-repeater-template] input[name="data[notifications][services][]"]'));
         $this->assertCount(1, $crawler->filter('input[type="checkbox"][name="data[notifications][notifyOnSuccessfulBuild]"][checked]'));

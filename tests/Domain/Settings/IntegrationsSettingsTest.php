@@ -20,7 +20,8 @@ class IntegrationsSettingsTest extends TestCase
     {
         $settings = IntegrationsSettings::fromArray([]);
 
-        $this->assertFalse($settings->isAIIntegrationEnabled());
+        $this->assertFalse($settings->isAIChatEnabled());
+        $this->assertFalse($settings->isAIMediaLocationSuggestionEnabled());
         $this->assertSame([], $settings->getChatCommands()->jsonSerialize());
         $this->assertCount(0, iterator_to_array($settings->getConfiguredNotificationUrls()));
         $this->assertTrue($settings->shouldNotifyOnSuccessfulImport());
@@ -45,7 +46,8 @@ class IntegrationsSettingsTest extends TestCase
             ],
         ]);
 
-        $this->assertTrue($settings->isAIIntegrationEnabled());
+        $this->assertTrue($settings->isAIChatEnabled());
+        $this->assertFalse($settings->isAIMediaLocationSuggestionEnabled());
         $this->assertSame(AIProvider::OPEN_AI, $settings->getAIProvider());
         $this->assertSame(['key' => 'my-key', 'model' => 'cool-model'], $settings->getAIConfiguration());
     }
@@ -61,7 +63,37 @@ class IntegrationsSettingsTest extends TestCase
             ],
         ]);
 
-        $this->assertFalse($settings->isAIIntegrationEnabled());
+        $this->assertFalse($settings->isAIChatEnabled());
+    }
+
+    public function testItTogglesTheAIFeaturesSeparately(): void
+    {
+        $settings = IntegrationsSettings::fromArray([
+            'ai' => [
+                'enabled' => true,
+                'provider' => 'openAI',
+                'configuration' => ['key' => 'my-key', 'model' => 'cool-model'],
+                'agent' => ['enabled' => '0'],
+                'mediaLocation' => ['enabled' => '1'],
+            ],
+        ]);
+
+        $this->assertFalse($settings->isAIChatEnabled());
+        $this->assertTrue($settings->isAIMediaLocationSuggestionEnabled());
+    }
+
+    public function testTheMasterSwitchOverridesTheAIFeatures(): void
+    {
+        $settings = IntegrationsSettings::fromArray([
+            'ai' => [
+                'enabled' => '0',
+                'agent' => ['enabled' => '1'],
+                'mediaLocation' => ['enabled' => '1'],
+            ],
+        ]);
+
+        $this->assertFalse($settings->isAIChatEnabled());
+        $this->assertFalse($settings->isAIMediaLocationSuggestionEnabled());
     }
 
     /**

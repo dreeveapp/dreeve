@@ -61,6 +61,24 @@ class ChatRequestHandlerTest extends AdminWebTestCase
         $this->client->request('GET', '/chat');
 
         $this->assertResponseStatusCodeSame(404);
+
+        $this->getContainer()->get(DbalSettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+            'ai' => [
+                'enabled' => true,
+                'provider' => 'openAI',
+                'configuration' => [
+                    'key' => 'my-key',
+                    'model' => 'cool-model',
+                ],
+                'agent' => [
+                    'enabled' => false,
+                ],
+            ],
+        ]);
+
+        $this->client->request('GET', '/chat');
+
+        $this->assertResponseStatusCodeSame(404);
     }
 
     /**

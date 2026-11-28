@@ -130,6 +130,7 @@ Configured: Configurado
 'Configured via an environment variable and cannot be changed here.': 'Configurado por meio de uma variável de ambiente e não pode ser alterado aqui.'
 'Configured via environment variables and cannot be changed here.': 'Configurado por meio de variáveis de ambiente e não pode ser alterado aqui.'
 'Connected sensors': 'Sensores conectados'
+'Connects Dreeve to an AI provider for the features below.': 'Connects Dreeve to an AI provider for the features below.'
 'Continues to next rule': 'Continua para a próxima regra'
 'Copy this API key': 'Copiar esta chave da API'
 'Copy this MCP key': 'Copy this MCP key'
@@ -382,6 +383,7 @@ Operator: Operador
 Password: Senha
 'Paste the value above, separated by a comma from any keys you want to keep.': 'Paste the value above, separated by a comma from any keys you want to keep.'
 'Performed on': 'Realizado em'
+'Photo location suggestions': 'Photo location suggestions'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Fotos anexadas às suas atividades do Strava não serão baixadas nem armazenadas em disco. Fotos baixadas anteriormente serão mantidas.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Fotos dos tipos de esporte selecionados são excluídas da galeria de fotos.'
 'Photos you ask a location suggestion for are sent to your AI provider.': 'Photos you ask a location suggestion for are sent to your AI provider.'
@@ -602,7 +604,6 @@ To: Para
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Acompanhe o uso do equipamento em suas atividades e fique por dentro da manutenção baseada em tempo e uso.'
 Tuesday: Terça-feira
 'Turn gear maintenance tracking on or off.': 'Ativar ou desativar o acompanhamento de manutenção de equipamentos.'
-'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.': 'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.'
 Type: Tipo
 URL: URL
 'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'

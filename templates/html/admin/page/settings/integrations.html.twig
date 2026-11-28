@@ -26,9 +26,7 @@
                     <span>{{ "Enable AI integration"|trans({}, 'admin') }}</span>
                 </label>
                 <p class="description">
-                    {{ "Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken."|trans({}, 'admin') }}
-                    {{ "Photos you ask a location suggestion for are sent to your AI provider."|trans({}, 'admin') }}
-                    {{ "Use caution when enabling this if your app is publicly accessible."|trans({}, 'admin') }}
+                    {{ "Connects Dreeve to an AI provider for the features below."|trans({}, 'admin') }}
                 </p>
             </div>
             <div class="flex flex-col gap-4 border-l-2 border-gray-200 pl-4" data-dependent-on="aiEnabled" data-visible-when="checked">
@@ -65,6 +63,26 @@
                         <label for="aiEndpoint">{{ "Endpoint"|trans({}, 'admin') }}</label>
                         <input type="text" id="aiEndpoint" name="data[ai][configuration][endpoint]" value="{{ aiConfiguration.endpoint ?? '' }}">
                     </div>
+                </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                        <input type="hidden" name="data[ai][agent][enabled]" value="0">
+                        <input type="checkbox" name="data[ai][agent][enabled]" value="1" {{ (ai.agent.enabled ?? true) ? 'checked' : '' }}>
+                        <span>{{ "Workout assistant"|trans }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "Use caution when enabling this if your app is publicly accessible."|trans({}, 'admin') }}
+                    </p>
+                </div>
+                <div>
+                    <label class="flex items-center gap-2 mt-0! font-medium cursor-pointer">
+                        <input type="hidden" name="data[ai][mediaLocation][enabled]" value="0">
+                        <input type="checkbox" name="data[ai][mediaLocation][enabled]" value="1" {{ (ai.mediaLocation.enabled ?? false) ? 'checked' : '' }}>
+                        <span>{{ "Photo location suggestions"|trans({}, 'admin') }}</span>
+                    </label>
+                    <p class="description">
+                        {{ "Photos you ask a location suggestion for are sent to your AI provider."|trans({}, 'admin') }}
+                    </p>
                 </div>
             </div>
         {% endblock %}

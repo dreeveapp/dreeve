@@ -33,10 +33,16 @@ final readonly class NavigationTwigExtension
         return $this->activityIdRepository->count() > 0 || $this->segmentRepository->count() > 0;
     }
 
-    #[AsTwigFunction('isAIIntegrationEnabled')]
-    public function isAIIntegrationEnabled(): bool
+    #[AsTwigFunction('isAIChatEnabled')]
+    public function isAIChatEnabled(): bool
     {
-        return $this->settingsRepository->integrations()->isAIIntegrationEnabled();
+        return $this->settingsRepository->integrations()->isAIChatEnabled();
+    }
+
+    #[AsTwigFunction('isAIMediaLocationSuggestionEnabled')]
+    public function isAIMediaLocationSuggestionEnabled(): bool
+    {
+        return $this->settingsRepository->integrations()->isAIMediaLocationSuggestionEnabled();
     }
 
     /**

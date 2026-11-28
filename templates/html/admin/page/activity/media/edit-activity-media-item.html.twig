@@ -51,7 +51,7 @@
                                 <span class="label">{{ "Locate by time"|trans({}, 'admin') }}</span>
                                 <span class="label--loading">{{ "Locating..."|trans({}, 'admin') }}</span>
                             </button>
-                            {% if isAIIntegrationEnabled() %}
+                            {% if isAIMediaLocationSuggestionEnabled() %}
                                 <button type="button" data-has-loading-state class="group btn--small"
                                         data-fill-fields="{{ relativeUrl(path('admin_suggest_activity_media_item_location', {activityId: activity.getId(), mediaItemId: mediaItem.getId()})) }}">
                                     <span class="label">{{ "Suggest with AI"|trans({}, 'admin') }}</span>
@@ -59,7 +59,7 @@
                                 </button>
                             {% endif %}
                         </div>
-                        {% if isAIIntegrationEnabled() %}
+                        {% if isAIMediaLocationSuggestionEnabled() %}
                             <div data-fill-fields-message class="alert alert--info hidden" role="status"></div>
                         {% endif %}
                         <div data-coordinate-picker-warning class="alert alert--warning hidden" role="alert">

@@ -97,6 +97,20 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
 
         $form = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/edit')
             ->filter('form[data-dispatch-command="update-media-item"]');
+        $this->assertCount(1, $form->filter('[data-coordinate-picker] button[data-fill-fields]'));
+        $this->assertCount(0, $form->filter('[data-fill-fields-message]'));
+
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+            'ai' => [
+                'enabled' => true,
+                'provider' => 'anthropic',
+                'configuration' => ['model' => 'model'],
+                'mediaLocation' => ['enabled' => '1'],
+            ],
+        ]);
+
+        $form = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/edit')
+            ->filter('form[data-dispatch-command="update-media-item"]');
         $this->assertSame(
             [
                 '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time',

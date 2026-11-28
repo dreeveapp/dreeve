@@ -14,7 +14,8 @@ use App\Infrastructure\ValueObject\String\Url;
 final readonly class IntegrationsSettings
 {
     private function __construct(
-        private bool $aiIntegrationEnabled,
+        private bool $aiChatEnabled,
+        private bool $aiMediaLocationSuggestionEnabled,
         /** @var array<string, mixed> */
         #[\SensitiveParameter]
         private array $aiConfig,
@@ -63,7 +64,8 @@ final readonly class IntegrationsSettings
         ));
 
         return new self(
-            aiIntegrationEnabled: $aiEnabled,
+            aiChatEnabled: $aiEnabled && filter_var($aiConfig['agent']['enabled'] ?? true, FILTER_VALIDATE_BOOLEAN),
+            aiMediaLocationSuggestionEnabled: $aiEnabled && filter_var($aiConfig['mediaLocation']['enabled'] ?? false, FILTER_VALIDATE_BOOLEAN),
             aiConfig: $aiConfig,
             chatCommands: ChatCommands::fromArray($aiConfig['agent']['commands'] ?? []),
             configuredNotificationUrls: ConfiguredNotificationUrls::fromConfig($services),
@@ -71,9 +73,14 @@ final readonly class IntegrationsSettings
         );
     }
 
-    public function isAIIntegrationEnabled(): bool
+    public function isAIChatEnabled(): bool
     {
-        return $this->aiIntegrationEnabled;
+        return $this->aiChatEnabled;
+    }
+
+    public function isAIMediaLocationSuggestionEnabled(): bool
+    {
+        return $this->aiMediaLocationSuggestionEnabled;
     }
 
     public function getChatCommands(): ChatCommands

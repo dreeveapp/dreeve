@@ -47,8 +47,8 @@ final readonly class SuggestActivityMediaItemLocationRequestHandler
             return new JsonResponse(['error' => $this->translator->trans('Invalid CSRF token.', [], 'admin')], Response::HTTP_FORBIDDEN);
         }
 
-        if (!$this->settingsRepository->integrations()->isAIIntegrationEnabled()) {
-            throw new NotFoundHttpException('The AI integration is not enabled');
+        if (!$this->settingsRepository->integrations()->isAIMediaLocationSuggestionEnabled()) {
+            throw new NotFoundHttpException('Photo location suggestions are not enabled');
         }
 
         try {
