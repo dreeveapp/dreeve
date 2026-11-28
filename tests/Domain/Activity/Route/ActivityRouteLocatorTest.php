@@ -24,7 +24,7 @@ class ActivityRouteLocatorTest extends ContainerTestCase
      * @param array<int, array{float, float}|null> $latLngs
      */
     #[DataProvider('provideLocations')]
-    public function testLocateAt(array $times, array $latLngs, string $on, Coordinate $expected): void
+    public function testLocateAtDateTime(array $times, array $latLngs, string $on, Coordinate $expected): void
     {
         $activity = ActivityBuilder::fromDefaults()
             ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 10:00:00'))
@@ -43,7 +43,7 @@ class ActivityRouteLocatorTest extends ContainerTestCase
 
         $this->assertEquals(
             $expected,
-            new ActivityRouteLocator($activityStreamRepository)->locateAt(
+            new ActivityRouteLocator($activityStreamRepository)->locateAtDateTime(
                 activity: $activity,
                 on: SerializableDateTime::fromString($on),
             ),
@@ -100,7 +100,7 @@ class ActivityRouteLocatorTest extends ContainerTestCase
     }
 
     #[DataProvider('provideMomentsOutsideTheActivity')]
-    public function testLocateAtReturnsNullOutsideTheActivity(string $on): void
+    public function testLocateAtDateTimeReturnsNullOutsideTheActivity(string $on): void
     {
         $activity = ActivityBuilder::fromDefaults()
             ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 10:00:00'))
@@ -117,7 +117,7 @@ class ActivityRouteLocatorTest extends ContainerTestCase
             ->withData([[50.0, 4.0], [51.0, 5.0], [52.0, 6.0]])
             ->build());
 
-        $this->assertNull(new ActivityRouteLocator($activityStreamRepository)->locateAt(
+        $this->assertNull(new ActivityRouteLocator($activityStreamRepository)->locateAtDateTime(
             activity: $activity,
             on: SerializableDateTime::fromString($on),
         ));
@@ -213,7 +213,7 @@ class ActivityRouteLocatorTest extends ContainerTestCase
         ));
     }
 
-    public function testLocateAtReturnsNullWithoutStreams(): void
+    public function testLocateAtDateTimeReturnsNullWithoutStreams(): void
     {
         $activity = ActivityBuilder::fromDefaults()
             ->withStartDateTime(SerializableDateTime::fromString('2026-06-01 10:00:00'))
@@ -225,7 +225,7 @@ class ActivityRouteLocatorTest extends ContainerTestCase
             ->withData([0, 10, 20])
             ->build());
 
-        $this->assertNull(new ActivityRouteLocator($activityStreamRepository)->locateAt(
+        $this->assertNull(new ActivityRouteLocator($activityStreamRepository)->locateAtDateTime(
             activity: $activity,
             on: SerializableDateTime::fromString('2026-06-01 10:00:10'),
         ));

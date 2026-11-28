@@ -57,7 +57,7 @@ final readonly class LocateActivityMediaItemByTimeRequestHandler
             return new JsonResponse(['error' => $this->translator->trans('Fill in “Taken on” first.', [], 'admin')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $coordinate = $this->activityRouteLocator->locateAt(
+        $coordinate = $this->activityRouteLocator->locateAtDateTime(
             activity: $activity,
             on: $takenOn,
         );

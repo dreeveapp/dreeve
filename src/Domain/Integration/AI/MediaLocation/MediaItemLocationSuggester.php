@@ -88,17 +88,14 @@ final readonly class MediaItemLocationSuggester
 
         $content = $this->fileStorage->read($mediaItem->getPath()->toString());
         $source = imagecreatefromstring($content) ?: throw new \RuntimeException(sprintf('Could not read media item "%s" as an image', $mediaItem->getId()));
-        $orientation = $this->mediaItemMetadataReader->read($content)->getOrientation();
-        $source = match ($orientation) {
-            3 => imagerotate($source, 180, 0),
-            5, 6, 7 => imagerotate($source, -90, 0),
-            8 => imagerotate($source, 90, 0),
-            default => $source,
-        } ?: throw new \RuntimeException(sprintf('Could not rotate media item "%s"', $mediaItem->getId()));
-        if (in_array($orientation, [2, 5], true)) {
+        $exifOrientation = $this->mediaItemMetadataReader->read($content)->getExifOrientation();
+        if (0 !== ($degrees = $exifOrientation->clockwiseRotationInDegrees())) {
+            $source = imagerotate($source, -$degrees, 0) ?: throw new \RuntimeException(sprintf('Could not rotate media item "%s"', $mediaItem->getId()));
+        }
+        if ($exifOrientation->mirrorsHorizontally()) {
             imageflip($source, IMG_FLIP_HORIZONTAL);
         }
-        if (in_array($orientation, [4, 7], true)) {
+        if ($exifOrientation->mirrorsVertically()) {
             imageflip($source, IMG_FLIP_VERTICAL);
         }
         $scale = min(1, self::MAX_IMAGE_EDGE_IN_PIXELS / max(imagesx($source), imagesy($source)));

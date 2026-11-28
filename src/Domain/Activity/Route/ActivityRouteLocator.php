@@ -22,7 +22,7 @@ final readonly class ActivityRouteLocator
     ) {
     }
 
-    public function locateAt(Activity $activity, SerializableDateTime $on): ?Coordinate
+    public function locateAtDateTime(Activity $activity, SerializableDateTime $on): ?Coordinate
     {
         $streams = $this->activityStreamRepository->findByActivityId($activity->getId());
 
