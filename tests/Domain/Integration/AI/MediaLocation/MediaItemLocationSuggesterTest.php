@@ -14,6 +14,7 @@ use App\Domain\Integration\AI\MediaLocation\LocationSuggestion;
 use App\Domain\Integration\AI\MediaLocation\LocationSuggestionConfidence;
 use App\Domain\Integration\AI\MediaLocation\MediaItemLocationSuggester;
 use App\Domain\Media\MediaItemPath;
+use App\Domain\Media\Metadata\MediaItemMetadataReader;
 use App\Domain\Settings\IntegrationsSettings;
 use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
@@ -25,7 +26,6 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Activity\ActivityBuilder;
 use App\Tests\Domain\Activity\Stream\ActivityStreamBuilder;
 use App\Tests\Domain\Media\MediaItemBuilder;
-use League\Flysystem\FilesystemOperator;
 use Spatie\Snapshots\MatchesSnapshots;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -56,6 +56,9 @@ class MediaItemLocationSuggesterTest extends ContainerTestCase
             activity: $activity,
         );
 
+        $fileStorage = $this->getContainer()->get('file.storage');
+        $fileStorage->write('activities/photo.jpg', (string) file_get_contents(__DIR__.'/fixtures/photo-with-orientation-6.jpg'));
+
         $settingsRepository = $this->createStub(SettingsRepository::class);
         $settingsRepository->method('integrations')->willReturn(IntegrationsSettings::fromArray(['ai' => [
             'enabled' => true,
@@ -70,13 +73,14 @@ class MediaItemLocationSuggesterTest extends ContainerTestCase
             ),
             activityStreamRepository: $activityStreamRepository,
             activityRouteLocator: new ActivityRouteLocator($activityStreamRepository),
-            fileStorage: $this->givenAPhotoOf2000By1000Pixels(),
+            mediaItemMetadataReader: new MediaItemMetadataReader(),
+            fileStorage: $fileStorage,
         )->suggest(
             activity: $activity,
             mediaItem: MediaItemBuilder::fromDefaults()
                 ->withPath(MediaItemPath::fromString('activities/photo.jpg'))
-                ->withTakenOn(SerializableDateTime::fromString('2026-06-01 10:25:00'))
                 ->build(),
+            takenOn: SerializableDateTime::fromString('2026-06-01 10:25:00'),
         );
 
         $this->assertEquals(
@@ -91,11 +95,10 @@ class MediaItemLocationSuggesterTest extends ContainerTestCase
         $this->assertCount(1, $requestBodies);
         [$text, $image] = $requestBodies[0]['messages'][0]['content'];
         $this->assertMatchesTextSnapshot($text['text']);
-        $photo = getimagesizefromstring(base64_decode((string) $image['source']['data'], true) ?: '') ?: [];
-        $this->assertSame(
-            [1568, 784, 'image/jpeg'],
-            [$photo[0] ?? null, $photo[1] ?? null, $photo['mime'] ?? null],
-        );
+        $photo = imagecreatefromstring(base64_decode((string) $image['source']['data'], true) ?: '') ?: throw new \RuntimeException('The sent photo is not an image');
+        $this->assertSame([784, 1568], [imagesx($photo), imagesy($photo)]);
+        $this->assertGreaterThan(200, imagecolorat($photo, 770, 10) >> 16 & 0xFF);
+        $this->assertLessThan(50, imagecolorat($photo, 10, 10) >> 16 & 0xFF);
     }
 
     public function testItReturnsNullWhenThereIsNoSuggestion(): void
@@ -107,6 +110,9 @@ class MediaItemLocationSuggesterTest extends ContainerTestCase
             activityStreamRepository: $activityStreamRepository,
             activity: $activity,
         );
+
+        $fileStorage = $this->getContainer()->get('file.storage');
+        $fileStorage->write('activities/photo.jpg', (string) file_get_contents(__DIR__.'/fixtures/photo-with-orientation-6.jpg'));
 
         $settingsRepository = $this->createStub(SettingsRepository::class);
         $settingsRepository->method('integrations')->willReturn(IntegrationsSettings::fromArray(['ai' => [
@@ -122,12 +128,14 @@ class MediaItemLocationSuggesterTest extends ContainerTestCase
             ),
             activityStreamRepository: $activityStreamRepository,
             activityRouteLocator: new ActivityRouteLocator($activityStreamRepository),
-            fileStorage: $this->givenAPhotoOf2000By1000Pixels(),
+            mediaItemMetadataReader: new MediaItemMetadataReader(),
+            fileStorage: $fileStorage,
         )->suggest(
             activity: $activity,
             mediaItem: MediaItemBuilder::fromDefaults()
                 ->withPath(MediaItemPath::fromString('activities/photo.jpg'))
                 ->build(),
+            takenOn: null,
         ));
     }
 
@@ -146,17 +154,6 @@ class MediaItemLocationSuggesterTest extends ContainerTestCase
                 ->withData($data)
                 ->build());
         }
-    }
-
-    private function givenAPhotoOf2000By1000Pixels(): FilesystemOperator
-    {
-        $fileStorage = $this->getContainer()->get('file.storage');
-        $photo = imagecreatetruecolor(2000, 1000);
-        ob_start();
-        imagejpeg($photo);
-        $fileStorage->write('activities/photo.jpg', (string) ob_get_clean());
-
-        return $fileStorage;
     }
 
     protected function setUp(): void

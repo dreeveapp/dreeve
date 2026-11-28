@@ -10,9 +10,11 @@ use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
 use App\Domain\Integration\AI\AIPlatformFactory;
 use App\Domain\Media\MediaItem;
+use App\Domain\Media\Metadata\MediaItemMetadataReader;
 use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
+use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 use League\Flysystem\FilesystemOperator;
 use Symfony\AI\Platform\Capability;
 use Symfony\AI\Platform\Message\Content\Image;
@@ -51,12 +53,13 @@ final readonly class MediaItemLocationSuggester
         private AIPlatformFactory $platformFactory,
         private ActivityStreamRepository $activityStreamRepository,
         private ActivityRouteLocator $activityRouteLocator,
+        private MediaItemMetadataReader $mediaItemMetadataReader,
         #[Target('file.storage')]
         private FilesystemOperator $fileStorage,
     ) {
     }
 
-    public function suggest(Activity $activity, MediaItem $mediaItem): ?LocationSuggestion
+    public function suggest(Activity $activity, MediaItem $mediaItem, ?SerializableDateTime $takenOn): ?LocationSuggestion
     {
         $streams = $this->activityStreamRepository->findByActivityId($activity->getId());
         $distances = array_values($streams->filterOnType(StreamType::DISTANCE)?->getData() ?? []);
@@ -83,7 +86,21 @@ final readonly class MediaItemLocationSuggester
             ]);
         }
 
-        $source = imagecreatefromstring($this->fileStorage->read($mediaItem->getPath()->toString())) ?: throw new \RuntimeException(sprintf('Could not read media item "%s" as an image', $mediaItem->getId()));
+        $content = $this->fileStorage->read($mediaItem->getPath()->toString());
+        $source = imagecreatefromstring($content) ?: throw new \RuntimeException(sprintf('Could not read media item "%s" as an image', $mediaItem->getId()));
+        $orientation = $this->mediaItemMetadataReader->read($content)->getOrientation();
+        $source = match ($orientation) {
+            3 => imagerotate($source, 180, 0),
+            5, 6, 7 => imagerotate($source, -90, 0),
+            8 => imagerotate($source, 90, 0),
+            default => $source,
+        } ?: throw new \RuntimeException(sprintf('Could not rotate media item "%s"', $mediaItem->getId()));
+        if (in_array($orientation, [2, 5], true)) {
+            imageflip($source, IMG_FLIP_HORIZONTAL);
+        }
+        if (in_array($orientation, [4, 7], true)) {
+            imageflip($source, IMG_FLIP_VERTICAL);
+        }
         $scale = min(1, self::MAX_IMAGE_EDGE_IN_PIXELS / max(imagesx($source), imagesy($source)));
         $image = imagescale($source, max(1, (int) round(imagesx($source) * $scale)), max(1, (int) round(imagesy($source) * $scale))) ?: throw new \RuntimeException(sprintf('Could not downscale media item "%s"', $mediaItem->getId()));
         ob_start();
@@ -98,7 +115,7 @@ final readonly class MediaItemLocationSuggester
             'Start time: '.$activity->getStartDate()->format('Y-m-d H:i:s'),
             '',
             '# PHOTO',
-            'Taken on: '.($mediaItem->getTakenOn()?->format('Y-m-d H:i:s') ?? 'unknown'),
+            'Taken on: '.($takenOn?->format('Y-m-d H:i:s') ?? 'unknown'),
             '',
             '# ROUTE PROFILE',
             ...$routeProfile,

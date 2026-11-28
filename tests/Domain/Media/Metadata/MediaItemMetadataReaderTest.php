@@ -19,6 +19,7 @@ class MediaItemMetadataReaderTest extends TestCase
 
         $this->assertSame(3, $metadata->getWidth());
         $this->assertSame(4, $metadata->getHeight());
+        $this->assertSame(6, $metadata->getOrientation());
         $this->assertEquals(
             Coordinate::createFromLatAndLng(
                 latitude: Latitude::fromString('-22.9519'),
@@ -38,6 +39,7 @@ class MediaItemMetadataReaderTest extends TestCase
 
         $this->assertSame(4, $metadata->getWidth());
         $this->assertSame(3, $metadata->getHeight());
+        $this->assertSame(1, $metadata->getOrientation());
         $this->assertNull($metadata->getCoordinate());
         $this->assertNull($metadata->getTakenOn());
     }
