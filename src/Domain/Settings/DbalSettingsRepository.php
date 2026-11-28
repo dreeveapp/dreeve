@@ -120,9 +120,14 @@ final readonly class DbalSettingsRepository extends DbalRepository implements Se
         return ZwiftSettings::fromArray($this->findGroup(SettingsGroup::ZWIFT));
     }
 
-    public function integrations(): IntegrationsSettings
+    public function ai(): AISettings
     {
-        return IntegrationsSettings::fromArray($this->findGroup(SettingsGroup::INTEGRATIONS));
+        return AISettings::fromArray($this->findGroup(SettingsGroup::AI));
+    }
+
+    public function notifications(): NotificationSettings
+    {
+        return NotificationSettings::fromArray($this->findGroup(SettingsGroup::NOTIFICATIONS));
     }
 
     public function daemon(): DaemonSettings

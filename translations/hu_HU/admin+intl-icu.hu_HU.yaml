@@ -3,6 +3,7 @@
 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.'
 'A rule applies': 'Egy szabály érvényes'
 AI: AI
+'AI provider': 'AI provider'
 AM/PM: AM/PM
 'API access': API-hozzáférés
 'API key': API-kulcs
@@ -113,6 +114,8 @@ Clear: Törlés
 'Clear filters': 'Szűrők törlése'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Kattints a térképre a középpont beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Kattints a térképre a hely beállításához, vagy húzd a jelölőt a finomhangoláshoz.'
+'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.': 'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.'
+'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.': 'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.'
 'This location is far from the route, so the photo will not show on the activity map.': 'This location is far from the route, so the photo will not show on the activity map.'
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
@@ -130,6 +133,7 @@ Configured: Beállítva
 'Configured via an environment variable and cannot be changed here.': 'Környezeti változón keresztül van beállítva, itt nem módosítható.'
 'Configured via environment variables and cannot be changed here.': 'Környezeti változókon keresztül van beállítva, itt nem módosítható.'
 'Connected sensors': 'Csatlakoztatott érzékelők'
+'Connects Dreeve to an AI provider for the features you enable.': 'Connects Dreeve to an AI provider for the features you enable.'
 'Continues to next rule': 'Folytatja a következő szabállyal'
 'Copy this API key': 'Másold ki ezt az API-kulcsot'
 'Copy this MCP key': 'Copy this MCP key'
@@ -190,6 +194,7 @@ Edit: Szerkesztés
 Efforts: Efforts
 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.'
 Elevation: Szintemelkedés
+Enable: Enable
 'Enable AI integration': 'AI-integráció engedélyezése'
 'Enable Strava webhooks': 'Strava webhookok engedélyezése'
 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
@@ -217,6 +222,7 @@ Female: Nő
 'File upload': Fájlfeltöltés
 'File upload is only available in file import mode': 'A fájlfeltöltés csak fájlimportálás módban érhető el'
 Filename: Fájlnév
+'Fill in “Taken on” first.': 'Fill in “Taken on” first.'
 Filter: Szűrő
 'First name': Keresztnév
 'Fixed value': 'Rögzített érték'
@@ -268,7 +274,6 @@ Import: Importálás
 Info: Infó
 'Installed on': 'Installed on'
 Instance: Instance
-Integrations: Integrációk
 'Intro text': 'Bevezető szöveg'
 'Invalid CSRF token.': 'Érvénytelen CSRF-token.'
 'Issuer URL': 'Issuer URL'
@@ -287,6 +292,8 @@ Latitude: Szélesség
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Nyelv
+'Locate by time': 'Locate by time'
+'Locating...': 'Locating...'
 'Location set': 'Location set'
 Log: Napló
 'Log maintenance': 'Karbantartás naplózása'
@@ -379,6 +386,7 @@ Operator: Operátor
 Password: Jelszó
 'Paste the value above, separated by a comma from any keys you want to keep.': 'Paste the value above, separated by a comma from any keys you want to keep.'
 'Performed on': 'Elvégezve ekkor'
+'Photo location suggestions': 'Photo location suggestions'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'A kiválasztott sporttípusok fotói ki vannak zárva a fotógalériából.'
 'Pick a device you already recorded with, or type a new name.': 'Válassz egy eszközt, amellyel már rögzítettél, vagy írj be egy új nevet.'
@@ -468,6 +476,7 @@ Sensors: Érzékelők
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Az érzékelők csak a FIT-fájlokból importált tevékenységeknél kerülnek rögzítésre. A Stravából, GPX- vagy TCX-fájlokból származó tevékenységek soha nem illeszkednek erre a feltételre.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
+Services: Services
 'Set description': 'Leírás beállítása'
 'Set its status to Retired instead to hide it from your active gear.': 'Állítsd inkább Nyugdíjazott státuszra, hogy elrejtsd az aktív felszerelések közül.'
 'Set name': 'Név beállítása'
@@ -518,8 +527,10 @@ Source: Forrás
 'Strava refresh token': 'Strava frissítési token'
 Subtitle: Alcím
 Success: Sikeres
+'Suggest with AI': 'Suggest with AI'
 Suggested: Suggested
 'Suggested trips': 'Suggested trips'
+'Suggesting...': 'Suggesting...'
 "Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
 Sunday: Vasárnap
 'Supported types': 'Támogatott típusok'
@@ -572,6 +583,7 @@ Tasks: Feladatok
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'A nézet, amelyen a hőtérkép megnyílik. A középpont és a nagyítási szint is szükséges; hagyd üresen, hogy automatikusan a legaktívabb területedhez igazodjon.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'Ennek a widgetnek a szélességét a dashboard beállításai oldalon kell megadni. Nem méreteződik automatikusan a beállított tevékenységek száma alapján.'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'Az edzéstípus a Stravában beállítva (Verseny, Edzés vagy Hosszú futás), a legtöbb tevékenységnél üres'
+'The “Taken on” time falls outside this activity.': 'The “Taken on” time falls outside this activity.'
 'Then do this': 'Akkor tedd ezt'
 'These rules will be applied to your existing activities on the next import cycle.': 'Ezek a szabályok a következő importálási ciklusban lesznek alkalmazva a meglévő tevékenységeidre.'
 'This action cannot be undone.': 'Ez a művelet nem vonható vissza.'
@@ -595,7 +607,6 @@ To: Eddig
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Kövesd a felszerelés használatát a tevékenységeidből, és tartsd kézben a használat- és időalapú karbantartást.'
 Tuesday: Kedd
 'Turn gear maintenance tracking on or off.': 'A felszerelés-karbantartás követésének be- vagy kikapcsolása.'
-'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Típus
 URL: URL
 'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
@@ -610,7 +621,6 @@ Until: Until
 'Upload files': 'Fájlok feltöltése'
 Uploaded: Feltöltve
 Uploading...: Feltöltés...
-'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: Felhasználónév
@@ -638,6 +648,8 @@ Weigh-ins: Weigh-ins
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'A fájlokat közvetlenül a(z) {watchFolder} mappába is másolhatod, vagy {linkOpen}kézzel hozzáadhatsz egy tevékenységet{linkClose}.'
 'You can select up to {max} images': 'Legfeljebb {max} képet választhatsz'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Jelenleg a Strava API-ból importálsz. Állítsd be a(z) {importMode} értéket, hogy közvetlenül tölthess fel tevékenységfájlokat, a Strava API-jától függetlenül.'
+'Your AI provider could not suggest a location: {error}': 'Your AI provider could not suggest a location: {error}'
+'Your AI provider could not tell where on the route this photo was taken.': 'Your AI provider could not tell where on the route this photo was taken.'
 'Your birthday. Needed to calculate heart rate zones.': 'A születésnapod. A pulzuszónák kiszámításához szükséges.'
 'Your changes have been saved.': 'A módosításaid mentésre kerültek.'
 'Your current IP address, as seen by Dreeve, is {ipAddress}.': 'A jelenlegi IP-címed, ahogy a Dreeve látja: {ipAddress}.'
@@ -669,6 +681,7 @@ exactly: pontosan
 'exactly at': 'pontosan ekkor'
 ftp: ftp
 'greater than': 'nagyobb mint'
+'high': 'high'
 'hours used': 'felhasznált órák'
 is: egyenlő
 'is none of': 'egyike sem'
@@ -676,7 +689,9 @@ is: egyenlő
 'is one of': 'egyike a következőknek'
 'kilometers used': 'felhasznált kilométerek'
 'less than': 'kevesebb mint'
+'low': 'low'
 'max {max} MB each': 'egyenként max. {max} MB'
+'medium': 'medium'
 'miles used': 'felhasznált mérföldek'
 minutes: perc
 'on': 'on'
@@ -695,6 +710,7 @@ then: akkor
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
 '{label} (copy)': '{label} (másolat)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} nem törölhető, mert még tevékenységekhez, karbantartáshoz vagy automatizálási szabályokhoz van kapcsolva.'
+'{reasoning} (confidence: {confidence})': '{reasoning} (confidence: {confidence})'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} értesítési szolgáltatás URL-ek (pl. discord://token@id, telegram://token@telegram/?channels=channel). Hagyd üresen az értesítések teljes letiltásához.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Húzd ide{strongClose} vagy {strongOpen}tallózz{strongClose} a fájlok kiválasztásához'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Húzd ide{strongClose} vagy {strongOpen}tallózz{strongClose} a képek kiválasztásához'

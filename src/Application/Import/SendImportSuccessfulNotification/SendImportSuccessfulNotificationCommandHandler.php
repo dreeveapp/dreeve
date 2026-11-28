@@ -27,7 +27,7 @@ final readonly class SendImportSuccessfulNotificationCommandHandler implements C
     {
         assert($command instanceof SendImportSuccessfulNotification);
 
-        if (!$this->settingsRepository->integrations()->shouldNotifyOnSuccessfulImport()) {
+        if (!$this->settingsRepository->notifications()->shouldNotifyOnSuccessfulImport()) {
             return;
         }
 

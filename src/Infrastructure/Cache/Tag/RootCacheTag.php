@@ -27,7 +27,8 @@ enum RootCacheTag: string implements CacheTag
     case SETTINGS_IMPORT = 'settings.import';
     case SETTINGS_METRICS = 'settings.metrics';
     case SETTINGS_ZWIFT = 'settings.zwift';
-    case SETTINGS_INTEGRATIONS = 'settings.integrations';
+    case SETTINGS_AI = 'settings.ai';
+    case SETTINGS_NOTIFICATIONS = 'settings.notifications';
     case SETTINGS_DAEMON = 'settings.daemon';
     case SETTINGS_SECURITY = 'settings.security';
     case SETTINGS_ATHLETE_WEIGHT = 'settings.athleteWeight';
@@ -65,7 +66,8 @@ enum RootCacheTag: string implements CacheTag
             SettingsGroup::IMPORT => self::SETTINGS_IMPORT,
             SettingsGroup::METRICS => self::SETTINGS_METRICS,
             SettingsGroup::ZWIFT => self::SETTINGS_ZWIFT,
-            SettingsGroup::INTEGRATIONS => self::SETTINGS_INTEGRATIONS,
+            SettingsGroup::AI => self::SETTINGS_AI,
+            SettingsGroup::NOTIFICATIONS => self::SETTINGS_NOTIFICATIONS,
             SettingsGroup::DAEMON => self::SETTINGS_DAEMON,
             SettingsGroup::SECURITY => self::SETTINGS_SECURITY,
             SettingsGroup::ATHLETE_WEIGHT => self::SETTINGS_ATHLETE_WEIGHT,

@@ -109,7 +109,7 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertEquals($data, $this->settingsRepository->findGroup(SettingsGroup::METRICS));
     }
 
-    public function testItUpdatesIntegrationsSettings(): void
+    public function testItUpdatesAISettings(): void
     {
         $data = [
             'ai' => [
@@ -125,17 +125,30 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
                     ],
                 ],
             ],
+        ];
+
+        $this->commandBus->dispatch(UpdateSettings::fromPayload([
+            'group' => SettingsGroup::AI->value,
+            'data' => $data,
+        ]));
+
+        $this->assertEquals($data, $this->settingsRepository->findGroup(SettingsGroup::AI));
+    }
+
+    public function testItUpdatesNotificationSettings(): void
+    {
+        $data = [
             'notifications' => [
                 'services' => ['discord://token@webhookid?thread_id=123456789'],
             ],
         ];
 
         $this->commandBus->dispatch(UpdateSettings::fromPayload([
-            'group' => SettingsGroup::INTEGRATIONS->value,
+            'group' => SettingsGroup::NOTIFICATIONS->value,
             'data' => $data,
         ]));
 
-        $this->assertEquals($data, $this->settingsRepository->findGroup(SettingsGroup::INTEGRATIONS));
+        $this->assertEquals($data, $this->settingsRepository->findGroup(SettingsGroup::NOTIFICATIONS));
     }
 
     public function testItOnlyInvalidatesRendersOfTheGroupThatWasSaved(): void
@@ -161,12 +174,12 @@ class UpdateSettingsCommandHandlerTest extends ContainerTestCase
         $this->assertEquals(2, $render->renderCount);
     }
 
-    public function testItRejectsInvalidIntegrationsSettings(): void
+    public function testItRejectsInvalidAISettings(): void
     {
         $this->expectExceptionObject(new CouldNotDeserializeCommand('commands must not start with a slash. (/ftp)'));
 
         UpdateSettings::fromPayload([
-            'group' => SettingsGroup::INTEGRATIONS->value,
+            'group' => SettingsGroup::AI->value,
             'data' => [
                 'ai' => [
                     'agent' => [

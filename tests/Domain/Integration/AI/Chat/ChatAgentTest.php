@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Integration\AI\Chat;
 
+use App\Domain\Integration\AI\AIPlatformFactory;
 use App\Domain\Integration\AI\Chat\ChatAgent;
 use App\Domain\Integration\AI\Chat\Toolbox;
-use App\Domain\Settings\IntegrationsSettings;
+use App\Domain\Settings\AISettings;
 use App\Domain\Settings\SettingsRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -42,13 +43,19 @@ class ChatAgentTest extends TestCase
         });
 
         $settingsRepository = $this->createStub(SettingsRepository::class);
-        $settingsRepository->method('integrations')->willReturn(IntegrationsSettings::fromArray(['ai' => [
+        $settingsRepository->method('ai')->willReturn(AISettings::fromArray(['ai' => [
             'enabled' => true,
             ...$config,
         ]]));
 
         try {
-            new ChatAgent($settingsRepository, new Toolbox([]), $httpClient)->call('Hi')->getResult();
+            new ChatAgent(
+                platformFactory: new AIPlatformFactory(
+                    settingsRepository: $settingsRepository,
+                    httpClient: $httpClient,
+                ),
+                toolbox: new Toolbox([]),
+            )->call('Hi')->getResult();
         } catch (ExceptionInterface) {
         }
 

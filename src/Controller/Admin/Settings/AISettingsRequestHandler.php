@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 #[AsController]
-final readonly class IntegrationsSettingsRequestHandler
+final readonly class AISettingsRequestHandler
 {
     public function __construct(
         private Environment $twig,
@@ -26,13 +26,13 @@ final readonly class IntegrationsSettingsRequestHandler
     ) {
     }
 
-    #[Route(path: '/admin/settings/integrations', name: 'admin_settings_integrations', methods: ['GET'], priority: 10)]
+    #[Route(path: '/admin/settings/ai', name: 'admin_settings_ai', methods: ['GET'], priority: 10)]
     public function handle(): HtmlResponse
     {
-        return new HtmlResponse($this->twig->render('html/admin/page/settings/integrations.html.twig', [
+        return new HtmlResponse($this->twig->render('html/admin/page/settings/ai.html.twig', [
             'dispatchCommand' => UpdateSettings::getCommandName(),
-            'group' => SettingsGroup::INTEGRATIONS,
-            'settings' => $this->settingsRepository->findGroup(SettingsGroup::INTEGRATIONS),
+            'group' => SettingsGroup::AI,
+            'settings' => $this->settingsRepository->findGroup(SettingsGroup::AI),
             'AIApiKey' => AIApiKey::fromServerVar(),
             'aiProviders' => AIProvider::cases(),
             'aiProvidersRequiringApiKey' => array_filter(AIProvider::cases(), static fn (AIProvider $provider): bool => $provider->requiresApiKey()),

@@ -86,7 +86,7 @@ class SettingsRequestHandlerTest extends AdminWebTestCase
     {
         yield 'maps, linked from the heatmap' => ['maps', '/heatmap'];
         yield 'metrics, linked from eddington' => ['metrics', '/eddington'];
-        yield 'integrations, linked from the chat' => ['integrations', '/chat'];
+        yield 'ai, linked from the chat' => ['ai', '/chat'];
     }
 
     public static function provideDeepLinkedSettingsGroupNames(): \Generator

@@ -23,8 +23,8 @@
                         <div class="flex min-w-0 flex-1 flex-col gap-4">
                             <div>
                                 <label for="media-item-taken-on">{{ "Taken on"|trans({}, 'admin') }}</label>
-                                <input type="datetime-local" id="media-item-taken-on" name="takenOn"
-                                       value="{{ mediaItem.getTakenOn() ? mediaItem.getTakenOn().format('Y-m-d\\TH:i') }}">
+                                <input type="datetime-local" step="1" id="media-item-taken-on" name="takenOn"
+                                       value="{{ mediaItem.getTakenOn() ? mediaItem.getTakenOn().format('Y-m-d\\TH:i:s') }}">
                             </div>
                             <div>
                                 <label for="media-item-latitude">{{ "Latitude"|trans({}, 'admin') }}</label>
@@ -45,6 +45,23 @@
                         <div data-coordinate-picker-map class="h-64 w-full rounded-lg border border-gray-200 bg-gray-100"></div>
                     </div>
                     {% if coordinatePickerOptions %}
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" data-has-loading-state class="group btn--small"
+                                    data-fill-fields="{{ relativeUrl(path('admin_locate_activity_media_item_by_time', {activityId: activity.getId(), mediaItemId: mediaItem.getId()})) }}">
+                                <span class="label">{{ "Locate by time"|trans({}, 'admin') }}</span>
+                                <span class="label--loading">{{ "Locating..."|trans({}, 'admin') }}</span>
+                            </button>
+                            {% if isAIMediaLocationSuggestionEnabled() %}
+                                <button type="button" data-has-loading-state class="group btn--small"
+                                        data-fill-fields="{{ relativeUrl(path('admin_suggest_activity_media_item_location', {activityId: activity.getId(), mediaItemId: mediaItem.getId()})) }}">
+                                    <span class="label">{{ "Suggest with AI"|trans({}, 'admin') }}</span>
+                                    <span class="label--loading">{{ "Suggesting..."|trans({}, 'admin') }}</span>
+                                </button>
+                            {% endif %}
+                        </div>
+                        {% if isAIMediaLocationSuggestionEnabled() %}
+                            <div data-fill-fields-message class="alert alert--info hidden" role="status"></div>
+                        {% endif %}
                         <div data-coordinate-picker-warning class="alert alert--warning hidden" role="alert">
                             <span class="sr-only">{{ "Warning"|trans({}, 'admin') }}</span>
                             <div>{{ "This location is far from the route, so the photo will not show on the activity map."|trans({}, 'admin') }}</div>

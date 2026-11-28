@@ -1,6 +1,6 @@
 import {dispatchCommand} from "../../utils";
 import {eventBus, Events} from "../../core/event-bus";
-import {showToast} from "../toast";
+import {showError, hideError} from "./form-error";
 import {validateMultiselects} from "./checkbox-multiselect";
 
 // Turns a field name into its path segments:
@@ -150,22 +150,6 @@ class Repeater {
     }
 }
 
-const showError = (box, message) => {
-    // Forms rendered inside a table row have nowhere to put an error box, so fall back to a toast.
-    if (!box) {
-        showToast('error', message);
-        return;
-    }
-    box.textContent = message;
-    box.classList.remove('hidden');
-};
-
-const hideError = (box) => {
-    if (!box) return;
-    box.textContent = '';
-    box.classList.add('hidden');
-};
-
 const resetLoading = (buttons) => {
     buttons.forEach((button) => {
         button.classList.remove('is-loading');
@@ -203,7 +187,7 @@ export default function initDispatchCommandForm(rootNode = document) {
 
         const commandName = form.getAttribute('data-dispatch-command');
         const errorBox = form.querySelector('[data-form-error]');
-        const loadingButtons = form.querySelectorAll('button[data-has-loading-state]');
+        const loadingButtons = form.querySelectorAll('button[type="submit"][data-has-loading-state]');
 
         // Required checkbox groups and multiselects aren't native-required fields, so the submit
         // event fires even when they're empty. Gate on them here.

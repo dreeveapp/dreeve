@@ -14,6 +14,7 @@ final readonly class MediaItemMetadata
         private ?int $height,
         private ?Coordinate $coordinate,
         private ?SerializableDateTime $takenOn,
+        private ExifOrientation $exifOrientation,
     ) {
     }
 
@@ -35,5 +36,10 @@ final readonly class MediaItemMetadata
     public function getTakenOn(): ?SerializableDateTime
     {
         return $this->takenOn;
+    }
+
+    public function getExifOrientation(): ExifOrientation
+    {
+        return $this->exifOrientation;
     }
 }

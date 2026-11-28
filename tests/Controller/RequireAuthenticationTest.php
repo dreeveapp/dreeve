@@ -89,7 +89,8 @@ class RequireAuthenticationTest extends AdminWebTestCase
         yield 'daemon settings' => ['GET', '/admin/settings/daemon'];
         yield 'general settings' => ['GET', '/admin/settings/general'];
         yield 'import settings' => ['GET', '/admin/settings/import'];
-        yield 'integrations settings' => ['GET', '/admin/settings/integrations'];
+        yield 'ai settings' => ['GET', '/admin/settings/ai'];
+        yield 'notifications settings' => ['GET', '/admin/settings/notifications'];
         yield 'maps settings' => ['GET', '/admin/settings/maps'];
         yield 'metrics settings' => ['GET', '/admin/settings/metrics'];
         yield 'security settings' => ['GET', '/admin/settings/security'];

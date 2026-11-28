@@ -89,7 +89,7 @@ trait ProvideSettings
             'racingScore' => 495,
         ]);
 
-        $settingsRepository->saveGroup(SettingsGroup::INTEGRATIONS, [
+        $settingsRepository->saveGroup(SettingsGroup::NOTIFICATIONS, [
             'notifications' => [
                 'services' => [
                     'ntfy://admin:pass@ntfy.sh/el-test',

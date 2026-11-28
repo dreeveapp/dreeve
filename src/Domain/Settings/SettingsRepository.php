@@ -32,7 +32,9 @@ interface SettingsRepository
 
     public function zwift(): ZwiftSettings;
 
-    public function integrations(): IntegrationsSettings;
+    public function ai(): AISettings;
+
+    public function notifications(): NotificationSettings;
 
     public function daemon(): DaemonSettings;
 

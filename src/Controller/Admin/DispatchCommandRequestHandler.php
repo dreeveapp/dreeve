@@ -10,13 +10,13 @@ use App\Infrastructure\CQRS\Command\Deserialize\CommandDeserializer;
 use App\Infrastructure\CQRS\Command\Deserialize\CouldNotDeserializeCommand;
 use App\Infrastructure\CQRS\Command\ProvidesFlashMessage;
 use App\Infrastructure\CQRS\Command\SuppressesFlashMessage;
+use App\Infrastructure\Security\AdminCsrfToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,9 +24,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AsController]
 final readonly class DispatchCommandRequestHandler
 {
-    public const string CSRF_TOKEN_ID = 'dispatch-command';
-    public const string CSRF_TOKEN_HEADER = 'X-CSRF-TOKEN';
-
     public function __construct(
         private CommandDeserializer $commandDeserializer,
         private CommandBus $commandBus,
@@ -38,8 +35,7 @@ final readonly class DispatchCommandRequestHandler
     #[Route(path: '/admin/dispatch-command', name: 'admin_dispatch_command', methods: ['POST'], priority: 10)]
     public function handle(Request $request): JsonResponse
     {
-        $token = new CsrfToken(self::CSRF_TOKEN_ID, $request->headers->get(self::CSRF_TOKEN_HEADER, ''));
-        if (!$this->csrfTokenManager->isTokenValid($token)) {
+        if (!$this->csrfTokenManager->isTokenValid(AdminCsrfToken::fromRequest($request))) {
             return new JsonResponse(['error' => $this->translator->trans('Invalid CSRF token.', [], 'admin')], Response::HTTP_FORBIDDEN);
         }
 

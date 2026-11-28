@@ -14,7 +14,8 @@ enum SettingsGroup: string
     case IMPORT = 'import';
     case METRICS = 'metrics';
     case ZWIFT = 'zwift';
-    case INTEGRATIONS = 'integrations';
+    case AI = 'ai';
+    case NOTIFICATIONS = 'notifications';
     case DAEMON = 'daemon';
     case SECURITY = 'security';
     case ATHLETE_WEIGHT = 'athleteWeight';
@@ -65,7 +66,8 @@ enum SettingsGroup: string
             self::IMPORT => ImportSettings::fromArray($data),
             self::METRICS => MetricsSettings::fromArray($data),
             self::ZWIFT => ZwiftSettings::fromArray($data),
-            self::INTEGRATIONS => IntegrationsSettings::fromArray($data),
+            self::AI => AISettings::fromArray($data),
+            self::NOTIFICATIONS => NotificationSettings::fromArray($data),
             self::DAEMON => DaemonSettings::fromArray($data),
             self::SECURITY => SecuritySettings::fromArray($data),
             self::ATHLETE_WEIGHT => AthleteWeightSettings::fromArray($data),

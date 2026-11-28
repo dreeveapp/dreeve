@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Media\Metadata;
 
+use App\Domain\Media\Metadata\ExifOrientation;
 use App\Domain\Media\Metadata\MediaItemMetadataReader;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -19,6 +20,7 @@ class MediaItemMetadataReaderTest extends TestCase
 
         $this->assertSame(3, $metadata->getWidth());
         $this->assertSame(4, $metadata->getHeight());
+        $this->assertSame(ExifOrientation::ROTATE_90_CW, $metadata->getExifOrientation());
         $this->assertEquals(
             Coordinate::createFromLatAndLng(
                 latitude: Latitude::fromString('-22.9519'),
@@ -38,6 +40,7 @@ class MediaItemMetadataReaderTest extends TestCase
 
         $this->assertSame(4, $metadata->getWidth());
         $this->assertSame(3, $metadata->getHeight());
+        $this->assertSame(ExifOrientation::NORMAL, $metadata->getExifOrientation());
         $this->assertNull($metadata->getCoordinate());
         $this->assertNull($metadata->getTakenOn());
     }

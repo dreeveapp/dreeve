@@ -7,37 +7,26 @@ namespace App\Tests\Domain\Settings;
 use App\Domain\Integration\AI\AIProvider;
 use App\Domain\Integration\AI\Chat\InvalidChatCommandsConfig;
 use App\Domain\Integration\AI\InvalidAIConfiguration;
-use App\Domain\Integration\Notification\Shoutrrr\ShoutrrrUrl;
-use App\Domain\Settings\IntegrationsSettings;
+use App\Domain\Settings\AISettings;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class IntegrationsSettingsTest extends TestCase
+class AISettingsTest extends TestCase
 {
     private ?string $originalAIApiKey = null;
 
     public function testItAppliesDefaultsForAnEmptyConfiguration(): void
     {
-        $settings = IntegrationsSettings::fromArray([]);
+        $settings = AISettings::fromArray([]);
 
-        $this->assertFalse($settings->isAIIntegrationEnabled());
+        $this->assertFalse($settings->isAIChatEnabled());
+        $this->assertFalse($settings->isAIMediaLocationSuggestionEnabled());
         $this->assertSame([], $settings->getChatCommands()->jsonSerialize());
-        $this->assertCount(0, iterator_to_array($settings->getConfiguredNotificationUrls()));
-        $this->assertTrue($settings->shouldNotifyOnSuccessfulImport());
-    }
-
-    public function testItDisablesTheSuccessfulBuildNotification(): void
-    {
-        $settings = IntegrationsSettings::fromArray([
-            'notifications' => ['notifyOnSuccessfulBuild' => '0'],
-        ]);
-
-        $this->assertFalse($settings->shouldNotifyOnSuccessfulImport());
     }
 
     public function testItEnablesTheAIIntegration(): void
     {
-        $settings = IntegrationsSettings::fromArray([
+        $settings = AISettings::fromArray([
             'ai' => [
                 'enabled' => true,
                 'provider' => 'openAI',
@@ -45,14 +34,15 @@ class IntegrationsSettingsTest extends TestCase
             ],
         ]);
 
-        $this->assertTrue($settings->isAIIntegrationEnabled());
+        $this->assertTrue($settings->isAIChatEnabled());
+        $this->assertFalse($settings->isAIMediaLocationSuggestionEnabled());
         $this->assertSame(AIProvider::OPEN_AI, $settings->getAIProvider());
         $this->assertSame(['key' => 'my-key', 'model' => 'cool-model'], $settings->getAIConfiguration());
     }
 
     public function testItKeepsTheAIIntegrationDisabledWhenTheUIWasDisabled(): void
     {
-        $settings = IntegrationsSettings::fromArray([
+        $settings = AISettings::fromArray([
             'ai' => [
                 'enabled' => true,
                 'enableUI' => false,
@@ -61,7 +51,37 @@ class IntegrationsSettingsTest extends TestCase
             ],
         ]);
 
-        $this->assertFalse($settings->isAIIntegrationEnabled());
+        $this->assertFalse($settings->isAIChatEnabled());
+    }
+
+    public function testItTogglesTheAIFeaturesSeparately(): void
+    {
+        $settings = AISettings::fromArray([
+            'ai' => [
+                'enabled' => true,
+                'provider' => 'openAI',
+                'configuration' => ['key' => 'my-key', 'model' => 'cool-model'],
+                'agent' => ['enabled' => '0'],
+                'mediaLocation' => ['enabled' => '1'],
+            ],
+        ]);
+
+        $this->assertFalse($settings->isAIChatEnabled());
+        $this->assertTrue($settings->isAIMediaLocationSuggestionEnabled());
+    }
+
+    public function testTheMasterSwitchOverridesTheAIFeatures(): void
+    {
+        $settings = AISettings::fromArray([
+            'ai' => [
+                'enabled' => '0',
+                'agent' => ['enabled' => '1'],
+                'mediaLocation' => ['enabled' => '1'],
+            ],
+        ]);
+
+        $this->assertFalse($settings->isAIChatEnabled());
+        $this->assertFalse($settings->isAIMediaLocationSuggestionEnabled());
     }
 
     /**
@@ -72,7 +92,7 @@ class IntegrationsSettingsTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidAIConfiguration($expectedExceptionMessage));
 
-        IntegrationsSettings::fromArray(['ai' => [
+        AISettings::fromArray(['ai' => [
             'enabled' => true,
             ...$config,
         ]]);
@@ -83,7 +103,7 @@ class IntegrationsSettingsTest extends TestCase
         $_SERVER['AI_API_KEY'] = '';
         $this->expectExceptionObject(new InvalidAIConfiguration('API key cannot be empty'));
 
-        IntegrationsSettings::fromArray([
+        AISettings::fromArray([
             'ai' => [
                 'enabled' => true,
                 'provider' => 'openAI',
@@ -96,7 +116,7 @@ class IntegrationsSettingsTest extends TestCase
     {
         $this->expectExceptionObject(new \InvalidArgumentException('Invalid url "dreeve-ollama:11434/api"'));
 
-        IntegrationsSettings::fromArray(['ai' => [
+        AISettings::fromArray(['ai' => [
             'enabled' => true,
             'provider' => 'ollama',
             'configuration' => [
@@ -108,7 +128,7 @@ class IntegrationsSettingsTest extends TestCase
 
     public function testItBuildsChatCommands(): void
     {
-        $settings = IntegrationsSettings::fromArray([
+        $settings = AISettings::fromArray([
             'ai' => [
                 'agent' => [
                     'commands' => [
@@ -124,28 +144,11 @@ class IntegrationsSettingsTest extends TestCase
         );
     }
 
-    public function testItBuildsConfiguredNotificationUrls(): void
-    {
-        $settings = IntegrationsSettings::fromArray([
-            'notifications' => [
-                'services' => [
-                    'ntfy://admin:pass@ntfy.sh/el-test',
-                    'discord://token@webhookid?thread_id=123456789',
-                    '',
-                ],
-            ],
-        ]);
-
-        /** @var ShoutrrrUrl[] $urls */
-        $urls = iterator_to_array($settings->getConfiguredNotificationUrls());
-        $this->assertCount(2, $urls);
-    }
-
     public function testItThrowsForAnInvalidChatCommand(): void
     {
         $this->expectExceptionObject(new InvalidChatCommandsConfig('commands must not start with a slash. (/ftp)'));
 
-        IntegrationsSettings::fromArray([
+        AISettings::fromArray([
             'ai' => [
                 'agent' => [
                     'commands' => [

@@ -3,6 +3,7 @@
 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.'
 'A rule applies': 'Se aplica una regla'
 AI: IA
+'AI provider': 'AI provider'
 AM/PM: AM/PM
 'API access': 'Acceso a la API'
 'API key': 'Clave API'
@@ -113,6 +114,8 @@ Clear: Borrar
 'Clear filters': 'Borrar filtros'
 'Click the map to set the center, or drag the marker to fine-tune it.': 'Haz clic en el mapa para establecer el centro o arrastra el marcador para ajustarlo.'
 'Click the map to set the location, or drag the marker to fine-tune it.': 'Haz clic en el mapa para establecer la ubicación o arrastra el marcador para ajustarla.'
+'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.': 'Enables "Mark", your personal workout assistant. Use caution when enabling this if your app is publicly accessible.'
+'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.': 'Enables photo location suggestions with AI. Photos you ask a location suggestion for are sent to your AI provider.'
 'This location is far from the route, so the photo will not show on the activity map.': 'This location is far from the route, so the photo will not show on the activity map.'
 'Client ID': 'Client ID'
 'Client secret': 'Client secret'
@@ -130,6 +133,7 @@ Configured: Configurado
 'Configured via an environment variable and cannot be changed here.': 'Configurado mediante una variable de entorno y no se puede cambiar aquí.'
 'Configured via environment variables and cannot be changed here.': 'Configurado mediante variables de entorno y no se puede cambiar aquí.'
 'Connected sensors': 'Sensores conectados'
+'Connects Dreeve to an AI provider for the features you enable.': 'Connects Dreeve to an AI provider for the features you enable.'
 'Continues to next rule': 'Continúa con la siguiente regla'
 'Copy this API key': 'Copiar esta clave API'
 'Copy this MCP key': 'Copy this MCP key'
@@ -190,6 +194,7 @@ Edit: Editar
 Efforts: Efforts
 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.': 'Efforts are not calculated right away. Your activities are searched for this segment during the next import run, which runs every 5 minutes.'
 Elevation: Desnivel
+Enable: Enable
 'Enable AI integration': 'Activar integración con IA'
 'Enable Strava webhooks': 'Activar webhooks de Strava'
 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.': 'Enable the local backup in the scheduled actions settings, or create one by hand as explained in {linkOpen}the documentation{linkClose}.'
@@ -217,6 +222,7 @@ Female: Mujer
 'File upload': 'Subida de archivos'
 'File upload is only available in file import mode': 'La subida de archivos solo está disponible en el modo de importación de archivos'
 Filename: 'Nombre del archivo'
+'Fill in “Taken on” first.': 'Fill in “Taken on” first.'
 Filter: Filtro
 'First name': Nombre
 'Fixed value': 'Valor fijo'
@@ -268,7 +274,6 @@ Import: Importar
 Info: Info
 'Installed on': 'Installed on'
 Instance: Instance
-Integrations: Integraciones
 'Intro text': 'Texto de introducción'
 'Invalid CSRF token.': 'Token CSRF no válido.'
 'Issuer URL': 'Issuer URL'
@@ -287,6 +292,8 @@ Latitude: Latitud
 'Loading the route...': 'Loading the route...'
 'Local backup': 'Local backup'
 Locale: Idioma
+'Locate by time': 'Locate by time'
+'Locating...': 'Locating...'
 'Location set': 'Location set'
 Log: Registro
 'Log maintenance': 'Registrar mantenimiento'
@@ -379,6 +386,7 @@ Operator: Operador
 Password: Contraseña
 'Paste the value above, separated by a comma from any keys you want to keep.': 'Paste the value above, separated by a comma from any keys you want to keep.'
 'Performed on': 'Realizado el'
+'Photo location suggestions': 'Photo location suggestions'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Las fotos de los tipos de deporte seleccionados se excluyen de la galería de fotos.'
 'Pick a device you already recorded with, or type a new name.': 'Elige un dispositivo con el que ya hayas grabado, o escribe un nombre nuevo.'
@@ -468,6 +476,7 @@ Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Los sensores solo se registran en actividades importadas desde archivos FIT. Las actividades de Strava, GPX o TCX nunca cumplen esta condición.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
+Services: Services
 'Set description': 'Establecer descripción'
 'Set its status to Retired instead to hide it from your active gear.': 'Cambia su estado a Retirado para ocultarlo de tu equipamiento activo.'
 'Set name': 'Establecer nombre'
@@ -518,8 +527,10 @@ Source: Origen
 'Strava refresh token': 'Refresh token de Strava'
 Subtitle: Subtítulo
 Success: Éxito
+'Suggest with AI': 'Suggest with AI'
 Suggested: Suggested
 'Suggested trips': 'Suggested trips'
+'Suggesting...': 'Suggesting...'
 "Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
 Sunday: Domingo
 'Supported types': 'Tipos soportados'
@@ -572,6 +583,7 @@ Tasks: Tareas
 'The viewport the heatmap opens on. Both the center and the zoom level are needed, leave them empty to auto-fit to your most active area.': 'La vista en la que se abre el mapa de calor. Se necesitan tanto el centro como el nivel de zoom, déjalos vacíos para que se ajuste automáticamente a tu zona más activa.'
 'The width of this widget needs to be configured on the dashboard settings page. It will not automatically scale based on the number of activities you configure.make tr': 'La anchura de este widget debe configurarse en la página de ajustes del panel de control. No se escalará automáticamente según el número de actividades que configures.'
 'The workout type as set on Strava (Race, Workout or Long run), empty for most activities': 'El tipo de entrenamiento tal y como se configuró en Strava (Carrera, Entrenamiento o Tirada larga), vacío para la mayoría de actividades'
+'The “Taken on” time falls outside this activity.': 'The “Taken on” time falls outside this activity.'
 'Then do this': 'Entonces haz esto'
 'These rules will be applied to your existing activities on the next import cycle.': 'Estas reglas se aplicarán a tus actividades existentes en el próximo ciclo de importación.'
 'This action cannot be undone.': 'Esta acción no se puede deshacer.'
@@ -595,7 +607,6 @@ To: Hasta
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Haz un seguimiento del uso del equipamiento a partir de tus actividades y mantente al día con el mantenimiento basado en uso y tiempo.'
 Tuesday: Martes
 'Turn gear maintenance tracking on or off.': 'Activa o desactiva el seguimiento del mantenimiento del equipamiento.'
-'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
 Type: Tipo
 URL: URL
 'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
@@ -610,7 +621,6 @@ Until: Until
 'Upload files': 'Subir archivos'
 Uploaded: Subido
 Uploading...: Subiendo...
-'Use caution when enabling this if your app is publicly accessible.': 'Use caution when enabling this if your app is publicly accessible.'
 'Use the route map as cover': 'Use the route map as cover'
 'Used to calculate the training load of this activity': 'Used to calculate the training load of this activity'
 Username: 'Nombre de usuario'
@@ -638,6 +648,8 @@ Weigh-ins: Weigh-ins
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'También puedes copiar archivos directamente en la carpeta {watchFolder}, o {linkOpen}añadir una actividad manualmente{linkClose}.'
 'You can select up to {max} images': 'Puedes seleccionar hasta {max} imágenes'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Actualmente estás importando desde la API de Strava. Establece {importMode} para subir archivos de actividad directamente, sin depender de la API de Strava'
+'Your AI provider could not suggest a location: {error}': 'Your AI provider could not suggest a location: {error}'
+'Your AI provider could not tell where on the route this photo was taken.': 'Your AI provider could not tell where on the route this photo was taken.'
 'Your birthday. Needed to calculate heart rate zones.': 'Tu fecha de nacimiento. Necesaria para calcular las zonas de frecuencia cardíaca.'
 'Your changes have been saved.': 'Tus cambios han sido guardados.'
 'Your current IP address, as seen by Dreeve, is {ipAddress}.': 'Tu dirección IP actual, vista por Dreeve, es {ipAddress}.'
@@ -669,6 +681,7 @@ exactly: exactamente
 'exactly at': 'exactamente a las'
 ftp: ftp
 'greater than': 'mayor que'
+'high': 'high'
 'hours used': 'horas usadas'
 is: es
 'is none of': 'no es ninguno de'
@@ -676,7 +689,9 @@ is: es
 'is one of': 'es uno de'
 'kilometers used': 'kilómetros usados'
 'less than': 'menor que'
+'low': 'low'
 'max {max} MB each': 'máx {max} MB cada uno'
+'medium': 'medium'
 'miles used': 'millas usadas'
 minutes: minutos
 'on': el
@@ -695,6 +710,7 @@ then: entonces
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
 '{label} (copy)': '{label} (copia)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} no se puede eliminar porque todavía está vinculado a actividades, mantenimiento o reglas de automatización.'
+'{reasoning} (confidence: {confidence})': '{reasoning} (confidence: {confidence})'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': 'URLs de servicios de notificación {shoutrrr} (ej. discord://token@id, telegram://token@telegram/?channels=channel). Déjalo en blanco para desactivar las notificaciones por completo.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Arrastra y suelta{strongClose} o {strongOpen}explora{strongClose} para elegir archivos'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Arrastra y suelta{strongClose} o {strongOpen}explora{strongClose} para elegir imágenes'

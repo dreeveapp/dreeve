@@ -8,6 +8,8 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -70,7 +72,8 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
         $this->assertSame('/admin/activities/'.ActivityId::fromUnprefixed('ride').'/edit', $form->attr('data-redirect'));
         $this->assertSame((string) MediaItemId::fromUnprefixed('photo'), $form->filter('input[name="mediaItemId"]')->attr('value'));
         $this->assertSame('/files/activities/photo.jpg', $form->filter('img')->attr('src'));
-        $this->assertSame('2025-06-14T09:30', $form->filter('input[name="takenOn"]')->attr('value'));
+        $this->assertSame('2025-06-14T09:30:45', $form->filter('input[name="takenOn"]')->attr('value'));
+        $this->assertSame('1', $form->filter('input[name="takenOn"]')->attr('step'));
         $this->assertSame('51.0543', $form->filter('input[name="latitude"]')->attr('value'));
         $this->assertSame('3.7174', $form->filter('input[name="longitude"]')->attr('value'));
         $this->assertSame([
@@ -78,11 +81,50 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
             'maxDistanceFromRouteInMeter' => 300,
         ], Json::decode((string) $form->filter('[data-coordinate-picker]')->attr('data-coordinate-picker')));
         $this->assertCount(1, $form->filter('[data-coordinate-picker] [data-coordinate-picker-warning].hidden'));
+        $this->assertSame(
+            ['/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time'],
+            $form->filter('[data-coordinate-picker] button[data-fill-fields]')->extract(['data-fill-fields']),
+        );
+        $this->assertCount(0, $form->filter('[data-fill-fields-message]'));
+
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::AI, [
+            'ai' => [
+                'enabled' => true,
+                'provider' => 'anthropic',
+                'configuration' => ['model' => 'model'],
+            ],
+        ]);
+
+        $form = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/edit')
+            ->filter('form[data-dispatch-command="update-media-item"]');
+        $this->assertCount(1, $form->filter('[data-coordinate-picker] button[data-fill-fields]'));
+        $this->assertCount(0, $form->filter('[data-fill-fields-message]'));
+
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::AI, [
+            'ai' => [
+                'enabled' => true,
+                'provider' => 'anthropic',
+                'configuration' => ['model' => 'model'],
+                'mediaLocation' => ['enabled' => '1'],
+            ],
+        ]);
+
+        $form = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/edit')
+            ->filter('form[data-dispatch-command="update-media-item"]');
+        $this->assertSame(
+            [
+                '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time',
+                '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/suggest-location',
+            ],
+            $form->filter('[data-coordinate-picker] button[data-fill-fields]')->extract(['data-fill-fields']),
+        );
+        $this->assertCount(1, $form->filter('[data-coordinate-picker] [data-fill-fields-message].hidden'));
 
         $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('indoor').'/media/'.MediaItemId::fromUnprefixed('indoor').'/edit');
         $this->assertResponseIsSuccessful();
         $this->assertSame('[]', $crawler->filter('[data-coordinate-picker]')->attr('data-coordinate-picker'));
         $this->assertCount(0, $crawler->filter('[data-coordinate-picker-warning]'));
+        $this->assertCount(0, $crawler->filter('[data-fill-fields]'));
 
         $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('unknown').'/media/'.MediaItemId::fromUnprefixed('photo').'/edit');
         $this->assertResponseStatusCodeSame(404);

@@ -5377,6 +5377,19 @@ table.data-table {
         }
       }
     }
+    &.btn--small {
+      gap: calc(var(--spacing) * 1.5);
+      padding-inline: calc(var(--spacing) * 3);
+      padding-block: calc(var(--spacing) * 1.5);
+      font-size: var(--text-xs);
+      line-height: var(--tw-leading, var(--text-xs--line-height));
+      &[data-has-loading-state].is-loading::before {
+        width: calc(var(--spacing) * 4);
+        height: calc(var(--spacing) * 4);
+        border-style: var(--tw-border-style);
+        border-width: 2px;
+      }
+    }
   }
 }
 @layer utilities {

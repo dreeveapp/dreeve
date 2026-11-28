@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Domain\Settings;
 
+use App\Domain\Settings\AISettings;
 use App\Domain\Settings\AppearanceSettings;
 use App\Domain\Settings\AthleteFtpSettings;
 use App\Domain\Settings\AthleteHasNotBeenConfigured;
@@ -12,9 +13,9 @@ use App\Domain\Settings\CachingSettingsRepository;
 use App\Domain\Settings\DaemonSettings;
 use App\Domain\Settings\GeneralSettings;
 use App\Domain\Settings\ImportSettings;
-use App\Domain\Settings\IntegrationsSettings;
 use App\Domain\Settings\MapsSettings;
 use App\Domain\Settings\MetricsSettings;
+use App\Domain\Settings\NotificationSettings;
 use App\Domain\Settings\SettingsGroup;
 use App\Domain\Settings\SettingsName;
 use App\Domain\Settings\SettingsRepository;
@@ -51,7 +52,8 @@ class CachingSettingsRepositoryTest extends TestCase
         yield 'import' => ['import', ImportSettings::fromArray(null), fn (SettingsRepository $r): ImportSettings => $r->import()];
         yield 'metrics' => ['metrics', MetricsSettings::fromArray(null), fn (SettingsRepository $r): MetricsSettings => $r->metrics()];
         yield 'zwift' => ['zwift', ZwiftSettings::fromArray(null), fn (SettingsRepository $r): ZwiftSettings => $r->zwift()];
-        yield 'integrations' => ['integrations', IntegrationsSettings::fromArray(null), fn (SettingsRepository $r): IntegrationsSettings => $r->integrations()];
+        yield 'ai' => ['ai', AISettings::fromArray(null), fn (SettingsRepository $r): AISettings => $r->ai()];
+        yield 'notifications' => ['notifications', NotificationSettings::fromArray(null), fn (SettingsRepository $r): NotificationSettings => $r->notifications()];
         yield 'daemon' => ['daemon', DaemonSettings::fromArray(null), fn (SettingsRepository $r): DaemonSettings => $r->daemon()];
         yield 'athleteWeight' => ['athleteWeight', AthleteWeightSettings::fromArray(null), fn (SettingsRepository $r): AthleteWeightSettings => $r->athleteWeight()];
         yield 'athleteFtp' => ['athleteFtp', AthleteFtpSettings::fromArray(null), fn (SettingsRepository $r): AthleteFtpSettings => $r->athleteFtp()];
