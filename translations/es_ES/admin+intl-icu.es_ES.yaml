@@ -384,6 +384,7 @@ Password: Contraseña
 'Performed on': 'Realizado el'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Las fotos de los tipos de deporte seleccionados se excluyen de la galería de fotos.'
+'Photos you ask a location suggestion for are sent to your AI provider.': 'Photos you ask a location suggestion for are sent to your AI provider.'
 'Pick a device you already recorded with, or type a new name.': 'Elige un dispositivo con el que ya hayas grabado, o escribe un nombre nuevo.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Elige las reglas que quieres aplicar para ver qué actividades cambiarían.'
@@ -521,8 +522,10 @@ Source: Origen
 'Strava refresh token': 'Refresh token de Strava'
 Subtitle: Subtítulo
 Success: Éxito
+'Suggest with AI': 'Suggest with AI'
 Suggested: Suggested
 'Suggested trips': 'Suggested trips'
+'Suggesting...': 'Suggesting...'
 "Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
 Sunday: Domingo
 'Supported types': 'Tipos soportados'
@@ -599,7 +602,7 @@ To: Hasta
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Haz un seguimiento del uso del equipamiento a partir de tus actividades y mantente al día con el mantenimiento basado en uso y tiempo.'
 Tuesday: Martes
 'Turn gear maintenance tracking on or off.': 'Activa o desactiva el seguimiento del mantenimiento del equipamiento.'
-'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
+'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.': 'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.'
 Type: Tipo
 URL: URL
 'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
@@ -642,6 +645,8 @@ Weigh-ins: Weigh-ins
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'También puedes copiar archivos directamente en la carpeta {watchFolder}, o {linkOpen}añadir una actividad manualmente{linkClose}.'
 'You can select up to {max} images': 'Puedes seleccionar hasta {max} imágenes'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Actualmente estás importando desde la API de Strava. Establece {importMode} para subir archivos de actividad directamente, sin depender de la API de Strava'
+'Your AI provider could not suggest a location: {error}': 'Your AI provider could not suggest a location: {error}'
+'Your AI provider could not tell where on the route this photo was taken.': 'Your AI provider could not tell where on the route this photo was taken.'
 'Your birthday. Needed to calculate heart rate zones.': 'Tu fecha de nacimiento. Necesaria para calcular las zonas de frecuencia cardíaca.'
 'Your changes have been saved.': 'Tus cambios han sido guardados.'
 'Your current IP address, as seen by Dreeve, is {ipAddress}.': 'Tu dirección IP actual, vista por Dreeve, es {ipAddress}.'
@@ -673,6 +678,7 @@ exactly: exactamente
 'exactly at': 'exactamente a las'
 ftp: ftp
 'greater than': 'mayor que'
+'high': 'high'
 'hours used': 'horas usadas'
 is: es
 'is none of': 'no es ninguno de'
@@ -680,7 +686,9 @@ is: es
 'is one of': 'es uno de'
 'kilometers used': 'kilómetros usados'
 'less than': 'menor que'
+'low': 'low'
 'max {max} MB each': 'máx {max} MB cada uno'
+'medium': 'medium'
 'miles used': 'millas usadas'
 minutes: minutos
 'on': el
@@ -699,6 +707,7 @@ then: entonces
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
 '{label} (copy)': '{label} (copia)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} no se puede eliminar porque todavía está vinculado a actividades, mantenimiento o reglas de automatización.'
+'{reasoning} (confidence: {confidence})': '{reasoning} (confidence: {confidence})'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': 'URLs de servicios de notificación {shoutrrr} (ej. discord://token@id, telegram://token@telegram/?channels=channel). Déjalo en blanco para desactivar las notificaciones por completo.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Arrastra y suelta{strongClose} o {strongOpen}explora{strongClose} para elegir archivos'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Arrastra y suelta{strongClose} o {strongOpen}explora{strongClose} para elegir imágenes'

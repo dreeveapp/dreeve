@@ -384,6 +384,7 @@ Password: Password
 'Performed on': 'Performed on'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.'
 'Photos of the selected sport types are excluded from the photo gallery.': 'Photos of the selected sport types are excluded from the photo gallery.'
+'Photos you ask a location suggestion for are sent to your AI provider.': 'Photos you ask a location suggestion for are sent to your AI provider.'
 'Pick a device you already recorded with, or type a new name.': 'Pick a device you already recorded with, or type a new name.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Pick the rules you want to apply to see which activities would change.'
@@ -521,8 +522,10 @@ Source: Source
 'Strava refresh token': 'Strava refresh token'
 Subtitle: Subtitle
 Success: Success
+'Suggest with AI': 'Suggest with AI'
 Suggested: Suggested
 'Suggested trips': 'Suggested trips'
+'Suggesting...': 'Suggesting...'
 "Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
 Sunday: Sunday
 'Supported types': 'Supported types'
@@ -599,7 +602,7 @@ To: To
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.'
 Tuesday: Tuesday
 'Turn gear maintenance tracking on or off.': 'Turn gear maintenance tracking on or off.'
-'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
+'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.': 'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.'
 Type: Type
 URL: URL
 'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
@@ -642,6 +645,8 @@ Weigh-ins: Weigh-ins
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.'
 'You can select up to {max} images': 'You can select up to {max} images'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API"
+'Your AI provider could not suggest a location: {error}': 'Your AI provider could not suggest a location: {error}'
+'Your AI provider could not tell where on the route this photo was taken.': 'Your AI provider could not tell where on the route this photo was taken.'
 'Your birthday. Needed to calculate heart rate zones.': 'Your birthday. Needed to calculate heart rate zones.'
 'Your changes have been saved.': 'Your changes have been saved.'
 'Your current IP address, as seen by Dreeve, is {ipAddress}.': 'Your current IP address, as seen by Dreeve, is {ipAddress}.'
@@ -673,6 +678,7 @@ exactly: exactly
 'exactly at': 'exactly at'
 ftp: ftp
 'greater than': 'greater than'
+'high': 'high'
 'hours used': 'hours used'
 is: is
 'is none of': 'is none of'
@@ -680,7 +686,9 @@ is: is
 'is one of': 'is one of'
 'kilometers used': 'kilometers used'
 'less than': 'less than'
+'low': 'low'
 'max {max} MB each': 'max {max} MB each'
+'medium': 'medium'
 'miles used': 'miles used'
 minutes: minutes
 'on': 'on'
@@ -699,6 +707,7 @@ then: then
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
 '{label} (copy)': '{label} (copy)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": "{name} can't be deleted because it is still linked to activities, maintenance or automation rules."
+'{reasoning} (confidence: {confidence})': '{reasoning} (confidence: {confidence})'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images'

@@ -384,6 +384,7 @@ Password: Wachtwoord
 'Performed on': 'Uitgevoerd op'
 'Photos attached to your Strava activities will not be downloaded or stored on disk. Photos that were downloaded before are kept.': "Foto's bij je Strava-activiteiten worden niet gedownload of op schijf opgeslagen. Eerder gedownloade foto's blijven bewaard."
 'Photos of the selected sport types are excluded from the photo gallery.': "Foto's van de geselecteerde sporttypes worden uitgesloten van de fotogalerij."
+'Photos you ask a location suggestion for are sent to your AI provider.': 'Photos you ask a location suggestion for are sent to your AI provider.'
 'Pick a device you already recorded with, or type a new name.': 'Kies een toestel waarmee je al geregistreerd hebt, of typ een nieuwe naam.'
 'Pick an activity to select the segment on its route.': 'Pick an activity to select the segment on its route.'
 'Pick the rules you want to apply to see which activities would change.': 'Kies de regels die je wil toepassen om te zien welke activiteiten zouden wijzigen.'
@@ -521,8 +522,10 @@ Source: Bron
 'Strava refresh token': 'Strava refresh token'
 Subtitle: Ondertitel
 Success: Geslaagd
+'Suggest with AI': 'Suggest with AI'
 Suggested: Suggested
 'Suggested trips': 'Suggested trips'
+'Suggesting...': 'Suggesting...'
 "Suggestions based on your activities that aren't in a collection yet.": "Suggestions based on your activities that aren't in a collection yet."
 Sunday: Zondag
 'Supported types': 'Ondersteunde types'
@@ -599,7 +602,7 @@ To: Tot
 'Track gear usage from your activities and stay on top of usage- and time-based maintenance.': 'Volg het gebruik van je uitrusting op basis van je activiteiten en blijf op de hoogte van onderhoud op basis van gebruik en tijd.'
 Tuesday: Dinsdag
 'Turn gear maintenance tracking on or off.': 'Het opvolgen van onderhoud van uitrusting in- of uitschakelen.'
-'Turns on the AI-powered workout assistant.': 'Turns on the AI-powered workout assistant.'
+'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.': 'Turns on AI-powered features, such as the workout assistant and suggesting where a photo was taken.'
 Type: Type
 URL: URL
 'Unchecked activities are removed from the collection when you save.': 'Unchecked activities are removed from the collection when you save.'
@@ -642,6 +645,8 @@ Weigh-ins: Weigh-ins
 'You can also copy files straight into the {watchFolder} folder, or {linkOpen}manually add an activity{linkClose}.': 'Je kan bestanden ook rechtstreeks in de map {watchFolder} kopiëren, of {linkOpen}handmatig een activiteit toevoegen{linkClose}.'
 'You can select up to {max} images': 'Je kan maximaal {max} afbeeldingen selecteren'
 "You're currently importing from the Strava API. Set {importMode} to upload activity files directly, without depending on Strava's API": 'Je importeert momenteel via de Strava API. Stel {importMode} in om activiteitsbestanden rechtstreeks te uploaden, zonder afhankelijk te zijn van de API van Strava'
+'Your AI provider could not suggest a location: {error}': 'Your AI provider could not suggest a location: {error}'
+'Your AI provider could not tell where on the route this photo was taken.': 'Your AI provider could not tell where on the route this photo was taken.'
 'Your birthday. Needed to calculate heart rate zones.': 'Je geboortedatum. Nodig om hartslagzones te berekenen.'
 'Your changes have been saved.': 'Je wijzigingen zijn opgeslagen.'
 'Your current IP address, as seen by Dreeve, is {ipAddress}.': 'Je huidige IP-adres, zoals Dreeve het ziet, is {ipAddress}.'
@@ -673,6 +678,7 @@ exactly: exact
 'exactly at': 'exact om'
 ftp: ftp
 'greater than': 'groter dan'
+'high': 'high'
 'hours used': 'gebruikte uren'
 is: is
 'is none of': 'is geen van'
@@ -680,7 +686,9 @@ is: is
 'is one of': 'is een van'
 'kilometers used': 'gebruikte kilometers'
 'less than': 'kleiner dan'
+'low': 'low'
 'max {max} MB each': 'max. {max} MB per bestand'
+'medium': 'medium'
 'miles used': 'gebruikte mijlen'
 minutes: minuten
 'on': op
@@ -699,6 +707,7 @@ then: dan
 '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.': '{envVar} is set, but it is not a key this app generated, so the MCP server stays disabled. Generate a new one and replace it.'
 '{label} (copy)': '{label} (kopie)'
 "{name} can't be deleted because it is still linked to activities, maintenance or automation rules.": '{name} kan niet verwijderd worden omdat het nog gekoppeld is aan activiteiten, onderhoud of automatiseringsregels.'
+'{reasoning} (confidence: {confidence})': '{reasoning} (confidence: {confidence})'
 '{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely.': "{shoutrrr}-URL's voor meldingsdiensten (bv. discord://token@id, telegram://token@telegram/?channels=channel). Laat leeg om meldingen volledig uit te schakelen."
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose files': '{strongOpen}Sleep bestanden hierheen{strongClose} of {strongOpen}blader{strongClose} om bestanden te kiezen'
 '{strongOpen}Drag & drop{strongClose} or {strongOpen}browse{strongClose} to choose images': '{strongOpen}Sleep afbeeldingen hierheen{strongClose} of {strongOpen}blader{strongClose} om afbeeldingen te kiezen'

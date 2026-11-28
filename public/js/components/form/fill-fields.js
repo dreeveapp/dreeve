@@ -3,7 +3,9 @@ import {showError, hideError} from "./form-error";
 const fillFields = async (button) => {
     const form = button.closest('form');
     const errorBox = form?.querySelector('[data-form-error]');
+    const messageBox = form?.querySelector('[data-fill-fields-message]');
     hideError(errorBox);
+    messageBox?.classList.add('hidden');
     button.classList.add('is-loading');
     button.disabled = true;
 
@@ -32,6 +34,11 @@ const fillFields = async (button) => {
             field.dispatchEvent(new Event('input', {bubbles: true}));
             field.dispatchEvent(new Event('change', {bubbles: true}));
         });
+
+        if (messageBox && result.message) {
+            messageBox.textContent = result.message;
+            messageBox.classList.remove('hidden');
+        }
     } catch (error) {
         showError(errorBox, error.message);
     } finally {

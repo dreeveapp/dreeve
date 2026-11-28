@@ -8,6 +8,8 @@ use App\Domain\Activity\ActivityWithRawData;
 use App\Domain\Media\MediaItemId;
 use App\Domain\Media\MediaItemPath;
 use App\Domain\Media\MediaItemRepository;
+use App\Domain\Settings\SettingsGroup;
+use App\Domain\Settings\SettingsRepository;
 use App\Infrastructure\Serialization\Json;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
@@ -80,9 +82,29 @@ class ManageActivityMediaItemFormRequestHandlerTest extends AdminWebTestCase
         ], Json::decode((string) $form->filter('[data-coordinate-picker]')->attr('data-coordinate-picker')));
         $this->assertCount(1, $form->filter('[data-coordinate-picker] [data-coordinate-picker-warning].hidden'));
         $this->assertSame(
-            '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time',
-            $form->filter('[data-coordinate-picker] button[data-fill-fields]')->attr('data-fill-fields'),
+            ['/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time'],
+            $form->filter('[data-coordinate-picker] button[data-fill-fields]')->extract(['data-fill-fields']),
         );
+        $this->assertCount(0, $form->filter('[data-fill-fields-message]'));
+
+        static::getContainer()->get(SettingsRepository::class)->saveGroup(SettingsGroup::INTEGRATIONS, [
+            'ai' => [
+                'enabled' => true,
+                'provider' => 'anthropic',
+                'configuration' => ['model' => 'model'],
+            ],
+        ]);
+
+        $form = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/edit')
+            ->filter('form[data-dispatch-command="update-media-item"]');
+        $this->assertSame(
+            [
+                '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/locate-by-time',
+                '/admin/activities/'.ActivityId::fromUnprefixed('ride').'/media/'.MediaItemId::fromUnprefixed('photo').'/suggest-location',
+            ],
+            $form->filter('[data-coordinate-picker] button[data-fill-fields]')->extract(['data-fill-fields']),
+        );
+        $this->assertCount(1, $form->filter('[data-coordinate-picker] [data-fill-fields-message].hidden'));
 
         $crawler = $this->client->request('GET', '/admin/activities/'.ActivityId::fromUnprefixed('indoor').'/media/'.MediaItemId::fromUnprefixed('indoor').'/edit');
         $this->assertResponseIsSuccessful();
