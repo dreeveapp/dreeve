@@ -3,6 +3,7 @@
 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.': 'A backup is created automatically every night. Read more in {linkOpen}the documentation{linkClose}.'
 'A rule applies': 'Se aplica una regla'
 AI: IA
+'AI provider': 'AI provider'
 AM/PM: AM/PM
 'API access': 'Acceso a la API'
 'API key': 'Clave API'
@@ -475,6 +476,7 @@ Sensors: Sensores
 'Sensors are only recorded for activities imported from FIT files. Activities from Strava, GPX or TCX never match this condition.': 'Los sensores solo se registran en actividades importadas desde archivos FIT. Las actividades de Strava, GPX o TCX nunca cumplen esta condición.'
 'Separate several keys with a comma, so each integration can have its own key.': 'Separate several keys with a comma, so each integration can have its own key.'
 'Serial number, size, where you bought it, ...': 'Serial number, size, where you bought it, ...'
+Services: Services
 'Set description': 'Establecer descripción'
 'Set its status to Retired instead to hide it from your active gear.': 'Cambia su estado a Retirado para ocultarlo de tu equipamiento activo.'
 'Set name': 'Establecer nombre'

@@ -11,7 +11,7 @@
     {% set notificationServicesDescription %}
         {{ "{shoutrrr} notification service URLs (e.g. discord://token@id, telegram://token@telegram/?channels=channel). Leave empty to disable notifications entirely."|trans({'{shoutrrr}': '<a class="underline" href="https://shoutrrr.nickfedor.com/dev/services/overview/" target="_blank" rel="noopener">Shoutrrr</a>'}, 'admin')|raw }}
     {% endset %}
-    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Notifications"|trans({}, 'admin')} %}
+    {% embed 'html/admin/page/settings/component/section.html.twig' with {title: "Services"|trans({}, 'admin')} %}
         {% block body %}
             <div>
                 <label class="mt-0!">{{ "Notification services"|trans({}, 'admin') }}</label>
