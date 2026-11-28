@@ -7,6 +7,7 @@ namespace App\Domain\Activity\Route;
 use App\Domain\Activity\Activity;
 use App\Domain\Activity\Stream\ActivityStreamRepository;
 use App\Domain\Activity\Stream\StreamType;
+use App\Infrastructure\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\Geography\Coordinate;
 use App\Infrastructure\ValueObject\Geography\Latitude;
 use App\Infrastructure\ValueObject\Geography\Longitude;
@@ -24,22 +25,46 @@ final readonly class ActivityRouteLocator
     public function locateAt(Activity $activity, SerializableDateTime $on): ?Coordinate
     {
         $streams = $this->activityStreamRepository->findByActivityId($activity->getId());
-        $times = array_values($streams->filterOnType(StreamType::TIME)?->getData() ?? []);
-        $latLngs = array_values($streams->filterOnType(StreamType::LAT_LNG)?->getData() ?? []);
-        if ([] === $times || [] === $latLngs) {
+
+        return $this->interpolate(
+            axis: array_values($streams->filterOnType(StreamType::TIME)?->getData() ?? []),
+            latLngs: array_values($streams->filterOnType(StreamType::LAT_LNG)?->getData() ?? []),
+            value: $on->getTimestamp() - $activity->getStartDate()->getTimestamp(),
+            maxInterpolationGap: self::MAX_INTERPOLATION_GAP_IN_SECONDS,
+        );
+    }
+
+    public function locateAtDistance(Activity $activity, Meter $distance): ?Coordinate
+    {
+        $streams = $this->activityStreamRepository->findByActivityId($activity->getId());
+
+        return $this->interpolate(
+            axis: array_values($streams->filterOnType(StreamType::DISTANCE)?->getData() ?? []),
+            latLngs: array_values($streams->filterOnType(StreamType::LAT_LNG)?->getData() ?? []),
+            value: $distance->toFloat(),
+            maxInterpolationGap: INF,
+        );
+    }
+
+    /**
+     * @param list<mixed> $axis
+     * @param list<mixed> $latLngs
+     */
+    private function interpolate(array $axis, array $latLngs, int|float $value, int|float $maxInterpolationGap): ?Coordinate
+    {
+        if ([] === $axis || [] === $latLngs) {
             return null;
         }
 
-        $offset = $on->getTimestamp() - $activity->getStartDate()->getTimestamp();
-        if ($offset < 0 || $offset > array_last($times)) {
+        if ($value < 0 || $value > array_last($axis)) {
             return null;
         }
 
         $low = 0;
-        $high = count($times) - 1;
+        $high = count($axis) - 1;
         while ($low <= $high) {
             $middle = intdiv($low + $high, 2);
-            if ($times[$middle] < $offset) {
+            if ($axis[$middle] < $value) {
                 $low = $middle + 1;
             } else {
                 $high = $middle - 1;
@@ -47,17 +72,17 @@ final readonly class ActivityRouteLocator
         }
 
         $after = $low;
-        $before = isset($times[$after]) && $times[$after] === $offset ? $after : $after - 1;
+        $before = isset($axis[$after]) && (float) $axis[$after] === (float) $value ? $after : $after - 1;
 
         while ($before >= 0 && !isset($latLngs[$before][0], $latLngs[$before][1])) {
             --$before;
         }
-        while (isset($times[$after]) && !isset($latLngs[$after][0], $latLngs[$after][1])) {
+        while (isset($axis[$after]) && !isset($latLngs[$after][0], $latLngs[$after][1])) {
             ++$after;
         }
 
         $hasBefore = $before >= 0;
-        $hasAfter = isset($times[$after]);
+        $hasAfter = isset($axis[$after]);
         if (!$hasBefore && !$hasAfter) {
             return null;
         }
@@ -67,9 +92,9 @@ final readonly class ActivityRouteLocator
         } elseif (!$hasBefore || $before === $after) {
             [$latitude, $longitude] = $latLngs[$after];
         } else {
-            $gap = $times[$after] - $times[$before];
-            $fraction = ($offset - $times[$before]) / $gap;
-            if ($gap > self::MAX_INTERPOLATION_GAP_IN_SECONDS) {
+            $gap = $axis[$after] - $axis[$before];
+            $fraction = ($value - $axis[$before]) / $gap;
+            if ($gap > $maxInterpolationGap) {
                 [$latitude, $longitude] = $fraction <= 0.5 ? $latLngs[$before] : $latLngs[$after];
             } else {
                 $latitude = $latLngs[$before][0] + ($latLngs[$after][0] - $latLngs[$before][0]) * $fraction;
