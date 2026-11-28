@@ -258,6 +258,14 @@
                     @apply hidden group-[.is-loading]:inline;
                 }
             }
+
+            &.btn--small {
+                @apply px-3 py-1.5 text-xs gap-1.5;
+
+                &[data-has-loading-state].is-loading::before {
+                    @apply size-4 border-2;
+                }
+            }
         }
     }
 }

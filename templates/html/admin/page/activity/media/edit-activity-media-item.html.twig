@@ -38,32 +38,30 @@
                                        data-coordinate-picker-field="longitude" placeholder="3.7174"
                                        value="{{ coordinate ? coordinate.getLongitude().toFloat() }}">
                             </div>
-                            {% if coordinatePickerOptions %}
-                                <div class="flex flex-wrap gap-2">
-                                    <button type="button" data-has-loading-state class="group"
-                                            data-fill-fields="{{ relativeUrl(path('admin_locate_activity_media_item_by_time', {activityId: activity.getId(), mediaItemId: mediaItem.getId()})) }}">
-                                        <span class="label">{{ "Locate by time"|trans({}, 'admin') }}</span>
-                                        <span class="label--loading">{{ "Locating..."|trans({}, 'admin') }}</span>
-                                    </button>
-                                    {% if isAIIntegrationEnabled() %}
-                                        <button type="button" data-has-loading-state class="group"
-                                                data-fill-fields="{{ relativeUrl(path('admin_suggest_activity_media_item_location', {activityId: activity.getId(), mediaItemId: mediaItem.getId()})) }}">
-                                            <span class="label">{{ "Suggest with AI"|trans({}, 'admin') }}</span>
-                                            <span class="label--loading">{{ "Suggesting..."|trans({}, 'admin') }}</span>
-                                        </button>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                     <div>
                         <p class="mb-1 text-xxs text-gray-500">{{ "Click the map to set the location, or drag the marker to fine-tune it."|trans({}, 'admin') }}</p>
                         <div data-coordinate-picker-map class="h-64 w-full rounded-lg border border-gray-200 bg-gray-100"></div>
                     </div>
-                    {% if coordinatePickerOptions and isAIIntegrationEnabled() %}
-                        <div data-fill-fields-message class="alert alert--info hidden" role="status"></div>
-                    {% endif %}
                     {% if coordinatePickerOptions %}
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" data-has-loading-state class="group btn--small"
+                                    data-fill-fields="{{ relativeUrl(path('admin_locate_activity_media_item_by_time', {activityId: activity.getId(), mediaItemId: mediaItem.getId()})) }}">
+                                <span class="label">{{ "Locate by time"|trans({}, 'admin') }}</span>
+                                <span class="label--loading">{{ "Locating..."|trans({}, 'admin') }}</span>
+                            </button>
+                            {% if isAIIntegrationEnabled() %}
+                                <button type="button" data-has-loading-state class="group btn--small"
+                                        data-fill-fields="{{ relativeUrl(path('admin_suggest_activity_media_item_location', {activityId: activity.getId(), mediaItemId: mediaItem.getId()})) }}">
+                                    <span class="label">{{ "Suggest with AI"|trans({}, 'admin') }}</span>
+                                    <span class="label--loading">{{ "Suggesting..."|trans({}, 'admin') }}</span>
+                                </button>
+                            {% endif %}
+                        </div>
+                        {% if isAIIntegrationEnabled() %}
+                            <div data-fill-fields-message class="alert alert--info hidden" role="status"></div>
+                        {% endif %}
                         <div data-coordinate-picker-warning class="alert alert--warning hidden" role="alert">
                             <span class="sr-only">{{ "Warning"|trans({}, 'admin') }}</span>
                             <div>{{ "This location is far from the route, so the photo will not show on the activity map."|trans({}, 'admin') }}</div>
